@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div id="list-users"></div>
+
+{% endblock %}
+{% block addscripts %}
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            //Parameters for generating rows table head
+            var dataHead = JSON.parse('{{ head|json_encode|raw }}');
+            //Parameters for generating rows table body
+            var dataBody = JSON.parse('{{ body|json_encode|raw }}');
+
+            var currentPage = '{{ pagination.currentPage }}';
+            var countPage = '{{ pagination.countPage }}';
+
+            var tb = new HTML.Table('table-users', true, false)
+                .setLinkRow('{{ url('_user_edit') }}/')
+                .setPadding('sm')
+                .setContentBeforeTable(
+                        new HTML.Table('user-filter', false, false)
+                                .setMargin('xs')
+                                .setPadding('xs')
+                                .setSkinTable('borderedNone')
+                                .addRow('body')
+                                .addCell(
+                                    new HTML.Input(3)
+                                            .setLineLabel(4)
+                                            .addInputLabel(null, 'Фамилия', 'lastname', null, null, false)
+                                            .addInputLabel(null, 'Имя', 'username', null, null, false)
+                                            .addInputLabel(null, 'Отчество', 'midlename', null, null, false)
+                                            .toHtml(),
+                                    1, 1
+                                )
+                                .addRow('body')
+                                .addCell(
+                                    new HTML.Input(3)
+                                            .setLineLabel(4)
+                                            .addInputLabel(null, 'Login', 'login', null, null, false)
+                                            .addInputLabel(null, 'Email', 'email', null, null, false)
+                                            .toHtml(),
+                                    1, 1
+                                )
+                                .addRow('body')
+                                .addCell(
+                                    new HTML.Button(null, null)
+                                            .addSubmit('Найти', 'sendFilter', null, 'search', null)
+                                            .toHtml(),
+                                    1, 1
+                                ).toHtml()
+                    )
+                    .setSkinPanel('primary')
+                    .setTitleTable('{{ title }}')
+                    .addRow('head');
+
+            $.each(dataHead, function(key, value) {
+                tb.addCell(value, 1, 1)
+            });
+
+            tb
+                .addDataBody(dataBody)
+                .setPagination(Number(currentPage), Number(countPage), '{{ url('_user_list') }}', '/', 'right', true)
+                .appendHtml('#list-users');
+        });
+    </script>
+{% endblock %}

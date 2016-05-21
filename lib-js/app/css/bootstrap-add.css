@@ -1,0 +1,22 @@
+.cell-btn,
+.cell-num {
+    text-align: center;
+    vertical-align: middle;
+}
+.cell-num {
+    width: 1%;
+}
+.cell-btn {
+    width: 70px;
+}
+.row-link {
+    cursor: pointer;
+}
+.row-link:hover {
+    background: #e7e7e7;
+}
+.table-bordered-none tbody tr td,
+.table-bordered-none tbody tr th,
+.table-bordered-none thead tr th {
+    border: none;
+}
