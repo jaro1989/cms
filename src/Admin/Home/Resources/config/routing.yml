@@ -1,0 +1,14 @@
+home:
+    path:     /
+    defaults: { _controller: AdminHome:Home:index }
+_navbar:
+    path:     /navbar/top
+    defaults: { _controller: AdminHome:Navbar:top }
+
+_user_edit:
+    path:     /user/edit/{record}
+    defaults: { _controller: AdminHome:User:edit, record: 1 }
+
+_user_list:
+    path:     /user/list/{page}
+    defaults: { _controller: AdminHome:User:list, page: 1 }
