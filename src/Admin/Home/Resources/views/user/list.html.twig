@@ -21,7 +21,7 @@
                         new HTML.Table('user-filter', false, false)
                                 .setMargin('xs')
                                 .setPadding('xs')
-                                .setSkinTable('borderedNone')
+                                .setSkinTable('bordered-none')
                                 .addRow('body')
                                 .addCell(
                                     new HTML.Input(3)
@@ -44,7 +44,10 @@
                                 .addRow('body')
                                 .addCell(
                                     new HTML.Button(null, null)
-                                            .addSubmit('Найти', 'sendFilter', null, 'search', null)
+                                            .setPositionBlock('right')
+                                            .setActive(true)
+                                            //.setSkin('primary')
+                                            .addSubmit('Найти', 'sendFilter', null, 'search', false)
                                             .toHtml(),
                                     1, 1
                                 ).toHtml()

@@ -119,7 +119,7 @@
             table: {
                 striped: 'table-striped',
                 bordered: 'table-bordered',
-                borderedNone: '',
+                'bordered-none': 'table-bordered-none',
                 hover: 'table-hover',
                 condensed: 'table-condensed'
 
@@ -207,7 +207,8 @@
                 info: 'info',
                 link: 'link',
                 default: 'default',
-                error: 'error'
+                error: 'error',
+                primary: 'primary'
             },
 
             /**

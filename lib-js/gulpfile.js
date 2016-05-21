@@ -26,10 +26,10 @@
     gulp.task('scripts-cmf', function() {
         return gulp.src(src_files)
             .pipe(concat('html-builder.js'))
-            .pipe(gulp.dest('./../cmf/web/admin/js'))
+            .pipe(gulp.dest('./../web/admin/js'))
             .pipe(uglify())
             .pipe(rename('html-builder.min.js'))
-            .pipe(gulp.dest('./../cmf/web/admin/js'));
+            .pipe(gulp.dest('./../web/admin/js'));
     });
 
     gulp.task('watch', function() {

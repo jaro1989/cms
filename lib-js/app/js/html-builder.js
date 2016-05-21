@@ -119,7 +119,7 @@
             table: {
                 striped: 'table-striped',
                 bordered: 'table-bordered',
-                borderedNone: '',
+                'bordered-none': 'table-bordered-none',
                 hover: 'table-hover',
                 condensed: 'table-condensed'
 
@@ -207,7 +207,8 @@
                 info: 'info',
                 link: 'link',
                 default: 'default',
-                error: 'error'
+                error: 'error',
+                primary: 'primary'
             },
 
             /**
@@ -976,7 +977,9 @@
                 'div',
                 {
                     id: obj._parentBlockId,
-                    class: (_basis.emptyValue(obj._typeGroup, '') + ' ' + _basis.emptyValue(obj._margin, '')).trim()
+                    class: _basis.emptyValue(obj._typeGroup, '') + ' ' +
+                           _basis.emptyValue(obj._margin, '') + ' ' +
+                           _basis.emptyValue(obj._positionBlock, '')
                 },
                 html
             );
@@ -999,6 +1002,13 @@
 
         /** @protected */
         HTML.Button.prototype = {
+
+            /**
+             * Position block buttons
+             *
+             * @type {string|null}
+             */
+            _positionBlock: null,
 
             /**
              * html ID block buttons
@@ -1045,9 +1055,9 @@
              *
              * @private
              * @type {string}
-             * @default {HTML.Basis.skin.default}
+             * @default {HTML.Basis.skin.primary}
              */
-            _skin: _basis.skin.default,
+            _skin: _basis.skin.primary,
 
             /**
              * disable buttons
@@ -1087,6 +1097,17 @@
              * @type {string|null}
              */
             _margin: null,
+
+            /**
+             * Set position block buttons
+             *
+             * @param {string} position 'left'|'right'|'center'
+             * @returns {HTML.Button}
+             */
+            setPositionBlock:function(position) {
+                this._positionBlock =  _basis.emptyProperty(_basis.position, position, null);
+                return this;
+            },
 
             /**
              * Set margin block html
@@ -1160,11 +1181,11 @@
              * Set skin for buttons|button
              *
              * @public
-             * @param {string|null} skin {'success'|'warning'|'danger'|'info'|'link'|'default'|''}
+             * @param {string|null} skin {'success'|'warning'|'danger'|'info'|'link'|'default'|'primary'}
              * @returns {HTML.Button}
              */
             setSkin: function(skin) {
-                this._skin = _basis.emptyProperty(_basis.skin, skin, _basis.skin.default);
+                this._skin = _basis.emptyProperty(_basis.skin, skin, _basis.skin.primary);
                 return this;
             },
 
@@ -2501,7 +2522,7 @@
              * Set html class skin table
              *
              * @public
-             * @param {string|null|undefined} skin {'striped'|'bordered'|'hover'|'condensed'|null}
+             * @param {string|null|undefined} skin {'striped'|'bordered'|'bordered-none'|'hover'|'condensed'|null}
              * @returns {HTML.Table}
              */
             setSkinTable: function(skin) {

@@ -621,7 +621,7 @@
              * Set html class skin table
              *
              * @public
-             * @param {string|null|undefined} skin {'striped'|'bordered'|'hover'|'condensed'|null}
+             * @param {string|null|undefined} skin {'striped'|'bordered'|'bordered-none'|'hover'|'condensed'|null}
              * @returns {HTML.Table}
              */
             setSkinTable: function(skin) {
