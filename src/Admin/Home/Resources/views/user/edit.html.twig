@@ -1,12 +1,54 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <div id="list-users"></div>
+    <div id="edit-users"></div>
 
 {% endblock %}
 {% block addscripts %}
     <script type="text/javascript">
-//        jQuery(document).ready(function() {
-//            new HTML.Input()
-//        });
+        jQuery(document).ready(function() {
+            new HTML.Table()
+                    .setSkinTable('bordered-none')
+                    .setSkinPanel('primary')
+                    .setPadding('sm')
+                    .setTitleTable('Редактирование пользователя')
+                    .addRow('body')
+                    .addCell(
+                            new HTML.Input(3)
+                                    .setLineLabel(4)
+                                    .addInputLabel(null, 'Фамилия', 'lastname', null, null, false)
+                                    .addInputLabel(null, 'Имя', 'username', null, null, false)
+                                    .addInputLabel(null, 'Отчество', 'midlename', null, null, false)
+                                    .toHtml(),
+                            1, 1
+                    )
+                    .addRow('body')
+                    .addCell(
+                            new HTML.Input(3)
+                                    .setLineLabel(4)
+                                    .addInputLabel(null, 'Логин', 'login', null, null, false)
+                                    .addInputLabel(null, 'Пароль', 'password', null, null, false)
+                                    .addInputLabel(null, 'Email', 'email', null, null, false)
+                                    .toHtml(),
+                            1, 1
+                    )
+                    .addRow('body')
+                    .addCell(
+                            new HTML.Input(3)
+                                    .setLineLabel(4)
+                                    .addInputLabel(null, 'Роль', 'role', null, null, false)
+                                    .toHtml(),
+                            1, 1
+                    )
+                    .setContentAfterTable(
+                            new HTML.Button('toolbar', null)
+                                    .setPositionBlock('right')
+                                    .setActive(true)
+                                    .addButton('Сохранить', 'save-data', null, 'plus', false)
+                                    .setSkin('danger')
+                                    .addButton('Удалить', 'delete-data', null, 'remove', false)
+                                    .toHtml()
+                    )
+                    .appendHtml('#edit-users')
+        });
     </script>
 {% endblock %}
