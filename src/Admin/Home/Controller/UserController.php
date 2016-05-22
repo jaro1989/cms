@@ -1,17 +1,34 @@
 <?php
 namespace Admin\Home\Controller;
 
+use Admin\Home\Entity\Users;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller{
 
+    /**
+     * Page edit user
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function editAction(Request $request)
     {
-        return $this->render('AdminHome:user:edit.html.twig', []);
+        $request->get('record');
+        $role = [
+            'ROLE_ADMIN' => 'Администратор',
+            'ROLE_USER' => 'Пользователь',
+            'ROLE_REDACTOR' => 'Редактор',
+        ];
+        return $this->render('AdminHome:user:edit.html.twig', ['role' => $role]);
     }
 
+    /**
+     * List users
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function listAction(Request $request)
     {
         $data['title'] = 'Список пользователей';
@@ -89,6 +106,42 @@ class UserController extends Controller{
             'countPage' => 30
         ];
         return $this->render('AdminHome:user:list.html.twig', $data);
+    }
+
+    /**
+     * Save new record
+     * @param Request $request
+     * @return int
+     */
+    public function saveAction(Request $request)
+    {
+        $users = new Users();
+        $users->setCmsEmail('1xvx1@mail.ru')
+            ->setCmsLogin('admin')
+            ->setFirstName('Киселев')
+            ->setLastName('Валерий');
+
+        $em = $this
+                ->getDoctrine()
+                ->getManager();
+
+        $em->persist($users);
+        $em->flush();
+
+        return $users->getId();
+    }
+
+    /**
+     * Update record
+     * @param Request $request
+     */
+    public function updateAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository('AdminHome:Users')->find(1);
+        $users->setFirstName('Киселев');
+        $em->flush();
+        return $users->getId();
     }
 
 }

@@ -1,4 +1,4 @@
-
+//--
     /**
      *
      * @namespace HTML
@@ -23,6 +23,9 @@
         HTML.Basis.prototype = {
 
             fluid: 'container-fluid',
+            text_alignment: {
+                right: 'text-right'
+            },
 
             navbar: {
                 nav: 'nav',
@@ -61,16 +64,16 @@
                     lg: 'input-group-lg',
                     sm: 'input-group-sm'
                 },
+                prefix_skin_field: 'has',
+                prefix_skin_text: 'text',
                 skin: {
-                    success: 'has-success',
-                    warning: 'has-warning',
-                    error: 'has-error',
-                    readsuccess: 'text-success',
-                    readmuted: 'text-muted',
-                    readprimary: 'text-primary',
-                    readinfo: 'text-info',
-                    readwarning: 'text-warning',
-                    readdanger: 'text-danger'
+                    success: 'success',
+                    warning: 'warning',
+                    error: 'error',
+                    muted: 'muted',
+                    primary: 'primary',
+                    info: 'info',
+                    danger: 'danger'
                 },
                 icon: {
                     bf: 'has-feedback',

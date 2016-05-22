@@ -15,6 +15,8 @@
 
         var KEY_READ = 'read';
 
+        var KEY_SELECT_LIST = 'select-list';
+
         var BLOCK_HIDDEN_FIELDS = 'block-hidden-fields';
 
         var PLACEHOLDER_DEF = '...';
@@ -39,7 +41,7 @@
          * @param {string|null} size {'lg'|'sm'|null}
          * @constructor
          */
-        HTML.Input = function(group, htmlClass, size) {
+        HTML.Fields = function(group, htmlClass, size) {
             this._group = _basis.emptyProperty(_basis.layoutGroup, group, _basis.layoutGroup[1]);
             this._class = _basis.emptyValue(htmlClass, null);
             this._size = _basis.emptyProperty(_basis.fields.size, size, _basis.fields.size.sm);
@@ -47,7 +49,21 @@
         };
 
         /** @protected */
-        HTML.Input.prototype = {
+        HTML.Fields.prototype = {
+
+            /**
+             * Alignment label
+             *
+             * @type {string}
+             */
+            _labelAlignment: _basis.text_alignment.right,
+
+            /**
+             * Skin fields
+             *
+             * @type {string}
+             */
+            _skin: false,
 
             /**
              * Line label/field
@@ -129,31 +145,6 @@
             _blockHiddenFields: '',
 
             /**
-             * Html input text
-             *
-             * @param {object} params
-             * @returns {string}
-             * @private
-             */
-            _getInput: function(params) {
-                var html =  _basis.getTag('input', params.attr, null, false);
-                var icon = _basis.emptyProperty(params, 'icon', false);
-                if (icon !== false) {
-                    html += _basis.getIcon(icon, _basis.fields.icon.if);
-                }
-                    html = _basis.getTag(
-                        'div',
-                        {
-                            class: _basis.fields.icon.bf + ' ' +
-                                   _basis.emptyValue(this._size, '') + ' ' +
-                                   _basis.emptyProperty(params, 'class', '')
-                        },
-                        html
-                    );
-                return html;
-            },
-
-            /**
              * Html input read
              *
              * @param {object} params
@@ -166,25 +157,11 @@
                     skin = PREFIX + '-' + skin;
                 }
 
-                var widthLabel = null;
-                var widthField = null;
-
-                if (this._line > 0) {
-                    widthLabel = _basis.layout + '-' + this._line;
-                    widthField = _basis.layout + '-' + (12 - this._line);
-                }
-
                 var html = '';
-                if (params.label !== null) {
-                    html += _basis.getTag(
-                        'label',
-                        {
-                            for: params.attr.id,
-                            class : _basis.emptyValue(widthLabel, null)
-                        },
-                        params.label + this._afterLabel
-                    );
-                }
+                var lbl = this._getLabel(params);
+                var widthField = lbl.widthField;
+                html += lbl.label;
+
                 html += _basis.getTag(
                     'p',
                     {
@@ -209,32 +186,117 @@
             },
 
             /**
-             * Html input and label
+             * Html input text
              *
              * @param {object} params
              * @returns {string}
              * @private
              */
-            _getInputLabel: function(params) {
+            _getInput: function(params) {
                 var html = '';
+                //Html label
+                var label = '';
+                if (params.label !== null) {
+                    var lbl = this._getLabel(params);
+                    label = lbl.label;
+                    params['class'] = lbl.widthField;
 
+                }
+                //Html lield
+                html += _basis.getTag('input', params.attr, null, false);
+                var icon = _basis.emptyProperty(params, 'icon', false);
+                if (icon !== false) {
+                    html += _basis.getIcon(icon, _basis.fields.icon.if);
+                }
+                //Html block field
+                html = _basis.getTag(
+                    'div',
+                    {
+                        class: _basis.fields.icon.bf + ' ' +
+                        _basis.emptyValue(this._size, '') + ' ' +
+                        _basis.emptyProperty(params, 'class', '')
+                    },
+                    html
+                );
+                return label + html;
+            },
+
+            /**
+             * Build html optionsfor select list
+             * @param {object} params
+             * @returns {string}
+             * @private
+             */
+            _getItemSelect: function(params) {
+                var item = '';
+                $.each(params.selectData, function(key, value) {
+                    var attr = {
+                        value: key
+                    };
+                    if (params.attr.value === key) {
+                        attr['selected'] = 'selected';
+                    }
+                    item += _basis.getTag('option', attr, value)
+                });
+                return item;
+            },
+
+            /**
+             * Build html select list
+             *
+             * @param {object} params
+             * @returns {*|string}
+             * @private
+             */
+            _getSelect: function(params) {
+                var html = _basis.getTag('select', params.attr, this._getItemSelect(params), true);
+                var icon = _basis.emptyProperty(params, 'icon', false);
+                if (icon !== false) {
+                    html += _basis.getIcon(icon, _basis.fields.icon.if);
+                }
+                return _basis.getTag(
+                    'div',
+                    {
+                        class: _basis.fields.icon.bf + ' ' +
+                        _basis.emptyValue(this._size, '') + ' ' +
+                        _basis.emptyProperty(params, 'class', '')
+                    },
+                    html
+                );
+            },
+
+            /**
+             * Build Label field
+             *
+             * @param {object} params
+             * @returns {{widthLabel: *, widthField: *, label: string}}
+             * @private
+             */
+            _getLabel: function(params) {
                 var widthLabel = null;
+                var widthField = null;
 
                 if (this._line > 0) {
                     widthLabel = _basis.layout + '-' + this._line;
-                    params['class'] = _basis.layout + '-' + (12 - this._line);
+                    widthField = _basis.layout + '-' + (12 - this._line);
                 }
 
-                html += _basis.getTag(
-                    'label',
-                    {
-                        for: params.attr.id,
-                        class: _basis.emptyValue(widthLabel, '')
-                    },
-                    params.label + this._afterLabel
-                );
-                html += this._getInput(params);
-                return html;
+                var html = '';
+                if (params.label !== null) {
+                    html += _basis.getTag(
+                        'label',
+                        {
+                            for: params.attr.id,
+                            class : _basis.emptyValue(widthLabel, null) + ' ' + this._labelAlignment
+                        },
+                        params.label + this._afterLabel
+                    );
+                }
+                return {
+                    widthLabel: widthLabel,
+                    widthField: widthField,
+                    label : html
+                };
             },
 
             /**
@@ -261,6 +323,25 @@
             },
 
             /**
+             * Build select list
+             *
+             * @param {object} params
+             * @returns {string}
+             * @private
+             */
+            _getSelectList: function(params) {
+                var html = '';
+                if (params.label !== null) {
+                    var lbl = this._getLabel(params);
+                    html += lbl.label;
+                    params['class'] = lbl.widthField;
+
+                }
+                html += this._getSelect(params);
+                return html;
+            },
+
+            /**
              * Html block-group input
              *
              * @param {object} data
@@ -273,15 +354,15 @@
                 $.each(data, function(key, params) {
                     var field = '';
                     var block = _basis.fields.fg;
-                    if (key === KEY_LABEL) {
-                        field = currentObj._getInputLabel(params);
+                    if (key === KEY_INPUT) {
+                        field = currentObj._getInput(params);
                     } else if (key === KEY_MARKER) {
                         block = _basis.fields.ig;
                         field = currentObj._getInputMarker(params);
-                    } else if (key === KEY_INPUT) {
-                        field = currentObj._getInput(params);
                     } else if (key === KEY_READ) {
                         field = currentObj._getRead(params);
+                    } else if (key === KEY_SELECT_LIST) {
+                        field = currentObj._getSelectList(params);
                     } else if (key === KEY_HIDDEN) {
                         currentObj._blockHiddenFields += currentObj._getHidden(params);
                     }
@@ -330,6 +411,16 @@
             },
 
             /**
+             *
+             * @param {string|null} skin 'success'|'warning'|'error'|'muted'|'primary'|'info'|'danger'|null}
+             * @returns {HTML.Fields}
+             */
+            setSkin: function(skin) {
+                this._skin = _basis.emptyProperty(_basis.fields.skin, skin, false);
+                return this;
+            },
+
+            /**
              * Set line label - field
              *
              * @public
@@ -372,60 +463,35 @@
             /**
              * Set parameters for generating field
              *
-             * @param {string|null} key - 'Key type field'
-             * @param {string|number} value
-             * @param {string|null} label
-             * @param {string|null} name
-             * @param {string|null} leftMarker
-             * @param {string|null} rightMarker
-             * @param {string|null} icon
-             * @param {string|null} skin {'success'|'warning'|'error'|null}
-             * @param {string} type
-             * @param {string|null} placeholder
-             * @param {boolean} disabled
+             * @param {object} data data = { key: key, value: value, label: label, name: name, leftMarker: leftMarker, rightMarker: rightMarker, icon: icon, skin: skin, type: type, placeholder: placeholder, disabled: disabled }
              * @private
              */
-            _setDataParams: function(key, value, label, name, leftMarker, rightMarker, icon, skin, type, placeholder, disabled) {
-                disabled = _basis.emptyValue(disabled, false);
+            _setDataParams: function(data) {
+
+                var disabled = _basis.emptyValue(data.disabled, false);
                 var counter = Object.keys(this._paramsInput).length++;
                 this._paramsInput[counter] = {};
-                this._paramsInput[counter][key] = {
-                    icon:           _basis.emptyValue(icon, null),
-                    label:          _basis.emptyValue(label, null),
-                    markerLeft:     _basis.emptyValue(leftMarker, null),
-                    markerRight:    _basis.emptyValue(rightMarker, null),
-                    skin:           _basis.emptyProperty(_basis.fields.skin, skin, null),
+                this._paramsInput[counter][data.key] = {
+                    icon:           _basis.emptyValue(data.icon, null),
+                    label:          _basis.emptyValue(data.label, null),
+                    markerLeft:     _basis.emptyValue(data.leftMarker, null),
+                    markerRight:    _basis.emptyValue(data.rightMarker, null),
+                    selectData:           _basis.emptyProperty(data, 'selectData', null),
+                    skin:           data.skin,
                     attr: {
-                        type:        type,
-                        id:          _basis.getId(this._id, name),
-                        name:        _basis.emptyValue(name, null),
-                        value:       _basis.emptyValue(value, null),
+                        type:        data.type,
+                        id:          _basis.getId(this._id, data.name),
+                        name:        _basis.emptyValue(data.name, null),
+                        value:       _basis.emptyValue(data.value, null),
                         class:       _basis.fields.inp + ' ' +
                                      _basis.emptyValue(this._class, '') + ' ' +
-                                     _basis.emptyValue(skin, '') + ' ' +
+                                     _basis.emptyValue(data.skin, '') + ' ' +
                                      _basis.emptyValue(this._size, '') + ' ' +
                                      (disabled ? _basis.disabled : ''),
-                        placeholder: _basis.emptyValue(placeholder, null),
+                        placeholder: _basis.emptyValue(data.placeholder, null),
                         disabled:    (disabled ? 'disabled' : '')
                     }
                 };
-            },
-
-            /**
-             * Build input with label
-             *
-             * @public
-             * @param {string|null} value
-             * @param {string|null} label
-             * @param {string|null} name
-             * @param {string|null} icon
-             * @param {string|null} skin {'success'|'warning'|'error'|null}
-             * @param {boolean} disabled
-             * @returns {HTML.Input}
-             */
-            addInputLabel: function(value, label, name, icon, skin, disabled) {
-                this._setDataParams(KEY_LABEL, value, label, name, null, null, icon, skin, TYPE_TEXT, this._placeholder, disabled);
-                return this;
             },
 
             /**
@@ -436,12 +502,24 @@
              * @param {string|null} leftMarker
              * @param {string|null} rightMarker
              * @param {string|null} name
-             * @param {string|null} skin {'success'|'warning'|'error'|null}
              * @param {boolean} disabled
              * @returns {HTML.Input}
              */
-            addInputMarker: function(value, leftMarker, rightMarker, name, skin, disabled) {
-                this._setDataParams(KEY_MARKER, value, null, name, leftMarker, rightMarker, null, skin, TYPE_TEXT, this._placeholder, disabled);
+            addInputMarker: function(value, leftMarker, rightMarker, name, disabled) {
+                var params = {
+                    key: KEY_MARKER,
+                    value: value,
+                    label: null,
+                    name: name,
+                    leftMarker: leftMarker,
+                    rightMarker: rightMarker,
+                    icon: null,
+                    skin: this._skin ? _basis.fields.prefix_skin_field + '-' + this._skin : null,
+                    type: TYPE_TEXT,
+                    placeholder: this._placeholder,
+                    disabled: disabled
+                };
+                this._setDataParams(params);
                 return this;
             },
 
@@ -455,7 +533,20 @@
              * @returns {HTML.Input}
              */
             addInputHidden: function(value, name, disabled) {
-                this._setDataParams(KEY_HIDDEN, value, null, name, null, null, null, null, TYPE_HIDDEN, null, disabled);
+                var params = {
+                    key: KEY_HIDDEN,
+                    value: value,
+                    label: null,
+                    name: name,
+                    leftMarker: null,
+                    rightMarker: null,
+                    icon: null,
+                    skin: null,
+                    type: TYPE_HIDDEN,
+                    placeholder: null,
+                    disabled: disabled
+                };
+                this._setDataParams(params);
                 return this;
             },
 
@@ -464,14 +555,27 @@
              *
              * @public
              * @param {string|null} value
+             * @param {string|null} label
              * @param {string|null} name
              * @param {string|null} icon
-             * @param {string|null} skin {'success'|'warning'|'error'|null}
              * @param {boolean} disabled
              * @returns {HTML.Input}
              */
-            addInput: function(value, name, icon, skin, disabled) {
-                this._setDataParams(KEY_INPUT, value, null, name, null, null, icon, skin, TYPE_TEXT, this._placeholder, disabled);
+            addInput: function(value, label, name, icon, disabled) {
+                var params = {
+                    key: KEY_INPUT,
+                    value: value,
+                    label: label,
+                    name: name,
+                    leftMarker: null,
+                    rightMarker: null,
+                    icon: icon,
+                    skin: this._skin ? _basis.fields.prefix_skin_field + '-' + this._skin : null,
+                    type: TYPE_TEXT,
+                    placeholder: this._placeholder,
+                    disabled: disabled
+                };
+                this._setDataParams(params);
                 return this;
             },
 
@@ -482,11 +586,52 @@
              * @param {string|null} value
              * @param {string|null} label
              * @param {string|null} name
-             * @param {string|null} skin {'readsuccess'|'readmuted'|'readprimary'|'readinfo'|'readwarning'|'readdanger'|null}
              * @returns {HTML.Input}
              */
-            addInputRead: function(label, value, name, skin) {
-                this._setDataParams(KEY_READ, value, label, name, null, null, null, skin, TYPE_TEXT, null, null);
+            addInputRead: function(label, value, name) {
+                var params = {
+                    key: KEY_READ,
+                    value: value,
+                    label: label,
+                    name: name,
+                    leftMarker: null,
+                    rightMarker: null,
+                    icon: null,
+                    skin: this._skin ? _basis.fields.prefix_skin_text + '-' + this._skin : null,
+                    type: TYPE_TEXT,
+                    placeholder: null,
+                    disabled: null
+                };
+                this._setDataParams(params);
+                return this;
+            },
+
+            /**
+             * Build select list field
+             *
+             * @param {object} data
+             * @param {string|number|null} value
+             * @param {string|null} name
+             * @param {string|null} label
+             * @param {boolean} disabled
+             * @returns {HTML.Fields}
+             */
+            addSelectList: function(data, value, name, label, disabled) {
+                var params = {
+                    key: KEY_SELECT_LIST,
+                    value: value,
+                    label: label,
+                    name: name,
+                    leftMarker: null,
+                    rightMarker: null,
+                    icon: null,
+                    skin: this._skin ? _basis.fields.prefix_skin_field + '-' + this._skin : null,
+                    type: TYPE_TEXT,
+                    placeholder: this._placeholder,
+                    disabled: disabled,
+                    selectData: data
+                };
+                this._setDataParams(params);
                 return this;
             },
 

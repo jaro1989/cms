@@ -6,6 +6,9 @@
 {% block addscripts %}
     <script type="text/javascript">
         jQuery(document).ready(function() {
+
+            var role = {{ role|json_encode|raw }};
+
             new HTML.Table()
                     .setSkinTable('bordered-none')
                     .setSkinPanel('primary')
@@ -13,29 +16,29 @@
                     .setTitleTable('Редактирование пользователя')
                     .addRow('body')
                     .addCell(
-                            new HTML.Input(3)
+                            new HTML.Fields(3)
                                     .setLineLabel(4)
-                                    .addInputLabel(null, 'Фамилия', 'lastname', null, null, false)
-                                    .addInputLabel(null, 'Имя', 'username', null, null, false)
-                                    .addInputLabel(null, 'Отчество', 'midlename', null, null, false)
+                                    .addInput(null, 'Фамилия', 'lastname', 'star', false)
+                                    .addInput(null, 'Имя', 'username', null, false)
+                                    .addInput(null, 'Отчество', 'midlename', null, false)
                                     .toHtml(),
                             1, 1
                     )
                     .addRow('body')
                     .addCell(
-                            new HTML.Input(3)
+                            new HTML.Fields(3)
                                     .setLineLabel(4)
-                                    .addInputLabel(null, 'Логин', 'login', null, null, false)
-                                    .addInputLabel(null, 'Пароль', 'password', null, null, false)
-                                    .addInputLabel(null, 'Email', 'email', null, null, false)
+                                    .addInput(null, 'Логин', 'login', null, false)
+                                    .addInput(null, 'Пароль', 'password', null, false)
+                                    .addInput(null, 'Email', 'email', null, false)
                                     .toHtml(),
                             1, 1
                     )
                     .addRow('body')
                     .addCell(
-                            new HTML.Input(3)
+                            new HTML.Fields(3)
                                     .setLineLabel(4)
-                                    .addInputLabel(null, 'Роль', 'role', null, null, false)
+                                    .addSelectList(role, 'ROLE_USER', 'role', 'Роль')
                                     .toHtml(),
                             1, 1
                     )
