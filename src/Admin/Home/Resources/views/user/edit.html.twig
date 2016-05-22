@@ -2,6 +2,7 @@
 {% block body %}
     <div id="edit-users"></div>
 
+
 {% endblock %}
 {% block addscripts %}
     <script type="text/javascript">
@@ -17,6 +18,7 @@
                     .addRow('body')
                     .addCell(
                             new HTML.Fields(3)
+                                    .setSkin('warning')
                                     .setLineLabel(4)
                                     .addInput(null, 'Фамилия', 'lastname', 'star', false)
                                     .addInput(null, 'Имя', 'username', null, false)
@@ -29,7 +31,7 @@
                             new HTML.Fields(3)
                                     .setLineLabel(4)
                                     .addInput(null, 'Логин', 'login', null, false)
-                                    .addInput(null, 'Пароль', 'password', null, false)
+                                    .addInputPassword('asdasda', 'Пароль', 'password', null, false)
                                     .addInput(null, 'Email', 'email', null, false)
                                     .toHtml(),
                             1, 1
@@ -38,7 +40,11 @@
                     .addCell(
                             new HTML.Fields(3)
                                     .setLineLabel(4)
+                                    .setSkin('success')
                                     .addSelectList(role, 'ROLE_USER', 'role', 'Роль')
+                                    .addCheckbox('name-1', 'label-1', true, false)
+                                    .addCheckbox('name-2', 'label-2', false, true)
+                                    .addCheckbox('name-3', 'label-3', false, false)
                                     .toHtml(),
                             1, 1
                     )

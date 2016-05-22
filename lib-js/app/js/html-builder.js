@@ -1,4 +1,4 @@
-//--
+
     /**
      *
      * @namespace HTML
@@ -26,6 +26,7 @@
             text_alignment: {
                 right: 'text-right'
             },
+            afterLabel: ':',
 
             navbar: {
                 nav: 'nav',
@@ -412,6 +413,21 @@
                     );
                 }
                 return icon;
+            },
+
+            /**
+             * Get html class style
+             *
+             * @param {string|null} skin
+             * @returns {*}
+             */
+            getSkin: function(skin) {
+                var style = this.emptyProperty(this.fields.skin, skin, false);
+                var res = '';
+                if (style !== false) {
+                    res = this.fields.prefix_skin_text + '-' + style + ' ' + this.fields.prefix_skin_field + '-' + style;
+                }
+                return res;
             },
 
             /**
@@ -2688,11 +2704,17 @@
 
     (function(HTML) {
 
+        var VALUE_CHECKBOX_TRUE = 1;
+
+        var VALUE_CHECKBOX_FALSE = 0;
+
+        var KEY_CHECKBOX = 'checkbox';
+
         var TYPE_TEXT = 'text';
 
         var TYPE_HIDDEN = 'hidden';
 
-        var KEY_LABEL = 'label';
+        var TYPE_PASSWORD = 'password';
 
         var KEY_MARKER = 'marker';
 
@@ -2722,7 +2744,7 @@
 
         /**
          * @memberOf HTML
-         * @namespace HTML.Input
+         * @namespace HTML.Fields
          * @param {number} group {1|2|3|4|5|6}
          * @param {string|null} htmlClass
          * @param {string|null} size {'lg'|'sm'|null}
@@ -2732,15 +2754,32 @@
             this._group = _basis.emptyProperty(_basis.layoutGroup, group, _basis.layoutGroup[1]);
             this._class = _basis.emptyValue(htmlClass, null);
             this._size = _basis.emptyProperty(_basis.fields.size, size, _basis.fields.size.sm);
-            this._paramsInput = {};
+            this._parametersFieldForBuild = {};
         };
 
         /** @protected */
         HTML.Fields.prototype = {
 
             /**
+             * value Checkbox if checked
+             *
+             * @private
+             * @type {string|number}
+             */
+            _valueTrue: VALUE_CHECKBOX_TRUE,
+
+            /**
+             * value Checkbox if not checked
+             *
+             * @private
+             * @type {string|number}
+             */
+            _valueFalse: VALUE_CHECKBOX_FALSE,
+
+            /**
              * Alignment label
              *
+             * @private
              * @type {string}
              */
             _labelAlignment: _basis.text_alignment.right,
@@ -2748,9 +2787,10 @@
             /**
              * Skin fields
              *
+             * @private
              * @type {string}
              */
-            _skin: false,
+            _skin: null,
 
             /**
              * Line label/field
@@ -2774,7 +2814,7 @@
              * @private
              * @type {object}
              */
-            _paramsInput: {},
+            _parametersFieldForBuild: {},
 
             /**
              * Html ID field
@@ -2830,6 +2870,38 @@
              * @type {string}
              */
             _blockHiddenFields: '',
+
+            /**
+             * Build html checkbox
+             *
+             * @param {object} params
+             * @returns {*|string}
+             * @private
+             */
+            _getCheckbox: function(params) {
+                params.attr.class = null;
+                params.attr.value = this._valueFalse;
+                if (params.attr.checked === 'checked') {
+                    params.attr.value = this._valueTrue;
+                }
+                params.attr.onclick = "new HTML.Fields()._clickCheckbox(this, '" + this._valueTrue + "', '" + this._valueFalse + "');";
+                return this._getInput(params);
+            },
+
+            /**
+             *
+             * @param {object} e Click element "Checkbox"
+             * @param {string|number} t set value if checked
+             * @param {string|number} f set value if not checked
+             * @private
+             */
+            _clickCheckbox: function(e, t, f) {
+                if ($(e).prop( "checked" ) === true) {
+                    $(e).val(t);
+                } else {
+                    $(e).val(f);
+                }
+            },
 
             /**
              * Html input read
@@ -2910,6 +2982,7 @@
 
             /**
              * Build html optionsfor select list
+             *
              * @param {object} params
              * @returns {string}
              * @private
@@ -2943,11 +3016,7 @@
                 }
                 return _basis.getTag(
                     'div',
-                    {
-                        class: _basis.fields.icon.bf + ' ' +
-                        _basis.emptyValue(this._size, '') + ' ' +
-                        _basis.emptyProperty(params, 'class', '')
-                    },
+                    { class: _basis.fields.icon.bf + ' ' + _basis.emptyValue(this._size, '') + ' ' + _basis.emptyProperty(params, 'class', '') },
                     html
                 );
             },
@@ -2972,10 +3041,7 @@
                 if (params.label !== null) {
                     html += _basis.getTag(
                         'label',
-                        {
-                            for: params.attr.id,
-                            class : _basis.emptyValue(widthLabel, null) + ' ' + this._labelAlignment
-                        },
+                        { for: params.attr.id, class : _basis.emptyValue(widthLabel, null) + ' ' + this._labelAlignment },
                         params.label + this._afterLabel
                     );
                 }
@@ -3044,14 +3110,26 @@
                     if (key === KEY_INPUT) {
                         field = currentObj._getInput(params);
                     } else if (key === KEY_MARKER) {
+
                         block = _basis.fields.ig;
                         field = currentObj._getInputMarker(params);
+
                     } else if (key === KEY_READ) {
+
                         field = currentObj._getRead(params);
+
                     } else if (key === KEY_SELECT_LIST) {
+
                         field = currentObj._getSelectList(params);
+
+                    } else if (key === KEY_CHECKBOX) {
+
+                        field = currentObj._getCheckbox(params)
+
                     } else if (key === KEY_HIDDEN) {
+
                         currentObj._blockHiddenFields += currentObj._getHidden(params);
+
                     }
 
                     var line = '';
@@ -3090,7 +3168,7 @@
             _getBlockInput: function() {
                 var html = '';
                 var currentObj = this;
-                $.each(this._paramsInput, function(key, params) {
+                $.each(this._parametersFieldForBuild, function(key, params) {
                     html += currentObj._getGroup(params);
                 });
                 html = _basis.getTag('div', {}, html) + _basis.getTag('div', {class: BLOCK_HIDDEN_FIELDS}, this._blockHiddenFields);
@@ -3098,12 +3176,14 @@
             },
 
             /**
+             * Set skin fields
              *
+             * @public
              * @param {string|null} skin 'success'|'warning'|'error'|'muted'|'primary'|'info'|'danger'|null}
              * @returns {HTML.Fields}
              */
             setSkin: function(skin) {
-                this._skin = _basis.emptyProperty(_basis.fields.skin, skin, false);
+                this._skin = _basis.getSkin(skin);
                 return this;
             },
 
@@ -3113,7 +3193,7 @@
              * @public
              * @param {number} widthLabel
              * @param {string} afterLabel
-             * @returns {HTML.Input}
+             * @returns {HTML.Fields}
              */
             setLineLabel: function(widthLabel, afterLabel) {
                 this._line = _basis.emptyValue(widthLabel, 2);
@@ -3127,7 +3207,7 @@
              * @public
              * @param {string|null} margin {'lg'|'sm'|'xs'|null}
              * @default 'sm'
-             * @returns {HTML.Input}
+             * @returns {HTML.Fields}
              */
             setMargin: function(margin) {
                 this._margin = _basis.getPadding(margin, _basis.padding.sm);
@@ -3140,7 +3220,7 @@
              * @public
              * @param {string|number|null} placeholder
              * @default '...'
-             * @returns {HTML.Input}
+             * @returns {HTML.Fields}
              */
             setPlaceholder: function(placeholder) {
                 this._placeholder = _basis.emptyValue(placeholder, PLACEHOLDER_DEF);
@@ -3155,27 +3235,32 @@
              */
             _setDataParams: function(data) {
 
-                var disabled = _basis.emptyValue(data.disabled, false);
-                var counter = Object.keys(this._paramsInput).length++;
-                this._paramsInput[counter] = {};
-                this._paramsInput[counter][data.key] = {
-                    icon:           _basis.emptyValue(data.icon, null),
-                    label:          _basis.emptyValue(data.label, null),
-                    markerLeft:     _basis.emptyValue(data.leftMarker, null),
-                    markerRight:    _basis.emptyValue(data.rightMarker, null),
-                    selectData:           _basis.emptyProperty(data, 'selectData', null),
-                    skin:           data.skin,
+                var name = _basis.emptyProperty(data, 'name', null);
+                var disabled = _basis.emptyProperty(data, 'disabled', false);
+                var checked =  _basis.emptyProperty(data, 'checked', false);
+
+                var counter =  Object.keys(this._parametersFieldForBuild).length++;
+                this._parametersFieldForBuild[counter] = {};
+
+                this._parametersFieldForBuild[counter][data.key] = {
+                    icon:            _basis.emptyProperty(data, 'icon', null),
+                    label:           _basis.emptyProperty(data, 'label', null),
+                    markerLeft:      _basis.emptyProperty(data, 'leftMarker', null),
+                    markerRight:     _basis.emptyProperty(data, 'rightMarker', null),
+                    selectData:      _basis.emptyProperty(data, 'selectData', null),
+                    skin:            this._skin,
                     attr: {
-                        type:        data.type,
-                        id:          _basis.getId(this._id, data.name),
-                        name:        _basis.emptyValue(data.name, null),
-                        value:       _basis.emptyValue(data.value, null),
+                        name:        name,
+                        type:        _basis.emptyProperty(data, 'type', null),
+                        id:          _basis.getId(this._id, name),
+                        value:       _basis.emptyProperty(data, 'value', null),
+                        placeholder: _basis.emptyProperty(data, 'placeholder', null),
                         class:       _basis.fields.inp + ' ' +
                                      _basis.emptyValue(this._class, '') + ' ' +
-                                     _basis.emptyValue(data.skin, '') + ' ' +
+                                     _basis.emptyValue(this._skin, '') + ' ' +
                                      _basis.emptyValue(this._size, '') + ' ' +
                                      (disabled ? _basis.disabled : ''),
-                        placeholder: _basis.emptyValue(data.placeholder, null),
+                        checked:     (checked ? 'checked' : ''),
                         disabled:    (disabled ? 'disabled' : '')
                     }
                 };
@@ -3190,18 +3275,15 @@
              * @param {string|null} rightMarker
              * @param {string|null} name
              * @param {boolean} disabled
-             * @returns {HTML.Input}
+             * @returns {HTML.Fields}
              */
             addInputMarker: function(value, leftMarker, rightMarker, name, disabled) {
                 var params = {
                     key: KEY_MARKER,
                     value: value,
-                    label: null,
                     name: name,
                     leftMarker: leftMarker,
                     rightMarker: rightMarker,
-                    icon: null,
-                    skin: this._skin ? _basis.fields.prefix_skin_field + '-' + this._skin : null,
                     type: TYPE_TEXT,
                     placeholder: this._placeholder,
                     disabled: disabled
@@ -3217,20 +3299,14 @@
              * @param {string|null} value
              * @param {string|null} name
              * @param {boolean} disabled
-             * @returns {HTML.Input}
+             * @returns {HTML.Fields}
              */
             addInputHidden: function(value, name, disabled) {
                 var params = {
                     key: KEY_HIDDEN,
                     value: value,
-                    label: null,
                     name: name,
-                    leftMarker: null,
-                    rightMarker: null,
-                    icon: null,
-                    skin: null,
                     type: TYPE_HIDDEN,
-                    placeholder: null,
                     disabled: disabled
                 };
                 this._setDataParams(params);
@@ -3246,7 +3322,7 @@
              * @param {string|null} name
              * @param {string|null} icon
              * @param {boolean} disabled
-             * @returns {HTML.Input}
+             * @returns {HTML.Fields}
              */
             addInput: function(value, label, name, icon, disabled) {
                 var params = {
@@ -3254,11 +3330,34 @@
                     value: value,
                     label: label,
                     name: name,
-                    leftMarker: null,
-                    rightMarker: null,
                     icon: icon,
-                    skin: this._skin ? _basis.fields.prefix_skin_field + '-' + this._skin : null,
                     type: TYPE_TEXT,
+                    placeholder: this._placeholder,
+                    disabled: disabled
+                };
+                this._setDataParams(params);
+                return this;
+            },
+
+            /**
+             * Build input password
+             *
+             * @public
+             * @param {string|null} value
+             * @param {string|null} label
+             * @param {string|null} name
+             * @param {string|null} icon
+             * @param {boolean} disabled
+             * @returns {HTML.Fields}
+             */
+            addInputPassword: function(value, label, name, icon, disabled) {
+                var params = {
+                    key: KEY_INPUT,
+                    value: value,
+                    label: label,
+                    name: name,
+                    icon: icon,
+                    type: TYPE_PASSWORD,
                     placeholder: this._placeholder,
                     disabled: disabled
                 };
@@ -3273,7 +3372,7 @@
              * @param {string|null} value
              * @param {string|null} label
              * @param {string|null} name
-             * @returns {HTML.Input}
+             * @returns {HTML.Fields}
              */
             addInputRead: function(label, value, name) {
                 var params = {
@@ -3281,13 +3380,7 @@
                     value: value,
                     label: label,
                     name: name,
-                    leftMarker: null,
-                    rightMarker: null,
-                    icon: null,
-                    skin: this._skin ? _basis.fields.prefix_skin_text + '-' + this._skin : null,
-                    type: TYPE_TEXT,
-                    placeholder: null,
-                    disabled: null
+                    type: TYPE_TEXT
                 };
                 this._setDataParams(params);
                 return this;
@@ -3309,14 +3402,31 @@
                     value: value,
                     label: label,
                     name: name,
-                    leftMarker: null,
-                    rightMarker: null,
-                    icon: null,
-                    skin: this._skin ? _basis.fields.prefix_skin_field + '-' + this._skin : null,
-                    type: TYPE_TEXT,
                     placeholder: this._placeholder,
                     disabled: disabled,
                     selectData: data
+                };
+                this._setDataParams(params);
+                return this;
+            },
+
+            /**
+             * Add Checkbox
+             *
+             * @param {string|null} name
+             * @param {string|null} label
+             * @param {boolean} checked
+             * @param {boolean} disabled
+             * @returns {HTML.Fields}
+             */
+            addCheckbox: function(name, label, checked, disabled) {
+                var params = {
+                    key: KEY_CHECKBOX,
+                    type: KEY_CHECKBOX,
+                    label: label,
+                    name: name,
+                    checked: checked,
+                    disabled: disabled
                 };
                 this._setDataParams(params);
                 return this;
@@ -3337,7 +3447,7 @@
              *
              * @public
              * @param {string} element
-             * @returns {HTML.Input}
+             * @returns {HTML.Fields}
              */
             appendHtml: function(element) {
                 $(element).append(this._getBlockInput());

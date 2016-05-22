@@ -1,4 +1,4 @@
-//--
+
     /**
      *
      * @namespace HTML
@@ -26,6 +26,7 @@
             text_alignment: {
                 right: 'text-right'
             },
+            afterLabel: ':',
 
             navbar: {
                 nav: 'nav',
@@ -412,6 +413,21 @@
                     );
                 }
                 return icon;
+            },
+
+            /**
+             * Get html class style
+             *
+             * @param {string|null} skin
+             * @returns {*}
+             */
+            getSkin: function(skin) {
+                var style = this.emptyProperty(this.fields.skin, skin, false);
+                var res = '';
+                if (style !== false) {
+                    res = this.fields.prefix_skin_text + '-' + style + ' ' + this.fields.prefix_skin_field + '-' + style;
+                }
+                return res;
             },
 
             /**
