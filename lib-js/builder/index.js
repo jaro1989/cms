@@ -21,7 +21,7 @@
 
         /** @protected */
         HTML.Basis.prototype = {
-
+            iconClass: CLASS_ICON,
             fluid: 'container-fluid',
             text_alignment: {
                 right: 'text-right'
@@ -127,6 +127,17 @@
                 hover: 'table-hover',
                 condensed: 'table-condensed'
 
+            },
+
+            panelClasses: {
+                open: 'in',
+                class: 'panel',
+                group: 'panel-group',
+                heading: 'panel-heading',
+                title: 'panel-title',
+                collapse: 'collapse',
+                panelCollapse: 'panel-collapse',
+                body: 'panel-body'
             },
 
             /**
@@ -445,7 +456,6 @@
                 }
                 return sost;
             }
-
         };
 
     } (window.HTML || {}));

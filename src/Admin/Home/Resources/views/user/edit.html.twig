@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    <div id="collapse-edit-users"></div>
     <div id="edit-users"></div>
 
 
@@ -8,56 +9,77 @@
     <script type="text/javascript">
         jQuery(document).ready(function() {
 
+            var vlt = {{ vlt|json_encode|raw }};
             var role = {{ role|json_encode|raw }};
+            var status = {{ status|json_encode|raw }};
+            var formatDate = {{ formatDate|json_encode|raw }};
+            var action = '{{ action }}';
 
-            new HTML.Table()
-                    .setSkinTable('bordered-none')
-                    .setSkinPanel('primary')
-                    .setPadding('sm')
-                    .setTitleTable('Редактирование пользователя')
-                    .addRow('body')
-                    .addCell(
+            var content = new HTML.Collapse()
+                .setShowAllPanels(true)
+                .addPanel(
+                    'Редактирование пользователя',
+                    new HTML.Table()
+                        .setSkinTable('bordered-none')
+                        .setMargin('xs')
+                        .addRow()
+                        .addCell(
                             new HTML.Fields(3)
-                                    .setSkin('warning')
-                                    .setLineLabel(4)
-                                    .addInput(null, 'Фамилия', 'lastname', 'star', false)
-                                    .addInput(null, 'Имя', 'username', null, false)
-                                    .addInput(null, 'Отчество', 'midlename', null, false)
-                                    .toHtml(),
-                            1, 1
-                    )
-                    .addRow('body')
-                    .addCell(
+                                .addInput(null, 'Фамилия', 'last_name')
+                                .addInput(null, 'Имя', 'user_name')
+                                .addInput(null, 'Отчество', 'middle_name')
+                                .toHtml(), 1, 1
+                        )
+                        .addCell('<img src="{{ asset('/admin/img/noavatar.png') }}" class="img-thumbnail">', 1, 3, '10%')
+                        .addRow()
+                        .addCell(
                             new HTML.Fields(3)
-                                    .setLineLabel(4)
-                                    .addInput(null, 'Логин', 'login', null, false)
-                                    .addInputPassword('asdasda', 'Пароль', 'password', null, false)
-                                    .addInput(null, 'Email', 'email', null, false)
-                                    .toHtml(),
-                            1, 1
-                    )
-                    .addRow('body')
-                    .addCell(
+                                .addInput(null, 'Login', 'cms_login')
+                                .addInput(null, 'Email', 'cms_email')
+                                .addSelectList(role, 'ROLE_USER', 'role', 'Роль')
+                                .toHtml(), 1, 1
+                        )
+                        .addRow()
+                        .addCell(
                             new HTML.Fields(3)
-                                    .setLineLabel(4)
-                                    .setSkin('success')
-                                    .addSelectList(role, 'ROLE_USER', 'role', 'Роль')
-                                    .addCheckbox('name-1', 'label-1', true, false)
-                                    .addCheckbox('name-2', 'label-2', false, true)
-                                    .addCheckbox('name-3', 'label-3', false, false)
-                                    .toHtml(),
-                            1, 1
-                    )
-                    .setContentAfterTable(
+                                .addInputPassword(null, 'Пароль', 'cms_password')
+                                .addInputPassword(null, 'Повторите пароль', 'repeat_cms_password')
+                                .toHtml(),1, 1
+                        )
+                        .addRow()
+                        .addCell(
+                            new HTML.Fields(3)
+                                .addSelectList(formatDate, null, 'formatDate', 'Пользовательский формат даты')
+                                .addInput(null, 'Период - начало', 'date_perion_n')
+                                .addInput(null, 'Период - конец', 'date_perion_k')
+                                .toHtml(),1, 1
+                        )
+                        .addCell('Еще что то', 1, 2)
+                        .addRow()
+                        .addCell(
+                            new HTML.Fields(3)
+                                .addSelectList(status, null, 'status', 'Статус')
+                                .addSelectList(vlt, null, 'vlt', 'Валюта')
+                                .toHtml(),1, 1
+                        )
+                        .setContentAfterTable(
                             new HTML.Button('toolbar', null)
-                                    .setPositionBlock('right')
-                                    .setActive(true)
-                                    .addButton('Сохранить', 'save-data', null, 'plus', false)
-                                    .setSkin('danger')
-                                    .addButton('Удалить', 'delete-data', null, 'remove', false)
-                                    .toHtml()
-                    )
-                    .appendHtml('#edit-users')
+                                .setPositionBlock('right')
+                                .setActive(true)
+                                .addSubmit('Сохранить', 'save-data', null, 'plus', false)
+                                .setSkin('danger')
+                                .addSubmit('Удалить', 'delete-data', null, 'remove', false)
+                                .toHtml()
+                        )
+                        .toHtml(),
+                    true
+                )
+                .toHtml();
+
+            new HTML.Form()
+                .setAction(action)
+                .setContent(content)
+                .appendHtml('#collapse-edit-users');
         });
     </script>
 {% endblock %}

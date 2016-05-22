@@ -12,3 +12,11 @@ _user_edit:
 _user_list:
     path:     /user/list/{page}
     defaults: { _controller: AdminHome:User:list, page: 1 }
+
+_user_save:
+    path:     /user/save
+    defaults: { _controller: AdminHome:User:save }
+
+_user_update:
+    path:     /user/update/{record}
+    defaults: { _controller: AdminHome:User:update, record: -1 }

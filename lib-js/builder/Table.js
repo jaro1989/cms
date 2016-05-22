@@ -719,9 +719,10 @@
              * @param {*} data - content cell
              * @param {number} colspan - count cell merger upon vertical
              * @param {number} rowspan - count cell merger upon horizontal
+             * @param {string|number} width - width cell
              * @returns {HTML.Table}
              */
-            addCell: function(data, colspan, rowspan) {
+            addCell: function(data, colspan, rowspan, width) {
                 if (this._key !== null) {
                     var obj = _basis.emptyProperty(this, '_' + this._key, false);
                     if (obj !== false) {
@@ -731,7 +732,8 @@
                             data: _basis.emptyValue(data, null),
                             attr: {
                                 colspan: _basis.emptyValue(colspan, 1),
-                                rowspan: _basis.emptyValue(rowspan, 1)
+                                rowspan: _basis.emptyValue(rowspan, 1),
+                                width: _basis.emptyValue(width, null)
                             }
                         };
                     }

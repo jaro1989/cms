@@ -15,13 +15,44 @@ class UserController extends Controller{
      */
     public function editAction(Request $request)
     {
-        $request->get('record');
+        $action = '_user_update';
+        if ($request->get('record') == -1) {
+            $action = '_user_save';
+        }
         $role = [
             'ROLE_ADMIN' => 'Администратор',
             'ROLE_USER' => 'Пользователь',
             'ROLE_REDACTOR' => 'Редактор',
         ];
-        return $this->render('AdminHome:user:edit.html.twig', ['role' => $role]);
+
+        $formatDate = [
+            'DD.MM.YYYY',
+            'DD-MM-YYYY',
+            'DD.MM.YYYY H24.MI.SS',
+            'DD-MM-YYYY H24-MI-SS'
+        ];
+        $status = [
+            'Астывный',
+            'Заблокированный',
+            'Ожидает активацию',
+        ];
+
+        $vlt = [
+            'USD',
+            'EURO',
+            'RU',
+        ];
+
+        return $this->render(
+            'AdminHome:user:edit.html.twig',
+            [
+                'vlt' => $vlt,
+                'role' => $role,
+                'status' => $status,
+                'formatDate' => $formatDate,
+                'action' => $this->generateUrl($action)
+            ]
+        );
     }
 
     /**
@@ -115,20 +146,21 @@ class UserController extends Controller{
      */
     public function saveAction(Request $request)
     {
-        $users = new Users();
-        $users->setCmsEmail('1xvx1@mail.ru')
-            ->setCmsLogin('admin')
-            ->setFirstName('Киселев')
-            ->setLastName('Валерий');
-
-        $em = $this
-                ->getDoctrine()
-                ->getManager();
-
-        $em->persist($users);
-        $em->flush();
-
-        return $users->getId();
+        var_dump($request);
+//        $users = new Users();
+//        $users->setCmsEmail('1xvx1@mail.ru')
+//            ->setCmsLogin('admin')
+//            ->setFirstName('Киселев')
+//            ->setLastName('Валерий');
+//
+//        $em = $this
+//                ->getDoctrine()
+//                ->getManager();
+//
+//        $em->persist($users);
+//        $em->flush();
+//
+//        return $users->getId();
     }
 
     /**
@@ -137,11 +169,12 @@ class UserController extends Controller{
      */
     public function updateAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('AdminHome:Users')->find(1);
-        $users->setFirstName('Киселев');
-        $em->flush();
-        return $users->getId();
+        var_dump($request);
+//        $em = $this->getDoctrine()->getManager();
+//        $users = $em->getRepository('AdminHome:Users')->find(1);
+//        $users->setFirstName('Киселев');
+//        $em->flush();
+//        return $users->getId();
     }
 
 }
