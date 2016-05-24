@@ -81,8 +81,10 @@
                 .setAction(action)
                 .setContent(content)
                 .appendHtml('#edit-users');
+        });
 
-            $('#date_perion_n').datepicker();
+        jQuery(document).ready(function() {
+            $('.date-calendar').datepicker({changeMonth: true, changeYear: true});
         });
     </script>
 {% endblock %}

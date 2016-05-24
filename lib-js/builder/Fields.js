@@ -347,14 +347,22 @@
              */
             _getInputDate: function(params) {
                 var html = '';
-
-                //params.attr.onfocus = "$('#" + params.attr.id + "').datepicker();";
+                //$(function() {$('#datepicker').datepicker();});
+                //params.attr.onfocus = "$(function() {$('#" + params.attr.id + "').datepicker();})";
+                params.attr.class = params.attr.class + ' date-calendar';
                 html += this._getInput(params);
-                params.attr.onfocus = null;
+
                 params.attr.type = TYPE_HIDDEN;
                 params.attr.id = params.attr.id + '-' + TYPE_HIDDEN;
+
                 html += this._getInput(params);
-                html += _basis.getTag('span', {class: _basis.fields.iga}, _basis.getIcon(ICON_DATE));
+                html += _basis.getTag(
+                    'span',
+                    {
+                        class: _basis.fields.iga
+                    },
+                    _basis.getIcon(ICON_DATE)
+                );
 
                 return html;
             },
