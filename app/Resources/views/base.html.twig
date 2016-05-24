@@ -6,6 +6,7 @@
         {% block stylesheets %}
             <link href="{{ asset('/admin/css/bootstrap.min.css') }}" type="text/css" rel="stylesheet" />
             <link href="{{ asset('/admin/css/bootstrap-add.css') }}" type="text/css" rel="stylesheet" />
+            <link href="{{ asset('/admin/calendar/jquery-ui.css') }}" type="text/css" rel="stylesheet" />
         {% endblock %}
         {% block addstyles %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -13,10 +14,13 @@
     <body style="padding-top: 50px;">
         <div id="navbar-top"></div>
 
+        {#<p>Date: <input type="text" id="datepicker"></p>#}
+
         {% block body %}{% endblock %}
         {% block javascripts %}
             <script src="{{ asset('/admin/js/jquery-1.12.3.min.js') }}" type="text/javascript"></script>
             <script src="{{ asset('/admin/js/bootstrap.min.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('/admin/calendar/jquery-ui.js') }}" type="text/javascript"></script>
             <script src="{{ asset('/admin/js/html-builder.js') }}" type="text/javascript"></script>
             <script>
                 new HTML.Navbar()
@@ -33,6 +37,8 @@
                         .setSkinMenu('inverse')
                         .setTypeMenu('fixedtop')
                         .appendHtml('#navbar-top');
+
+//                $( "#datepicker" ).datepicker();
             </script>
         {% endblock %}
         {% block addscripts %}{% endblock %}

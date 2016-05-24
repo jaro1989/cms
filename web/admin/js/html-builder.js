@@ -3034,6 +3034,10 @@
 
     (function(HTML) {
 
+        var ICON_DATE = 'calendar';
+
+        var TYPE_DATE = 'date';
+
         var VALUE_CHECKBOX_TRUE = 1;
 
         var VALUE_CHECKBOX_FALSE = 0;
@@ -3241,26 +3245,19 @@
              * @private
              */
             _getRead: function(params) {
-                var skin = _basis.emptyValue(params.skin, null);
-                if (skin !== null) {
+                var skin = _basis.emptyValue(params.skin, '');
+                if (skin !== '') {
                     skin = PREFIX + '-' + skin;
                 }
 
-                var html = '';
-                var lbl = this._getLabel(params);
-                var widthField = lbl.widthField;
-                html += lbl.label;
-
-                html += _basis.getTag(
+                return _basis.getTag(
                     'p',
                     {
                         class: params.attr.id + ' ' +
-                               skin, id: params.attr.id + ' ' +
-                               _basis.emptyValue(widthField, null)
+                               skin, id: params.attr.id
                     },
                     _basis.emptyProperty(params.attr, 'value', '')
                 );
-                return html;
             },
 
             /**
@@ -3283,14 +3280,6 @@
              */
             _getInput: function(params) {
                 var html = '';
-                //Html label
-                var label = '';
-                if (params.label !== null) {
-                    var lbl = this._getLabel(params);
-                    label = lbl.label;
-                    params['class'] = lbl.widthField;
-
-                }
                 //Html lield
                 html += _basis.getTag('input', params.attr, null, false);
                 var icon = _basis.emptyProperty(params, 'icon', false);
@@ -3307,7 +3296,7 @@
                     },
                     html
                 );
-                return label + html;
+                return html;
             },
 
             /**
@@ -3371,7 +3360,7 @@
                 if (params.label !== null) {
                     html += _basis.getTag(
                         'label',
-                        { for: params.attr.id, class : _basis.emptyValue(widthLabel, null) + ' ' + this._labelAlignment },
+                        { for: params.attr.id, class : _basis.emptyValue(widthLabel, '') + ' ' + this._labelAlignment },
                         params.label + this._afterLabel
                     );
                 }
@@ -3380,6 +3369,27 @@
                     widthField: widthField,
                     label : html
                 };
+            },
+
+            /**
+             * Bulid input date
+             *
+             * @param {object} params
+             * @returns {string}
+             * @private
+             */
+            _getInputDate: function(params) {
+                var html = '';
+
+                //params.attr.onfocus = "$('#" + params.attr.id + "').datepicker();";
+                html += this._getInput(params);
+                params.attr.onfocus = null;
+                params.attr.type = TYPE_HIDDEN;
+                params.attr.id = params.attr.id + '-' + TYPE_HIDDEN;
+                html += this._getInput(params);
+                html += _basis.getTag('span', {class: _basis.fields.iga}, _basis.getIcon(ICON_DATE));
+
+                return html;
             },
 
             /**
@@ -3413,15 +3423,7 @@
              * @private
              */
             _getSelectList: function(params) {
-                var html = '';
-                if (params.label !== null) {
-                    var lbl = this._getLabel(params);
-                    html += lbl.label;
-                    params['class'] = lbl.widthField;
-
-                }
-                html += this._getSelect(params);
-                return html;
+                return this._getSelect(params);
             },
 
             /**
@@ -3432,13 +3434,31 @@
              * @private
              */
             _getGroup: function(data) {
+
                 var html = '';
                 var currentObj = this;
                 $.each(data, function(key, params) {
+                    //Html label
+                    var label = '';
+                    if (params.label !== null) {
+                        var lbl = currentObj._getLabel(params);
+                        label = lbl.label;
+                        params['class'] = lbl.widthField;
+
+                    }
+
+                    //Html field
                     var field = '';
                     var block = _basis.fields.fg;
                     if (key === KEY_INPUT) {
+
                         field = currentObj._getInput(params);
+
+                    } else if (key === TYPE_DATE) {
+
+                        block = _basis.fields.ig;
+                        field = currentObj._getInputDate(params);
+
                     } else if (key === KEY_MARKER) {
 
                         block = _basis.fields.ig;
@@ -3474,7 +3494,7 @@
                                 class: _basis.layout + '-' + currentObj._group + ' ' +
                                 _basis.emptyValue(currentObj._margin, '')
                             },
-                            _basis.getTag(
+                            label + _basis.getTag(
                                 'div',
                                 {
                                     class: block + ' ' +
@@ -3585,6 +3605,7 @@
                         id:          _basis.getId(this._id, name),
                         value:       _basis.emptyProperty(data, 'value', null),
                         placeholder: _basis.emptyProperty(data, 'placeholder', null),
+                        onclick:     _basis.emptyProperty(data, 'onclick', null),
                         class:       _basis.fields.inp + ' ' +
                                      _basis.emptyValue(this._class, '') + ' ' +
                                      _basis.emptyValue(this._skin, '') + ' ' +
@@ -3756,6 +3777,29 @@
                     label: label,
                     name: name,
                     checked: checked,
+                    disabled: disabled
+                };
+                this._setDataParams(params);
+                return this;
+            },
+
+            /**
+             * Build input date
+             *
+             * @public
+             * @param {string|null} value
+             * @param {string|null} label
+             * @param {string|null} name
+             * @param {boolean} disabled
+             * @returns {HTML.Fields}
+             */
+            addInputDate: function(value, label, name, disabled) {
+                var params = {
+                    key: TYPE_DATE,
+                    value: value,
+                    label: label,
+                    name: name,
+                    type: 'text',
                     disabled: disabled
                 };
                 this._setDataParams(params);

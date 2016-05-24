@@ -2,9 +2,11 @@
 namespace Admin\Home\Controller;
 
 use Admin\Home\Entity\Users;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+
 
 class UserController extends Controller{
 
@@ -146,21 +148,43 @@ class UserController extends Controller{
      */
     public function saveAction(Request $request)
     {
-        var_dump($request);
-//        $users = new Users();
-//        $users->setCmsEmail('1xvx1@mail.ru')
-//            ->setCmsLogin('admin')
-//            ->setFirstName('Киселев')
-//            ->setLastName('Валерий');
-//
-//        $em = $this
-//                ->getDoctrine()
-//                ->getManager();
-//
-//        $em->persist($users);
-//        $em->flush();
-//
-//        return $users->getId();
+        $users = new Users();
+
+        foreach($request->request->all() as $key => $value){
+
+            $method = 'set' . str_replace('_', '', $key);
+
+            if (method_exists($users, $method)) {
+                $users->$method($value);
+            }
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        //$em->persist($users);
+        //$em->flush();
+//        var_dump($users->getId());
+
+
+
+
+
+
+
+
+
+
+        $metadata = $em->getClassMetadata('Admin\Home\Entity\Users');
+
+
+        //var_dump($metadata->getFieldNames());
+        //var_dump($metadata->getTypeOfField('id'));
+        //var_dump($metadata->isIdentifier('id'));
+        //var_dump($metadata->getIdentifierFieldNames());
+        //var_dump($metadata->fieldMappings);
+        //var_dump($metadata->table);
+
+
     }
 
     /**

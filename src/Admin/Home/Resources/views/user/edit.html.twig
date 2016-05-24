@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <div id="collapse-edit-users"></div>
     <div id="edit-users"></div>
+
+
 
 
 {% endblock %}
@@ -26,7 +27,7 @@
                         .addCell(
                             new HTML.Fields(3)
                                 .addInput(null, 'Фамилия', 'last_name')
-                                .addInput(null, 'Имя', 'user_name')
+                                .addInput(null, 'Имя', 'first_name')
                                 .addInput(null, 'Отчество', 'middle_name')
                                 .toHtml(), 1, 1
                         )
@@ -36,7 +37,7 @@
                             new HTML.Fields(3)
                                 .addInput(null, 'Login', 'cms_login')
                                 .addInput(null, 'Email', 'cms_email')
-                                .addSelectList(role, 'ROLE_USER', 'role', 'Роль')
+                                .addSelectList(role, 'ROLE_USER', 'cms_role', 'Роль')
                                 .toHtml(), 1, 1
                         )
                         .addRow()
@@ -49,9 +50,9 @@
                         .addRow()
                         .addCell(
                             new HTML.Fields(3)
-                                .addSelectList(formatDate, null, 'formatDate', 'Пользовательский формат даты')
-                                .addInput(null, 'Период - начало', 'date_perion_n')
-                                .addInput(null, 'Период - конец', 'date_perion_k')
+                                .addSelectList(formatDate, null, 'date_format', 'Пользовательский формат даты')
+                                .addInputDate(null, 'Период - начало', 'date_perion_n', false)
+                                .addInputDate(null, 'Период - конец', 'date_perion_k', false)
                                 .toHtml(),1, 1
                         )
                         .addCell('Еще что то', 1, 2)
@@ -59,7 +60,7 @@
                         .addCell(
                             new HTML.Fields(3)
                                 .addSelectList(status, null, 'status', 'Статус')
-                                .addSelectList(vlt, null, 'vlt', 'Валюта')
+                                .addInputRead('Label', 'Валюта', 'currency')
                                 .toHtml(),1, 1
                         )
                         .setContentAfterTable(
@@ -79,7 +80,9 @@
             new HTML.Form()
                 .setAction(action)
                 .setContent(content)
-                .appendHtml('#collapse-edit-users');
+                .appendHtml('#edit-users');
+
+            $('#date_perion_n').datepicker();
         });
     </script>
 {% endblock %}
