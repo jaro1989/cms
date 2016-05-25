@@ -159,10 +159,10 @@ class UserController extends Controller{
             }
         }
 
-        $em = $this->getDoctrine()->getManager();
-
-        //$em->persist($users);
-        //$em->flush();
+//        $em = $this->getDoctrine()->getManager();
+//
+//        $em->persist($users);
+//        $em->flush();
 //        var_dump($users->getId());
 
 
@@ -174,7 +174,7 @@ class UserController extends Controller{
 
 
 
-        $metadata = $em->getClassMetadata('Admin\Home\Entity\Users');
+//        $metadata = $em->getClassMetadata('Admin\Home\Entity\Users');
 
 
         //var_dump($metadata->getFieldNames());

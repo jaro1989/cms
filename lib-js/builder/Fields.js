@@ -1,7 +1,10 @@
 
     (function(HTML) {
 
+        var ICON_CURRENT = 'saved';
         var ICON_DATE = 'calendar';
+        var ICON_REMOVE = 'remove';
+        var CLASS_DATE = 'calendar-date';
 
         var TYPE_DATE = 'date';
 
@@ -347,24 +350,71 @@
              */
             _getInputDate: function(params) {
                 var html = '';
-                //$(function() {$('#datepicker').datepicker();});
-                //params.attr.onfocus = "$(function() {$('#" + params.attr.id + "').datepicker();})";
-                params.attr.class = params.attr.class + ' date-calendar';
+                var oldClass = params.attr.class;
+                var oldName = params.attr.name;
+
+                params.attr.class = oldClass + ' ' + CLASS_DATE;
+                params.attr.name = null;
                 html += this._getInput(params);
 
+                params.attr.class = CLASS_DATE + '-' + TYPE_HIDDEN;
                 params.attr.type = TYPE_HIDDEN;
-                params.attr.id = params.attr.id + '-' + TYPE_HIDDEN;
-
+                params.attr.name = oldName;
+                params.attr.id = null;
                 html += this._getInput(params);
+
                 html += _basis.getTag(
                     'span',
                     {
-                        class: _basis.fields.iga
+                        class: _basis.fields.iga,
+                        onclick: "new HTML.Fields()._setCurrentDate(this);"
+                    },
+                    _basis.getIcon(ICON_CURRENT)
+                );
+                html += _basis.getTag(
+                    'span',
+                    {
+                        class: _basis.fields.iga,
+                        onclick: "new HTML.Fields()._setDate(this);"
                     },
                     _basis.getIcon(ICON_DATE)
                 );
+                html += _basis.getTag(
+                    'span',
+                    {
+                        class: _basis.fields.iga,
+                        onclick: "new HTML.Fields()._removeDate(this);"
+                    },
+                    _basis.getIcon(ICON_REMOVE)
+                );
 
                 return html;
+            },
+
+            _setCurrentDate: function(element) {
+                this._setDate(element);
+                var input = $(element).parent('div').find('.' + CLASS_DATE);
+                input.datepicker("setDate", new Date());
+                input.datepicker("hide") ;
+            },
+
+            _setDate: function(element) {
+                var input = $(element).parent('div').find('.' + CLASS_DATE);
+                input.datepicker(
+                    {
+                        changeMonth: true,
+                        changeYear: true,
+                        dateFormat: 'dd.mm.yy',
+                        altField: '.' + CLASS_DATE + '-' + TYPE_HIDDEN,
+                        altFormat: 'yy-mm-dd 00:00:00'
+                    }
+                );
+                input.focus();
+            },
+
+            _removeDate: function(element) {
+                var input = $(element).parent('div').find('.' + CLASS_DATE);
+                input.val('');
             },
 
             /**
