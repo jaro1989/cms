@@ -5,9 +5,9 @@ _navbar:
     path:     /navbar/top
     defaults: { _controller: AdminHome:Navbar:top }
 
-_user_edit:
-    path:     /user/edit/{record}
-    defaults: { _controller: AdminHome:User:edit, record: -1 }
+_user_form:
+    path:     /user/form/{record}
+    defaults: { _controller: AdminHome:User:form, record: -1 }
 
 _user_list:
     path:     /user/list/{page}

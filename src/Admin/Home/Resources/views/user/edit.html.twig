@@ -15,6 +15,10 @@
             var status = {{ status|json_encode|raw }};
             var formatDate = {{ formatDate|json_encode|raw }};
             var action = '{{ action }}';
+            var userData = {{ userData|json_encode|raw }};
+            var user = JSON.parse(userData);
+            console.log(user);
+
 
             var content = new HTML.Collapse()
                 .setShowAllPanels(true)
@@ -26,17 +30,17 @@
                         .addRow()
                         .addCell(
                             new HTML.Fields(3)
-                                .addInput(null, 'Фамилия', 'last_name')
-                                .addInput(null, 'Имя', 'first_name')
-                                .addInput(null, 'Отчество', 'middle_name')
+                                .addInput(user.lastName, 'Фамилия', 'last_name')
+                                .addInput(user.firstName, 'Имя', 'first_name')
+                                .addInput(user.middleName, 'Отчество', 'middle_name')
                                 .toHtml(), 1, 1
                         )
                         .addCell('<img src="{{ asset('/admin/img/noavatar.png') }}" class="img-thumbnail">', 1, 3, '10%')
                         .addRow()
                         .addCell(
                             new HTML.Fields(3)
-                                .addInput(null, 'Login', 'cms_login')
-                                .addInput(null, 'Email', 'cms_email')
+                                .addInput(user.cmsLogin, 'Login', 'cms_login')
+                                .addInput(user.cmsEmail, 'Email', 'cms_email')
                                 .addSelectList(role, 'ROLE_USER', 'cms_role', 'Роль')
                                 .toHtml(), 1, 1
                         )
@@ -50,16 +54,16 @@
                         .addRow()
                         .addCell(
                             new HTML.Fields(3)
-                                .addSelectList(formatDate, null, 'date_format', 'Пользовательский формат даты')
-                                .addInputDate(null, 'Период - начало', 'date_perion_n', false)
-                                .addInputDate(null, 'Период - конец', 'date_perion_k', false)
+                                .addSelectList(formatDate, user.dateFormat, 'date_format', 'Пользовательский формат даты')
+                                .addInputDate(user.datePerionN.timestamp, 'Период - начало', 'date_perion_n', false)
+                                .addInputDate(user.datePerionK.timestamp, 'Период - конец', 'date_perion_k', false)
                                 .toHtml(),1, 1
                         )
                         .addCell('Еще что то', 1, 2)
                         .addRow()
                         .addCell(
                             new HTML.Fields(3)
-                                .addSelectList(status, null, 'status', 'Статус')
+                                .addSelectList(status, user.status, 'status', 'Статус')
                                 .addInputRead('Label', 'Валюта', 'currency')
                                 .toHtml(),1, 1
                         )

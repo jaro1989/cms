@@ -609,7 +609,6 @@
              * @private
              */
             _setDataParams: function(data) {
-
                 var name = _basis.emptyProperty(data, 'name', null);
                 var disabled = _basis.emptyProperty(data, 'disabled', false);
                 var checked =  _basis.emptyProperty(data, 'checked', false);

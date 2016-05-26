@@ -2,10 +2,9 @@
 namespace Admin\Home\Controller;
 
 use Admin\Home\Entity\Users;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 
 
 class UserController extends Controller{
@@ -15,12 +14,8 @@ class UserController extends Controller{
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request)
+    public function formAction(Request $request)
     {
-        $action = '_user_update';
-        if ($request->get('record') == -1) {
-            $action = '_user_save';
-        }
         $role = [
             'ROLE_ADMIN' => 'Администратор',
             'ROLE_USER' => 'Пользователь',
@@ -45,6 +40,17 @@ class UserController extends Controller{
             'RU',
         ];
 
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AdminHome:Users')->find($request->get('record'));
+
+        $serializer = $this->get('serializer');
+
+        if (empty($user)) {
+            $action = '_user_save';
+        } else {
+            $action = '_user_update';
+        }
+
         return $this->render(
             'AdminHome:user:edit.html.twig',
             [
@@ -52,7 +58,8 @@ class UserController extends Controller{
                 'role' => $role,
                 'status' => $status,
                 'formatDate' => $formatDate,
-                'action' => $this->generateUrl($action)
+                'action' => $this->generateUrl($action, ['record' => $request->get('record')]),
+                'userData' => $serializer->serialize($user, 'json')
             ]
         );
     }
@@ -143,62 +150,69 @@ class UserController extends Controller{
 
     /**
      * Save new record
+     *
      * @param Request $request
-     * @return int
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function saveAction(Request $request)
     {
-        $users = new Users();
+        $em = $this->getDoctrine()->getManager();
+        $user = new Users();
 
         foreach($request->request->all() as $key => $value){
 
             $method = 'set' . str_replace('_', '', $key);
-
-            if (method_exists($users, $method)) {
-                $users->$method($value);
+            if (method_exists($user, $method)) {
+                $user->$method($value);
             }
         }
 
-//        $em = $this->getDoctrine()->getManager();
-//
-//        $em->persist($users);
-//        $em->flush();
-//        var_dump($users->getId());
+        $em->persist($user);
+        $em->flush();
 
+        return $this->redirect(
+            $this->generateUrl(
+                '_user_form',
+                ['record' => $user->getId() === null ? -1 : $user->getId()]
+            )
+        );
 
-
-
-
-
-
-
-
-
-//        $metadata = $em->getClassMetadata('Admin\Home\Entity\Users');
-
-
+        //Example matadata
+        //$metadata = $em->getClassMetadata('Admin\Home\Entity\Users');
         //var_dump($metadata->getFieldNames());
         //var_dump($metadata->getTypeOfField('id'));
         //var_dump($metadata->isIdentifier('id'));
         //var_dump($metadata->getIdentifierFieldNames());
         //var_dump($metadata->fieldMappings);
         //var_dump($metadata->table);
-
-
     }
 
     /**
      * Update record
+     *
      * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function updateAction(Request $request)
     {
-        var_dump($request);
-//        $em = $this->getDoctrine()->getManager();
-//        $users = $em->getRepository('AdminHome:Users')->find(1);
-//        $users->setFirstName('Киселев');
-//        $em->flush();
-//        return $users->getId();
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AdminHome:Users')->find($request->get('record'));
+
+        foreach($request->request->all() as $key => $value) {
+
+            $method = 'set' . str_replace('_', '', $key);
+            if (method_exists($user, $method)) {
+                $user->$method($value);
+            }
+        }
+        $em->flush();
+
+        return $this->redirect(
+            $this->generateUrl(
+                '_user_form',
+                ['record' => $user === null ? $request->get('record') : $user->getId()]
+            )
+        );
     }
 
 }

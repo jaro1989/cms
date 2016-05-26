@@ -78,6 +78,7 @@ class Users
     private $date_format;
 
     /**
+     * @Type("DateTime<'Y-m-d'>")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $date_perion_n;
@@ -388,12 +389,11 @@ class Users
      * Set datePerionN
      *
      * @param \DateTime $datePerionN
-     *
      * @return Users
      */
     public function setDatePerionN($datePerionN)
     {
-        $this->date_perion_n = $datePerionN;
+        $this->date_perion_n = new \DateTime($datePerionN);
 
         return $this;
     }
@@ -412,12 +412,11 @@ class Users
      * Set datePerionK
      *
      * @param \DateTime $datePerionK
-     *
      * @return Users
      */
     public function setDatePerionK($datePerionK)
     {
-        $this->date_perion_k = $datePerionK;
+        $this->date_perion_k = new \DateTime($datePerionK);
 
         return $this;
     }
