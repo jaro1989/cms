@@ -311,8 +311,10 @@
              */
             emptyProperty: function(obj, property, defaultValue) {
                 var res = defaultValue;
-                if (obj.hasOwnProperty(property) && this.emptyValue(obj[property], null) !== null) {
-                    res = obj[property];
+                if (obj !== null) {
+                    if (obj.hasOwnProperty(property) && this.emptyValue(obj[property], null) !== null) {
+                        res = obj[property];
+                    }
                 }
                 return res;
             },

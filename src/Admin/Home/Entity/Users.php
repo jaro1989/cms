@@ -78,7 +78,6 @@ class Users
     private $date_format;
 
     /**
-     * @Type("DateTime<'Y-m-d'>")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $date_perion_n;
@@ -142,7 +141,7 @@ class Users
      */
     public function getDateEntered()
     {
-        return $this->date_entered;
+        return $this->date_entered->format('d/m/Y');
     }
 
     /**
@@ -166,7 +165,7 @@ class Users
      */
     public function getDateModified()
     {
-        return $this->date_modified;
+        return $this->date_modified->format('d/m/Y');
     }
 
     /**
@@ -405,7 +404,7 @@ class Users
      */
     public function getDatePerionN()
     {
-        return $this->date_perion_n;
+        return $this->date_perion_n->format('d/m/Y');
     }
 
     /**
@@ -428,6 +427,6 @@ class Users
      */
     public function getDatePerionK()
     {
-        return $this->date_perion_k;
+        return $this->date_perion_k->format('d/m/Y');
     }
 }
