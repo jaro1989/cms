@@ -42,7 +42,6 @@ class UserController extends Controller{
 
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AdminHome:Users')->find($request->get('record'));
-
         $serializer = $this->get('serializer');
 
         if (empty($user)) {
@@ -201,6 +200,7 @@ class UserController extends Controller{
         foreach($request->request->all() as $key => $value) {
 
             $method = 'set' . str_replace('_', '', $key);
+            echo '<bt/>';
             if (method_exists($user, $method)) {
                 $user->$method($value);
             }

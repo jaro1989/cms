@@ -405,7 +405,7 @@
                         changeMonth: true,
                         changeYear: true,
                         dateFormat: 'dd.mm.yy',
-                        altField: '.' + CLASS_DATE + '-' + TYPE_HIDDEN,
+                        altField:  $(element).parent('div').find('.' + CLASS_DATE + '-' + TYPE_HIDDEN),
                         altFormat: 'yy-mm-dd 00:00:00'
                     }
                 );

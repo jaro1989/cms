@@ -427,6 +427,6 @@ class Users
      */
     public function getDatePerionK()
     {
-        return $this->date_perion_k->format('d/m/Y');
+        return $this->date_perion_k->format('Y-m-d');
     }
 }
