@@ -141,7 +141,7 @@ class Users
      */
     public function getDateEntered()
     {
-        return $this->date_entered->format('d/m/Y');
+        return $this->date_entered;
     }
 
     /**
@@ -165,7 +165,7 @@ class Users
      */
     public function getDateModified()
     {
-        return $this->date_modified->format('d/m/Y');
+        return $this->date_modified;
     }
 
     /**
@@ -404,7 +404,7 @@ class Users
      */
     public function getDatePerionN()
     {
-        return $this->date_perion_n->format('d/m/Y');
+        return $this->date_perion_n;
     }
 
     /**
@@ -427,6 +427,6 @@ class Users
      */
     public function getDatePerionK()
     {
-        return $this->date_perion_k->format('Y-m-d');
+        return $this->date_perion_k->format('d/m/Y');
     }
 }

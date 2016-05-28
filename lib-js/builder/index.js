@@ -16,11 +16,16 @@
          * @constructor
          */
         HTML.Basis = function() {
-
+            this.css = new HTML.CssClasses();
         };
 
         /** @protected */
         HTML.Basis.prototype = {
+            /**
+             * @type {HTML.CssClasses}
+             */
+            css: null,
+
             iconClass: CLASS_ICON,
             fluid: 'container-fluid',
             text_alignment: {
@@ -428,19 +433,35 @@
                 return icon;
             },
 
+            //==========================================================================================================
             /**
-             * Get html class style
+             * Get html class - skin
              *
              * @param {string|null} skin
-             * @returns {*}
+             * @returns {string|null}
              */
             getSkin: function(skin) {
-                var style = this.emptyProperty(this.fields.skin, skin, false);
-                var res = '';
+                var style = this.emptyProperty(this.css.skin, skin, false);
+                var res = null;
                 if (style !== false) {
-                    res = this.fields.prefix_skin_text + '-' + style + ' ' + this.fields.prefix_skin_field + '-' + style;
+                    res = this.css.prefix.text + '-' + style + ' ' + this.css.prefix.field + '-' + style;
                 }
                 return res;
+            },
+
+            /**
+             * Get html class - size
+             *
+             * @param {string} type {'input'|'pagination'|'button'}
+             * @param {string} size {'lg'|'sm'|'xs'}
+             * @returns {string}
+             */
+            getSize: function(type, size) {
+                var cssSize = this.emptyProperty(this.css.size, type, false);
+                if (cssSize !== false) {
+                    return this.emptyProperty(cssSize, size, cssSize.xs);
+                }
+                return null;
             },
 
             /**
@@ -448,15 +469,13 @@
              *
              * @public
              * @param {boolean} disabled
-             * @param {string|boolean} defaultValue
              * @returns {*}
              */
-            getDisabled: function(disabled, defaultValue) {
-                var sost = defaultValue;
+            getDisabled: function(disabled) {
                 if (disabled === true) {
-                    sost = this.disabled
+                    return this.css.disabled;
                 }
-                return sost;
+                return null;
             }
         };
 

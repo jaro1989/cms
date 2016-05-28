@@ -16,11 +16,16 @@
          * @constructor
          */
         HTML.Basis = function() {
-
+            this.css = new HTML.CssClasses();
         };
 
         /** @protected */
         HTML.Basis.prototype = {
+            /**
+             * @type {HTML.CssClasses}
+             */
+            css: null,
+
             iconClass: CLASS_ICON,
             fluid: 'container-fluid',
             text_alignment: {
@@ -428,19 +433,35 @@
                 return icon;
             },
 
+            //==========================================================================================================
             /**
-             * Get html class style
+             * Get html class - skin
              *
              * @param {string|null} skin
-             * @returns {*}
+             * @returns {string|null}
              */
             getSkin: function(skin) {
-                var style = this.emptyProperty(this.fields.skin, skin, false);
-                var res = '';
+                var style = this.emptyProperty(this.css.skin, skin, false);
+                var res = null;
                 if (style !== false) {
-                    res = this.fields.prefix_skin_text + '-' + style + ' ' + this.fields.prefix_skin_field + '-' + style;
+                    res = this.css.prefix.text + '-' + style + ' ' + this.css.prefix.field + '-' + style;
                 }
                 return res;
+            },
+
+            /**
+             * Get html class - size
+             *
+             * @param {string} type {'input'|'pagination'|'button'}
+             * @param {string} size {'lg'|'sm'|'xs'}
+             * @returns {string}
+             */
+            getSize: function(type, size) {
+                var cssSize = this.emptyProperty(this.css.size, type, false);
+                if (cssSize !== false) {
+                    return this.emptyProperty(cssSize, size, cssSize.xs);
+                }
+                return null;
             },
 
             /**
@@ -448,17 +469,659 @@
              *
              * @public
              * @param {boolean} disabled
-             * @param {string|boolean} defaultValue
              * @returns {*}
              */
-            getDisabled: function(disabled, defaultValue) {
-                var sost = defaultValue;
+            getDisabled: function(disabled) {
                 if (disabled === true) {
-                    sost = this.disabled
+                    return this.css.disabled;
                 }
-                return sost;
+                return null;
             }
         };
+
+    } (window.HTML || {}));
+
+    (function(HTML) {
+
+        var DEFAULT_FORMAT = 'dd-mm-yyyy hh:mi:ss';
+
+        /**
+         * @memberOf HTML
+         * @namespace HTML.FormatDate
+         * @constructor
+         */
+        HTML.FormatDate = function(timestamp, format) {
+            this._timestamp = timestamp;
+
+            if (typeof format === 'string') {
+                this._format = format;
+            }
+
+            this._arrFormatDate = [];
+            this._arrFormatTime = [];
+
+            this._date = new Date();
+            this._date.setTime(this._timestamp * 1000);
+            var year = this._date.getFullYear();
+            this._keysFormat = {
+                yyyy: year,
+                yy: year,//.substring((year.length - 2)),
+                mm: this._date.getMonth(),
+                dd: this._date.getDate(),
+                hh: this._date.getHours(),
+                mi: this._date.getMinutes(),
+                ss: this._date.getSeconds()
+            };
+        };
+
+        /** @protected */
+        HTML.FormatDate.prototype = {
+
+            _format: DEFAULT_FORMAT,
+            _separatorDate: null,
+            _separatorTime: null,
+            _strDate: null,
+
+            _parseFormat: function() {
+                var arr = this._format.split(' ');
+                console.log(arr[1]);
+
+                if (typeof arr[0] === 'string' && ~arr[0].indexOf('.')) {
+                    this._arrFormatDate = arr[0].split('.');
+                    this._separatorDate = '.';
+                }
+
+                if (typeof arr[0] === 'string' && ~arr[0].indexOf('-')) {
+                    this._arrFormatDate = arr[0].split('-');
+                    this._separatorDate = '-';
+                }
+
+                if (typeof arr[0] === 'string' && ~arr[0].indexOf('/')) {
+                    this._arrFormatDate = arr[0].split('/');
+                    this._separatorDate = '/';
+                }
+
+                if (typeof arr[1] === 'string' && ~arr[1].indexOf(':')) {
+                    var time = arr[1].split(':');
+                    var lenArr = time.length;
+                    for (var i = 0; i < lenArr; i++) {
+                        this._arrFormatTime.push(time[i]);
+                    }
+                    this._separatorTime = ':';
+                }
+
+                return [this._arrFormatDate, this._arrFormatTime];
+            },
+
+            getStrDate: function() {
+                this._parseFormat();
+                var strDate = '';
+                var currentObj = this;
+                $.each(this._arrFormatDate, function(key, value) {
+                    if (currentObj._keysFormat.hasOwnProperty(value)) {
+                        strDate += currentObj._keysFormat[value];
+                        strDate += currentObj._separatorDate;
+                    }
+                });
+
+                var strTime = '';
+                $.each(this._arrFormatTime, function(key, value) {
+                    if (currentObj._keysFormat.hasOwnProperty(value)) {
+                        strTime += currentObj._keysFormat[value];
+                        strTime += currentObj._separatorTime;
+                    }
+                });
+
+                var date = strDate.substring(0, strDate.length - 1);
+                var time = strTime.substring(0, strTime.length - 1);
+                this._strDate = (date + ' ' + time).replace(/\s{2,}/g, ' ').trim();
+                return this._strDate;
+            }
+        };
+    } (window.HTML || {}));
+
+
+(function(HTML) {
+
+    /**
+     * @memberOf HTML
+     * @namespace HTML.CssClasses
+     * @constructor
+     */
+    HTML.CssClasses = function() {
+
+    };
+
+    /** @protected */
+    HTML.CssClasses.prototype = {
+        width: 'col-md',
+        inputGroup: 'input-group',
+        formGroup: 'form-group',
+        formControl: 'form-control',
+        inputGroupBtn: 'input-group-btn',
+        disabled: 'disabled',
+
+        /**
+         * $type { { text: { right: '' } } }
+         */
+        align: {
+            text: {
+                right: 'text-right'
+            }
+        },
+
+        /**
+         * $type { { field: '', text: '' } }
+         */
+        prefix: {
+            field: 'has',
+            text: 'text'
+        },
+
+        /**
+         * @type { { disabled: '', active: '', success: '', warning: '', danger: '', info: '', link: '', default: '', error: '', primary: '' } }
+         */
+        skin: {
+            disabled: 'disabled',
+            active: 'active',
+            success: 'success',
+            warning: 'warning',
+            danger: 'danger',
+            info: 'info',
+            link: 'link',
+            default: 'default',
+            error: 'error',
+            primary: 'primary'
+        },
+
+        /**
+         * @type { { input: { lg: '..', sm: '..' }, pagination: { lg: '..', sm: '..' }, button: { lg: '..', sm: '..', xs: '..' } } }
+         */
+        size: {
+            input: {
+                lg: 'input-group-lg',
+                sm: 'input-group-sm'
+            },
+            pagination: {
+                lg: 'pagination-lg',
+                sm: 'pagination-sm'
+            },
+            button: {
+                lg: 'btn-lg',
+                sm: 'btn-sm',
+                xs: 'btn-xs'
+            }
+        }
+    };
+} (window.HTML || {}));
+    (function(HTML) {
+
+        var TAG_DEFAULT = 'div';
+
+        /**
+         * The generator of the basic elements HTML
+         *
+         * @private
+         * @type {HTML.Basis}
+         */
+        var _basis = new HTML.Basis();
+
+        /**
+         * @memberOf HTML
+         * @namespace HTML.BuildTag
+         * @constructor
+         * @param {string} tagName
+         * @param {boolean} tagClosed
+         */
+        HTML.BuildTag = function(tagName, tagClosed) {
+            this._tagName = _basis.emptyValue(tagName, TAG_DEFAULT);
+            this._tagClosed = _basis.emptyValue(tagClosed, true);
+
+            this._attr = {
+                'id': null,
+
+                'class': null,
+
+                'name': null,
+
+                'disabled': null,
+
+                'href': null,
+
+                'type': null,
+
+                'value': null,
+
+                'placeholder': null,
+
+                'onclick': null,
+
+                'checked': null,
+
+                'action': null,
+
+                'method': null,
+
+                'required': null,
+
+                'for': null
+            };
+        };
+
+        /** @protected */
+        HTML.BuildTag.prototype = {
+
+            /**
+             * Tag name
+             *
+             * @private
+             * @type {string}
+             */
+            _tagName: TAG_DEFAULT,
+
+            /**
+             * Open tag or closed
+             *
+             * @private
+             * @type {boolean}
+             */
+            _tagClosed: true,
+
+            /**
+             * Tag contents
+             *
+             * @private
+             * @type {string|null}
+             */
+            _tagContent: null,
+
+            /**
+             * List attributes
+             *
+             * @private
+             * @type {object}
+             */
+            _attr: {},
+
+            getAttributes: function() {
+                return this._attr;
+            },
+
+            /**
+             * Set attributes
+             *
+             * @public
+             * @param {object} attributes
+             * @returns {HTML.BuildTag}
+             */
+            setAttributes: function(attributes) {
+                if (typeof attributes === 'object') {
+                    var currentObj = this;
+                    $.each(attributes, function(attrName, attrValue) {
+                        if (currentObj.attr.hasOwnProperty(attrName)) {
+                            currentObj.attr[attrName] = attrValue;
+                        }
+                    });
+                }
+                return this;
+            },
+
+            /**
+             * Set data in tag
+             *
+             * @public
+             * @param {string} data
+             * @returns {HTML.BuildTag}
+             */
+            setContent: function(data) {
+                this._tagContent = data;
+                return this;
+            },
+
+            getId: function() {
+                return this._attr.id;
+            },
+
+            /**
+             * Set attribute "id"
+             *
+             * @public
+             * @param {string} htmlId
+             * @returns {HTML.BuildTag}
+             */
+            setId: function(htmlId) {
+                if (typeof htmlId === 'string') {
+
+                    this._attr.id = htmlId;
+                } else {
+
+                    if (typeof this._attr.name === 'string') {
+
+                        this._attr.id = this._attr.name
+                            .replace(/\[/g, '_')
+                            .replace(/\]/g, '');
+                    }
+                }
+                return this;
+            },
+
+            getClass: function() {
+                return this._attr.class;
+            },
+
+
+            /**
+             * Set attribute "class"
+             *
+             * @public
+             * @param {string} htmlClass
+             * @returns {HTML.BuildTag}
+             */
+            setClass: function(htmlClass) {
+                this._attr.class = htmlClass;
+                return this;
+            },
+
+
+            /**
+             * Add attribute "class"
+             *
+             * @public
+             * @param {string|null} htmlClass
+             * @returns {HTML.BuildTag}
+             */
+            addClass: function(htmlClass) {
+                this._attr.class = _basis.emptyValue(this._attr.class, '') + ' ' + _basis.emptyValue(htmlClass, '');
+                return this;
+            },
+
+            getName: function() {
+                return this._attr.name;
+            },
+
+            /**
+             * Set attribute "name"
+             *
+             * @public
+             * @param {string} fieldName
+             * @returns {HTML.BuildTag}
+             */
+            setName: function(fieldName) {
+                this._attr.name = fieldName;
+                return this;
+            },
+
+            getDisabled: function() {
+                return this._attr.disabled;
+            },
+
+            /**
+             * Set attribute "disabled"
+             *
+             * @public
+             * @param {boolean} state
+             * @returns {HTML.BuildTag}
+             */
+            setDisabled: function(state) {
+                if (state === true) {
+                    this._attr.disabled = 'disabled';
+                } else {
+                    this._attr.disabled = null;
+                }
+                return this;
+            },
+
+            getHref: function() {
+                return this._attr.href;
+            },
+
+            /**
+             * Set attribute "href"
+             *
+             * @public
+             * @param {string} link
+             * @returns {HTML.BuildTag}
+             */
+            setHref: function(link) {
+                this._attr.href = link;
+                return this;
+            },
+
+            getType: function() {
+                return this._attr.type;
+            },
+
+            /**
+             * Set attribute "type"
+             *
+             * @public
+             * @param {string} typeField
+             * @returns {HTML.BuildTag}
+             */
+            setType: function(typeField) {
+                this._attr.type = typeField;
+                return this;
+            },
+
+            getValue: function() {
+                return this._attr.value;
+            },
+
+            /**
+             * Set attribute "value"
+             *
+             * @public
+             * @param {string|number|boolean} value
+             * @returns {HTML.BuildTag}
+             */
+            setValue: function(value) {
+                this._attr.value = value;
+                return this;
+            },
+
+            getPlaceholder: function() {
+                return this._attr.placeholder;
+            },
+
+            /**
+             * Set attribute "placeholder"
+             *
+             * @public
+             * @param {string|number} placeholder
+             * @returns {HTML.BuildTag}
+             */
+            setPlaceholder: function(placeholder) {
+                this._attr.placeholder = placeholder;
+                return this;
+            },
+
+            getOnclick: function() {
+                return this._attr.onclick;
+            },
+
+            /**
+             * Set attribute "onclick"
+             *
+             * @public
+             * @param {string} dataCallback
+             * @returns {HTML.BuildTag}
+             */
+            setOnclick: function(dataCallback) {
+                this._attr.onclick = dataCallback;
+                return this;
+            },
+
+            getChecked: function() {
+                return this._attr.checked;
+            },
+
+            /**
+             * Set attribute "checked"
+             *
+             * @public
+             * @param {boolean} state
+             * @returns {HTML.BuildTag}
+             */
+            setChecked: function(state) {
+                if (state === true) {
+                    this._attr.checked = 'checked';
+                } else {
+                    this._attr.checked = null;
+                }
+                return this;
+            },
+
+            getAction: function() {
+                return this._attr.action;
+            },
+
+            /**
+             * Set attribute "action"
+             *
+             * @public
+             * @param {string} link
+             * @returns {HTML.BuildTag}
+             */
+            setAction: function(link) {
+                this._attr.action = link;
+                return this;
+            },
+
+            getMethod: function() {
+                return this._attr.method;
+            },
+
+            /**
+             * Set attribute "method"
+             *
+             * @public
+             * @param {string} method
+             * @returns {HTML.BuildTag}
+             */
+            setMethod: function(method) {
+                this._attr.method = method;
+                return this;
+            },
+
+            getRequired: function() {
+                return this._attr.required;
+            },
+
+            /**
+             * Set attribute "required"
+             *
+             * @public
+             * @param {boolean} state
+             * @returns {HTML.BuildTag}
+             */
+            setRequired: function(state) {
+                if (state === true) {
+                    this._attr.required = 'required';
+                } else {
+                    this._attr.required = null;
+                }
+                return this;
+            },
+
+            getFor: function() {
+                return this._attr.for;
+            },
+
+            /**
+             * Set attribute "for"
+             *
+             * @public
+             * @param {string|number} htmlId
+             * @param {string} nameField
+             * @returns {HTML.BuildTag}
+             */
+            setFor: function(htmlId, nameField) {
+                if (typeof htmlId === 'string') {
+
+                    this._attr.for = htmlId;
+                } else {
+
+                    if (typeof nameField === 'string') {
+
+                        this._attr.for = nameField
+                            .replace(/\[/g, '_')
+                            .replace(/\]/g, '');
+                    }
+                }
+                return this;
+            },
+
+            /**
+             * Get string with attributes
+             *
+             * @private
+             * @returns {string} string with html attributes
+             */
+            _getStringAttr: function() {
+                var str = '';
+                $.each(this._attr, function(attrName, attrValue) {
+
+                    var value = _basis.emptyValue(attrValue, '');
+                    if (typeof value === 'string') {
+
+                        value = value.replace(/\s{2,}/g, ' ').trim();
+                        if (value !== '') {
+                            str += attrName + '="' + value + '" ';
+                        }
+
+                    } else {
+                        str += attrName + '="' + value + '" ';
+                    }
+
+                });
+                if (str !== '') {
+                    str = ' ' + str.trim();
+                }
+                return str;
+            },
+
+            /**
+             * Build html tag
+             *
+             * @private
+             * @returns {string} Html tag
+             */
+            _buildTag: function() {
+                var element = '';
+                if (typeof this._tagName === 'string') {
+
+                    element = '<' + this._tagName + this._getStringAttr() + '>';
+                    element += _basis.emptyValue(this._tagContent, '');
+
+                    if (this._tagClosed === true) {
+                        element += '</' + this._tagName + '>';
+                    }
+                }
+                return element;
+            },
+
+            /**
+             * Compiles and returns HTML tag
+             *
+             * @public
+             * @returns {string} Html tag
+             */
+            toHTML: function() {
+                return this._buildTag();
+            },
+
+            /**
+             * Compiles and appends HTML tag in elements "element"
+             *
+             * @public
+             * @param {string} element {This table will be added in element "element"}
+             * @returns {HTML.BuildTag}
+             */
+            appentTo: function(element) {
+                $(element).append(this._buildTag());
+                return this;
+            }
+        }
 
     } (window.HTML || {}));
 
@@ -1088,7 +1751,7 @@
              * @type {string}
              * @default {HTML.Basis.skin.primary}
              */
-            _skin: _basis.skin.primary,
+            _skin: _basis.skin.default,
 
             /**
              * disable buttons
@@ -1216,7 +1879,7 @@
              * @returns {HTML.Button}
              */
             setSkin: function(skin) {
-                this._skin = _basis.emptyProperty(_basis.skin, skin, _basis.skin.primary);
+                this._skin = _basis.emptyProperty(_basis.skin, skin, _basis.skin.default);
                 return this;
             },
 
@@ -1260,7 +1923,6 @@
 
                 var skin = _basis.emptyProperty(_basis.skin, this._skin, _basis.skin.default);
                 var htmlClass = CLASS_DEFAULT + '-' + skin;
-
                 htmlClass += ' ' + _basis.emptyValue(this._size, '');
                 htmlClass += ' ' + _basis.emptyValue(this._class, '');
                 htmlClass += ' ' + _basis.emptyValue(this._active, '');
@@ -1287,7 +1949,6 @@
              * @returns {HTML.Button}
              */
             addButton: function(value, name, id, icon, disabled) {
-
                 var counter = Object.keys(this._paramsButtons).length++;
 
                 this._paramsButtons[counter] = {};
@@ -3033,6 +3694,380 @@
 
     } (window.HTML || {}));
 
+(function(HTML) {
+
+    /**
+     * The generator of the basic elements HTML
+     *
+     * @private
+     * @type {HTML.Basis}
+     */
+    var _basis = new HTML.Basis();
+
+    /**
+     * @memberOf HTML
+     * @namespace HTML.Tag
+     * @constructor
+     * @param {string|null} name
+     * @param {string|object|null} value
+     *                                  '2000-01-01 00:00:00' |
+     *                                  { value: { name: '2000-01-01 00:00:00' } |
+     *                                  { value: { timestamp: '1107291600' } } |
+     *                                  { value: { name: { timestamp: '1107291600' } } }
+     * @param {string|null} label
+     * @param {number|null} width
+     */
+    HTML.FFDate = function(value, name, label, width) {
+        this._value = this._setValue(value, name);
+        this._name = name;
+        this._label = label;
+        this._width = width;
+    };
+
+    /** @protected */
+    HTML.FFDate.prototype = {
+
+        /**
+         * @type {number|null}
+         */
+        _width: null,
+
+        /**
+         * @type {string|null}
+         */
+        _skinField: null,
+
+        /**
+         * @type {string|null}
+         */
+        _skinButtons: null,
+
+        /**
+         * @type {string|null}
+         */
+        _size: null,
+
+        /**
+         * @type {string|null}
+         */
+        _id: null,
+
+        /**
+         * @type {string|null}
+         */
+        _name: null,
+
+        /**
+         * @type {boolean}
+         */
+        _disabled: false,
+
+        /**
+         * @type {string|null}
+         */
+        _value: null,
+
+        /**
+         * @type {string|null}
+         */
+        _label: null,
+
+        /**
+         * @type {boolean}
+         */
+        _lineLabel: false,
+
+        /**
+         * @type {number}
+         */
+        _widthLabel: 4,
+
+        /**
+         * @type {string|null}
+         */
+        _separatorLabel: ':',
+
+        /**
+         * Width label else field is line
+         *
+         * @param {number} widthLabel
+         * @returns {HTML.FFDate}
+         */
+        setWidthLabel: function(widthLabel) {
+            if (widthLabel > 0 && widthLabel <= 6) {
+                this._widthLabel = widthLabel;
+            }
+            return this;
+        },
+
+        /**
+         * Set label in line
+         *
+         * @returns {HTML.FFDate}
+         */
+        setLineLabel: function() {
+            this._lineLabel = true;
+            return this;
+        },
+
+        /**
+         * Set separator between label and field
+         *
+         * @param {string} separatorLabel
+         * @returns {HTML.FFDate}
+         */
+        setSeparatorLabel: function(separatorLabel) {
+            this._separatorLabel = separatorLabel;
+            return this;
+        },
+
+        formatDate: function(timestamp, format) {
+
+        },
+
+        /**
+         *
+         * @private
+         * @param {string|null} name
+         * @param {string|object|null} value
+         *                                  '2000-01-01 00:00:00' |
+         *                                  { value: { name: '2000-01-01 00:00:00' } |
+         *                                  { value: { timestamp: '1107291600' } } |
+         *                                  { value: { name: { timestamp: '1107291600' } } }
+         * @returns {string}
+         */
+        _setValue: function(value, name) {
+            var res = null;
+            if (typeof value === 'object') {
+
+                var timestamp = _basis.emptyProperty(value, 'timestamp', false);
+                if (timestamp !== false) {
+                    res = new HTML.FormatDate(timestamp, 'dd.mm.yyyy').getStrDate();
+                }
+
+                name = _basis.emptyProperty(value, name, false);
+                if (typeof name === 'object') {
+
+                    timestamp = _basis.emptyProperty(name, 'timestamp', false);
+                    if (timestamp !== false) {
+                        res = new HTML.FormatDate(timestamp, 'dd.mm.yyyy').getStrDate();
+                        //var date = new Date();
+                        ////27/05/2016
+                        //date.setTime(timestamp * 1000);
+                        //var hours = date.getHours();
+                        //var minutes = date.getMinutes();
+                        //var seconds = date.getSeconds();
+                        //var day = date.getDate();
+                        //var month = date.getMonth();
+                        //var yyyy = date.getFullYear();
+                        //
+                        //console.log(day, month, yyyy, hours, minutes, seconds);
+                    }
+
+                } else if (typeof name === 'string') {
+                    res = name;
+                }
+            }
+            return res;
+        },
+
+        /**
+         * Get width for parent block| field block | button block
+         *
+         * @private
+         * @returns {{parent: 'string', button: 'string', field: 'string', label: 'string'}}
+         */
+        _getWidth: function() {
+            var _width = {
+                parent: _basis.css.width + '-' + _basis.emptyValue(this._width, 12),
+                label:  _basis.css.width + '-' + 12,
+                field:  _basis.css.width + '-' + 12,
+                button: _basis.css.width + '-' + 12
+            };
+            if (this._width > 2) {
+                if (this._lineLabel && this._width > 3) {
+                    _width['parent'] = _basis.css.width + '-' + this._width;
+                    _width['label'] =  _basis.css.width + '-' + this._widthLabel;
+                    _width['field'] =  _basis.css.width + '-' + Math.round(( (12 - this._widthLabel) / 2 ) );
+                    _width['button'] = _basis.css.width + '-' + Math.round(( (12 - this._widthLabel) / 2 ) );
+                } else if (this._lineLabel && this._width <= 3) {
+                    _width['parent'] = _basis.css.width + '-' + this._width;
+                    _width['label'] =  _basis.css.width + '-' + 2;
+                    _width['field'] =  _basis.css.width + '-' + 4;
+                    _width['button'] = _basis.css.width + '-' + 6;
+                } else {
+                    _width['field'] =  _basis.css.width + '-' + this._width;
+                    _width['button'] = _basis.css.width + '-' + Math.round(12 - this._width);
+                }
+            }
+            return _width;
+        },
+
+        /**
+         * Build html field date
+         *
+         * @returns {string} html field
+         * @private
+         */
+        _buildField: function () {
+            var width = this._getWidth();
+            var skin = _basis.getSkin(this._skinField);
+
+            var label = '';
+            if (this._label !== null) {
+                label = new HTML.BuildTag('label', true)
+                    .setFor(this._id, this._name)
+                    .setContent(this._label + _basis.emptyValue(this._separatorLabel, ''))
+                    .setClass(width.label)
+                    .addClass((this._lineLabel && this._width > 2) ? _basis.css.align.text.right : null)
+                    .toHTML();
+            }
+
+            return new HTML.BuildTag('div', true)
+                .setClass(_basis.css.formGroup)
+                .addClass(width.parent)
+                .addClass(skin)
+                .setContent(
+                    new HTML.BuildTag('div', true)
+                        .setContent(
+
+                            label
+
+                            +
+
+                            new HTML.BuildTag('div', true)
+                                .setClass(width.field)
+                                .addClass(_basis.getSize('input', this._size))
+                                .setContent(
+                                    new HTML.BuildTag('input', false)
+                                        .setClass(_basis.css.formControl)
+                                        .addClass(_basis.getDisabled(this._disabled))
+                                        .setValue(this._value)
+                                        .setDisabled(this._disabled)
+                                        .setName(this._name)
+                                        .setId(this._id)
+                                        .setType('text')
+                                        .toHTML()
+                                )
+                                .toHTML()
+
+                            +
+
+                            new HTML.BuildTag('div', true)
+                                .setClass(width.button)
+                                .setContent(
+                                    new HTML.BuildTag('div', true)
+                                        .setClass(_basis.css.inputGroupBtn)
+                                        .setContent(
+                                            new HTML.Button('toolbar')
+                                                .setActive(true)
+                                                .setSize(this._size)
+                                                .setSkin(this._skinButtons)
+                                                .addButton(null, null, null, 'saved', this._disabled)
+                                                .addButton(null, null, null, 'calendar', this._disabled)
+                                                .addButton(null, null, null, 'remove', this._disabled)
+                                                .toHtml()
+                                        )
+                                        .toHTML()
+                                )
+                                .toHTML()
+                        )
+                        .toHTML()
+                )
+                .toHTML();
+        },
+
+        /**
+         * Size field
+         *
+         * @public
+         * @param {string|null} size {'lg'|'sm'|'xs'|null}
+         * @returns {HTML.FFDate}
+         */
+        setSize: function(size) {
+            this._size = size;
+            return this;
+        },
+
+        /**
+         * Disable field
+         *
+         * @public
+         * @param {boolean} disable
+         * @returns {HTML.FFDate}
+         */
+        setDisabled: function(disable) {
+            if (disable === true) {
+                this._disabled = disable;
+            } else if (disable === false) {
+                this._disabled = disable;
+            }
+            return this;
+        },
+
+        /**
+         * Set html id field
+         *
+         * @public
+         * @param {string} htmlId
+         * @returns {HTML.FFDate}
+         */
+        setId: function(htmlId) {
+            this._id = htmlId;
+            return this;
+        },
+
+        /**
+         * Set width field {2-12}
+         *
+         * @public
+         * @param {number|null} width {2|3|4|5|6|7|8|9|10|11|12}
+         * @returns {HTML.FFDate}
+         */
+        setWidth: function(width) {
+            this._width = width;
+            return this;
+        },
+
+        /**
+         * Set skin field and buttons
+         *
+         * @public
+         * @param {string|null} skinField 'success'|'warning'|'error'|'muted'|'primary'|'info'|'danger'|null}
+         * @param {string|null} skinButtons {'success'|'warning'|'danger'|'info'|'link'|'default'|'primary'}
+         * @returns {HTML.Fields}
+         */
+        setSkin: function(skinField, skinButtons) {
+            this._skinField = skinField;
+            this._skinButtons = skinButtons;
+            return this;
+        },
+
+        /**
+         * Compiles and returns HTML field
+         *
+         * @public
+         * @returns {string} Html tag
+         */
+        toHTML: function() {
+            return this._buildField();
+        },
+
+        /**
+         * Compiles and appends HTML field in elements "element"
+         *
+         * @public
+         * @param {string} element {This table will be added in element "element"}
+         * @returns {HTML.Tag}
+         */
+        appentTo: function(element) {
+            $(element).append(this._buildField());
+            return this;
+        }
+    }
+
+
+} (window.HTML || {}));
 
     (function(HTML) {
 
@@ -4884,449 +5919,3 @@
         };
 
     } (window.HTML || {}));
-(function(HTML) {
-
-	var TAG_DEFAULT = 'div';
-
-	/**
-	 * The generator of the basic elements HTML
-	 *
-	 * @private
-	 * @type {HTML.Basis}
-	 */
-	var _basis = new HTML.Basis();
-
-	/**
-	 * @memberOf HTML
-	 * @namespace HTML.Tag
-	 * @constructor
-	 * @param {string} tagName
-	 * @param {boolean} tagClosed
-	 */
-	HTML.buildTag = function(tagName, tagClosed) {
-		this._tagName = _basis.emptyValue(tagName, TAG_DEFAULT);
-		this._tagClosed = _basis.emptyValue(tagClosed, true);
-	};
-
-	/** @protected */
-	HTML.buildTag.prototype = {
-
-		/**
-		 * Tag name
-		 *
-		 * @private
-		 * @type {string}
-		 */
-		_tagName: TAG_DEFAULT,
-
-		/**
-		 * Open tag or closed
-		 * 
-		 * @private
-		 * @type {boolean}
-		 */
-		_tagClosed: true,
-
-		/**
-		 * Tag contents
-		 * 
-		 * @private
-		 * @type {string|null}
-		 */
-		_tagContent: null,
-
-		/**
-		 * List attributes
-		 * 
-		 * @private
-		 * @type {object}
-		 */
-		_attr: {
-			'id': null,
-
-			'class': null,
-
-			'name': null,
-
-			'disabled': null,
-
-			'href': null,
-
-			'type': null,
-
-			'value': null,
-
-			'placeholder': null,
-
-			'onclick': null,
-
-			'checked': null,
-
-			'action': null,
-
-			'method': null,
-
-			'required': null,
-
-			'for': null
-		},
-		
-		getAttributes: function() {
-			return this._attr;
-		},
-
-		/**
-		 * Set attributes
-		 * 
-		 * @public
-		 * @param {object} attributes
-		 * @returns {HTML.Tag}
-		 */
-		setAttributes: function(attributes) {
-			if (typeof attributes === 'object') {
-				var currentObj = this;
-				$.each(attributes, function(attrName, attrValue) {
-					if (currentObj.attr.hasOwnProperty(attrName)) {
-						currentObj.attr[attrName] = attrValue;
-					}
-				});
-			}
-			return this;
-		},
-
-		/**
-		 * Set data in tag
-		 * 
-		 * @public
-		 * @param {string} data
-		 * @returns {HTML.Tag}
-		 */
-		setContent: function(data) {
-			this._tagContent = data;
-			return this;
-		},
-
-		getId: function() {
-			return this._attr.id;
-		},
-
-		/**
-		 * Set attribute "id"
-		 * 
-		 * @public
-		 * @param {string} htmlId
-		 * @returns {HTML.Tag}
-		 */
-		setId: function(htmlId) {
-			if (typeof htmlId === 'string') {
-				this._attr.id = htmlId;
-			} else if (htmlId === null) {
-				if (typeof this.name === 'string') {
-					this._attr.id = this.name.replace('[', '-').replace(']', '');
-				}
-			}
-			return this;
-		},
-
-		getClass: function() {
-			return this._attr.class;
-		},
-
-			
-		/**
-		 * Set attribute "class"
-		 * 
-		 * @public
-		 * @param {string} htmlClass
-		 * @returns {HTML.Tag}
-		 */
-		setClass: function(htmlClass) {
-			this._attr.class = htmlClass;
-			return this;
-		},
-
-			
-		/**
-		 * Add attribute "class"
-		 * 
-		 * @public
-		 * @param {string} htmlClass
-		 * @returns {HTML.Tag}
-		 */
-		addClass: function(htmlClass) {
-			this._attr.class = _basis.emptyValue(this._attr.class, '') + ' ' + htmlClass;
-			return this;
-		},
-
-		getName: function() {
-			return this._attr.name;
-		},
-
-		/**
-		 * Set attribute "name"
-		 * 
-		 * @public
-		 * @param {string} fieldName
-		 * @returns {HTML.Tag}
-		 */
-		setName: function(fieldName) {
-			this._attr.name = fieldName;
-			return this;
-		},
-
-		getDisabled: function() {
-			return this._attr.disabled;
-		},
-
-		/**
-		 * Set attribute "disabled"
-		 * 
-		 * @public
-		 * @param {boolean} state
-		 * @returns {HTML.Tag}
-		 */
-		setDisabled: function(state) {
-			if (state === true) {
-				this._attr.disabled = 'disabled';
-			} else {
-				this._attr.disabled = null;
-			}
-			return this;
-		},
-
-		getHref: function() {
-			return this._attr.href;
-		},
-
-		/**
-		 * Set attribute "href"
-		 * 
-		 * @public
-		 * @param {string} link
-		 * @returns {HTML.Tag}
-		 */
-		setHref: function(link) {
-			this._attr.href = link;
-			return this;
-		},
-
-		getType: function() {
-			return this._attr.type;
-		},
-
-		/**
-		 * Set attribute "type"
-		 * 
-		 * @public
-		 * @param {string} typeField
-		 * @returns {HTML.Tag}
-		 */
-		setType: function(typeField) {
-			this._attr.type = typeField;
-			return this;
-		},
-
-		getValue: function() {
-			return this._attr.value;
-		},
-
-		/**
-		 * Set attribute "value"
-		 * 
-		 * @public
-		 * @param {string|number|boolean} value
-		 * @returns {HTML.Tag}
-		 */
-		setValue: function(value) {
-			this._attr.value = value;
-			return this;
-		},
-
-		getPlaceholder: function() {
-			return this._attr.placeholder;
-		},
-
-		/**
-		 * Set attribute "placeholder"
-		 * 
-		 * @public
-		 * @param {string|number} placeholder
-		 * @returns {HTML.Tag}
-		 */
-		setPlaceholder: function(placeholder) {
-			this._attr.placeholder = placeholder;
-			return this;
-		},
-
-		getOnclick: function() {
-			return this._attr.onclick;
-		},
-
-		/**
-		 * Set attribute "onclick"
-		 * 
-		 * @public
-		 * @param {string} dataCallback
-		 * @returns {HTML.Tag}
-		 */
-		setOnclick: function(dataCallback) {
-			this._attr.onclick = dataCallback;
-			return this;
-		},
-
-		getChecked: function() {
-			return this._attr.checked;
-		},
-
-		/**
-		 * Set attribute "checked"
-		 * 
-		 * @public
-		 * @param {boolean} state
-		 * @returns {HTML.Tag}
-		 */
-		setChecked: function(state) {
-			if (state === true) {
-				this._attr.checked = 'checked';
-			} else {
-				this._attr.checked = null;
-			}
-			return this;
-		},
-
-		getAction: function() {
-			return this._attr.action;
-		},
-
-		/**
-		 * Set attribute "action"
-		 * 
-		 * @public
-		 * @param {string} link
-		 * @returns {HTML.Tag}
-		 */
-		setAction: function(link) {
-			this._attr.action = link;
-			return this;
-		},
-
-		getMethod: function() {
-			return this._attr.method;
-		},
-
-		/**
-		 * Set attribute "method"
-		 * 
-		 * @public
-		 * @param {string} method
-		 * @returns {HTML.Tag}
-		 */
-		setMethod: function(method) {
-			this._attr.method = method;
-			return this;
-		},
-
-		getRequired: function() {
-			return this._attr.required;
-		},
-
-		/**
-		 * Set attribute "required"
-		 * 
-		 * @public
-		 * @param {boolean} state
-		 * @returns {HTML.Tag}
-		 */
-		setRequired: function(state) {
-			if (state === true) {
-				this._attr.required = 'required';
-			} else {
-				this._attr.required = null;
-			}
-			return this;
-		},
-
-		getFor: function() {
-			return this._attr.for;
-		},
-
-		/**
-		 * Set attribute "for"
-		 * 
-		 * @public
-		 * @param {string|number} htmlId
-		 * @returns {HTML.Tag}
-		 */
-		setFor: function(htmlId) {
-			this._attr.for = htmlId;
-			return this;
-		},
-		
-		/**
-		 * Get string with attributes
-		 * 
-		 * @private
-		 * @returns {string} string with html attributes
-		 */
-		_getStringAttr: function() {
-			var str = '';
-			$.each(this._attr, function(attrName, attrValue) {
-
-				var value = _basis.emptyValue(attrValue, '');
-				if (typeof value === 'string' && value !== '') {
-					str += name + '="' + value.replace(/\s{2,}/g, ' ').trim() + '" ';
-				} else {
-					str += name + '="' + value + '" ';
-				}
-
-			});
-			if (str !== '') {
-				str = ' ' + str.trim();
-			}
-			return str;
-		},
-
-		/**
-		 * Build html tag
-		 * 
-		 * @private
-		 * @returns {string} Html tag
-		 */
-		_buildTag: function() {
-			var element = '';
-			if (typeof this._tagName === 'string') {
-
-				element = '<' + this._tagName + this._getStringAttr() + '>';
-				element += _basis.emptyValue(this._tagContent, '');
-
-				if (this._tagClosed === true) {
-					element += '</' + this._tagName + '>';
-				}
-			}
-			return element;
-		},
-
-		/**
-		 * Compiles and returns HTML tag
-		 *
-		 * @public
-		 * @returns {string} Html tag
-		 */
-		toHTML: function() {
-			return this._buildTag();
-		},
-
-		/**
-		 * Compiles and appends HTML tag in elements "element"
-		 *
-		 * @public
-		 * @param {string} element {This table will be added in element "element"}
-		 * @returns {HTML.Tag}
-		 */
-		appentTo: function(element) {
-			$(element).append(this._buildTag());
-			return this;
-		}
-	}
-
-} (window.HTML || {}));

@@ -250,7 +250,7 @@
              * @type {string}
              * @default {HTML.Basis.skin.primary}
              */
-            _skin: _basis.skin.primary,
+            _skin: _basis.skin.default,
 
             /**
              * disable buttons
@@ -378,7 +378,7 @@
              * @returns {HTML.Button}
              */
             setSkin: function(skin) {
-                this._skin = _basis.emptyProperty(_basis.skin, skin, _basis.skin.primary);
+                this._skin = _basis.emptyProperty(_basis.skin, skin, _basis.skin.default);
                 return this;
             },
 
@@ -422,7 +422,6 @@
 
                 var skin = _basis.emptyProperty(_basis.skin, this._skin, _basis.skin.default);
                 var htmlClass = CLASS_DEFAULT + '-' + skin;
-
                 htmlClass += ' ' + _basis.emptyValue(this._size, '');
                 htmlClass += ' ' + _basis.emptyValue(this._class, '');
                 htmlClass += ' ' + _basis.emptyValue(this._active, '');
@@ -449,7 +448,6 @@
              * @returns {HTML.Button}
              */
             addButton: function(value, name, id, icon, disabled) {
-
                 var counter = Object.keys(this._paramsButtons).length++;
 
                 this._paramsButtons[counter] = {};

@@ -7,6 +7,9 @@
 
     var src_files = [
         './builder/index.js',
+        './builder/FormatDate.js',
+        './builder/CssClasses.js',
+        './builder/BuildTag.js',
         './builder/Pagination.js',
         './builder/Button.js',
         './builder/Panel.js',

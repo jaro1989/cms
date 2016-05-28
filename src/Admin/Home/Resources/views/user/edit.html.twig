@@ -2,6 +2,8 @@
 {% block body %}
     <div id="edit-users"></div>
 
+    <div id="field-date"></div>
+
 
 
 
@@ -54,10 +56,22 @@
                         .addRow()
                         .addCell(
                             new HTML.Fields(3)
+                                    .setSkin('warning')
                                 .addSelectList(formatDate, new HTML.Basis().emptyProperty(user, 'dateFormat', null), 'date_format', 'Пользовательский формат даты')
-                                .addInputDate(new HTML.Basis().emptyProperty(user, 'datePerionN', null), 'Период - начало', 'date_perion_n', false)
-                                .addInputDate(new HTML.Basis().emptyProperty(user, 'datePerionK', null), 'Период - конец', 'date_perion_k', false)
-                                .toHtml(),1, 1
+//                                .addInputDate(new HTML.Basis().emptyProperty(user, 'datePerionN', null), 'Период - начало', 'date_perion_n', false)
+//                                .addInputDate(new HTML.Basis().emptyProperty(user, 'datePerionK', null), 'Период - конец', 'date_perion_k', false)
+                                .toHtml()
+
+                                +
+
+                            new HTML.FFDate(user, 'datePerionN', 'label-1', 4).toHTML()
+
+                                +
+
+                            new HTML.FFDate(user, 'datePerionK', 'label-2', 4).toHTML()
+
+
+                                ,1, 1
                         )
                         .addCell('Еще что то', 1, 2)
                         .addRow()
@@ -85,6 +99,11 @@
                 .setAction(action)
                 .setContent(content)
                 .appendHtml('#edit-users');
+
+
+            new HTML.FFDate('12313', 'namesdasd')
+                    .setWidth(3)
+                    .appentTo('#field-date');
         });
 
 //        jQuery(document).ready(function() {
