@@ -2,19 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e625a249-66d9-49c4-82c3-b892a980c4cc" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib-js/builder/CssClasses.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib-js/builder/FFDate.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib-js/builder/FormatDate.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/lib-js/builder/buildTag.js" afterPath="$PROJECT_DIR$/lib-js/builder/BuildTag.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/base.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/base.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/app/css/bootstrap.css" afterPath="$PROJECT_DIR$/lib-js/app/css/bootstrap.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/builder/Button.js" afterPath="$PROJECT_DIR$/lib-js/builder/Button.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/builder/index.js" afterPath="$PROJECT_DIR$/lib-js/builder/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/gulpfile.js" afterPath="$PROJECT_DIR$/lib-js/gulpfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Admin/Home/Entity/Users.php" afterPath="$PROJECT_DIR$/src/Admin/Home/Entity/Users.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Admin/Home/Resources/views/user/edit.html.twig" afterPath="$PROJECT_DIR$/src/Admin/Home/Resources/views/user/edit.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/admin/css/bootstrap.css" afterPath="$PROJECT_DIR$/web/admin/css/bootstrap.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/builder/FormatDate.js" afterPath="$PROJECT_DIR$/lib-js/builder/FormatDate.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/admin/js/html-builder.js" afterPath="$PROJECT_DIR$/web/admin/js/html-builder.js" />
     </list>
     <ignored path="cms.iws" />
@@ -60,8 +49,8 @@
       <file leaf-file-name="FormatDate.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib-js/builder/FormatDate.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5769231">
-              <caret line="58" column="44" selection-start-line="58" selection-start-column="44" selection-end-line="58" selection-end-column="44" />
+            <state vertical-scroll-proportion="-0.61538464">
+              <caret line="33" column="34" selection-start-line="33" selection-start-column="34" selection-end-line="33" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -703,7 +692,13 @@
       <option name="project" value="LOCAL" />
       <updated>1464424500349</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Create object FFDate, CssClasses, FormatDate">
+      <created>1464469735285</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1464469735285</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -752,7 +747,8 @@
     <MESSAGE value="Update calendar js fields - 3" />
     <MESSAGE value="Update calendar js fields - 4" />
     <MESSAGE value="Update lib-js/ add module - buildTag" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update lib-js/ add module - buildTag" />
+    <MESSAGE value="Create object FFDate, CssClasses, FormatDate" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create object FFDate, CssClasses, FormatDate" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1140,8 +1136,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/builder/FormatDate.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5769231">
-          <caret line="58" column="44" selection-start-line="58" selection-start-column="44" selection-end-line="58" selection-end-column="44" />
+        <state vertical-scroll-proportion="-0.61538464">
+          <caret line="33" column="34" selection-start-line="33" selection-start-column="34" selection-end-line="33" selection-end-column="34" />
           <folding />
         </state>
       </provider>

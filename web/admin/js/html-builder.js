@@ -502,15 +502,22 @@
 
             this._date = new Date();
             this._date.setTime(this._timestamp * 1000);
-            var year = this._date.getFullYear();
+
+            var year =   this._date.getFullYear();
+            var month =  this._date.getMonth();
+            var numDay = this._date.getDate();
+            var hour =   this._date.getHours();
+            var minute = this._date.getMinutes();
+            var second = this._date.getSeconds();
+
             this._keysFormat = {
                 yyyy: year,
-                yy: year,//.substring((year.length - 2)),
-                mm: this._date.getMonth(),
-                dd: this._date.getDate(),
-                hh: this._date.getHours(),
-                mi: this._date.getMinutes(),
-                ss: this._date.getSeconds()
+                yy: String(year).substring((String(year).length - 2)),
+                mm: (month  < 10) ? "0" + month  : month,
+                dd: (numDay < 10) ? "0" + numDay : numDay,
+                hh: (hour   < 10) ? "0" + hour   : hour,
+                mi: (minute < 10) ? "0" + minute : minute,
+                ss: (second < 10) ? "0" + second : second
             };
         };
 
@@ -521,38 +528,43 @@
             _separatorDate: null,
             _separatorTime: null,
             _strDate: null,
+            _separator: ['.', '-', '/', ':'],
 
+            /**
+             * Parse date format and build new array with keys
+             *
+             * @returns {*[]}
+             * @private
+             */
             _parseFormat: function() {
                 var arr = this._format.split(' ');
-                console.log(arr[1]);
 
-                if (typeof arr[0] === 'string' && ~arr[0].indexOf('.')) {
-                    this._arrFormatDate = arr[0].split('.');
-                    this._separatorDate = '.';
-                }
-
-                if (typeof arr[0] === 'string' && ~arr[0].indexOf('-')) {
-                    this._arrFormatDate = arr[0].split('-');
-                    this._separatorDate = '-';
-                }
-
-                if (typeof arr[0] === 'string' && ~arr[0].indexOf('/')) {
-                    this._arrFormatDate = arr[0].split('/');
-                    this._separatorDate = '/';
-                }
-
-                if (typeof arr[1] === 'string' && ~arr[1].indexOf(':')) {
-                    var time = arr[1].split(':');
-                    var lenArr = time.length;
-                    for (var i = 0; i < lenArr; i++) {
-                        this._arrFormatTime.push(time[i]);
+                for (var a = 0; a < this._separator.length; a++) {
+                    if (typeof arr[0] === 'string' && ~arr[0].indexOf(this._separator[a])) {
+                        this._arrFormatDate = arr[0].split(this._separator[a]);
+                        this._separatorDate = this._separator[a];
                     }
-                    this._separatorTime = ':';
+                }
+
+                for (var b = 0; b < this._separator.length; b++) {
+                    if (typeof arr[1] === 'string' && ~arr[1].indexOf(this._separator[b])) {
+                        var time = arr[1].split(this._separator[b]);
+                        var lenArr = time.length;
+                        for (var i = 0; i < lenArr; i++) {
+                            this._arrFormatTime.push(time[i]);
+                        }
+                        this._separatorTime = this._separator[b];
+                    }
                 }
 
                 return [this._arrFormatDate, this._arrFormatTime];
             },
 
+            /**
+             * Generate string date in forma
+             *
+             * @returns {string}
+             */
             getStrDate: function() {
                 this._parseFormat();
                 var strDate = '';
