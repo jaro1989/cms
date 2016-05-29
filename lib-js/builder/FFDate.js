@@ -318,7 +318,7 @@
                     new HTML.FormatDate(null, null)
                         .getCurrentDate()
                 );
-            return null;
+            return false;
         },
 
         _setDate: function(element, format) {
@@ -327,55 +327,50 @@
 
             var input = parentElement.find('.' + CLASS_USER);
 
+            var formatDatepicker = format;
+            if (~format.toLowerCase().indexOf('yyyy')) {
+                formatDatepicker = format.replace('yyyy', 'yy');
+            } else {
+                formatDatepicker = format.replace('yy', 'y');
+            }
 
-                //input.datepicker({
-                //    onClose: function(year, month, inst) {
-                //        console.log(year, month, inst);
-                //    }
-                //});
-
-            //console.log(input.datepicker( "option", "changeMonth" ));
-
-            //console.log(
-            //    input.datepicker(
-            //        {
-            //            duration: 0,
-            //            constrainInput: true,
-            //            changeMonth: true,
-            //            changeYear: true,
-            //            dateFormat: format,
-            //            altField:  parentElement.find('.' + CLASS_HIDDEN),
-            //            altFormat: 'yy-mm-dd hh:mi:ss'
-            //        }
-            //    );
-            //);
-
-
-
-            var date = '';
             input.datepicker(
                 {
+                    defaultDate: "01-01-02",
                     constrainInput: true,
                     changeMonth: true,
                     changeYear: true,
-                    dateFormat: '@',
-                    numberOfMonths: 1,
-                    onClose: function(dateText, inst) {
+                    dateFormat: formatDatepicker,
+                    numberOfMonths: 2,
+                    onSelect: function(dateText) {
+
+                        var datepicker = $( this ).data( "datepicker" );
+                        var timestamp = new Date();
+                        timestamp.setDate(datepicker.selectedDay);
+                        timestamp.setMonth(datepicker.selectedMonth);
+                        timestamp.setFullYear(datepicker.selectedYear);
+                        dateText = timestamp.getTime();
+
                         if (!isNaN(Number(dateText))) {
-                            date = new HTML.FormatDate(dateText / 1000, format).getDate();
+                            var date = new HTML.FormatDate(dateText / 1000, format).getDate();
                             input.val(date);
                             parentElement.find('.' + CLASS_HIDDEN).val(new HTML.FormatDate(dateText / 1000, null).getDate());
                         }
                     }
                 }
-            ).datepicker('setDate', date);
+            );
 
             input.focus();
+            return false;
         },
 
         _removeDate: function(element) {
-            //var input = $(element).parent('div').find('.' + CLASS_DATE);
-            //input.val('');
+            var parentElement = $(element)
+                .parent().parent().parent().parent().parent();
+            console.log(parentElement);
+            parentElement.find('.' + CLASS_USER).val('');
+            parentElement.find('.' + CLASS_HIDDEN).val('');
+            return false;
         },
 
         /**
