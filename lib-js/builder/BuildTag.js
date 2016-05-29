@@ -131,17 +131,18 @@
              *
              * @public
              * @param {string} htmlId
+             * @param {string|null} nameField
              * @returns {HTML.BuildTag}
              */
-            setId: function(htmlId) {
+            setId: function(htmlId, nameField) {
                 if (typeof htmlId === 'string') {
 
                     this._attr.id = htmlId;
                 } else {
 
-                    if (typeof this._attr.name === 'string') {
+                    if (typeof nameField === 'string') {
 
-                        this._attr.id = this._attr.name
+                        this._attr.id = nameField
                             .replace(/\[/g, '_')
                             .replace(/\]/g, '');
                     }

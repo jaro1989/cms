@@ -1,5 +1,9 @@
 (function(HTML) {
 
+    var CLASS_USER = 'date-user';
+    var CLASS_HIDDEN = 'date-hidden';
+    var FORMAT_DATE = 'dd.mm.yyyy';
+
     /**
      * The generator of the basic elements HTML
      *
@@ -30,6 +34,8 @@
 
     /** @protected */
     HTML.FFDate.prototype = {
+
+        _formatDate: FORMAT_DATE,
 
         /**
          * @type {number|null}
@@ -141,12 +147,15 @@
          * @returns {string}
          */
         _setValue: function(value, name) {
-            var res = null;
+            var res = {};
+            res[CLASS_USER] = null;
+            res[CLASS_HIDDEN] = null;
             if (typeof value === 'object') {
 
                 var timestamp = _basis.emptyProperty(value, 'timestamp', false);
                 if (timestamp !== false) {
-                    res = new HTML.FormatDate(timestamp, 'dd.mm.yyyy').getStrDate();
+                    res[CLASS_USER] = new HTML.FormatDate(timestamp, this._formatDate).getDate();
+                    res[CLASS_HIDDEN] = new HTML.FormatDate(timestamp, null).getDate();
                 }
 
                 name = _basis.emptyProperty(value, name, false);
@@ -154,22 +163,13 @@
 
                     timestamp = _basis.emptyProperty(name, 'timestamp', false);
                     if (timestamp !== false) {
-                        res = new HTML.FormatDate(timestamp, 'dd.mm.yyyy').getStrDate();
-                        //var date = new Date();
-                        ////27/05/2016
-                        //date.setTime(timestamp * 1000);
-                        //var hours = date.getHours();
-                        //var minutes = date.getMinutes();
-                        //var seconds = date.getSeconds();
-                        //var day = date.getDate();
-                        //var month = date.getMonth();
-                        //var yyyy = date.getFullYear();
-                        //
-                        //console.log(day, month, yyyy, hours, minutes, seconds);
+                        res[CLASS_USER] = new HTML.FormatDate(timestamp, this._formatDate).getDate();
+                        res[CLASS_HIDDEN] = new HTML.FormatDate(timestamp, null).getDate();
                     }
 
                 } else if (typeof name === 'string') {
-                    res = name;
+                    res[CLASS_USER] = name;
+                    res[CLASS_HIDDEN] = name;
                 }
             }
             return res;
@@ -246,10 +246,20 @@
                                     new HTML.BuildTag('input', false)
                                         .setClass(_basis.css.formControl)
                                         .addClass(_basis.getDisabled(this._disabled))
-                                        .setValue(this._value)
+                                        .addClass(CLASS_USER)
+                                        .setValue(this._value[CLASS_USER])
+                                        .setDisabled(this._disabled)
+                                        .setId(this._id, this._name)
+                                        .setType('text')
+                                        .toHTML()
+
+                                    +
+
+                                    new HTML.BuildTag('input', false)
+                                        .setClass(CLASS_HIDDEN)
+                                        .setValue(this._value[CLASS_HIDDEN])
                                         .setDisabled(this._disabled)
                                         .setName(this._name)
-                                        .setId(this._id)
                                         .setType('text')
                                         .toHTML()
                                 )
@@ -267,8 +277,11 @@
                                                 .setActive(true)
                                                 .setSize(this._size)
                                                 .setSkin(this._skinButtons)
+                                                .setOnClick('new HTML.FFDate()._setCurrentDate(this, \'' + this._formatDate + '\');')
                                                 .addButton(null, null, null, 'saved', this._disabled)
+                                                .setOnClick('new HTML.FFDate()._setDate(this, \'' + this._formatDate + '\');')
                                                 .addButton(null, null, null, 'calendar', this._disabled)
+                                                .setOnClick('new HTML.FFDate()._removeDate(this);')
                                                 .addButton(null, null, null, 'remove', this._disabled)
                                                 .toHtml()
                                         )
@@ -279,6 +292,90 @@
                         .toHTML()
                 )
                 .toHTML();
+        },
+
+        /**
+         * Set current date to field date and hidden field date
+         *
+         * @param {object} element
+         * @param {string} format
+         * @returns {null}
+         * @private
+         */
+        _setCurrentDate: function(element, format) {
+            var parentElement = $(element)
+                .parent().parent().parent().parent().parent();
+
+            parentElement
+                .find('.' + CLASS_USER)
+                .val(
+                    new HTML.FormatDate(null, format)
+                        .getCurrentDate()
+                );
+            parentElement
+                .find('.' + CLASS_HIDDEN)
+                .val(
+                    new HTML.FormatDate(null, null)
+                        .getCurrentDate()
+                );
+            return null;
+        },
+
+        _setDate: function(element, format) {
+            var parentElement = $(element)
+                .parent().parent().parent().parent().parent();
+
+            var input = parentElement.find('.' + CLASS_USER);
+
+
+                //input.datepicker({
+                //    onClose: function(year, month, inst) {
+                //        console.log(year, month, inst);
+                //    }
+                //});
+
+            //console.log(input.datepicker( "option", "changeMonth" ));
+
+            //console.log(
+            //    input.datepicker(
+            //        {
+            //            duration: 0,
+            //            constrainInput: true,
+            //            changeMonth: true,
+            //            changeYear: true,
+            //            dateFormat: format,
+            //            altField:  parentElement.find('.' + CLASS_HIDDEN),
+            //            altFormat: 'yy-mm-dd hh:mi:ss'
+            //        }
+            //    );
+            //);
+
+
+
+            var date = '';
+            input.datepicker(
+                {
+                    constrainInput: true,
+                    changeMonth: true,
+                    changeYear: true,
+                    dateFormat: '@',
+                    numberOfMonths: 1,
+                    onClose: function(dateText, inst) {
+                        if (!isNaN(Number(dateText))) {
+                            date = new HTML.FormatDate(dateText / 1000, format).getDate();
+                            input.val(date);
+                            parentElement.find('.' + CLASS_HIDDEN).val(new HTML.FormatDate(dateText / 1000, null).getDate());
+                        }
+                    }
+                }
+            ).datepicker('setDate', date);
+
+            input.focus();
+        },
+
+        _removeDate: function(element) {
+            //var input = $(element).parent('div').find('.' + CLASS_DATE);
+            //input.val('');
         },
 
         /**

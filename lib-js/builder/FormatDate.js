@@ -1,7 +1,7 @@
 
     (function(HTML) {
 
-        var DEFAULT_FORMAT = 'dd-mm-yyyy hh:mi:ss';
+        var DEFAULT_FORMAT = 'yyyy-mm-dd hh:mi:ss';
 
         /**
          * @memberOf HTML
@@ -17,26 +17,10 @@
 
             this._arrFormatDate = [];
             this._arrFormatTime = [];
+            this._keysFormat = {};
 
             this._date = new Date();
-            this._date.setTime(this._timestamp * 1000);
 
-            var year =   this._date.getFullYear();
-            var month =  this._date.getMonth();
-            var numDay = this._date.getDate();
-            var hour =   this._date.getHours();
-            var minute = this._date.getMinutes();
-            var second = this._date.getSeconds();
-
-            this._keysFormat = {
-                yyyy: year,
-                yy: String(year).substring((String(year).length - 2)),
-                mm: (month  < 10) ? "0" + month  : month,
-                dd: (numDay < 10) ? "0" + numDay : numDay,
-                hh: (hour   < 10) ? "0" + hour   : hour,
-                mi: (minute < 10) ? "0" + minute : minute,
-                ss: (second < 10) ? "0" + second : second
-            };
         };
 
         /** @protected */
@@ -47,6 +31,26 @@
             _separatorTime: null,
             _strDate: null,
             _separator: ['.', '-', '/', ':'],
+
+            _getKeyFormat: function() {
+                var year =   this._date.getFullYear();
+                var month =  this._date.getMonth() + 1;
+                var numDay = this._date.getDate();
+                var hour =   this._date.getHours();
+                var minute = this._date.getMinutes();
+                var second = this._date.getSeconds();
+
+                this._keysFormat = {
+                    yyyy: year,
+                    yy: String(year).substring((String(year).length - 2)),
+                    mm: (month  < 10) ? "0" + month  : month,
+                    dd: (numDay < 10) ? "0" + numDay : numDay,
+                    hh: (hour   < 10) ? "0" + hour   : hour,
+                    mi: (minute < 10) ? "0" + minute : minute,
+                    ss: (second < 10) ? "0" + second : second
+                };
+                return this._keysFormat;
+            },
 
             /**
              * Parse date format and build new array with keys
@@ -79,11 +83,13 @@
             },
 
             /**
-             * Generate string date in forma
+             * Build string date in format
              *
-             * @returns {string}
+             * @returns {null}
+             * @private
              */
-            getStrDate: function() {
+            _buildStringDate: function() {
+                this._getKeyFormat();
                 this._parseFormat();
                 var strDate = '';
                 var currentObj = this;
@@ -106,6 +112,28 @@
                 var time = strTime.substring(0, strTime.length - 1);
                 this._strDate = (date + ' ' + time).replace(/\s{2,}/g, ' ').trim();
                 return this._strDate;
+            },
+
+            /**
+             * Generate string date in format
+             *
+             * @public
+             * @returns {string}
+             */
+            getDate: function() {
+                this._date.setTime(this._timestamp * 1000);
+                return this._buildStringDate();
+
+            },
+
+            /**
+             * Generate string current date in format
+             *
+             * @public
+             * @returns {string}
+             */
+            getCurrentDate: function() {
+                return this._buildStringDate();
             }
         };
     } (window.HTML || {}));
