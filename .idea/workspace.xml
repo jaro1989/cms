@@ -4,6 +4,8 @@
     <list default="true" id="e625a249-66d9-49c4-82c3-b892a980c4cc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/builder/FFDate.js" afterPath="$PROJECT_DIR$/lib-js/builder/FFDate.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Admin/Home/Entity/Users.php" afterPath="$PROJECT_DIR$/src/Admin/Home/Entity/Users.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Admin/Home/Resources/views/user/edit.html.twig" afterPath="$PROJECT_DIR$/src/Admin/Home/Resources/views/user/edit.html.twig" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/admin/js/html-builder.js" afterPath="$PROJECT_DIR$/web/admin/js/html-builder.js" />
     </list>
     <ignored path="cms.iws" />
@@ -26,21 +28,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="edit.html.twig" pinned="false" current-in-tab="false">
+      <file leaf-file-name="edit.html.twig" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Admin/Home/Resources/views/user/edit.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.29310346">
+              <caret line="58" column="42" selection-start-line="58" selection-start-column="42" selection-end-line="58" selection-end-column="42" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FFDate.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="FFDate.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/builder/FFDate.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42564103">
-              <caret line="343" column="37" selection-start-line="343" selection-start-column="37" selection-end-line="343" selection-end-column="37" />
+            <state vertical-scroll-proportion="-9.827586">
+              <caret line="322" column="63" selection-start-line="322" selection-start-column="63" selection-end-line="322" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -49,18 +51,8 @@
       <file leaf-file-name="Fields.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/builder/Fields.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="-0.51724136">
               <caret line="417" column="14" selection-start-line="393" selection-start-column="12" selection-end-line="417" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FormatDate.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/builder/FormatDate.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="131" column="22" selection-start-line="131" selection-start-column="22" selection-end-line="131" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -69,8 +61,8 @@
       <file leaf-file-name="Users.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Admin/Home/Entity/Users.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="406" column="35" selection-start-line="406" selection-start-column="35" selection-end-line="406" selection-end-column="35" />
+            <state vertical-scroll-proportion="-31.458334">
+              <caret line="429" column="35" selection-start-line="429" selection-start-column="35" selection-end-line="429" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -118,14 +110,14 @@
         <option value="$PROJECT_DIR$/lib-js/builder/index.js" />
         <option value="$PROJECT_DIR$/lib-js/builder/Button.js" />
         <option value="$PROJECT_DIR$/lib-js/builder/CssClasses.js" />
-        <option value="$PROJECT_DIR$/src/Admin/Home/Entity/Users.php" />
         <option value="$PROJECT_DIR$/lib-js/builder/Date.js" />
         <option value="$PROJECT_DIR$/lib-js/gulpfile.js" />
         <option value="$PROJECT_DIR$/web/admin/js/html-builder.js" />
-        <option value="$PROJECT_DIR$/src/Admin/Home/Resources/views/user/edit.html.twig" />
         <option value="$PROJECT_DIR$/lib-js/builder/BuildTag.js" />
         <option value="$PROJECT_DIR$/lib-js/builder/FormatDate.js" />
+        <option value="$PROJECT_DIR$/src/Admin/Home/Entity/Users.php" />
         <option value="$PROJECT_DIR$/lib-js/builder/FFDate.js" />
+        <option value="$PROJECT_DIR$/src/Admin/Home/Resources/views/user/edit.html.twig" />
       </list>
     </option>
   </component>
@@ -260,6 +252,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="admin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="calendar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -720,7 +734,13 @@
       <option name="project" value="LOCAL" />
       <updated>1464517435063</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Update FormatDate - 4">
+      <created>1464530299535</created>
+      <option name="number" value="00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1464530299535</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -730,6 +750,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28137094" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TypeScript Compiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32925585" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -737,7 +758,6 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14475025" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -772,7 +792,8 @@
     <MESSAGE value="Create object FFDate, CssClasses, FormatDate" />
     <MESSAGE value="Update FormatDate - 2" />
     <MESSAGE value="Update FormatDate - 3" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update FormatDate - 3" />
+    <MESSAGE value="Update FormatDate - 4" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update FormatDate - 4" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -790,6 +811,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="38" selection-start-line="6" selection-start-column="8" selection-end-line="12" selection-end-column="38" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -981,6 +1003,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.23076923">
           <caret line="12" column="38" selection-start-line="6" selection-start-column="8" selection-end-line="12" selection-end-column="38" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1054,17 +1077,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/base.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.75">
-          <caret line="6" column="54" selection-start-line="6" selection-start-column="54" selection-end-line="6" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/builder/Button.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.15">
           <caret line="449" column="21" selection-start-line="449" selection-start-column="12" selection-end-line="449" selection-end-column="21" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1082,34 +1099,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Admin/Home/Entity/Users.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="406" column="35" selection-start-line="406" selection-start-column="35" selection-end-line="406" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/builder/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.2217948">
           <caret line="32" column="14" selection-start-line="30" selection-start-column="17" selection-end-line="32" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/admin/js/html-builder.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="23.021795">
-          <caret line="1737" column="12" selection-start-line="1737" selection-start-column="12" selection-end-line="1737" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Admin/Home/Resources/views/user/edit.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1121,26 +1114,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/builder/Fields.js">
+    <entry file="file://$PROJECT_DIR$/web/admin/js/html-builder.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="417" column="14" selection-start-line="393" selection-start-column="12" selection-end-line="417" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.34579438">
+          <caret line="3842" column="21" selection-start-line="3842" selection-start-column="8" selection-end-line="3842" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Admin/Home/Entity/Users.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-31.458334">
+          <caret line="429" column="35" selection-start-line="429" selection-start-column="35" selection-end-line="429" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/builder/FormatDate.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.76794875">
           <caret line="131" column="22" selection-start-line="131" selection-start-column="22" selection-end-line="131" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/builder/Fields.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.51724136">
+          <caret line="417" column="14" selection-start-line="393" selection-start-column="12" selection-end-line="417" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/base.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.11464968">
+          <caret line="6" column="54" selection-start-line="6" selection-start-column="54" selection-end-line="6" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/builder/FFDate.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42564103">
-          <caret line="343" column="37" selection-start-line="343" selection-start-column="37" selection-end-line="343" selection-end-column="37" />
+        <state vertical-scroll-proportion="-9.827586">
+          <caret line="322" column="63" selection-start-line="322" selection-start-column="63" selection-end-line="322" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Admin/Home/Resources/views/user/edit.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29310346">
+          <caret line="58" column="42" selection-start-line="58" selection-start-column="42" selection-end-line="58" selection-end-column="42" />
           <folding />
         </state>
       </provider>

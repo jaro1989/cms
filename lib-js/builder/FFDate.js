@@ -14,7 +14,7 @@
 
     /**
      * @memberOf HTML
-     * @namespace HTML.Tag
+     * @namespace HTML.FFDate
      * @constructor
      * @param {string|null} name
      * @param {string|object|null} value
@@ -26,7 +26,7 @@
      * @param {number|null} width
      */
     HTML.FFDate = function(value, name, label, width) {
-        this._value = this._setValue(value, name);
+        this._value = value;
         this._name = name;
         this._label = label;
         this._width = width;
@@ -35,6 +35,19 @@
     /** @protected */
     HTML.FFDate.prototype = {
 
+        /**
+         * @type {boolean}
+         */
+        changeMonth: true,
+
+        /**
+         * @type {boolean}
+         */
+        changeYear: true,
+
+        /**
+         * @type {string}
+         */
         _formatDate: FORMAT_DATE,
 
         /**
@@ -98,8 +111,21 @@
         _separatorLabel: ':',
 
         /**
+         * Set the date format for the visual field
+         *
+         * @public
+         * @param {string} format
+         * @returns {HTML.FFDate}
+         */
+        setFormatDate: function(format) {
+            this._formatDate = format;
+            return this;
+        },
+
+        /**
          * Width label else field is line
          *
+         * @public
          * @param {number} widthLabel
          * @returns {HTML.FFDate}
          */
@@ -113,6 +139,7 @@
         /**
          * Set label in line
          *
+         * @public
          * @returns {HTML.FFDate}
          */
         setLineLabel: function() {
@@ -123,16 +150,13 @@
         /**
          * Set separator between label and field
          *
+         * @public
          * @param {string} separatorLabel
          * @returns {HTML.FFDate}
          */
         setSeparatorLabel: function(separatorLabel) {
             this._separatorLabel = separatorLabel;
             return this;
-        },
-
-        formatDate: function(timestamp, format) {
-
         },
 
         /**
@@ -144,12 +168,12 @@
          *                                  { value: { name: '2000-01-01 00:00:00' } |
          *                                  { value: { timestamp: '1107291600' } } |
          *                                  { value: { name: { timestamp: '1107291600' } } }
-         * @returns {string}
+         * @returns {object} values {for field with date (user) and date (hidden)}
          */
         _setValue: function(value, name) {
             var res = {};
-            res[CLASS_USER] = null;
-            res[CLASS_HIDDEN] = null;
+            res[CLASS_USER] = value;
+            res[CLASS_HIDDEN] = value;
             if (typeof value === 'object') {
 
                 var timestamp = _basis.emptyProperty(value, 'timestamp', false);
@@ -216,6 +240,7 @@
         _buildField: function () {
             var width = this._getWidth();
             var skin = _basis.getSkin(this._skinField);
+            this._value = this._setValue(this._value, this._name);
 
             var label = '';
             if (this._label !== null) {
@@ -260,7 +285,7 @@
                                         .setValue(this._value[CLASS_HIDDEN])
                                         .setDisabled(this._disabled)
                                         .setName(this._name)
-                                        .setType('text')
+                                        .setType('hidden')
                                         .toHTML()
                                 )
                                 .toHTML()
@@ -299,13 +324,11 @@
          *
          * @param {object} element
          * @param {string} format
-         * @returns {null}
+         * @returns {boolean}
          * @private
          */
         _setCurrentDate: function(element, format) {
-            var parentElement = $(element)
-                .parent().parent().parent().parent().parent();
-
+            var parentElement = this._parentElement(element);
             parentElement
                 .find('.' + CLASS_USER)
                 .val(
@@ -321,10 +344,16 @@
             return false;
         },
 
+        /**
+         * Set the selected date
+         *
+         * @param {*} element
+         * @param {string} format Format date
+         * @returns {boolean}
+         * @private
+         */
         _setDate: function(element, format) {
-            var parentElement = $(element)
-                .parent().parent().parent().parent().parent();
-
+            var parentElement = this._parentElement(element);
             var input = parentElement.find('.' + CLASS_USER);
 
             var formatDatepicker = format;
@@ -336,12 +365,10 @@
 
             input.datepicker(
                 {
-                    defaultDate: "01-01-02",
-                    constrainInput: true,
-                    changeMonth: true,
-                    changeYear: true,
                     dateFormat: formatDatepicker,
-                    numberOfMonths: 2,
+                    changeMonth: this.changeMonth,
+                    changeYear: this.changeYear,
+                    numberOfMonths: 1,
                     onSelect: function(dateText) {
 
                         var datepicker = $( this ).data( "datepicker" );
@@ -364,13 +391,34 @@
             return false;
         },
 
+        /**
+         * Clean field date
+         *
+         * @param {*} element
+         * @returns {boolean}
+         * @private
+         */
         _removeDate: function(element) {
-            var parentElement = $(element)
-                .parent().parent().parent().parent().parent();
-            console.log(parentElement);
+            var parentElement = this._parentElement(element);
             parentElement.find('.' + CLASS_USER).val('');
             parentElement.find('.' + CLASS_HIDDEN).val('');
             return false;
+        },
+
+        /**
+         * Parent block for search fields with date
+         *
+         * @param {*} element
+         * @returns {*}
+         * @private
+         */
+        _parentElement: function(element) {
+            var parentElement = $(element).parent().parent();
+            var type = $(element).attr('type');
+            if (type === 'button' || type == 'submit') {
+                return parentElement.parent().parent().parent();
+            }
+            return parentElement;
         },
 
         /**
@@ -440,10 +488,32 @@
         },
 
         /**
+         * Hide select list Change Month to calendar
+         *
+         * @public
+         * @returns {HTML.FFDate}
+         */
+        hideChangeMonth: function() {
+            this.changeMonth = false;
+            return this;
+        },
+
+        /**
+         * Hide select list Change Year to calendar
+         *
+         * @public
+         * @returns {HTML.FFDate}
+         */
+        hideChangeYear: function() {
+            this.changeYear = false;
+            return this;
+        },
+
+        /**
          * Compiles and returns HTML field
          *
          * @public
-         * @returns {string} Html tag
+         * @returns {string} Html field
          */
         toHTML: function() {
             return this._buildField();
@@ -454,7 +524,7 @@
          *
          * @public
          * @param {string} element {This table will be added in element "element"}
-         * @returns {HTML.Tag}
+         * @returns {HTML.FFDate}
          */
         appentTo: function(element) {
             $(element).append(this._buildField());
