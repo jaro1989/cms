@@ -2,12 +2,15 @@
 namespace Admin\Home\Controller;
 
 use Admin\Home\Entity\Users;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
 
 class UserController extends Controller{
+
+    private $limit = 10;
 
     /**
      * Page edit user
@@ -71,79 +74,23 @@ class UserController extends Controller{
     public function listAction(Request $request)
     {
         $data['title'] = 'Список пользователей';
-        $data['head'] = ['ФИО', 'Username', 'Email', 'Password'];
-        $data['body'] = [
-            '1s' => [
-                '2sd' => '111',
-                1 => '111',
-                2 => '111',
-                3 => '111'
-            ],
-            1 => [
-                0 => '111',
-                1 => '111',
-                2 => '111',
-                3 => '111'
-            ],
-            2 => [
-                0 => '111',
-                1 => '111',
-                2 => '111',
-                3 => '111'
-            ],
-            3 => [
-                0 => '111',
-                1 => '111',
-                2 => '111',
-                3 => '111'
-            ],
-            4 => [
-                0 => '111',
-                1 => '111',
-                2 => '111',
-                3 => '111'
-            ],
-            5 => [
-                0 => '111',
-                1 => '111',
-                2 => '111',
-                3 => '111'
-            ],
-            6 => [
-                0 => '111',
-                1 => '111',
-                2 => '111',
-                3 => '111'
-            ],
-            7 => [
-                0 => '111',
-                1 => '111',
-                2 => '111',
-                3 => '111'
-            ],
-            8 => [
-                0 => '111',
-                1 => '111',
-                2 => '111',
-                3 => '111'
-            ],
-            9 => [
-                0 => '111',
-                1 => '111',
-                2 => '111',
-                3 => '111'
-            ],
-            10 => [
-                0 => '111',
-                1 => '111',
-                2 => '111',
-                3 => '111'
-            ]
-        ];
-        $data['pagination'] = [
-            'currentPage' => $request->get('page'),
-            'countPage' => 30
-        ];
+        $data['head'] = ['ID', 'ФИО', 'Username', 'Email'];
+
+        $em = $this->getDoctrine()->getManager();
+        $dql = "
+            SELECT u FROM AdminHome:Users u
+        ";
+        $query = $em->createQuery($dql)
+            ->setFirstResult($request->get('page') - 1)
+            ->setMaxResults($this->limit);
+
+        $serializer = $this->get('serializer');
+
+        $paginator = new Paginator($query);
+        $data['pagination']['currentPage'] = $request->get('page');
+        $data['pagination']['countPage'] = ceil($paginator->count() / $this->limit);
+        $data['body'] = $serializer->serialize($query->getResult(), 'json');
+
         return $this->render('AdminHome:user:list.html.twig', $data);
     }
 
@@ -200,7 +147,7 @@ class UserController extends Controller{
         foreach($request->request->all() as $key => $value) {
 
             $method = 'set' . str_replace('_', '', $key);
-            echo '<bt/>';
+
             if (method_exists($user, $method)) {
                 $user->$method($value);
             }

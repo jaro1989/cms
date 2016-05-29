@@ -2691,8 +2691,28 @@
             unique++;
             this._unique = unique;
             this._id = _basis.emptyValue(idTable, TABLE + '-' + this._unique);
+            /**
+             * Parameters for generation head table
+             *
+             * @private
+             * @type {object}
+             */
             this._head = {};
+
+            /**
+             * Parameters for generation body table
+             *
+             * @private
+             * @type {object}
+             */
             this._body = {};
+
+            /**
+             * Parameters for generation foot table
+             *
+             * @private
+             * @type {object}
+             */
             this._foot = {};
             this._counterHeadRow = 1;
             this._counterBodyRow = 1;
@@ -2792,30 +2812,6 @@
              * @type {string|null}
              */
             _margin: null,
-
-            /**
-             * Parameters for generation head table
-             *
-             * @private
-             * @type {object}
-             */
-            _head: {},
-
-            /**
-             * Parameters for generation body table
-             *
-             * @private
-             * @type {object}
-             */
-            _body: {},
-
-            /**
-             * Parameters for generation foot table
-             *
-             * @private
-             * @type {object}
-             */
-            _foot: {},
 
             /**
              * Cell name { 'th' | 'td' }

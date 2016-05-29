@@ -9,13 +9,14 @@
             //Parameters for generating rows table head
             var dataHead = JSON.parse('{{ head|json_encode|raw }}');
             //Parameters for generating rows table body
-            var dataBody = JSON.parse('{{ body|json_encode|raw }}');
+            var dataBody = JSON.parse({{ body|json_encode|raw }});
+            console.log(dataBody);
 
             var currentPage = '{{ pagination.currentPage }}';
             var countPage = '{{ pagination.countPage }}';
 
             var tb = new HTML.Table('table-users', true, false)
-                .setLinkRow('{{ url('_user_edit') }}/')
+                .setLinkRow('{{ url('_user_form') }}/')
                 .setPadding('sm')
                 .setContentBeforeTable(
                         new HTML.Table('user-filter', false, false)
