@@ -21,6 +21,12 @@
             this._tagName = _basis.emptyValue(tagName, TAG_DEFAULT);
             this._tagClosed = _basis.emptyValue(tagClosed, true);
 
+            /**
+             * List attributes
+             *
+             * @private
+             * @type {object}
+             */
             this._attr = {
                 'id': null,
 
@@ -48,7 +54,11 @@
 
                 'required': null,
 
-                'for': null
+                'for': null,
+
+                'rowspan': 1,
+
+                'colspan': 1
             };
         };
 
@@ -79,13 +89,38 @@
              */
             _tagContent: null,
 
+            getColspan: function() {
+                return this._attr.colspan;
+            },
+
             /**
-             * List attributes
+             * Set attribute "colspan"
              *
-             * @private
-             * @type {object}
+             * @public
+             * @param {number} colspan
+             * @returns {HTML.BuildTag}
              */
-            _attr: {},
+            setColspan: function(colspan) {
+                this._attr.colspan = colspan;
+                return this;
+            },
+
+            getRowspan: function() {
+                return this._attr.rowspan;
+            },
+
+
+            /**
+             * Set attribute "rowspan"
+             *
+             * @public
+             * @param {number} rowspan
+             * @returns {HTML.BuildTag}
+             */
+            setRowspan: function(rowspan) {
+                this._attr.rowspan = rowspan;
+                return this;
+            },
 
             getAttributes: function() {
                 return this._attr;
@@ -102,8 +137,8 @@
                 if (typeof attributes === 'object') {
                     var currentObj = this;
                     $.each(attributes, function(attrName, attrValue) {
-                        if (currentObj.attr.hasOwnProperty(attrName)) {
-                            currentObj.attr[attrName] = attrValue;
+                        if (currentObj._attr.hasOwnProperty(attrName)) {
+                            currentObj._attr[attrName] = attrValue;
                         }
                     });
                 }

@@ -775,6 +775,12 @@
             this._tagName = _basis.emptyValue(tagName, TAG_DEFAULT);
             this._tagClosed = _basis.emptyValue(tagClosed, true);
 
+            /**
+             * List attributes
+             *
+             * @private
+             * @type {object}
+             */
             this._attr = {
                 'id': null,
 
@@ -802,7 +808,11 @@
 
                 'required': null,
 
-                'for': null
+                'for': null,
+
+                'rowspan': 1,
+
+                'colspan': 1
             };
         };
 
@@ -833,13 +843,38 @@
              */
             _tagContent: null,
 
+            getColspan: function() {
+                return this._attr.colspan;
+            },
+
             /**
-             * List attributes
+             * Set attribute "colspan"
              *
-             * @private
-             * @type {object}
+             * @public
+             * @param {number} colspan
+             * @returns {HTML.BuildTag}
              */
-            _attr: {},
+            setColspan: function(colspan) {
+                this._attr.colspan = colspan;
+                return this;
+            },
+
+            getRowspan: function() {
+                return this._attr.rowspan;
+            },
+
+
+            /**
+             * Set attribute "rowspan"
+             *
+             * @public
+             * @param {number} rowspan
+             * @returns {HTML.BuildTag}
+             */
+            setRowspan: function(rowspan) {
+                this._attr.rowspan = rowspan;
+                return this;
+            },
 
             getAttributes: function() {
                 return this._attr;
@@ -856,8 +891,8 @@
                 if (typeof attributes === 'object') {
                     var currentObj = this;
                     $.each(attributes, function(attrName, attrValue) {
-                        if (currentObj.attr.hasOwnProperty(attrName)) {
-                            currentObj.attr[attrName] = attrValue;
+                        if (currentObj._attr.hasOwnProperty(attrName)) {
+                            currentObj._attr[attrName] = attrValue;
                         }
                     });
                 }
@@ -2946,6 +2981,7 @@
                     } else {
                         dataTable.tr.after(row);
                     }
+
                     this._autoNumCell(element, idTable, dataTable.table);
                 }
                 return this;
@@ -2980,9 +3016,15 @@
                 var cell = '';
                 if (this._counterHeadRow === 1 && this._cellName === 'th') {
                     attr['rowspan'] = countRow;
-                    cell = _basis.getTag(this._cellName, attr, content);
+                    cell = new HTML.BuildTag(this._cellName, true)
+                        .setAttributes(attr)
+                        .setContent(content)
+                        .toHTML();
                 } else if (this._cellName === 'td') {
-                    cell = _basis.getTag(this._cellName, attr, content);
+                    cell = new HTML.BuildTag(this._cellName, true)
+                        .setAttributes(attr)
+                        .setContent(content)
+                        .toHTML();
                 }
                 return cell;
             },
@@ -3045,14 +3087,16 @@
                 var cellHtml = '';
                 if (typeof params === 'object') {
 
-                    cellHtml = _basis.getTag(
-                        this._cellName,
-                        _basis.emptyProperty(params, 'attr', {}),
-                        _basis.emptyProperty(params, 'data', '')
-                    );
+                    cellHtml = new HTML.BuildTag(this._cellName, true)
+                        .setAttributes(_basis.emptyProperty(params, 'attr', {}))
+                        .setContent(_basis.emptyProperty(params, 'data', ''))
+                        .toHTML();
+
                 } else {
 
-                    cellHtml = _basis.getTag(this._cellName, {}, params);
+                    cellHtml = new HTML.BuildTag(this._cellName, true)
+                        .setContent(params)
+                        .toHTML();
                 }
                 return cellHtml;
             },
@@ -3065,22 +3109,23 @@
              * @returns {string} Html row table
              */
             _getRow: function(params) {
+                var row = new HTML.BuildTag('tr', true);
 
-                var cellHtml = '';
-                cellHtml += this._getCellNum();
-
+                var cellHtml = this._getCellNum();
                 var currentObj = this;
+
                 $.each(params, function(key, param) {
                     cellHtml += currentObj._getCell(param);
                 });
 
                 cellHtml += this._getCellBtn();
+                row.setContent(cellHtml);
 
-                var attr = {};
                 var link = _basis.emptyValue(this._linkRow, false);
                 if (link !== false && this._cellName === 'td') {
-                    attr['onclick'] = "window.location.href='" + link + this._counterBodyRow + "';";
-                    attr['class'] = ROW_LINK;
+                    row
+                        .setClass(ROW_LINK)
+                        .setOnclick("window.location.href='" + link + this._counterBodyRow + "';");
                 }
 
                 if (this._cellName === 'th') {
@@ -3088,8 +3133,7 @@
                 } else {
                     this._counterBodyRow++;
                 }
-
-                return _basis.getTag('tr', attr, cellHtml);
+                return row.toHTML();
             },
 
             /**
