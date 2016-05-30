@@ -123,13 +123,13 @@
              */
             _skinTable: _basis.table.bordered,
 
-            /**
-             * Html class skin panel table
-             *
-             * @private
-             * @type {string|null}
-             */
-            _skinPanel: null,
+            ///**
+            // * Html class skin panel table
+            // *
+            // * @private
+            // * @type {string|null}
+            // */
+            //_skinPanel: null,
 
             /**
              * Html class table
@@ -139,45 +139,45 @@
              */
             _class: null,
 
-            /**
-             * Title table
-             *
-             * @private
-             * @type {string|null}
-             */
-            _titleTable: null,
+            ///**
+            // * Title table
+            // *
+            // * @private
+            // * @type {string|null}
+            // */
+            //_titleTable: null,
 
-            /**
-             * Content before table
-             *
-             * @private
-             * @type {string|null}
-             */
-            _contentBefore: null,
+            ///**
+            // * Content before table
+            // *
+            // * @private
+            // * @type {string|null}
+            // */
+            //_contentBefore: null,
 
-            /**
-             * Content after table
-             *
-             * @private
-             * @type {string|null}
-             */
-            _contentAfter: null,
+            ///**
+            // * Content after table
+            // *
+            // * @private
+            // * @type {string|null}
+            // */
+            //_contentAfter: null,
 
-            /**
-             * Padding panel
-             *
-             * @private
-             * @type {string|null}
-             */
-            _padding: 'xs',
+            ///**
+            // * Padding panel
+            // *
+            // * @private
+            // * @type {string|null}
+            // */
+            //_padding: 'xs',
 
-            /**
-             * Margin panel
-             *
-             * @private
-             * @type {string|null}
-             */
-            _margin: null,
+            ///**
+            // * Margin panel
+            // *
+            // * @private
+            // * @type {string|null}
+            // */
+            //_margin: null,
 
             /**
              * Cell name { 'th' | 'td' }
@@ -463,8 +463,9 @@
                         row += currentObj._getRow(paramCell);
                     });
 
-                    var attr = {};
-                    return _basis.getTag(nameBlock, attr, row);
+                    return new HTML.BuildTag(nameBlock, true)
+                        .setContent(row)
+                        .toHTML();
                 }
                 return '';
             },
@@ -481,34 +482,50 @@
                 content += this._getBlock('tbody', this._body);
                 content += this._getBlock('tfoot', this._foot);
 
-                var attr = {
-                    class: TABLE + ' ' + _basis.emptyValue(this._skinTable, '') + ' ' + _basis.emptyValue(this._class, ''),
-                    id: this._id,
-                    style: this._style
-                };
+                //var attr = {
+                //    class: TABLE + ' ' + _basis.emptyValue(this._skinTable, '') + ' ' + _basis.emptyValue(this._class, ''),
+                //    id: this._id,
+                //    style: this._style
+                //};
+                //
+                //var table = _basis.getTag('div', {class: RESPONSIVE_TABLE}, _basis.getTag('table', attr, content));
 
-                var table = _basis.getTag('div', {class: RESPONSIVE_TABLE}, _basis.getTag('table', attr, content));
+                return new HTML.BuildTag('div', true)
+                    .setClass(RESPONSIVE_TABLE)
+                    .setContent(
+                        new HTML.BuildTag('table', true)
+                            .setId(this._id)
+                            .setStyle(this._style)
+                            .addClass(this._class)
+                            .addClass(this._skinTable)
+                            .setClass(TABLE)
+                            .setContent(content)
+                            .toHTML()
+                    )
+                    .toHTML();
 
-                var footer = {};
-                if (this._contentAfter !== null) {
-                    footer['data'] = this._contentAfter;
-                }
-                if (this._pagination !== null) {
-                    footer['pagination'] = this._pagination;
-                }
-                if (Object.keys(footer).length == 0) {
-                    footer = null;
-                }
+                //var footer = {};
+                //if (this._contentAfter !== null) {
+                //    footer['data'] = this._contentAfter;
+                //}
+                //if (this._pagination !== null) {
+                //    footer['pagination'] = this._pagination;
+                //}
+                //if (Object.keys(footer).length == 0) {
+                //    footer = null;
+                //}
 
-                return new HTML.Panel()
-                    .setMargin(this._margin)
-                    .setPadding(this._padding)
-                    .setSkinPanel(this._skinPanel)
-                    .setHeadPanel(this._titleTable)
-                    .setBodyPanel(this._contentBefore)
-                    .setTablePanel(table)
-                    .setFootPanel(footer)
-                    .toHtml();
+                //return table;
+
+                //return new HTML.Panel()
+                //    .setMargin(this._margin)
+                //    .setPadding(this._padding)
+                //    .setSkinPanel(this._skinPanel)
+                //    .setHeadPanel(this._titleTable)
+                //    .setBodyPanel(this._contentBefore)
+                //    .setTablePanel(table)
+                //    .setFootPanel(footer)
+                //    .toHtml();
             },
 
             /**
@@ -518,36 +535,36 @@
              * @returns {HTML.Table}
              */
             setLinkRow: function(link) {
-                this._linkRow = _basis.emptyValue(link, null);
+                this._linkRow = link;
                 return this;
             },
 
-            /**
-             * Set pagination table
-             *
-             * @param {number} currentPage
-             * @param {number} countPage
-             * @param {string|null} link
-             * @param {string|null} linkParam
-             * @param {string|null} position {'left'|'right'}
-             * @param {boolean} show {'show'-true|'hide'-false}
-             * @returns {HTML.Table}
-             */
-            setPagination: function(currentPage, countPage, link, linkParam, position, show) {
-                show = _basis.emptyValue(show, true);
-                if (show === true) {
-                    this._pagination = new HTML.Pagination()
-                        .setCurrentPage(currentPage)
-                        .setCountPages(countPage)
-                        .setPosition(_basis.emptyValue(position, 'right'))
-                        .setLinkParam(linkParam)
-                        .setLink(link)
-                        .toHtml();
-                } else if (show === false) {
-                    this._pagination = null;
-                }
-                return this;
-            },
+            ///**
+            // * Set pagination table
+            // *
+            // * @param {number} currentPage
+            // * @param {number} countPage
+            // * @param {string|null} link
+            // * @param {string|null} linkParam
+            // * @param {string|null} position {'left'|'right'}
+            // * @param {boolean} show {'show'-true|'hide'-false}
+            // * @returns {HTML.Table}
+            // */
+            //setPagination: function(currentPage, countPage, link, linkParam, position, show) {
+            //    show = _basis.emptyValue(show, true);
+            //    if (show === true) {
+            //        this._pagination = new HTML.Pagination()
+            //            .setCurrentPage(currentPage)
+            //            .setCountPages(countPage)
+            //            .setPosition(_basis.emptyValue(position, 'right'))
+            //            .setLinkParam(linkParam)
+            //            .setLink(link)
+            //            .toHtml();
+            //    } else if (show === false) {
+            //        this._pagination = null;
+            //    }
+            //    return this;
+            //},
 
             /**
              * Set title column number rows
@@ -567,48 +584,52 @@
              * @returns {HTML.Table}
              */
             setRowBtnAdd: function(data) {
+
                 var rows = '';
                 var currentObj = this;
+
                 $.each(data, function (key, paramCell) {
                     rows += currentObj._getRow(paramCell);
                 });
+
                 globals['addRow'][this._unique] = rows;
                 this._counterHeadRow = 1;
                 this._counterBodyRow = 1;
+
                 return this;
             },
 
-            /**
-             * Set margin panel
-             *
-             * @public
-             * @param {string|null|undefined} margin {'lg'|'sm'|'xs'|null}
-             * @default {string} sm
-             * @returns {HTML.Table}
-             */
-            setMargin: function(margin) {
-                var check = _basis.emptyProperty(_basis.padding, margin, false);
-                if (check !== false) {
-                    this._margin = margin;
-                }
-                return this;
-            },
+            ///**
+            // * Set margin panel
+            // *
+            // * @public
+            // * @param {string|null|undefined} margin {'lg'|'sm'|'xs'|null}
+            // * @default {string} sm
+            // * @returns {HTML.Table}
+            // */
+            //setMargin: function(margin) {
+            //    var check = _basis.emptyProperty(_basis.padding, margin, false);
+            //    if (check !== false) {
+            //        this._margin = margin;
+            //    }
+            //    return this;
+            //},
 
-            /**
-             * Set padding panel
-             *
-             * @public
-             * @param {string|null|undefined} padding {'lg'|'sm'|'xs'|null}
-             * @default {string} sm
-             * @returns {HTML.Table}
-             */
-            setPadding: function(padding) {
-                var check = _basis.emptyProperty(_basis.padding, padding, false);
-                if (check !== false) {
-                    this._padding = padding;
-                }
-                return this;
-            },
+            ///**
+            // * Set padding panel
+            // *
+            // * @public
+            // * @param {string|null|undefined} padding {'lg'|'sm'|'xs'|null}
+            // * @default {string} sm
+            // * @returns {HTML.Table}
+            // */
+            //setPadding: function(padding) {
+            //    var check = _basis.emptyProperty(_basis.padding, padding, false);
+            //    if (check !== false) {
+            //        this._padding = padding;
+            //    }
+            //    return this;
+            //},
 
             /**
              * Set html style table
@@ -634,21 +655,21 @@
                 return this;
             },
 
-            /**
-             * Set skin panel
-             *
-             * @public
-             * @param {string|null|undefined} skin {'default'|'primary'|'success'|'warning'|'danger'|'info'|null}
-             * @default {string} default
-             * @returns {HTML.Table}
-             */
-            setSkinPanel: function(skin) {
-                var check = _basis.emptyProperty(_basis.panel, skin, _basis.panel.default);
-                if (check !== false) {
-                    this._skinPanel = skin;
-                }
-                return this;
-            },
+            ///**
+            // * Set skin panel
+            // *
+            // * @public
+            // * @param {string|null|undefined} skin {'default'|'primary'|'success'|'warning'|'danger'|'info'|null}
+            // * @default {string} default
+            // * @returns {HTML.Table}
+            // */
+            //setSkinPanel: function(skin) {
+            //    var check = _basis.emptyProperty(_basis.panel, skin, _basis.panel.default);
+            //    if (check !== false) {
+            //        this._skinPanel = skin;
+            //    }
+            //    return this;
+            //},
 
             /**
              * Set html new class table
@@ -662,41 +683,41 @@
                 return this;
             },
 
-            /**
-             * Set title table
-             *
-             * @public
-             * @param {string|null} title
-             * @returns {HTML.Table}
-             */
-            setTitleTable: function(title) {
-                this._titleTable = _basis.emptyValue(title, null);
-                return this;
-            },
+            ///**
+            // * Set title table
+            // *
+            // * @public
+            // * @param {string|null} title
+            // * @returns {HTML.Table}
+            // */
+            //setTitleTable: function(title) {
+            //    this._titleTable = _basis.emptyValue(title, null);
+            //    return this;
+            //},
 
-            /**
-             * Set content before table
-             *
-             * @public
-             * @param {*} content
-             * @returns {HTML.Table}
-             */
-            setContentBeforeTable: function(content) {
-                this._contentBefore = _basis.emptyValue(content, null);
-                return this;
-            },
+            ///**
+            // * Set content before table
+            // *
+            // * @public
+            // * @param {*} content
+            // * @returns {HTML.Table}
+            // */
+            //setContentBeforeTable: function(content) {
+            //    this._contentBefore = _basis.emptyValue(content, null);
+            //    return this;
+            //},
 
-            /**
-             * Set content after table
-             *
-             * @public
-             * @param {*} content
-             * @returns {HTML.Table}
-             */
-            setContentAfterTable: function(content) {
-                this._contentAfter = _basis.emptyValue(content, null);
-                return this;
-            },
+            ///**
+            // * Set content after table
+            // *
+            // * @public
+            // * @param {*} content
+            // * @returns {HTML.Table}
+            // */
+            //setContentAfterTable: function(content) {
+            //    this._contentAfter = _basis.emptyValue(content, null);
+            //    return this;
+            //},
 
             /**
              * This method added new row in 'head' or 'body' or 'foot'
@@ -711,8 +732,7 @@
                 this._key = inBlock;
                 var obj = _basis.emptyProperty(this, '_' + inBlock, false);
                 if (obj !== false) {
-                    var counter = Object.keys(obj).length;
-                    obj[counter] = {};
+                    obj[Object.keys(obj).length] = {};
                 }
                 return this;
             },
@@ -738,7 +758,7 @@
                             attr: {
                                 colspan: _basis.emptyValue(colspan, 1),
                                 rowspan: _basis.emptyValue(rowspan, 1),
-                                width: _basis.emptyValue(width, null)
+                                width:   _basis.emptyValue(width, null)
                             }
                         };
                     }

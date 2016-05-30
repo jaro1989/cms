@@ -56,6 +56,8 @@
 
                 'for': null,
 
+                'style': null,
+
                 'rowspan': 1,
 
                 'colspan': 1
@@ -88,6 +90,22 @@
              * @type {string|null}
              */
             _tagContent: null,
+
+            getStyle: function() {
+                return this._attr.style;
+            },
+
+            /**
+             * Set attribute "style"
+             *
+             * @public
+             * @param {number} style
+             * @returns {HTML.BuildTag}
+             */
+            setStyle: function(style) {
+                this._attr.style = style;
+                return this;
+            },
 
             getColspan: function() {
                 return this._attr.colspan;

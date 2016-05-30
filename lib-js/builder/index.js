@@ -183,13 +183,6 @@
              */
             disabled: 'disabled',
 
-            /**
-             * Href default
-             *
-             * @public
-             * @type {string}
-             */
-            hrefDefault: '#',
 
             /**
              * Html classes drop-down
@@ -267,6 +260,15 @@
                 toolbar: 'btn-toolbar',
                 default: 'btn-group'
             },
+
+            /**
+             * Href default
+             *
+             * @public
+             * @type {string}
+             */
+            hrefDefault: '#',
+
 
             /**
              * Get error text response ajax
