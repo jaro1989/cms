@@ -10,7 +10,7 @@
             var dataHead = JSON.parse('{{ head|json_encode|raw }}');
             //Parameters for generating rows table body
             var dataBody = JSON.parse({{ body|json_encode|raw }});
-            console.log(dataBody);
+            //console.log(dataBody);
 
             var currentPage = '{{ pagination.currentPage }}';
             var countPage = '{{ pagination.countPage }}';

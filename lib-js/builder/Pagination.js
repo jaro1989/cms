@@ -33,9 +33,9 @@
 
             _link: null,
 
-            _linkParam: null,
+            _linkParam: defaultLinkParam,
 
-            _position: _basis.position.right,
+            _position: _basis.css.align.block.right,
 
             _maxItem: maxItem,
 
@@ -43,9 +43,9 @@
 
             _currentPage: 1,
 
-            _size: _basis.pagination.size.sm,
+            _size: _basis.css.pagination.size.sm,
 
-            _skin: _basis.pagination.skin.default,
+            _skin: _basis.css.pagination.skin.default,
 
             _namePrevious: previousName,
 
@@ -114,7 +114,7 @@
             /**
              * Html item pagination
              *
-             * @param {number|string} page
+             * @param {number|string|null} page
              * @param {number|string} nameItem
              * @param {boolean|null} disabled {true|null}
              * @param {boolean|null} active {true|null}
@@ -125,36 +125,38 @@
             _getItem: function(page, nameItem, disabled, active, side) {
 
                 if (disabled === true) {
-                    disabled = _basis.pagination.item.disabled;
+                    disabled = _basis.css.pagination.item.disabled;
                 } else {
                     disabled = null;
                 }
 
                 if (active === true) {
-                    active = _basis.pagination.item.active;
+                    active = _basis.css.pagination.item.active;
                 } else {
                     active = null;
                 }
 
                 if (side === 'l') {
-                    side = _basis.pagination.side.left
+                    side = _basis.css.pagination.side.left
                 } else if (side === 'r') {
-                    side = _basis.pagination.side.rirht
+                    side = _basis.css.pagination.side.rirht
                 } else {
                     side = null;
                 }
 
-                var attrItem = {
-                    class: _basis.emptyValue(active, '') + ' ' +
-                           _basis.emptyValue(disabled, '') + ' ' +
-                           _basis.emptyValue(side, '')
-                };
+                var href = _basis.emptyValue(this._link, '') + _basis.emptyValue(this._linkParam, '') + page;
 
-                var attrHref = {
-                    href:  _basis.emptyValue(this._link, '') + _basis.emptyValue(this._linkParam, '') + page
-                };
-
-                return _basis.getTag('li', attrItem, _basis.getTag('a', attrHref, nameItem));
+                return new HTML.BuildTag('li', true)
+                    .addClass(active)
+                    .addClass(disabled)
+                    .addClass(side)
+                    .setContent(
+                        new HTML.BuildTag('a', true)
+                            .setHref(href)
+                            .setContent(nameItem)
+                            .toHTML()
+                    )
+                    .toHTML()
             },
 
             /**
@@ -173,7 +175,7 @@
                     if ((minus - 5) > 0) {
                         minus = minus - 5;
                     }
-                    item += this._getItem(minus, '...', null, null);
+                    item += this._getItem(minus, '...', null, null, null);
                 }
 
                 var end = this._countPages;
@@ -187,14 +189,14 @@
                     if (i == this._currentPage) {
                         active = true;
                     }
-                    item += this._getItem(i, i, null, active);
+                    item += this._getItem(i, i, null, active, null);
                 }
 
                 if ( (this._countPages - plus) > 0 ) {
                     if ( (this._countPages - (plus + 5)) > 0 ) {
                         plus = plus + 5;
                     }
-                    item += this._getItem(plus, '...', null, null);
+                    item += this._getItem(plus, '...', null, null, null);
                 }
                 return item;
             },
@@ -221,13 +223,17 @@
                         item += this._getLastItem(null);
                     }
 
-                    var attr = {
-                        class: this._skin + ' ' +
-                        _basis.emptyValue(this._size, '') + ' ' +
-                        _basis.emptyValue(this._position, '')
-                    };
-
-                    return _basis.getTag('div', {class: _basis.position.clear}, _basis.getTag('ul', attr, item));
+                    return new HTML.BuildTag('div', true)
+                        .setClass(_basis.css.align.block.clear)
+                        .setContent(
+                            new HTML.BuildTag('ul')
+                                .setClass(this._skin)
+                                .addClass(this._size)
+                                .addClass(this._position)
+                                .setContent(item)
+                                .toHTML()
+                        )
+                        .toHTML();
                 }
                 return '';
             },
@@ -239,7 +245,7 @@
              * @returns {HTML.Pagination}
              */
             setLink: function(link) {
-                this._link = _basis.emptyValue(link, null);
+                this._link = link;
                 return this;
             },
 
@@ -250,7 +256,7 @@
              * @returns {HTML.Pagination}
              */
             setLinkParam: function(linkParam){
-                this._linkParam = _basis.emptyValue(linkParam, defaultLinkParam);
+                this._linkParam = linkParam;
                 return this;
             },
 
@@ -261,7 +267,7 @@
              * @returns {HTML.Pagination}
              */
             setPosition: function(position) {
-                this._position = _basis.emptyProperty(_basis.position, position, null);
+                this._position = _basis.emptyProperty(_basis.css.align.block, position, null);
                 return this;
             },
 
@@ -283,7 +289,7 @@
              * @returns {HTML.Pagination}
              */
             setCountPages: function(count) {
-                this._countPages = _basis.emptyValue(count, null);
+                this._countPages = count;
                 return this;
             },
 
@@ -306,7 +312,7 @@
              * @returns {HTML.Pagination}
              */
             setSize: function(size) {
-                this._size = _basis.emptyProperty(_basis.pagination.size, size, null);
+                this._size = _basis.emptyProperty(_basis.css.pagination.size, size, null);
                 return this;
             },
 
@@ -318,7 +324,7 @@
              * @returns {HTML.Pagination}
              */
             setSkin: function(skin) {
-                this._skin = _basis.emptyProperty(_basis.pagination.skin, skin, _basis.pagination.skin.default);
+                this._skin = _basis.emptyProperty(_basis.css.pagination.skin, skin, _basis.css.pagination.skin.default);
                 return this;
             },
 

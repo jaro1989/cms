@@ -2,158 +2,12 @@
     (function(HTML) {
 
         /**
-         * HTML Class block panel
-         *
-         * @private
-         * @type {string}
-         */
-        var PANEL = 'panel';
-
-        /**
-         * HTML Class panel body
-         *
-         * @private
-         * @type {string}
-         */
-        var PANEL_BODY = 'panel-body';
-
-        /**
-         * HTML Class panel footer
-         *
-         * @private
-         * @type {string}
-         */
-        var PANEL_FOOTER = 'panel-footer';
-
-        /**
-         * HTML Class panel head
-         *
-         * @private
-         * @type {string}
-         */
-        var PANEL_HEADING = 'panel-heading';
-
-        /**
-         * HTML Class panel title
-         *
-         * @private
-         * @type {string}
-         */
-        var PANEL_TITLE = 'panel-title';
-
-        /**
          * The generator of the basic elements HTML
          *
          * @private
          * @type {HTML.Basis}
          */
         var _basis = new HTML.Basis();
-
-        /**
-         * Generate HTML block panel
-         *
-         * @private
-         * @param {object} obj {current object}
-         * @param {string} containBlock
-         * @returns {*|string}
-         */
-        var getBlockPanel = function(obj, containBlock) {
-            var attr = {
-                id: obj._id,
-                class: (
-                    PANEL + ' ' +
-                    _basis.emptyValue(obj._skin, _basis.panel.default) + ' ' +
-                    _basis.emptyValue(obj._class, '') + ' ' +
-                    _basis.emptyValue(obj._padding, '')
-                ).trim()
-            };
-            var panel = _basis.getTag('div', attr, containBlock);
-            if (obj._margin === null) {
-                return panel;
-            } else {
-                return _basis.getTag('div', {class: obj._margin}, panel);
-            }
-        };
-
-        /**
-         * Generate HTML block panel HEAD
-         *
-         * @private
-         * @param {string|null} titleHead
-         * @returns {string}
-         */
-        var getHeadPanel = function(titleHead) {
-            var res = '';
-            if (titleHead !== null) {
-                var title = _basis.getTag('h3', {class: PANEL_TITLE}, titleHead);
-                res = _basis.getTag('div', {class: PANEL_HEADING}, title);
-            }
-            return res;
-        };
-
-        /**
-         * Generate HTML block panel TABLE
-         *
-         * @private
-         * @returns {string}
-         */
-        var getTablePanel = function(obj) {
-            return _basis.emptyValue(obj._table, '');
-        };
-
-        /**
-         * Generate HTML block panel BODY
-         *
-         * @private
-         * @param {string|null} containBody
-         * @returns {string}
-         */
-        var getBodyPanel = function(containBody) {
-            var res = '';
-            if (containBody !== null) {
-                res = _basis.getTag('div', {class: PANEL_BODY}, containBody);
-            }
-            return res;
-        };
-
-        /**
-         * Generate HTML block panel FOOT
-         *
-         * @private
-         * @param {string|null} containFoot
-         * @returns {string}
-         */
-        var getFootPanel = function(containFoot) {
-            var res = '';
-            if (containFoot !== null) {
-                if (typeof containFoot === 'object') {
-                    var len = (12 / Object.keys(containFoot).length);
-                    $.each(containFoot, function(key, value) {
-                        res += _basis.getTag('div', {class: _basis.layout + '-' + len}, value);
-                    });
-                    res = _basis.getTag('div', {class: PANEL_FOOTER + ' ' + _basis.position.clear}, res);
-                } else {
-                    res = _basis.getTag('div', {class: PANEL_FOOTER}, containFoot);
-                }
-            }
-            return res;
-        };
-
-        /**
-         * Generate HTML FULL panel
-         *
-         * @private
-         * @param {object} obj {current object}
-         * @returns {*|string}
-         */
-        var getHTML = function(obj) {
-            var containBlock = '';
-            containBlock += getHeadPanel(obj._head);
-            containBlock += getBodyPanel(obj._body);
-            containBlock += getTablePanel(obj);
-            containBlock += getFootPanel(obj._foot);
-            return getBlockPanel(obj, containBlock);
-        };
 
         /**
          * @memberOf HTML
@@ -205,7 +59,7 @@
              * @private
              * @type {string|null}
              */
-            _skin: _basis.panel.default,
+            _skin: _basis.css.panel.skin.default,
 
             /**
              * HTML Class user
@@ -229,7 +83,7 @@
              * @private
              * @type {string|null}
              */
-            _padding: _basis.padding.sm,
+            _padding: _basis.css.padding.sm,
 
             /**
              * Margin panel
@@ -240,6 +94,115 @@
             _margin: null,
 
             /**
+             * Generate HTML block panel HEAD
+             *
+             * @public
+             * @returns {string}
+             */
+            getHeadPanel: function() {
+                if (this._head !== null) {
+                    return new HTML.BuildTag('div', true)
+                        .setClass(_basis.css.panel.panelHead)
+                        .setContent(
+                            new HTML.BuildTag('h3', true)
+                                .setClass(_basis.css.panel.panelTitle)
+                                .setContent(this._head)
+                                .toHTML()
+                        )
+                        .toHTML();
+                }
+                return '';
+            },
+
+            /**
+             * Generate HTML block panel TABLE
+             *
+             * @public
+             * @returns {string}
+             */
+            getTablePanel: function() {
+                return new HTML.BuildTag('div', true)
+                    .setContent(_basis.emptyValue(this._table, ''))
+                    .toHTML();
+            },
+
+            /**
+             * Generate HTML block panel BODY
+             *
+             * @public
+             * @returns {string}
+             */
+            getBodyPanel: function() {
+                if (this._body !== null) {
+                    return new HTML.BuildTag('div', true)
+                        .setClass(_basis.css.panel.panelBody)
+                        .setContent(this._body)
+                        .toHTML();
+                }
+                return '';
+            },
+
+            /**
+             * Generate HTML block panel FOOT
+             *
+             * @public
+             * @returns {string}
+             */
+            getFootPanel: function() {
+                var res = '';
+                if (this._foot !== null) {
+                    if (typeof this._foot === 'object') {
+
+                        var len = (12 / Object.keys(this._foot).length);
+
+                        $.each(this._foot, function(key, value) {
+                            res += new HTML.BuildTag('div', true)
+                                .setClass(_basis.css.width + '-' + len)
+                                .setContent(value)
+                                .toHTML();
+                        });
+
+                        res = new HTML.BuildTag('div', true)
+                            .setClass(_basis.css.panel.panelFoot)
+                            .addClass(_basis.css.align.block.clear)
+                            .setContent(res)
+                            .toHTML();
+
+                    } else {
+
+                        res = new HTML.BuildTag('div', true)
+                            .setClass(_basis.css.panel.panelFoot)
+                            .setContent(this._foot)
+                            .toHTML(res);
+                    }
+                }
+                return res;
+            },
+
+            getHTML: function() {
+                var containBlock = '';
+
+                containBlock += this.getHeadPanel();
+                containBlock += this.getBodyPanel();
+                containBlock += this.getTablePanel();
+                containBlock += this.getFootPanel();
+
+                return new HTML.BuildTag('div')
+                    .setClass(this._margin)
+                    .setContent(
+                        new HTML.BuildTag('div', true)
+                            .setId(this._id)
+                            .setClass(_basis.css.panel.panel)
+                            .addClass(this._class)
+                            .addClass(this._padding)
+                            .addClass(_basis.emptyValue(this._skin, _basis.css.panel.skin.default))
+                            .setContent(containBlock)
+                            .toHTML()
+                    )
+                    .toHTML();
+            },
+
+            /**
              * Set margin panel
              *
              * @public
@@ -248,7 +211,7 @@
              * @returns {HTML.Panel}
              */
             setMargin: function(margin) {
-                this._margin = _basis.emptyProperty(_basis.padding, margin, _basis.padding.sm);
+                this._margin = _basis.emptyProperty(_basis.css.padding, margin, _basis.css.padding.sm);
                 return this;
             },
 
@@ -261,7 +224,7 @@
              * @returns {HTML.Panel}
              */
             setPadding: function(padding) {
-                this._padding = _basis.emptyProperty(_basis.padding, padding, _basis.padding.sm);
+                this._padding = _basis.emptyProperty(_basis.css.padding, padding, _basis.css.padding.sm);
                 return this;
             },
 
@@ -273,7 +236,7 @@
              * @returns {HTML.Panel}
              */
             setIdPanel: function(htmlId) {
-                this._id = _basis.emptyValue(htmlId, null);
+                this._id = htmlId;
                 return this;
             },
 
@@ -285,7 +248,7 @@
              * @returns {HTML.Panel}
              */
             setClassPanel: function(htmlClass) {
-                this._class = _basis.emptyValue(htmlClass, null);
+                this._class = htmlClass;
                 return this;
             },
 
@@ -298,7 +261,7 @@
              * @returns {HTML.Panel}
              */
             setSkinPanel: function(skin) {
-                this._skin = _basis.emptyProperty(_basis.panel, skin, _basis.panel.default);
+                this._skin = _basis.emptyProperty(_basis.css.panel.skin, skin, _basis.css.panel.skin.default);
                 return this;
             },
 
@@ -310,7 +273,7 @@
              * @returns {HTML.Panel}
              */
             setTablePanel: function(contain) {
-                this._table = _basis.emptyValue(contain, null);
+                this._table = contain;
                 return this;
             },
 
@@ -322,7 +285,7 @@
              * @returns {HTML.Panel}
              */
             setHeadPanel: function(contain) {
-                this._head = _basis.emptyValue(contain, null);
+                this._head = contain;
                 return this;
             },
 
@@ -334,7 +297,7 @@
              * @returns {HTML.Panel}
              */
             setBodyPanel: function(contain) {
-                this._body = _basis.emptyValue(contain, null);
+                this._body = contain;
                 return this;
             },
 
@@ -346,7 +309,7 @@
              * @returns {HTML.Panel}
              */
             setFootPanel: function(contain) {
-                this._foot = _basis.emptyValue(contain, null);
+                this._foot = contain;
                 return this;
             },
 
@@ -357,7 +320,7 @@
              * @returns {string} Html buttons
              */
             toHtml: function() {
-                return getHTML(this);
+                return this.getHTML();
             },
 
             /**
@@ -368,7 +331,7 @@
              * @returns {HTML.Panel}
              */
             appendHtml: function(element) {
-                $(element).append(getHTML(this));
+                $(element).append(this.getHTML());
                 return this;
             }
         };
