@@ -372,6 +372,24 @@
             },
 
             /**
+             * Sort and filter data object for build cell
+             *
+             * @param {{}} params
+             * @returns {{}}
+             * @private
+             */
+            _sortAndFilterDataCell: function(params) {
+                var obj = {};
+                $.each(this._arrayKeyHead, function(key, param) {
+                    if (params.hasOwnProperty(param)) {
+                        obj[param] = params[param];
+                    }
+                });
+
+                return obj;
+            },
+
+            /**
              * The method generating row table
              *
              * @private
@@ -384,17 +402,12 @@
                 var cellHtml = this._getCellNum();
                 var currentObj = this;
 
-                console.log(params);
+                if (this._cellName === 'td' && this._arrayKeyHead.length > 0) {
+                    params = this._sortAndFilterDataCell(params);
+                }
 
                 $.each(params, function(key, param) {
-
-                    if (currentObj._cellName === 'td' && currentObj._arrayKeyHead.length > 0) {
-                        if (currentObj._arrayKeyHead.indexOf(key) >= 0) {
-                            cellHtml += currentObj._getCell(param);
-                        }
-                    } else {
-                        cellHtml += currentObj._getCell(param);
-                    }
+                    cellHtml += currentObj._getCell(param);
                 });
 
                 cellHtml += this._getCellBtn();
