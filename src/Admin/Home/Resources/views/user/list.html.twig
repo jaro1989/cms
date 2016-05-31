@@ -16,53 +16,11 @@
             var countPage = '{{ pagination.countPage }}';
 
             var tb = new HTML.Table('table-users', true, false)
-                .setLinkRow('{{ url('_user_form') }}/')
-//                .setPadding('sm')
-                {#.setContentBeforeTable(#}
-                        {#new HTML.Table('user-filter', false, false)#}
-                                {#.setMargin('xs')#}
-                                {#.setPadding('xs')#}
-                                {#.setSkinTable('bordered-none')#}
-                                {#.addRow('body')#}
-                                {#.addCell(#}
-                                    {#new HTML.Fields(3)#}
-                                            {#.setLineLabel(4)#}
-                                            {#.addInput(null, 'Фамилия', 'lastname', null, false)#}
-                                            {#.addInput(null, 'Имя', 'username', null, false)#}
-                                            {#.addInput(null, 'Отчество', 'midlename', null, false)#}
-                                            {#.toHtml(),#}
-                                    {#1, 1#}
-                                {#)#}
-                                {#.addRow('body')#}
-                                {#.addCell(#}
-                                    {#new HTML.Fields(3)#}
-                                            {#.setLineLabel(4)#}
-                                            {#.addInput(null, 'Login', 'login', null, false)#}
-                                            {#.addInput(null, 'Email', 'email', null, false)#}
-                                            {#.toHtml(),#}
-                                    {#1, 1#}
-                                {#)#}
-                                {#.addRow('body')#}
-                                {#.addCell(#}
-                                    {#new HTML.Button(null, null)#}
-                                            {#.setPositionBlock('right')#}
-                                            {#.setActive(true)#}
-                                            {#.addSubmit('Найти', 'sendFilter', null, 'search', false)#}
-                                            {#.toHtml(),#}
-                                    {#1, 1#}
-                                {#).toHtml()#}
-                    {#)#}
-                    {#.setSkinPanel('primary')#}
-                    {#.setTitleTable('{{ title }}')#}
-                    .addRow('head');
-
-            $.each(dataHead, function(key, value) {
-                tb.addCell(value, 1, 1)
-            });
-
-            tb
+                .setMargin('lg')
+                .setLinkRow('{{ url('_user_form') }}')
+                .addDataHead([dataHead])
                 .addDataBody(dataBody)
-                {#.setPagination(Number(currentPage), Number(countPage), '{{ url('_user_list') }}', '/', 'right', true)#}
+                .addParamsLink('firstName')
                 .appendHtml('#list-users');
         });
     </script>

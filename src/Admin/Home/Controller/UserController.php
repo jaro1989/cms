@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 
 class UserController extends Controller{
 
-    private $limit = 1;
+    private $limit = 10;
 
     /**
      * Page edit user
@@ -74,7 +74,7 @@ class UserController extends Controller{
     public function listAction(Request $request)
     {
         $data['title'] = 'Список пользователей';
-        $data['head'] = ['ID', 'ФИО', 'Username', 'Email'];
+        $data['head'] = ['id' => 'ID', 'firstName' => 'ФИО', 'cmsLogin' => 'Username', 'cmsEmail' => 'Email'];
 
         $em = $this->getDoctrine()->getManager();
         $dql = "

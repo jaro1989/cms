@@ -26,7 +26,6 @@
                     'Редактирование пользователя',
                     new HTML.Table()
                         .setSkinTable('bordered-none')
-                        .setMargin('xs')
                         .addRow()
                         .addCell(
                             new HTML.Fields(3)
@@ -68,14 +67,16 @@
                                 .addInputRead('Label', 'Валюта', 'currency')
                                 .toHtml(),1, 1
                         )
-                        .setContentAfterTable(
+                        .addRow()
+                        .addCell(
                             new HTML.Button('toolbar', null)
                                 .setPositionBlock('right')
                                 .setActive(true)
                                 .addSubmit('Сохранить', 'save-data', null, 'plus', false)
                                 .setSkin('danger')
                                 .addSubmit('Удалить', 'delete-data', null, 'remove', false)
-                                .toHtml()
+                                .toHtml(),
+                                2, 1
                         )
                         .toHtml(),
                     true

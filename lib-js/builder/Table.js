@@ -11,6 +11,8 @@
 
         var ROW_LINK = 'row-link';
 
+        var SEPARATOR_URL_PARAMS = '/';
+
         var unique = 0;
 
         var globals = {
@@ -50,7 +52,7 @@
          * @param {string|null|undefined} idTable { html id table }
          * @param {boolean|undefined} cellNum { show column number }
          * @param {boolean|undefined} cellBtn { show column button }
-         * @memberOf HTML
+         * @memberOf HTML.Table
          * @constructor
          */
         HTML.Table = function(idTable, cellNum, cellBtn) {
@@ -72,6 +74,10 @@
              * @type {object}
              */
             this._body = {};
+
+            this._paramsLink = {id: SEPARATOR_URL_PARAMS};
+
+            this._arrayKeyHead = [];
 
             /**
              * Parameters for generation foot table
@@ -123,14 +129,6 @@
              */
             _skinTable: _basis.table.bordered,
 
-            ///**
-            // * Html class skin panel table
-            // *
-            // * @private
-            // * @type {string|null}
-            // */
-            //_skinPanel: null,
-
             /**
              * Html class table
              *
@@ -139,45 +137,13 @@
              */
             _class: null,
 
-            ///**
-            // * Title table
-            // *
-            // * @private
-            // * @type {string|null}
-            // */
-            //_titleTable: null,
-
-            ///**
-            // * Content before table
-            // *
-            // * @private
-            // * @type {string|null}
-            // */
-            //_contentBefore: null,
-
-            ///**
-            // * Content after table
-            // *
-            // * @private
-            // * @type {string|null}
-            // */
-            //_contentAfter: null,
-
-            ///**
-            // * Padding panel
-            // *
-            // * @private
-            // * @type {string|null}
-            // */
-            //_padding: 'xs',
-
-            ///**
-            // * Margin panel
-            // *
-            // * @private
-            // * @type {string|null}
-            // */
-            //_margin: null,
+            /**
+             * Margin table
+             *
+             * @private
+             * @type {string|null}
+             */
+            _margin: null,
 
             /**
              * Cell name { 'th' | 'td' }
@@ -418,8 +384,17 @@
                 var cellHtml = this._getCellNum();
                 var currentObj = this;
 
+                console.log(params);
+
                 $.each(params, function(key, param) {
-                    cellHtml += currentObj._getCell(param);
+
+                    if (currentObj._cellName === 'td' && currentObj._arrayKeyHead.length > 0) {
+                        if (currentObj._arrayKeyHead.indexOf(key) >= 0) {
+                            cellHtml += currentObj._getCell(param);
+                        }
+                    } else {
+                        cellHtml += currentObj._getCell(param);
+                    }
                 });
 
                 cellHtml += this._getCellBtn();
@@ -427,9 +402,19 @@
 
                 var link = _basis.emptyValue(this._linkRow, false);
                 if (link !== false && this._cellName === 'td') {
+
+                    var parametersUrl = '';
+                    if (Object.keys(this._paramsLink).length > 0) {
+                        $.each(this._paramsLink, function(keyParam, valueParam) {
+                            if (params.hasOwnProperty(keyParam)) {
+                                parametersUrl += valueParam + params[keyParam];
+                            }
+                        });
+                    }
+
                     row
                         .setClass(ROW_LINK)
-                        .setOnclick("window.location.href='" + link + this._counterBodyRow + "';");
+                        .setOnclick("window.location.href='" + link + parametersUrl + "';");
                 }
 
                 if (this._cellName === 'th') {
@@ -482,16 +467,9 @@
                 content += this._getBlock('tbody', this._body);
                 content += this._getBlock('tfoot', this._foot);
 
-                //var attr = {
-                //    class: TABLE + ' ' + _basis.emptyValue(this._skinTable, '') + ' ' + _basis.emptyValue(this._class, ''),
-                //    id: this._id,
-                //    style: this._style
-                //};
-                //
-                //var table = _basis.getTag('div', {class: RESPONSIVE_TABLE}, _basis.getTag('table', attr, content));
-
                 return new HTML.BuildTag('div', true)
                     .setClass(RESPONSIVE_TABLE)
+                    .addClass(this._margin)
                     .setContent(
                         new HTML.BuildTag('table', true)
                             .setId(this._id)
@@ -503,29 +481,6 @@
                             .toHTML()
                     )
                     .toHTML();
-
-                //var footer = {};
-                //if (this._contentAfter !== null) {
-                //    footer['data'] = this._contentAfter;
-                //}
-                //if (this._pagination !== null) {
-                //    footer['pagination'] = this._pagination;
-                //}
-                //if (Object.keys(footer).length == 0) {
-                //    footer = null;
-                //}
-
-                //return table;
-
-                //return new HTML.Panel()
-                //    .setMargin(this._margin)
-                //    .setPadding(this._padding)
-                //    .setSkinPanel(this._skinPanel)
-                //    .setHeadPanel(this._titleTable)
-                //    .setBodyPanel(this._contentBefore)
-                //    .setTablePanel(table)
-                //    .setFootPanel(footer)
-                //    .toHtml();
             },
 
             /**
@@ -538,33 +493,6 @@
                 this._linkRow = link;
                 return this;
             },
-
-            ///**
-            // * Set pagination table
-            // *
-            // * @param {number} currentPage
-            // * @param {number} countPage
-            // * @param {string|null} link
-            // * @param {string|null} linkParam
-            // * @param {string|null} position {'left'|'right'}
-            // * @param {boolean} show {'show'-true|'hide'-false}
-            // * @returns {HTML.Table}
-            // */
-            //setPagination: function(currentPage, countPage, link, linkParam, position, show) {
-            //    show = _basis.emptyValue(show, true);
-            //    if (show === true) {
-            //        this._pagination = new HTML.Pagination()
-            //            .setCurrentPage(currentPage)
-            //            .setCountPages(countPage)
-            //            .setPosition(_basis.emptyValue(position, 'right'))
-            //            .setLinkParam(linkParam)
-            //            .setLink(link)
-            //            .toHtml();
-            //    } else if (show === false) {
-            //        this._pagination = null;
-            //    }
-            //    return this;
-            //},
 
             /**
              * Set title column number rows
@@ -599,37 +527,18 @@
                 return this;
             },
 
-            ///**
-            // * Set margin panel
-            // *
-            // * @public
-            // * @param {string|null|undefined} margin {'lg'|'sm'|'xs'|null}
-            // * @default {string} sm
-            // * @returns {HTML.Table}
-            // */
-            //setMargin: function(margin) {
-            //    var check = _basis.emptyProperty(_basis.padding, margin, false);
-            //    if (check !== false) {
-            //        this._margin = margin;
-            //    }
-            //    return this;
-            //},
-
-            ///**
-            // * Set padding panel
-            // *
-            // * @public
-            // * @param {string|null|undefined} padding {'lg'|'sm'|'xs'|null}
-            // * @default {string} sm
-            // * @returns {HTML.Table}
-            // */
-            //setPadding: function(padding) {
-            //    var check = _basis.emptyProperty(_basis.padding, padding, false);
-            //    if (check !== false) {
-            //        this._padding = padding;
-            //    }
-            //    return this;
-            //},
+            /**
+             * Set margin table
+             *
+             * @public
+             * @param {string|null|undefined} margin {'lg'|'sm'|'xs'|null}
+             * @default {string} sm
+             * @returns {HTML.Table}
+             */
+            setMargin: function(margin) {
+                this._margin = _basis.emptyProperty(_basis.css.padding, margin, null);
+                return this;
+            },
 
             /**
              * Set html style table
@@ -655,22 +564,6 @@
                 return this;
             },
 
-            ///**
-            // * Set skin panel
-            // *
-            // * @public
-            // * @param {string|null|undefined} skin {'default'|'primary'|'success'|'warning'|'danger'|'info'|null}
-            // * @default {string} default
-            // * @returns {HTML.Table}
-            // */
-            //setSkinPanel: function(skin) {
-            //    var check = _basis.emptyProperty(_basis.panel, skin, _basis.panel.default);
-            //    if (check !== false) {
-            //        this._skinPanel = skin;
-            //    }
-            //    return this;
-            //},
-
             /**
              * Set html new class table
              *
@@ -682,42 +575,6 @@
                 this._class = _basis.emptyValue(classTable, null);
                 return this;
             },
-
-            ///**
-            // * Set title table
-            // *
-            // * @public
-            // * @param {string|null} title
-            // * @returns {HTML.Table}
-            // */
-            //setTitleTable: function(title) {
-            //    this._titleTable = _basis.emptyValue(title, null);
-            //    return this;
-            //},
-
-            ///**
-            // * Set content before table
-            // *
-            // * @public
-            // * @param {*} content
-            // * @returns {HTML.Table}
-            // */
-            //setContentBeforeTable: function(content) {
-            //    this._contentBefore = _basis.emptyValue(content, null);
-            //    return this;
-            //},
-
-            ///**
-            // * Set content after table
-            // *
-            // * @public
-            // * @param {*} content
-            // * @returns {HTML.Table}
-            // */
-            //setContentAfterTable: function(content) {
-            //    this._contentAfter = _basis.emptyValue(content, null);
-            //    return this;
-            //},
 
             /**
              * This method added new row in 'head' or 'body' or 'foot'
@@ -767,7 +624,28 @@
             },
 
             /**
-             * Add data for generation rowq body
+             * Add data for generation rows head
+             *
+             * @public
+             * @param {object|null} data
+             * @returns {HTML.Table}
+             */
+            addDataHead: function(data) {
+                if (typeof data === 'object') {
+                    var currentObj = this;
+                    $.each(data, function(key, params) {
+                        var counter = Object.keys(currentObj._head).length;
+                        currentObj._head[counter] = params;
+                        $.each(params, function(name) {
+                            currentObj._arrayKeyHead.push(name);
+                        });
+                    });
+                }
+                return this;
+            },
+
+            /**
+             * Add data for generation rows body
              *
              * @public
              * @param {object|null} data
@@ -780,6 +658,21 @@
                         var counter = Object.keys(currentObj._body).length;
                         currentObj._body[counter] = params;
                     });
+                }
+                return this;
+            },
+
+            /**
+             * Add parameter to link row table
+             *
+             * @param {string} paramName - key cell from which the value will be taken
+             * @param {string} separator - separator before parameter
+             * @returns {HTML.Table}
+             */
+            addParamsLink: function(paramName, separator) {
+                var name = _basis.emptyValue(paramName, false);
+                if (name !== false) {
+                    this._paramsLink[name] = _basis.emptyValue(separator, SEPARATOR_URL_PARAMS);
                 }
                 return this;
             },
