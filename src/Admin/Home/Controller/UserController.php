@@ -74,7 +74,9 @@ class UserController extends Controller{
     public function listAction(Request $request)
     {
         $data['title'] = 'Список пользователей';
-        $data['head'] = ['id' => 'ID', 'firstName' => 'ФИО', 'cmsLogin' => 'Username', 'cmsEmail' => 'Email'];
+        $data['head'] = [
+            ['id' => 'ID', 'firstName' => 'ФИО', 'cmsLogin' => 'Username', 'cmsEmail' => 'Email']
+        ];
 
         $em = $this->getDoctrine()->getManager();
         $dql = "

@@ -59,7 +59,7 @@
              * @private
              * @type {string|null}
              */
-            _skin: _basis.css.panel.skin.default,
+            _skin: _basis.css.panel.skin.primary,
 
             /**
              * HTML Class user
@@ -91,7 +91,7 @@
              * @private
              * @type {string|null}
              */
-            _margin: null,
+            _margin: _basis.css.padding.sm,
 
             /**
              * Generate HTML block panel HEAD
@@ -195,7 +195,7 @@
                             .setClass(_basis.css.panel.panel)
                             .addClass(this._class)
                             .addClass(this._padding)
-                            .addClass(_basis.emptyValue(this._skin, _basis.css.panel.skin.default))
+                            .addClass(_basis.emptyValue(this._skin, _basis.css.panel.skin.primary))
                             .setContent(containBlock)
                             .toHTML()
                     )
@@ -206,7 +206,7 @@
              * Set margin panel
              *
              * @public
-             * @param {string|null|undefined} margin {'lg'|'sm'|'xs'|null}
+             * @param {string|null} margin {'lg'|'sm'|'xs'|null}
              * @default {string} sm
              * @returns {HTML.Panel}
              */
@@ -219,7 +219,7 @@
              * Set padding panel
              *
              * @public
-             * @param {string|null|undefined} padding {'lg'|'sm'|'xs'|null}
+             * @param {string|null} padding {'lg'|'sm'|'xs'|null}
              * @default {string} sm
              * @returns {HTML.Panel}
              */
@@ -256,12 +256,12 @@
              * Set skin panel
              *
              * @public
-             * @param {string|null|undefined} skin {'default'|'primary'|'success'|'warning'|'danger'|'info'|null}
+             * @param {string|null} skin {'default'|'primary'|'success'|'warning'|'danger'|'info'|null}
              * @default {string} default
              * @returns {HTML.Panel}
              */
             setSkinPanel: function(skin) {
-                this._skin = _basis.emptyProperty(_basis.css.panel.skin, skin, _basis.css.panel.skin.default);
+                this._skin = _basis.emptyProperty(_basis.css.panel.skin, skin, _basis.css.panel.skin.primary);
                 return this;
             },
 
