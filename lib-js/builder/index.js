@@ -125,15 +125,6 @@
                 }
             },
 
-            table: {
-                striped: 'table-striped',
-                bordered: 'table-bordered',
-                'bordered-none': 'table-bordered-none',
-                hover: 'table-hover',
-                condensed: 'table-condensed'
-
-            },
-
             panelClasses: {
                 open: 'in',
                 class: 'panel',

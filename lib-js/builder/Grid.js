@@ -10,7 +10,8 @@
         var _basis = new HTML.Basis();
 
         /**
-         * @memberOf HTML.Grid
+         * @memberOf HTML
+         * @namespace HTML.Grid
          * @constructor
          */
         HTML.Grid = function() {
@@ -45,25 +46,42 @@
 
             _tableCellBtn: false,
 
+            _tableCellCheckbox: false,
+
             _tableLinkRow: null,
 
             _tableMargin: null,
 
             _tableSkin: null,
 
+            /**
+             * Get html form
+             *
+             * @returns {string}
+             * @private
+             */
             _getForm: function() {
                 return '';
             },
 
+            /**
+             * Get html table
+             *
+             * @returns {string}
+             * @private
+             */
             _getTable: function() {
-                return new HTML.Table(null, this._tableCellNum, this._tableCellBtn)
+                return new HTML.Table(null)
                     .setLinkRow(this._tableLinkRow)
                     .setRowBtnAdd(this._tableAddRow)
                     .setSkinTable(this._tableSkin)
                     .setMargin(this._tableMargin)
                     .addDataHead(this._tableHead)
                     .addDataBody(this._tableBody)
-                    .toHtml()
+                    .addColumnBtn(this._tableCellBtn)
+                    .addColumnNum(this._tableCellNum)
+                    .addColumnCheckbox(this._tableCellCheckbox)
+                    .toHtml();
             },
 
             /**
@@ -124,7 +142,7 @@
              * Set link pagination
              *
              * @param {string|null} link
-             * @returns {HTML.Pagination}
+             * @returns {HTML.Grid}
              */
             setLinkPagination: function(link) {
                 this._paginationUrl = link;
@@ -208,7 +226,7 @@
              *
              * @public
              * @param {string|null} skin {'striped'|'bordered'|'bordered-none'|'hover'|'condensed'|null}
-             * @returns {HTML.Table}
+             * @returns {HTML.Grid}
              */
             setSkinTable: function(skin) {
                 this._tableSkin = skin;
@@ -256,6 +274,16 @@
              */
             addColumnBtn: function() {
                 this._tableCellBtn = true;
+                return this;
+            },
+
+            /**
+             * Add column with Checkbox
+             *
+             * @returns {HTML.Grid}
+             */
+            addColumnCheckbox: function() {
+                this._tableCellCheckbox = true;
                 return this;
             },
 

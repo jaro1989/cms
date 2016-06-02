@@ -51,13 +51,11 @@
 
         /**
          *
-         * @param {string|null|undefined} idTable { html id table }
-         * @param {boolean|undefined} cellNum { show column number }
-         * @param {boolean|undefined} cellBtn { show column button }
+         * @param {string|null} idTable { html id table }
          * @memberOf HTML.Table
          * @constructor
          */
-        HTML.Table = function(idTable, cellNum, cellBtn) {
+        HTML.Table = function(idTable) {
             unique++;
             this._unique = unique;
             this._id = _basis.emptyValue(idTable, TABLE + '-' + this._unique);
@@ -90,16 +88,6 @@
             this._foot = {};
             this._counterHeadRow = 1;
             this._counterBodyRow = 1;
-
-            this._cellNum = false;
-            if (cellNum === true) {
-                this._cellNum = true;
-            }
-
-            this._cellBtn = false;
-            if (cellBtn === true) {
-                this._cellBtn = true;
-            }
         };
 
         /** @protected */
@@ -129,7 +117,7 @@
              * @private
              * @type {string|null}
              */
-            _skinTable: _basis.table.bordered,
+            _skinTable: _basis.css.table.bordered,
 
             /**
              * Html class table
@@ -209,7 +197,7 @@
              * @private
              * @type {boolean}
              */
-            _cellCheckBox: true,
+            _cellCheckBox: false,
 
             /**
              * Html pagination
@@ -679,7 +667,7 @@
              * @returns {HTML.Table}
              */
             setSkinTable: function(skin) {
-                this._skinTable = _basis.emptyProperty(_basis.table, skin, _basis.table.bordered);
+                this._skinTable = _basis.emptyProperty(_basis.css.table, skin, _basis.css.table.bordered);
                 return this;
             },
 
@@ -793,6 +781,42 @@
                 if (name !== false) {
                     this._paramsLink[name] = _basis.emptyValue(separator, SEPARATOR_URL_PARAMS);
                 }
+                return this;
+            },
+
+            /**
+             * Add column with checkbox
+             *
+             * @public
+             * @param {boolean} show
+             * @returns {HTML.Table}
+             */
+            addColumnCheckbox: function(show) {
+                this._cellCheckBox = show;
+                return this;
+            },
+
+            /**
+             * Add column with cell number row
+             *
+             * @public
+             * @param {boolean} show
+             * @returns {HTML.Table}
+             */
+            addColumnNum: function(show) {
+                this._cellNum = show;
+                return this;
+            },
+
+            /**
+             * Add column with buttons add/del
+             *
+             * @public
+             * @param {boolean} show
+             * @returns {HTML.Table}
+             */
+            addColumnBtn: function(show) {
+                this._cellBtn = show;
                 return this;
             },
 

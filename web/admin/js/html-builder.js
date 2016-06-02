@@ -125,15 +125,6 @@
                 }
             },
 
-            table: {
-                striped: 'table-striped',
-                bordered: 'table-bordered',
-                'bordered-none': 'table-bordered-none',
-                hover: 'table-hover',
-                condensed: 'table-condensed'
-
-            },
-
             panelClasses: {
                 open: 'in',
                 class: 'panel',
@@ -648,7 +639,19 @@
 
         /**
          * @public
-         * @type { { text: { right: '' }, block: { clear: '..', left: '..', right: '..', center: '..' } } }
+         * @type { { striped: '..', bordered: '..', borderedNone: '..', hover: '..', condensed: '..' } } }
+         */
+        table: {
+            striped: 'table-striped',
+            bordered: 'table-bordered',
+            borderedNone: 'table-bordered-none',
+            hover: 'table-hover',
+            condensed: 'table-condensed'
+        },
+
+        /**
+         * @public
+         * @type { { text: { right: '', center: '' }, block: { clear: '..', left: '..', right: '..', center: '..' } } }
          */
         align: {
             text: {
@@ -2771,13 +2774,11 @@
 
         /**
          *
-         * @param {string|null|undefined} idTable { html id table }
-         * @param {boolean|undefined} cellNum { show column number }
-         * @param {boolean|undefined} cellBtn { show column button }
+         * @param {string|null} idTable { html id table }
          * @memberOf HTML.Table
          * @constructor
          */
-        HTML.Table = function(idTable, cellNum, cellBtn) {
+        HTML.Table = function(idTable) {
             unique++;
             this._unique = unique;
             this._id = _basis.emptyValue(idTable, TABLE + '-' + this._unique);
@@ -2810,16 +2811,6 @@
             this._foot = {};
             this._counterHeadRow = 1;
             this._counterBodyRow = 1;
-
-            this._cellNum = false;
-            if (cellNum === true) {
-                this._cellNum = true;
-            }
-
-            this._cellBtn = false;
-            if (cellBtn === true) {
-                this._cellBtn = true;
-            }
         };
 
         /** @protected */
@@ -2849,7 +2840,7 @@
              * @private
              * @type {string|null}
              */
-            _skinTable: _basis.table.bordered,
+            _skinTable: _basis.css.table.bordered,
 
             /**
              * Html class table
@@ -2929,7 +2920,7 @@
              * @private
              * @type {boolean}
              */
-            _cellCheckBox: true,
+            _cellCheckBox: false,
 
             /**
              * Html pagination
@@ -3399,7 +3390,7 @@
              * @returns {HTML.Table}
              */
             setSkinTable: function(skin) {
-                this._skinTable = _basis.emptyProperty(_basis.table, skin, _basis.table.bordered);
+                this._skinTable = _basis.emptyProperty(_basis.css.table, skin, _basis.css.table.bordered);
                 return this;
             },
 
@@ -3513,6 +3504,42 @@
                 if (name !== false) {
                     this._paramsLink[name] = _basis.emptyValue(separator, SEPARATOR_URL_PARAMS);
                 }
+                return this;
+            },
+
+            /**
+             * Add column with checkbox
+             *
+             * @public
+             * @param {boolean} show
+             * @returns {HTML.Table}
+             */
+            addColumnCheckbox: function(show) {
+                this._cellCheckBox = show;
+                return this;
+            },
+
+            /**
+             * Add column with cell number row
+             *
+             * @public
+             * @param {boolean} show
+             * @returns {HTML.Table}
+             */
+            addColumnNum: function(show) {
+                this._cellNum = show;
+                return this;
+            },
+
+            /**
+             * Add column with buttons add/del
+             *
+             * @public
+             * @param {boolean} show
+             * @returns {HTML.Table}
+             */
+            addColumnBtn: function(show) {
+                this._cellBtn = show;
                 return this;
             },
 
@@ -5358,7 +5385,8 @@
         var _basis = new HTML.Basis();
 
         /**
-         * @memberOf HTML.Grid
+         * @memberOf HTML
+         * @namespace HTML.Grid
          * @constructor
          */
         HTML.Grid = function() {
@@ -5393,25 +5421,42 @@
 
             _tableCellBtn: false,
 
+            _tableCellCheckbox: false,
+
             _tableLinkRow: null,
 
             _tableMargin: null,
 
             _tableSkin: null,
 
+            /**
+             * Get html form
+             *
+             * @returns {string}
+             * @private
+             */
             _getForm: function() {
                 return '';
             },
 
+            /**
+             * Get html table
+             *
+             * @returns {string}
+             * @private
+             */
             _getTable: function() {
-                return new HTML.Table(null, this._tableCellNum, this._tableCellBtn)
+                return new HTML.Table(null)
                     .setLinkRow(this._tableLinkRow)
                     .setRowBtnAdd(this._tableAddRow)
                     .setSkinTable(this._tableSkin)
                     .setMargin(this._tableMargin)
                     .addDataHead(this._tableHead)
                     .addDataBody(this._tableBody)
-                    .toHtml()
+                    .addColumnBtn(this._tableCellBtn)
+                    .addColumnNum(this._tableCellNum)
+                    .addColumnCheckbox(this._tableCellCheckbox)
+                    .toHtml();
             },
 
             /**
@@ -5472,7 +5517,7 @@
              * Set link pagination
              *
              * @param {string|null} link
-             * @returns {HTML.Pagination}
+             * @returns {HTML.Grid}
              */
             setLinkPagination: function(link) {
                 this._paginationUrl = link;
@@ -5556,7 +5601,7 @@
              *
              * @public
              * @param {string|null} skin {'striped'|'bordered'|'bordered-none'|'hover'|'condensed'|null}
-             * @returns {HTML.Table}
+             * @returns {HTML.Grid}
              */
             setSkinTable: function(skin) {
                 this._tableSkin = skin;
@@ -5604,6 +5649,16 @@
              */
             addColumnBtn: function() {
                 this._tableCellBtn = true;
+                return this;
+            },
+
+            /**
+             * Add column with Checkbox
+             *
+             * @returns {HTML.Grid}
+             */
+            addColumnCheckbox: function() {
+                this._tableCellCheckbox = true;
                 return this;
             },
 

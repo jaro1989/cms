@@ -23,6 +23,7 @@
                     .setCurrentPage(currentPage)
                     .setLinkPagination('{{ url('_user_list') }}')
                     .setLinkParamPagination('/')
+                    .addColumnCheckbox()
                     .appendHtml('#list-users');
         });
     </script>

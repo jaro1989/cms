@@ -21,7 +21,19 @@
 
         /**
          * @public
-         * @type { { text: { right: '' }, block: { clear: '..', left: '..', right: '..', center: '..' } } }
+         * @type { { striped: '..', bordered: '..', borderedNone: '..', hover: '..', condensed: '..' } } }
+         */
+        table: {
+            striped: 'table-striped',
+            bordered: 'table-bordered',
+            borderedNone: 'table-bordered-none',
+            hover: 'table-hover',
+            condensed: 'table-condensed'
+        },
+
+        /**
+         * @public
+         * @type { { text: { right: '', center: '' }, block: { clear: '..', left: '..', right: '..', center: '..' } } }
          */
         align: {
             text: {
