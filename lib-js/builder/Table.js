@@ -9,6 +9,8 @@
 
         var CELL_NUM = 'cell-num';
 
+        var CELL_CHECKBOX = 'cell-checkbox';
+
         var ROW_LINK = 'row-link';
 
         var SEPARATOR_URL_PARAMS = '/';
@@ -29,7 +31,7 @@
 
         /**
          *
-         * @param {object} buttonElement
+         * @param {{}} buttonElement
          * @returns {{tr: (XML|jQuery), block: XML, table: XML}}
          */
         var getDomElementsTable = function(buttonElement) {
@@ -63,7 +65,7 @@
              * Parameters for generation head table
              *
              * @private
-             * @type {object}
+             * @type {{}}
              */
             this._head = {};
 
@@ -71,7 +73,7 @@
              * Parameters for generation body table
              *
              * @private
-             * @type {object}
+             * @type {{}}
              */
             this._body = {};
 
@@ -83,7 +85,7 @@
              * Parameters for generation foot table
              *
              * @private
-             * @type {object}
+             * @type {{}}
              */
             this._foot = {};
             this._counterHeadRow = 1;
@@ -202,6 +204,14 @@
             _cellBtn: false,
 
             /**
+             * Show column checkbox
+             *
+             * @private
+             * @type {boolean}
+             */
+            _cellCheckBox: true,
+
+            /**
              * Html pagination
              *
              * @private
@@ -220,9 +230,9 @@
              * Set Line Numbering
              *
              * @private
-             * @param {object} element {this button}
+             * @param {{}} element {this button}
              * @param {string} idTable Html ID table
-             * @param {object} table
+             * @param {{}} table
              */
             _autoNumCell: function(element, idTable, table) {
                 var i = 1;
@@ -236,7 +246,7 @@
              * Add new row in table block body or foot
              *
              * @private
-             * @param {object} element {this button}
+             * @param {{}} element {this button}
              * @param {string|number} key {key - object "globals" with unique data}
              * @param {string|number} idTable
              */
@@ -261,7 +271,7 @@
              * Deleting row table
              *
              * @private
-             * @param {object} element {this button}
+             * @param {{}} element {this button}
              * @param {string|number} idTable
              */
             _delRow: function(element, idTable) {
@@ -278,7 +288,7 @@
              *
              * @private
              * @param {number} countRow
-             * @param {object} attr
+             * @param {{}} attr
              * @param {*} content
              * @returns {string} Html cell table
              */
@@ -297,6 +307,102 @@
                         .toHTML();
                 }
                 return cell;
+            },
+
+            /**
+             * The method generating cell with CheckBox
+             *
+             * @private
+             * @returns {string} Html cell table
+             */
+            _getCellCheckBox: function() {
+
+                var content = '';
+                if (this._cellCheckBox === true) {
+                    var countRow = Object.keys(this._head).length;
+                    var onclick = '';
+
+                    if (this._counterHeadRow === 1 && this._cellName === 'th') {
+                        onclick = _basis.cancelEventOnClick() + ' new HTML.Table()._changeAll(this, \'' + this._id + '\');';
+                    }
+
+                    if (this._cellName === 'td') {
+                        onclick = _basis.cancelEventOnClick() + ' new HTML.Table()._notChange(this, \'' + this._id + '\');';
+                    }
+
+                    content = new HTML.BuildTag('input', false)
+                        .setType('checkbox')
+                        .setOnclick(onclick)
+                        .toHTML();
+
+                    return this._getFirstOrLastCell(
+                        countRow,
+                        {
+                            class: CELL_CHECKBOX + ' ' + this._id + '-' + CELL_CHECKBOX + ' ' + _basis.css.align.text.center,
+                            onclick: _basis.cancelEventOnClick() + ' new HTML.Table()._changeCurrent(this);'
+                        },
+                        content
+                    );
+                } else {
+                    return '';
+                }
+            },
+
+            /**
+             * Change checkbox else click on cell with checkbox
+             *
+             * @param {{}} element - Element cell
+             * @private
+             */
+            _changeCurrent: function(element) {
+                var checkBox = $(element).find('input');
+                checkBox.click();
+            },
+
+            /**
+             * Selected all checkbox
+             *
+             * @param {{}} element
+             * @param {string} idTable
+             * @private
+             */
+            _changeAll: function(element, idTable) {
+                var checkBox = $('#' + idTable).find('.' + CELL_CHECKBOX);
+                var status = false;
+                if ($(element).prop( "checked")) {
+                    status = true;
+                }
+                checkBox.find('input').prop('checked', status);
+            },
+
+            /**
+             * Not selected checkbox to head
+             *
+             * @param {{}} element
+             * @param {string} idTable
+             * @private
+             */
+            _notChange: function(element, idTable) {
+                var table = $('#' + idTable);
+                var c_head = table.find('thead').find('.' + CELL_CHECKBOX).find('input');
+                var c_body = table.find('tbody').find('.' + CELL_CHECKBOX).find('input');
+
+                if (!$(element).prop( "checked")) {
+                    c_head.prop('checked', false);
+                } else {
+                    var i = 0;
+
+                    $.each(c_body, function(num, field) {
+                        if (!$(field).prop( "checked" )) {
+                            i++;
+                            c_head.prop('checked', false);
+                        }
+                    });
+
+                    if (i === 0) {
+                        c_head.prop('checked', true);
+                    }
+                }
             },
 
             /**
@@ -393,7 +499,7 @@
              * The method generating row table
              *
              * @private
-             * @param {object} params {parameters for generation cell}
+             * @param {{}} params {parameters for generation cell}
              * @returns {string} Html row table
              */
             _getRow: function(params) {
@@ -409,7 +515,7 @@
                 $.each(params, function(key, param) {
                     cellHtml += currentObj._getCell(param);
                 });
-
+                cellHtml += this._getCellCheckBox();
                 cellHtml += this._getCellBtn();
                 row.setContent(cellHtml);
 
@@ -443,7 +549,7 @@
              *
              * @private
              * @param {string} nameBlock { 'thead' | 'tbody' | 'tfoot' }
-             * @param {object} params {parameters for generation rows and cell}
+             * @param {{}} params {parameters for generation rows and cell}
              * @returns {string} Html table
              */
             _getBlock: function(nameBlock, params) {
@@ -521,7 +627,7 @@
             /**
              * Set parameters data for button "add"
              *
-             * @param {object} data
+             * @param {{}} data
              * @returns {HTML.Table}
              */
             setRowBtnAdd: function(data) {

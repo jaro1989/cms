@@ -25,7 +25,8 @@
          */
         align: {
             text: {
-                right: 'text-right'
+                right: 'text-right',
+                center: 'text-center'
             },
             block: {
                 clear: 'clearfix',

@@ -58,9 +58,9 @@
 
                 'style': null,
 
-                'rowspan': 1,
+                'rowspan': null,
 
-                'colspan': 1
+                'colspan': null
             };
         };
 

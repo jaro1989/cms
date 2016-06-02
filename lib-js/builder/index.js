@@ -269,6 +269,9 @@
              */
             hrefDefault: '#',
 
+            cancelEventOnClick: function() {
+                return 'event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);';s
+            },
 
             /**
              * Get error text response ajax
