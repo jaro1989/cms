@@ -3234,9 +3234,16 @@
                 if (link !== false && this._cellName === 'td') {
 
                     var parametersUrl = '';
+                    var hiddenField = 'ss';
                     if (Object.keys(this._paramsLink).length > 0) {
                         $.each(this._paramsLink, function(keyParam, valueParam) {
+//-------------------------------------------------------------------
                             if (params.hasOwnProperty(keyParam)) {
+                                hiddenField += new HTML.BuildTag('input', false)
+                                    .setType('hidden')
+                                    .setValue(params[keyParam])
+                                    .setName(keyParam + '[]')
+                                    .toHTML();
                                 parametersUrl += valueParam + params[keyParam];
                             }
                         });
