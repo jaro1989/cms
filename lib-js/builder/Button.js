@@ -318,15 +318,10 @@
              * Set active button (added style button active)
              *
              * @public
-             * @param {boolean} active
              * @returns {HTML.Button}
              */
-            setActive: function(active) {
-                if (active === true) {
-                    this._active = _basis.skin.active;
-                } else if (active === false) {
-                    this._active = null;
-                }
+            setActive: function() {
+                this._active = _basis.skin.active;
                 return this;
             },
 

@@ -1986,15 +1986,10 @@
              * Set active button (added style button active)
              *
              * @public
-             * @param {boolean} active
              * @returns {HTML.Button}
              */
-            setActive: function(active) {
-                if (active === true) {
-                    this._active = _basis.skin.active;
-                } else if (active === false) {
-                    this._active = null;
-                }
+            setActive: function() {
+                this._active = _basis.skin.active;
                 return this;
             },
 
@@ -3014,7 +3009,10 @@
                         onclick = _basis.cancelEventOnClick() + ' new HTML.Table()._changeAll(this, \'' + this._id + '\');';
                         content += new HTML.Button('toolbar')
                             .setSize('sm')
-                            .addButton(null, null, null, 'star')
+                            .setActive()
+                            .setSkin('danger')
+                            .setOnClick(_basis.cancelEventOnClick() + 'alert(123);')
+                            .addButton(null, null, null, 'trash')
                             .toHtml();
                     }
 
