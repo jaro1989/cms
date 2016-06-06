@@ -392,7 +392,7 @@ class Users
      */
     public function setDatePerionN($datePerionN)
     {
-        $this->date_perion_n = new \DateTime($datePerionN);
+        $this->date_perion_n = !empty($datePerionN) ? new \DateTime($datePerionN) : null;
 
         return $this;
     }
@@ -415,7 +415,7 @@ class Users
      */
     public function setDatePerionK($datePerionK)
     {
-        $this->date_perion_k = new \DateTime($datePerionK);
+        $this->date_perion_k = !empty($datePerionK) ? new \DateTime($datePerionK) : null;
 
         return $this;
     }

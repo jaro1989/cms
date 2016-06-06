@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 
 class UserController extends Controller{
 
-    private $limit = 10;
+    private $limit = 1;
 
     /**
      * Page edit user
@@ -19,29 +19,6 @@ class UserController extends Controller{
      */
     public function formAction(Request $request)
     {
-        $role = [
-            'ROLE_ADMIN' => 'Администратор',
-            'ROLE_USER' => 'Пользователь',
-            'ROLE_REDACTOR' => 'Редактор',
-        ];
-
-        $formatDate = [
-            'DD.MM.YYYY',
-            'DD-MM-YYYY',
-            'DD.MM.YYYY H24.MI.SS',
-            'DD-MM-YYYY H24-MI-SS'
-        ];
-        $status = [
-            'Астывный',
-            'Заблокированный',
-            'Ожидает активацию',
-        ];
-
-        $vlt = [
-            'USD',
-            'EURO',
-            'RU',
-        ];
 
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AdminHome:Users')->find($request->get('record'));
@@ -56,11 +33,8 @@ class UserController extends Controller{
         return $this->render(
             'AdminHome:user:edit.html.twig',
             [
-                'vlt' => $vlt,
-                'role' => $role,
-                'status' => $status,
-                'formatDate' => $formatDate,
-                'action' => $this->generateUrl($action, ['record' => $request->get('record')]),
+                'url_action' => $this->generateUrl($action, ['record' => $request->get('record')]),
+                'url_list' => $this->generateUrl('_user_list'),
                 'userData' => $serializer->serialize($user, 'json')
             ]
         );
@@ -149,11 +123,11 @@ class UserController extends Controller{
         foreach($request->request->all() as $key => $value) {
 
             $method = 'set' . str_replace('_', '', $key);
-
             if (method_exists($user, $method)) {
                 $user->$method($value);
             }
         }
+
         $em->flush();
 
         return $this->redirect(

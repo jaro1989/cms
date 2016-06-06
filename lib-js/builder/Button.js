@@ -338,7 +338,7 @@
              * @returns {HTML.Button}
              */
             setSize: function(size) {
-                this._size = _basis.emptyProperty(_basis.btnSize, size, null);
+                this._size = size;
                 return this;
             },
 
@@ -419,19 +419,13 @@
              * @returns {string}
              */
             _getClass: function(disabled) {
-
                 var skin = _basis.emptyProperty(_basis.skin, this._skin, _basis.skin.default);
                 var htmlClass = CLASS_DEFAULT + '-' + skin;
-                htmlClass += ' ' + _basis.emptyValue(this._size, '');
+                htmlClass += ' ' + _basis.emptyProperty(_basis.btnSize, this._size, '');
                 htmlClass += ' ' + _basis.emptyValue(this._class, '');
                 htmlClass += ' ' + _basis.emptyValue(this._active, '');
                 htmlClass += ' ' + this._getDisabled(disabled, '');
                 htmlClass += ' ' + _basis.emptyValue(CLASS_DEFAULT, '');
-
-                var size = _basis.emptyProperty(_basis.btnSize, this._size, false);
-                if (size !== false) {
-                    htmlClass += ' ' + skin;
-                }
 
                 return htmlClass.replace(/\s+/g," ").trim();
             },

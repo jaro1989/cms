@@ -32,7 +32,7 @@
 
             _paginationLinkParam: null,
 
-            _paginationAlign: null,
+            _paginationAlign: 'right',
 
             _panelTitle: null,
 
@@ -167,7 +167,7 @@
              * @returns {HTML.Grid}
              */
             setAlignPagination: function(position) {
-                this._paginationAlign = _basis.emptyProperty(_basis.css.align.block, position, null);
+                this._paginationAlign = position;
                 return this;
             },
 

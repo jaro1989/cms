@@ -182,16 +182,13 @@
                     res[CLASS_HIDDEN] = new HTML.FormatDate(timestamp, null).getDate();
                 }
 
-                name = _basis.emptyProperty(value, name, false);
-                if (typeof name === 'object') {
+                name = _basis.emptyProperty(value, name, null);
+                timestamp = _basis.emptyProperty(name, 'timestamp', false);
 
-                    timestamp = _basis.emptyProperty(name, 'timestamp', false);
-                    if (timestamp !== false) {
-                        res[CLASS_USER] = new HTML.FormatDate(timestamp, this._formatDate).getDate();
-                        res[CLASS_HIDDEN] = new HTML.FormatDate(timestamp, null).getDate();
-                    }
-
-                } else if (typeof name === 'string') {
+                if (timestamp !== false) {
+                    res[CLASS_USER] = new HTML.FormatDate(timestamp, this._formatDate).getDate();
+                    res[CLASS_HIDDEN] = new HTML.FormatDate(timestamp, null).getDate();
+                } else {
                     res[CLASS_USER] = name;
                     res[CLASS_HIDDEN] = name;
                 }

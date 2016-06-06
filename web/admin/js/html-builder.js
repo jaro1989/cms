@@ -2006,7 +2006,7 @@
              * @returns {HTML.Button}
              */
             setSize: function(size) {
-                this._size = _basis.emptyProperty(_basis.btnSize, size, null);
+                this._size = size;
                 return this;
             },
 
@@ -2087,19 +2087,13 @@
              * @returns {string}
              */
             _getClass: function(disabled) {
-
                 var skin = _basis.emptyProperty(_basis.skin, this._skin, _basis.skin.default);
                 var htmlClass = CLASS_DEFAULT + '-' + skin;
-                htmlClass += ' ' + _basis.emptyValue(this._size, '');
+                htmlClass += ' ' + _basis.emptyProperty(_basis.btnSize, this._size, '');
                 htmlClass += ' ' + _basis.emptyValue(this._class, '');
                 htmlClass += ' ' + _basis.emptyValue(this._active, '');
                 htmlClass += ' ' + this._getDisabled(disabled, '');
                 htmlClass += ' ' + _basis.emptyValue(CLASS_DEFAULT, '');
-
-                var size = _basis.emptyProperty(_basis.btnSize, this._size, false);
-                if (size !== false) {
-                    htmlClass += ' ' + skin;
-                }
 
                 return htmlClass.replace(/\s+/g," ").trim();
             },
@@ -2728,6 +2722,10 @@
 
         var RESPONSIVE_TABLE = 'table-responsive';
 
+        var HIDDEN_CLASS_NAME = 'hidden-values-list';
+
+        var HIDDEN_CLASS_PARAMS_LINK = 'hidden-params-link';
+
         var CELL_BTN = 'cell-btn';
 
         var CELL_NUM = 'cell-num';
@@ -2775,40 +2773,20 @@
         /**
          *
          * @param {string|null} idTable { html id table }
-         * @memberOf HTML.Table
+         * @memberOf HTML
+         * @namespace HTML.Table
          * @constructor
          */
         HTML.Table = function(idTable) {
             unique++;
             this._unique = unique;
             this._id = _basis.emptyValue(idTable, TABLE + '-' + this._unique);
-            /**
-             * Parameters for generation head table
-             *
-             * @private
-             * @type {{}}
-             */
             this._head = {};
-
-            /**
-             * Parameters for generation body table
-             *
-             * @private
-             * @type {{}}
-             */
             this._body = {};
-
-            this._paramsLink = {id: SEPARATOR_URL_PARAMS};
-
-            this._arrayKeyHead = [];
-
-            /**
-             * Parameters for generation foot table
-             *
-             * @private
-             * @type {{}}
-             */
             this._foot = {};
+            this._arrayKeyHead = [];
+            this._hiddenParams = ['id'];
+            this._paramsLink = {id: SEPARATOR_URL_PARAMS};
             this._counterHeadRow = 1;
             this._counterBodyRow = 1;
         };
@@ -3027,7 +3005,6 @@
              * @returns {string} Html cell table
              */
             _getCellCheckBox: function() {
-
                 var content = '';
                 if (this._cellCheckBox === true) {
                     var countRow = Object.keys(this._head).length;
@@ -3035,13 +3012,17 @@
 
                     if (this._counterHeadRow === 1 && this._cellName === 'th') {
                         onclick = _basis.cancelEventOnClick() + ' new HTML.Table()._changeAll(this, \'' + this._id + '\');';
+                        content += new HTML.Button('toolbar')
+                            .setSize('sm')
+                            .addButton(null, null, null, 'star')
+                            .toHtml();
                     }
 
                     if (this._cellName === 'td') {
                         onclick = _basis.cancelEventOnClick() + ' new HTML.Table()._notChange(this, \'' + this._id + '\');';
                     }
 
-                    content = new HTML.BuildTag('input', false)
+                    content += new HTML.BuildTag('input', false)
                         .setType('checkbox')
                         .setOnclick(onclick)
                         .toHTML();
@@ -3168,21 +3149,22 @@
              *
              * @private
              * @param {object|string} params {parameters for generation cell}
+             * @param {string} hiddenParams Html hidden fields
              * @returns {string} Html cell table
              */
-            _getCell: function(params) {
+            _getCell: function(params, hiddenParams) {
                 var cellHtml = '';
                 if (typeof params === 'object') {
 
                     cellHtml = new HTML.BuildTag(this._cellName, true)
                         .setAttributes(_basis.emptyProperty(params, 'attr', {}))
-                        .setContent(_basis.emptyProperty(params, 'data', ''))
+                        .setContent(_basis.emptyProperty(params, 'data', '') + hiddenParams)
                         .toHTML();
 
                 } else {
 
                     cellHtml = new HTML.BuildTag(this._cellName, true)
-                        .setContent(params)
+                        .setContent(params + hiddenParams)
                         .toHTML();
                 }
                 return cellHtml;
@@ -3207,6 +3189,74 @@
             },
 
             /**
+             * The method generate params url row
+             *
+             * @param {{}} params
+             * @returns {string}
+             * @private
+             */
+            _getParamsLinkRow: function(params) {
+                var parametersUrl = '';
+                if (Object.keys(this._paramsLink).length > 0) {
+                    $.each(this._paramsLink, function(keyParam, valueParam) {
+                        if (params.hasOwnProperty(keyParam)) {
+                            parametersUrl += valueParam + params[keyParam];
+                        }
+                    });
+                }
+                return parametersUrl;
+            },
+
+            /**
+             * The method generating hidden field with values
+             *
+             * @param {{}} params
+             * @returns {string}
+             * @private
+             */
+            _getHiddenParams: function(params) {
+                var hiddenParams = '';
+                // Generate hidden fields with params
+                for (var i = 0; i < this._hiddenParams.length; i++) {
+                    var key = this._hiddenParams[i];
+                    if (params.hasOwnProperty(key)) {
+                        hiddenParams += new HTML.BuildTag('input', false)
+                            .setType('hidden')
+                            .setValue(params[key])
+                            .setClass(HIDDEN_CLASS_NAME)
+                            .addClass(key)
+                            .toHTML();
+                    }
+
+                }
+                // Generate hidden field with url  for row table
+                if (Object.keys(this._paramsLink).length > 0) {
+                    var parametersUrl = '';
+                    $.each(this._paramsLink, function(keyParam, valueParam) {
+                        if (params.hasOwnProperty(keyParam)) {
+                            parametersUrl += valueParam + params[keyParam];
+                        }
+                    });
+                    hiddenParams += new HTML.BuildTag('input', false)
+                        .setType('hidden')
+                        .setValue(_basis.emptyValue(this._linkRow, '') + parametersUrl)
+                        .setClass(HIDDEN_CLASS_PARAMS_LINK)
+                        .toHTML();
+                }
+                return hiddenParams;
+            },
+
+            /**
+             * This method reload page on url in hidden field
+             *
+             * @param {{}} element
+             * @private
+             */
+            _goTo: function(element) {
+                window.location.href = $(element).find('.' + HIDDEN_CLASS_PARAMS_LINK).val();
+            },
+
+            /**
              * The method generating row table
              *
              * @private
@@ -3222,36 +3272,24 @@
                 if (this._cellName === 'td' && this._arrayKeyHead.length > 0) {
                     params = this._sortAndFilterDataCell(params);
                 }
-
+                var i = 1;
                 $.each(params, function(key, param) {
-                    cellHtml += currentObj._getCell(param);
+                    var hiddenParams = '';
+                    if (i === 1 && currentObj._cellName === 'td') {
+                        hiddenParams = currentObj._getHiddenParams(params);
+                    }
+                    i++;
+                    cellHtml += currentObj._getCell(param, hiddenParams);
                 });
+
                 cellHtml += this._getCellCheckBox();
                 cellHtml += this._getCellBtn();
-                row.setContent(cellHtml);
 
                 var link = _basis.emptyValue(this._linkRow, false);
                 if (link !== false && this._cellName === 'td') {
-
-                    var parametersUrl = '';
-                    var hiddenField = 'ss';
-                    if (Object.keys(this._paramsLink).length > 0) {
-                        $.each(this._paramsLink, function(keyParam, valueParam) {
-//-------------------------------------------------------------------
-                            if (params.hasOwnProperty(keyParam)) {
-                                hiddenField += new HTML.BuildTag('input', false)
-                                    .setType('hidden')
-                                    .setValue(params[keyParam])
-                                    .setName(keyParam + '[]')
-                                    .toHTML();
-                                parametersUrl += valueParam + params[keyParam];
-                            }
-                        });
-                    }
-
                     row
                         .setClass(ROW_LINK)
-                        .setOnclick("window.location.href='" + link + parametersUrl + "';");
+                        .setOnclick('new HTML.Table()._goTo(this);');
                 }
 
                 if (this._cellName === 'th') {
@@ -3259,6 +3297,8 @@
                 } else {
                     this._counterBodyRow++;
                 }
+
+                row.setContent(cellHtml);
                 return row.toHTML();
             },
 
@@ -3594,6 +3634,8 @@
          * @param {string|null} skin
          * @param {string|null} iconUp
          * @param {string|null} iconDown
+         * @memberOf HTML
+         * @namespace HTML.Collapse
          * @constructor
          */
         HTML.Collapse = function(htmlId, skin, iconUp, iconDown) {
@@ -4076,16 +4118,13 @@
                     res[CLASS_HIDDEN] = new HTML.FormatDate(timestamp, null).getDate();
                 }
 
-                name = _basis.emptyProperty(value, name, false);
-                if (typeof name === 'object') {
+                name = _basis.emptyProperty(value, name, null);
+                timestamp = _basis.emptyProperty(name, 'timestamp', false);
 
-                    timestamp = _basis.emptyProperty(name, 'timestamp', false);
-                    if (timestamp !== false) {
-                        res[CLASS_USER] = new HTML.FormatDate(timestamp, this._formatDate).getDate();
-                        res[CLASS_HIDDEN] = new HTML.FormatDate(timestamp, null).getDate();
-                    }
-
-                } else if (typeof name === 'string') {
+                if (timestamp !== false) {
+                    res[CLASS_USER] = new HTML.FormatDate(timestamp, this._formatDate).getDate();
+                    res[CLASS_HIDDEN] = new HTML.FormatDate(timestamp, null).getDate();
+                } else {
                     res[CLASS_USER] = name;
                     res[CLASS_HIDDEN] = name;
                 }
@@ -5414,7 +5453,7 @@
 
             _paginationLinkParam: null,
 
-            _paginationAlign: null,
+            _paginationAlign: 'right',
 
             _panelTitle: null,
 
@@ -5549,7 +5588,7 @@
              * @returns {HTML.Grid}
              */
             setAlignPagination: function(position) {
-                this._paginationAlign = _basis.emptyProperty(_basis.css.align.block, position, null);
+                this._paginationAlign = position;
                 return this;
             },
 

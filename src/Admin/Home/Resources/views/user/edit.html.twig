@@ -11,14 +11,9 @@
 {% block addscripts %}
     <script type="text/javascript">
         jQuery(document).ready(function() {
-
-            var role = {{ role|json_encode|raw }};
-            var status = {{ status|json_encode|raw }};
-            var formatDate = {{ formatDate|json_encode|raw }};
-            var action = '{{ action }}';
-            var userData = {{ userData|json_encode|raw }};
-            var user = JSON.parse(userData);
-
+            var url_action = '{{ url_action }}';
+            var url_list = '{{ url_list }}';
+            var userData = JSON.parse({{ userData|json_encode|raw }});
 
             var content = new HTML.Collapse()
                 .setShowAllPanels(true)
@@ -29,18 +24,16 @@
                         .addRow()
                         .addCell(
                             new HTML.Fields(3)
-                                .addInput(new HTML.Basis().emptyProperty(user, 'lastName', null), 'Фамилия', 'last_name')
-                                .addInput(new HTML.Basis().emptyProperty(user, 'firstName', null), 'Имя', 'first_name')
-                                .addInput(new HTML.Basis().emptyProperty(user, 'middleName', null), 'Отчество', 'middle_name')
+                                .addInput(new HTML.Basis().emptyProperty(userData, 'lastName', null), 'Фамилия', 'last_name')
+                                .addInput(new HTML.Basis().emptyProperty(userData, 'firstName', null), 'Имя', 'first_name')
+                                .addInput(new HTML.Basis().emptyProperty(userData, 'middleName', null), 'Отчество', 'middle_name')
                                 .toHtml(), 1, 1
                         )
-                        .addCell('<img src="{{ asset('/admin/img/noavatar.png') }}" class="img-thumbnail">', 1, 3, '10%')
                         .addRow()
                         .addCell(
                             new HTML.Fields(3)
-                                .addInput(new HTML.Basis().emptyProperty(user, 'cmsLogin', null), 'Login', 'cms_login')
-                                .addInput(new HTML.Basis().emptyProperty(user, 'cmsEmail', null), 'Email', 'cms_email')
-                                .addSelectList(role, 'ROLE_USER', 'cms_role', 'Роль')
+                                .addInput(new HTML.Basis().emptyProperty(userData, 'cmsLogin', null), 'Login', 'cms_login')
+                                .addInput(new HTML.Basis().emptyProperty(userData, 'cmsEmail', null), 'Email', 'cms_email')
                                 .toHtml(), 1, 1
                         )
                         .addRow()
@@ -52,31 +45,23 @@
                         )
                         .addRow()
                         .addCell(
-                            new HTML.Fields(3)
-                                .addSelectList(formatDate, new HTML.Basis().emptyProperty(user, 'dateFormat', null), 'date_format', 'Пользовательский формат даты')
-                                .toHtml() +
-                            new HTML.FFDate(user, 'datePerionN', 'label-1', 4).toHTML() +
-                            new HTML.FFDate(user, 'datePerionK', 'label-2', 4).toHTML()
-                                ,1, 1
-                        )
-                        .addCell('Еще что то', 1, 2)
-                        .addRow()
-                        .addCell(
-                            new HTML.Fields(3)
-                                .addSelectList(status, new HTML.Basis().emptyProperty(user, 'status', null), 'status', 'Статус')
-                                .addInputRead('Label', 'Валюта', 'currency')
-                                .toHtml(),1, 1
+                            new HTML.FFDate(userData, 'datePerionN', 'Период начало', 4)
+                                .toHTML() +
+                            new HTML.FFDate(userData, 'datePerionK', 'Период конец', 4)
+                                .toHTML(), 1, 1
                         )
                         .addRow()
                         .addCell(
                             new HTML.Button('toolbar', null)
                                 .setPositionBlock('right')
                                 .setActive(true)
-                                .addSubmit('Сохранить', 'save-data', null, 'plus', false)
+                                .addSubmit('Сохранить', 'save-data', null, 'floppy-save', false)
+                                .setOnClick("window.location.href='" + url_list + "'")
+                                .addButton('Список', null, null, 'list-alt', false)
+                                .setOnClick(null)
                                 .setSkin('danger')
-                                .addSubmit('Удалить', 'delete-data', null, 'remove', false)
-                                .toHtml(),
-                                2, 1
+                                .addSubmit('Удалить', 'delete-data', null, 'trash', false)
+                                .toHtml(), 1, 1
                         )
                         .toHtml(),
                     true
@@ -84,14 +69,10 @@
                 .toHtml();
 
             new HTML.Form()
-                .setAction(action)
+                .setAction(url_action)
                 .setContent(content)
                 .appendHtml('#edit-users');
 
         });
-
-//        jQuery(document).ready(function() {
-//            $('.date-calendar').datepicker({changeMonth: true, changeYear: true});
-//        });
     </script>
 {% endblock %}

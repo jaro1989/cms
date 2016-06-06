@@ -18,6 +18,8 @@
          * @param {string|null} skin
          * @param {string|null} iconUp
          * @param {string|null} iconDown
+         * @memberOf HTML
+         * @namespace HTML.Collapse
          * @constructor
          */
         HTML.Collapse = function(htmlId, skin, iconUp, iconDown) {
