@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 
 class UserController extends Controller{
 
-    private $limit = 1;
+    private $limit = 10;
 
     /**
      * Page edit user

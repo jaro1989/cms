@@ -19,40 +19,26 @@
                 .setShowAllPanels(true)
                 .addPanel(
                     'Редактирование пользователя',
-                    new HTML.Table()
-                        .setSkinTable('bordered-none')
-                        .addRow()
-                        .addCell(
-                            new HTML.Fields(3)
+                        new HTML.Fields(3)
                                 .addInput(new HTML.Basis().emptyProperty(userData, 'lastName', null), 'Фамилия', 'last_name')
                                 .addInput(new HTML.Basis().emptyProperty(userData, 'firstName', null), 'Имя', 'first_name')
                                 .addInput(new HTML.Basis().emptyProperty(userData, 'middleName', null), 'Отчество', 'middle_name')
-                                .toHtml(), 1, 1
-                        )
-                        .addRow()
-                        .addCell(
-                            new HTML.Fields(3)
+                                .toHtml()
+                        +
+                        new HTML.Fields(2)
                                 .addInput(new HTML.Basis().emptyProperty(userData, 'cmsLogin', null), 'Login', 'cms_login')
                                 .addInput(new HTML.Basis().emptyProperty(userData, 'cmsEmail', null), 'Email', 'cms_email')
-                                .toHtml(), 1, 1
-                        )
-                        .addRow()
-                        .addCell(
-                            new HTML.Fields(3)
                                 .addInputPassword(null, 'Пароль', 'cms_password')
                                 .addInputPassword(null, 'Повторите пароль', 'repeat_cms_password')
-                                .toHtml(),1, 1
-                        )
-                        .addRow()
-                        .addCell(
-                            new HTML.FFDate(userData, 'datePerionN', 'Период начало', 4)
-                                .toHTML() +
-                            new HTML.FFDate(userData, 'datePerionK', 'Период конец', 4)
-                                .toHTML(), 1, 1
-                        )
-                        .addRow()
-                        .addCell(
-                            new HTML.Button('toolbar', null)
+                                .toHtml()
+                        +
+                        new HTML.FFDate(userData, 'datePerionN', 'Период начало', 4)
+                                .toHTML()
+                        +
+                        new HTML.FFDate(userData, 'datePerionK', 'Период конец', 4)
+                                .toHTML()
+                        +
+                        new HTML.Button('toolbar', null)
                                 .setPositionBlock('right')
                                 .setActive(true)
                                 .addSubmit('Сохранить', 'save-data', null, 'floppy-save', false)
@@ -61,9 +47,52 @@
                                 .setOnClick(null)
                                 .setSkin('danger')
                                 .addSubmit('Удалить', 'delete-data', null, 'trash', false)
-                                .toHtml(), 1, 1
-                        )
-                        .toHtml(),
+                                .toHtml(),
+//                    new HTML.Table()
+//                        .setSkinTable('bordered-none')
+//                        .addRow()
+//                        .addCell(
+//                            new HTML.Fields(3)
+//                                .addInput(new HTML.Basis().emptyProperty(userData, 'lastName', null), 'Фамилия', 'last_name')
+//                                .addInput(new HTML.Basis().emptyProperty(userData, 'firstName', null), 'Имя', 'first_name')
+//                                .addInput(new HTML.Basis().emptyProperty(userData, 'middleName', null), 'Отчество', 'middle_name')
+//                                .toHtml(), 1, 1
+//                        )
+//                        .addRow()
+//                        .addCell(
+//                            new HTML.Fields(3)
+//                                .addInput(new HTML.Basis().emptyProperty(userData, 'cmsLogin', null), 'Login', 'cms_login')
+//                                .addInput(new HTML.Basis().emptyProperty(userData, 'cmsEmail', null), 'Email', 'cms_email')
+//                                .toHtml(), 1, 1
+//                        )
+//                        .addRow()
+//                        .addCell(
+//                            new HTML.Fields(3)
+//                                .addInputPassword(null, 'Пароль', 'cms_password')
+//                                .addInputPassword(null, 'Повторите пароль', 'repeat_cms_password')
+//                                .toHtml(),1, 1
+//                        )
+//                        .addRow()
+//                        .addCell(
+//                            new HTML.FFDate(userData, 'datePerionN', 'Период начало', 4)
+//                                .toHTML() +
+//                            new HTML.FFDate(userData, 'datePerionK', 'Период конец', 4)
+//                                .toHTML(), 1, 1
+//                        )
+//                        .addRow()
+//                        .addCell(
+//                            new HTML.Button('toolbar', null)
+//                                .setPositionBlock('right')
+//                                .setActive(true)
+//                                .addSubmit('Сохранить', 'save-data', null, 'floppy-save', false)
+//                                .setOnClick("window.location.href='" + url_list + "'")
+//                                .addButton('Список', null, null, 'list-alt', false)
+//                                .setOnClick(null)
+//                                .setSkin('danger')
+//                                .addSubmit('Удалить', 'delete-data', null, 'trash', false)
+//                                .toHtml(), 1, 1
+//                        )
+//                        .toHtml(),
                     true
                 )
                 .toHtml();
