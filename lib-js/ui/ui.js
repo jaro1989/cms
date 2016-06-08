@@ -1,11 +1,4 @@
 
-    /**
-     *
-     * @namespace ui
-     */
-    ui = {};
-    window.ui = ui;
-
     (function(ui) {
 
         /**
@@ -24,8 +17,10 @@
                 return '';
             },
 
-            getIcon: function() {
-                return '';
+            getIcon: function(iconName) {
+                var icon = document.createElement('span');
+                icon.className = ui.iconClass + ' ' + ui.iconClass + '-' + iconName;
+                return icon;
             },
 
             getDisabled: function() {

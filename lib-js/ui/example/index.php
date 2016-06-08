@@ -17,9 +17,10 @@
         <option>5000</option>
     </datalist>
 
+        <script src="../ui.CSS.js" type="text/javascript"></script>
         <script src="../ui.js" type="text/javascript"></script>
     <script>
-        ui.Basis();
+        console.dir(new ui.Basis().getIcon());
     </script>
     </body>
 </html>
