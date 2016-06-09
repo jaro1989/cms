@@ -80,27 +80,27 @@
             },
 
             /**
-             * Set html class - style element
-             * @param {string} type {'text'|'field'|'panel'|'pagination'}
+             * Set html class - skin element
+             * @param {string|null} type {'default'|'text'|'field'|'panel'|'pagination'}
              * @param {string} skin {'disabled'|'active'|'success'|'warning'|'danger'|'info'|'link'|'default'|'error'|'primary'}
              * @returns {ui.Element}
              * @public
              */
-            setSkinElement: function(type, skin) {
-                if (ui.skin.hasOwnProperty(skin)) {
-                    var skinClass = null;
-                    if (type === 'text') {
-                        skinClass = ui.prefix.text + '-' + ui.skin.default[skin];
-                    } else if (type === 'field') {
-                        skinClass = ui.prefix.field + '-' + ui.skin.default[skin];
-                    } else if (type === 'panel') {
-                        skinClass = ui.skin.panel[skin];
-                    } else if (type === 'pagination') {
-                        skinClass = ui.skin.pagination[skin];
-                    }
+            setSkinElement: function(skin, type) {
+                if (ui.skin.hasOwnProperty(type) && ui.skin[type].hasOwnProperty(skin)) {
 
-                    if (skinClass !== null) {
-                        this.element.classList.add(skinClass);
+                    this.element.classList.add(ui.skin[type][skin]);
+
+                } else {
+                    var skinClass = null;
+                    if (ui.skin.default.hasOwnProperty(skin)) {
+                        if (type === 'text') {
+                            skinClass = ui.prefix.text + '-' + ui.skin.default[skin];
+                        } else if (type === 'field') {
+                            skinClass = ui.prefix.field + '-' + ui.skin.default[skin];
+                        } else {
+                            skinClass = ui.skin.default[skin];
+                        }
                     }
                 }
                 return this;

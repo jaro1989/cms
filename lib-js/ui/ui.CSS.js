@@ -85,7 +85,7 @@
 
         /**
          * @public
-         * @type { { panel: string, panelBody: string, panelFoot: string, panelHead: string, panelTitle: string, skin: {default: string, primary: string, success: string, warning: string, danger: string, info: string} } }
+         * @type { { panel: string, panelBody: string, panelFoot: string, panelHead: string, panelTitle: string } }
          */
         panel: {
             panel:      'panel',
@@ -111,7 +111,7 @@
 
         /**
          * @public
-         * @type { { disabled: string, active: string, success: string, warning: string, danger: string, info: string, link: string, default: string, error: string, primary: string } }
+         * @type { { default: {disabled: string, active: string, success: string, warning: string, danger: string, info: string, link: string, default: string, error: string, primary: string}, panel: {default: string, primary: string, success: string, warning: string, danger: string, info: string} } }
          */
         skin: {
             default: {
