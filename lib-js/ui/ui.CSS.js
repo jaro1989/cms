@@ -50,11 +50,11 @@
          * @type { { striped: string, bordered: string, borderedNone: string, hover: string, condensed: string } } }
          */
         table: {
-            striped: 'table-striped',
-            bordered: 'table-bordered',
+            striped:      'table-striped',
+            bordered:     'table-bordered',
             borderedNone: 'table-bordered-none',
-            hover: 'table-hover',
-            condensed: 'table-condensed'
+            hover:        'table-hover',
+            condensed:    'table-condensed'
         },
 
         /**
@@ -63,13 +63,13 @@
          */
         align: {
             text: {
-                right: 'text-right',
+                right:  'text-right',
                 center: 'text-center'
             },
             block: {
-                clear: 'clearfix',
-                left: 'pull-left',
-                right: 'pull-right',
+                clear:  'clearfix',
+                left:   'pull-left',
+                right:  'pull-right',
                 center: 'center-block'
             }
         },
@@ -80,7 +80,7 @@
          */
         prefix: {
             field: 'has',
-            text: 'text'
+            text:  'text'
         },
 
         /**
@@ -88,40 +88,24 @@
          * @type { { panel: string, panelBody: string, panelFoot: string, panelHead: string, panelTitle: string, skin: {default: string, primary: string, success: string, warning: string, danger: string, info: string} } }
          */
         panel: {
-            skin: {
-                default: 'panel-default',
-                primary: 'panel-primary',
-                success: 'panel-success',
-                warning: 'panel-warning',
-                danger: 'panel-danger',
-                info: 'panel-info'
-            },
-            panel: 'panel',
-            panelBody: 'panel-body',
-            panelFoot: 'panel-footer',
-            panelHead: 'panel-heading',
+            panel:      'panel',
+            panelBody:  'panel-body',
+            panelFoot:  'panel-footer',
+            panelHead:  'panel-heading',
             panelTitle: 'panel-title'
         },
 
         /**
-         * @type { { skin: { default: string,  pager: string }, item: { disabled: string, active: string }, size: { lg: string, sm: string }, side: { left: string, rirht: string } } }
+         * @type { { skin: { default: string,  pager: string }, item: { disabled: string, active: string }, side: { left: string, rirht: string } } }
          */
         pagination: {
-            skin: {
-                pager: 'pager',
-                default: 'pagination'
-            },
             item: {
-                active: 'active',
+                active:   'active',
                 disabled: 'disabled'
-            },
-            size: {
-                lg: 'pagination-lg',
-                sm: 'pagination-sm'
             },
             side: {
                 rirht: 'next',
-                left: 'previous'
+                left:  'previous'
             }
         },
 
@@ -130,21 +114,35 @@
          * @type { { disabled: string, active: string, success: string, warning: string, danger: string, info: string, link: string, default: string, error: string, primary: string } }
          */
         skin: {
-            disabled: 'disabled',
-            active: 'active',
-            success: 'success',
-            warning: 'warning',
-            danger: 'danger',
-            info: 'info',
-            link: 'link',
-            default: 'default',
-            error: 'error',
-            primary: 'primary'
+            default: {
+                disabled: 'disabled',
+                active:   'active',
+                success:  'success',
+                warning:  'warning',
+                danger:   'danger',
+                info:     'info',
+                link:     'link',
+                default:  'default',
+                error:    'error',
+                primary:  'primary'
+            },
+            panel: {
+                default: 'panel-default',
+                primary: 'panel-primary',
+                success: 'panel-success',
+                warning: 'panel-warning',
+                danger:  'panel-danger',
+                info:    'panel-info'
+            },
+            pagination: {
+                pager:   'pager',
+                default: 'pagination'
+            }
         },
 
         /**
          * @public
-         * @type { { input: { lg: string, sm: string }, button: { lg: string, sm: string, xs: string } } }
+         * @type { { input: { lg: string, sm: string }, button: { lg: string, sm: string, xs: string }, pagination: { lg: string, sm: string }, } }
          */
         size: {
             input: {
@@ -155,6 +153,10 @@
                 lg: 'btn-lg',
                 sm: 'btn-sm',
                 xs: 'btn-xs'
+            },
+            pagination: {
+                lg: 'pagination-lg',
+                sm: 'pagination-sm'
             }
         },
 

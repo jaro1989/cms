@@ -71,7 +71,7 @@
              * @returns {ui.Element}
              * @public
              */
-            setInputType: function(elementType) {
+            setTypeElement: function(elementType) {
                 if (ui.findValueArray(TYPE_INPUT, elementType) == -1) {
                     elementType = 'text';
                 }
@@ -80,26 +80,46 @@
             },
 
             /**
-             *
-             * @param {string} type {'text'|'field'}
+             * Set html class - style element
+             * @param {string} type {'text'|'field'|'panel'|'pagination'}
              * @param {string} skin {'disabled'|'active'|'success'|'warning'|'danger'|'info'|'link'|'default'|'error'|'primary'}
-             * @returns {string|null}
+             * @returns {ui.Element}
+             * @public
              */
-            getClassSkin: function(type, skin) {
-
+            setSkinElement: function(type, skin) {
                 if (ui.skin.hasOwnProperty(skin)) {
-
+                    var skinClass = null;
                     if (type === 'text') {
-                        return ui.prefix.text + '-' + ui.skin[skin];
+                        skinClass = ui.prefix.text + '-' + ui.skin.default[skin];
                     } else if (type === 'field') {
-                        return ui.prefix.field + '-' + ui.skin[skin];
+                        skinClass = ui.prefix.field + '-' + ui.skin.default[skin];
+                    } else if (type === 'panel') {
+                        skinClass = ui.skin.panel[skin];
+                    } else if (type === 'pagination') {
+                        skinClass = ui.skin.pagination[skin];
                     }
 
+                    if (skinClass !== null) {
+                        this.element.classList.add(skinClass);
+                    }
                 }
+                return this;
+            },
 
-                return null;
+            /**
+             * Set html class - size element
+             * @param {string} type {'input'|'pagination'|'button'}
+             * @param {string} size {'lg'|'sm'|'xs'}
+             * @returns {string}
+             */
+            setSizeElement: function(type, size) {
+                if (ui.size.hasOwnProperty(type)) {
+                    if (ui.size[type].hasOwnProperty(size)) {
+                        this.element.classList.add(ui.size[type][size]);
+                    }
+                }
+                return this;
             }
-
         };
 
     } (window.ui || {}));
