@@ -20,7 +20,18 @@
         <script src="../ui.CSS.js" type="text/javascript"></script>
         <script src="../ui.js" type="text/javascript"></script>
     <script>
-        console.dir(new ui.Basis().getIcon());
+        console.log(
+            new ui.Element('input')
+                .setInputType('email')
+                .setIdElement('ssssssssssss')
+                .addClassElement('sssssssss')
+                .addClassElement('asdasd')
+                .addClassElement('aaaaaa')
+                .setDisabledElement()
+                .setIconElement('sss')
+
+            .element
+        );
     </script>
     </body>
 </html>
