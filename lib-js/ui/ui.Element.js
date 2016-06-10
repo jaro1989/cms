@@ -21,13 +21,26 @@
         ui.Element.prototype = {
 
             /**
-             * Set HTML ID in element
-             * @param {string} elementId
+             * Set html ID on element
+             * @param {string|null} htmlId
+             * @param {string|null} htmlName
              * @returns {ui.Element}
              * @public
              */
-            setIdElement: function(elementId) {
-                this.element.id = elementId;
+            setIdElement: function(htmlId, htmlName) {
+
+                if (typeof htmlId === 'string') {
+
+                    this.element.id = htmlId;
+
+                } else if (htmlId === null) {
+
+                    if (typeof htmlName === 'string') {
+
+                        this.element.id = htmlName.replace('[', '-').replace(']', '');
+
+                    }
+                }
                 return this;
             },
 
@@ -48,8 +61,8 @@
              * @public
              */
             setDisabledElement: function() {
-                this.element.classList.add(ui.disabled);
-                this.element.disabled = true;
+                this.element.classList.add(ui.CSS.disabledClass);
+                this.element.setAttribute('disabled', 'disabled');
                 return this;
             },
 
@@ -60,8 +73,8 @@
              * @public
              */
             setIconElement: function(iconName) {
-                this.element.classList.add(ui.iconClass);
-                this.element.classList.add(ui.iconClass + '-' + iconName);
+                this.element.classList.add(ui.CSS.iconClass);
+                this.element.classList.add(ui.CSS.iconClass + '-' + iconName);
                 return this;
             },
 
@@ -72,7 +85,7 @@
              * @public
              */
             setTypeElement: function(elementType) {
-                if (ui.findValueArray(TYPE_INPUT, elementType) == -1) {
+                if (ui.Lib.inArray(TYPE_INPUT, elementType) == -1) {
                     elementType = 'text';
                 }
                 this.element.setAttribute('type', elementType);
@@ -86,23 +99,34 @@
              * @returns {ui.Element}
              * @public
              */
-            setSkinElement: function(skin, type) {
-                if (ui.skin.hasOwnProperty(type) && ui.skin[type].hasOwnProperty(skin)) {
+            setSkinElement: function(type, skin) {
+                var skinClass = null;
 
-                    this.element.classList.add(ui.skin[type][skin]);
+                if (ui.CSS.skinClass.hasOwnProperty(type) && ui.CSS.skinClass[type].hasOwnProperty(skin)) {
+
+                    skinClass = ui.CSS.skinClass[type][skin];
 
                 } else {
-                    var skinClass = null;
-                    if (ui.skin.default.hasOwnProperty(skin)) {
+
+                    if (ui.CSS.skinClass.default.hasOwnProperty(skin)) {
+
                         if (type === 'text') {
-                            skinClass = ui.prefix.text + '-' + ui.skin.default[skin];
+
+                            skinClass = ui.CSS.prefixClass.text + '-' + ui.CSS.skinClass.default[skin];
+
                         } else if (type === 'field') {
-                            skinClass = ui.prefix.field + '-' + ui.skin.default[skin];
+
+                            skinClass = ui.CSS.prefixClass.field + '-' + ui.CSS.skinClass.default[skin];
+
                         } else {
-                            skinClass = ui.skin.default[skin];
+
+                            skinClass = ui.CSS.skinClass.default[skin];
                         }
+
                     }
                 }
+
+                this.element.classList.add(skinClass);
                 return this;
             },
 
@@ -113,11 +137,17 @@
              * @returns {string}
              */
             setSizeElement: function(type, size) {
-                if (ui.size.hasOwnProperty(type)) {
-                    if (ui.size[type].hasOwnProperty(size)) {
-                        this.element.classList.add(ui.size[type][size]);
+
+                if (ui.CSS.sizeClass.hasOwnProperty(type)) {
+
+                    if (ui.CSS.sizeClass[type].hasOwnProperty(size)) {
+
+                        this.element.classList.add(ui.CSS.sizeClass[type][size]);
+
                     }
+
                 }
+
                 return this;
             }
         };

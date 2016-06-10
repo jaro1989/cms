@@ -17,19 +17,23 @@
         <option>5000</option>
     </datalist>
 
+        <script src="../ui.Config.js" type="text/javascript"></script>
         <script src="../ui.CSS.js" type="text/javascript"></script>
-        <script src="../ui.js" type="text/javascript"></script>
+        <script src="../ui.Lib.js" type="text/javascript"></script>
+        <script src="../ui.Element.js" type="text/javascript"></script>
     <script>
         console.log(
             new ui.Element('input')
-                .setInputType('email')
+                .setTypeElement('email')
                 .setIdElement('ssssssssssss')
                 .addClassElement('sssssssss')
                 .addClassElement('asdasd')
                 .addClassElement('aaaaaa')
                 .setDisabledElement()
                 .setIconElement('sss')
-
+                .setSkinElement('field', 'warning')
+                .setSizeElement('input', 'lg')
+//                .addElementAfter()
             .element
         );
     </script>
