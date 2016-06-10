@@ -19,7 +19,7 @@
 
         <script src="../ui.Config.js" type="text/javascript"></script>
         <script src="../ui.CSS.js" type="text/javascript"></script>
-        <script src="../ui.Lib.js" type="text/javascript"></script>
+        <script src="../ui.api.js" type="text/javascript"></script>
         <script src="../ui.Element.js" type="text/javascript"></script>
     <script>
         console.log(
@@ -33,8 +33,29 @@
                 .setIconElement('sss')
                 .setSkinElement('field', 'warning')
                 .setSizeElement('input', 'lg')
+                .setTextElement('ssssssssssssssssssssssssssssssss')
+                .addChildBefore(
+                    new ui.Element('span')
+                        .setTextElement('sssssssssssssssssffffffff')
+                        .getElement()
+                )
+                .addChildBefore(
+                    new ui.Element('span')
+                        .setTextElement('sssssssssss')
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.Element('span')
+                        .setTextElement('sssssssssss222sssssssssss2')
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.Element('span')
+                        .setTextElement('sssssssssss2222')
+                        .getElement()
+                )
 //                .addElementAfter()
-            .element
+            .toHTML()
         );
     </script>
     </body>

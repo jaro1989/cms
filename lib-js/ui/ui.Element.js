@@ -1,9 +1,7 @@
 
     (function(ui) {
 
-        var TYPE_INPUT = [
-            'text', 'password', 'image', 'button', 'checkbox', 'file', 'hidden', 'radio', 'reset', 'submit', 'week', 'url', 'time', 'tel', 'search', 'range', 'number', 'month', 'email', 'datetime-local', 'color', 'date', 'datetime'
-        ];
+        var TYPE_INPUT = ['text', 'password', 'image', 'button', 'checkbox', 'file', 'hidden', 'radio', 'reset', 'submit', 'week', 'url', 'time', 'tel', 'search', 'range', 'number', 'month', 'email', 'datetime-local', 'color', 'date', 'datetime'];
 
         /**
          * @memberOf ui
@@ -15,6 +13,7 @@
              * @type {Element}
              */
             this.element = document.createElement(name);
+            this.tag_name = name;
         };
 
         /** @protected */
@@ -41,6 +40,39 @@
 
                     }
                 }
+                return this;
+            },
+
+            /**
+             * Set text in element
+             * @param {string} textElement
+             * @returns {ui.Element}
+             * @public
+             */
+            setTextElement: function(textElement) {
+                this.element.innerHTML = textElement;
+                return this;
+            },
+
+            /**
+             * Add children element before
+             * @param {ui.Element} element
+             * @returns {ui.Element}
+             * @public
+             */
+            addChildBefore: function(element) {
+                this.element.insertBefore(element, this.element.firstChild);
+                return this;
+            },
+
+            /**
+             * Add children element after
+             * @param {ui.Element} element
+             * @returns {ui.Element}
+             * @public
+             */
+            addChildAfter: function(element) {
+                this.element.insertBefore(element, this.element.lastChild);
                 return this;
             },
 
@@ -85,7 +117,7 @@
              * @public
              */
             setTypeElement: function(elementType) {
-                if (ui.Lib.inArray(TYPE_INPUT, elementType) == -1) {
+                if (ui.api.inArray(TYPE_INPUT, elementType) == -1) {
                     elementType = 'text';
                 }
                 this.element.setAttribute('type', elementType);
@@ -134,7 +166,8 @@
              * Set html class - size element
              * @param {string} type {'input'|'pagination'|'button'}
              * @param {string} size {'lg'|'sm'|'xs'}
-             * @returns {string}
+             * @returns {ui.Element}
+             * @public
              */
             setSizeElement: function(type, size) {
 
@@ -149,7 +182,28 @@
                 }
 
                 return this;
+            },
+
+            /**
+             * Get current object
+             * @returns {Element}
+             * @public
+             */
+            getElement: function() {
+                return this.element;
+            },
+
+            /**
+             * @public
+             */
+            toHTML: function()  {
+                return this.element.content;
+            },
+
+            appendHTML: function() {
+                document.body.appendChild(div);
             }
+
         };
 
     } (window.ui || {}));

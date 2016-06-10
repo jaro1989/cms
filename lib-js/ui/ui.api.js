@@ -3,9 +3,9 @@
 
     /**
      * @memberOf ui
-     * @namespace ui.Lib
+     * @namespace ui.api
      */
-    ui.Lib = {
+    ui.api = {
         /**
          * Find value in array
          * @param {[]} array
