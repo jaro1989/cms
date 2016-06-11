@@ -9,21 +9,6 @@
 
     <div id="element_append"></div>
 
-    <div class="input-group">
-        <span class="input-group-addon">@</span>
-        <input type="text" class="form-control" placeholder="Username">
-    </div>
-
-    <div class="input-group col-lg-6">
-        <input type="text" class="form-control">
-        <span class="input-group-addon">.00</span>
-    </div>
-
-    <div class="input-group col-lg-6">
-        <span class="input-group-addon">$</span>
-        <input type="text" class="form-control">
-        <span class="input-group-addon">.00</span>
-    </div>
 
 
     <script src="../ui.Config.js" type="text/javascript"></script>

@@ -6,6 +6,22 @@
         var TYPES_INPUT = ['text', 'password', 'image', 'button', 'checkbox', 'file', 'hidden', 'radio', 'reset', 'submit', 'week', 'url', 'time', 'tel', 'search', 'range', 'number', 'month', 'email', 'datetime-local', 'color', 'date', 'datetime'];
 
         /**
+         * Set value field
+         * @param {string} nameValue
+         * @param {string} nameField
+         * @returns {ui.Element}
+         * @public
+         */
+        var setValue = function(nameValue, nameField) {
+            if (typeof nameValue === 'object') {
+                if (nameValue.hasOwnProperty(nameField)) {
+                    return nameValue[nameField];
+                }
+            }
+            return nameValue;
+        };
+
+        /**
          * @memberOf ui
          * @namespace ui.Element
          * @constructor
@@ -46,6 +62,18 @@
             },
 
             /**
+             * Set for in label
+             * @param htmlId
+             * @returns {ui.Element}
+             */
+            setForLabelElement: function(htmlId) {
+                if (ui.api.inArray(['label'], this.tag_name) != -1 && htmlId !== null) {
+                    this.element.setAttribute('for', htmlId);
+                }
+                return this;
+            },
+
+            /**
              * Set name field
              * @param {string} nameField
              * @returns {ui.Element}
@@ -60,13 +88,14 @@
 
             /**
              * Set value field
+             * @param {string} nameValue
              * @param {string} nameField
              * @returns {ui.Element}
              * @public
              */
-            setValueElement: function(nameField) {
+            setValueElement: function(nameValue, nameField) {
                 if (ui.api.inArray(['input', 'textarea', 'select'], this.tag_name) != -1) {
-                    this.element.value = nameField;
+                    this.element.value = setValue(nameValue, nameField);
                 }
                 return this;
             },
@@ -100,7 +129,7 @@
              * @public
              */
             addChildAfter: function(element) {
-                this.element.insertBefore(element, this.element.lastChild);
+                this.element.appendChild(element);
                 return this;
             },
 
@@ -236,6 +265,18 @@
 
                 }
 
+                return this;
+            },
+
+            /**
+             * Set html class - padding element
+             * @param {string|null} padding { 'lg' | 'sm' | 'xs' }
+             * @returns {ui.Element}
+             */
+            setPaddingElement: function(padding) {
+                if (ui.CSS.paddingClass.hasOwnProperty(padding)) {
+                    this.element.classList.add(ui.CSS.paddingClass[padding]);
+                }
                 return this;
             },
 

@@ -28,6 +28,12 @@
              * @public
              * @type {string}
              */
+            inputGroupAddonClass: 'input-group-addon',
+
+            /**
+             * @public
+             * @type {string}
+             */
             formGroupClass: 'form-group',
 
             /**
@@ -35,6 +41,12 @@
              * @type {string}
              */
             formControlClass: 'form-control',
+
+            /**
+             * @public
+             * @type {string}
+             */
+            controlLabelClass: 'control-label',
 
             /**
              * @public
