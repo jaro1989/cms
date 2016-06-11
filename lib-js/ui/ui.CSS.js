@@ -99,7 +99,7 @@
             },
 
             /**
-             * @type { { skin: { default: string,  pager: string }, item: { disabled: string, active: string }, side: { left: string, rirht: string } } }
+             * @type { { item: { disabled: string, active: string }, side: { left: string, rirht: string } } }
              */
             paginationClass: {
                 item: {

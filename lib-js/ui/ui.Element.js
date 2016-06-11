@@ -46,13 +46,39 @@
             },
 
             /**
-             * Set text in element
-             * @param {string} textElement
+             * Set name field
+             * @param {string} nameField
              * @returns {ui.Element}
              * @public
              */
-            setTextElement: function(textElement) {
-                this.element.innerHTML = textElement;
+            setNameElement: function(nameField) {
+                if (ui.api.inArray(['input', 'textarea', 'select'], this.tag_name) != -1) {
+                    this.element.setAttribute('name', nameField);
+                }
+                return this;
+            },
+
+            /**
+             * Set value field
+             * @param {string} nameField
+             * @returns {ui.Element}
+             * @public
+             */
+            setValueElement: function(nameField) {
+                if (ui.api.inArray(['input', 'textarea', 'select'], this.tag_name) != -1) {
+                    this.element.value = nameField;
+                }
+                return this;
+            },
+
+            /**
+             * Set content in element
+             * @param {string} contentElement
+             * @returns {ui.Element}
+             * @public
+             */
+            setContentElement: function(contentElement) {
+                this.element.innerHTML = contentElement;
                 return this;
             },
 
@@ -210,6 +236,22 @@
 
                 }
 
+                return this;
+            },
+
+            /**
+             * Set width element
+             * @param {string|number} elementWidth if value - string set attribut width
+             *                                     if value - number set html class
+             * @returns {ui.Element}
+             */
+            setWidthElement: function(elementWidth) {
+                if (typeof elementWidth === 'number') {
+                    this.element.classList.add(ui.CSS.widthClass + '-' + elementWidth);
+                }
+                if (typeof elementWidth === 'string') {
+                    this.element.style.width = elementWidth;
+                }
                 return this;
             },
 
