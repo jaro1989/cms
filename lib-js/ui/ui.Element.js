@@ -1,7 +1,9 @@
 
     (function(ui) {
-
-        var TYPE_INPUT = ['text', 'password', 'image', 'button', 'checkbox', 'file', 'hidden', 'radio', 'reset', 'submit', 'week', 'url', 'time', 'tel', 'search', 'range', 'number', 'month', 'email', 'datetime-local', 'color', 'date', 'datetime'];
+        /**
+         * @type {[]}
+         */
+        var TYPES_INPUT = ['text', 'password', 'image', 'button', 'checkbox', 'file', 'hidden', 'radio', 'reset', 'submit', 'week', 'url', 'time', 'tel', 'search', 'range', 'number', 'month', 'email', 'datetime-local', 'color', 'date', 'datetime'];
 
         /**
          * @memberOf ui
@@ -112,15 +114,42 @@
 
             /**
              * Set type element input
-             * @param {string} elementType {'text'|'password'|'image'|'button'|'checkbox'|'file'|'hidden'|'radio'|'reset'|'submit'|'week'|'url'|'time'|'tel'|'search'|'range'|'number'|'month'|'email'|'datetime-local'|'color'|'date'|'datetime'}
+             * @param {string} elementType input = 'text'|'password'|'image'|'button'|'checkbox'|'file'|'hidden'|'radio'|'reset'|'submit'|'week'|'url'|'time'|'tel'|'search'|'range'|'number'|'month'|'email'|'datetime-local'|'color'|'date'|'datetime'
+             *                             | link = text/css
+             *                             | script = text/javascript
              * @returns {ui.Element}
              * @public
              */
             setTypeElement: function(elementType) {
-                if (ui.api.inArray(TYPE_INPUT, elementType) == -1) {
-                    elementType = 'text';
+
+                if (ui.api.inArray(['input'], this.tag_name) != -1) {
+
+                    if (ui.api.inArray(TYPES_INPUT, elementType) == -1) {
+
+                        elementType = 'text';
+                    }
+                    this.element.setAttribute('type', elementType);
                 }
-                this.element.setAttribute('type', elementType);
+
+                if (ui.api.inArray(['link', 'script'], this.tag_name) != -1) {
+
+                    this.element.setAttribute('type', elementType);
+                }
+                return this;
+            },
+
+            /**
+             * Set url for element with tag name - "a|src|script|link"
+             * @param {string} elementUrl
+             * @returns {ui.Element}
+             */
+            setUrlElement: function(elementUrl) {
+                if (ui.api.inArray(['a', 'link'], this.tag_name) != -1) {
+                    this.element.setAttribute('href', elementUrl);
+                }
+                if (ui.api.inArray(['img', 'script'], this.tag_name) != -1) {
+                    this.element.setAttribute('src', elementUrl);
+                }
                 return this;
             },
 
@@ -194,16 +223,24 @@
             },
 
             /**
+             * Get html element
+             * @returns {string}
              * @public
              */
             toHTML: function()  {
-                return this.element.content;
+                return this.element.outerHTML;
             },
 
-            appendHTML: function() {
-                document.body.appendChild(div);
+            /**
+             * Add html in elements with "selector"
+             * @param {string} selector
+             * @returns {ui.Element}
+             * @public
+             */
+            appendHTML: function(selector) {
+                new ui.$(selector).append(this.element);
+                return this;
             }
-
         };
 
     } (window.ui || {}));
