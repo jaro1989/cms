@@ -3,47 +3,57 @@
 
     var values = {};
 
-    for (var i = 1; i <= 30; i++) {
+    for (var i = 1; i <= 12; i++) {
         values['name-field-' + i] = 'value-' + i;
     }
 
-    for(var index in values) {
-        if (values.hasOwnProperty(index)) {
+    var prefix = 'a';
+    for(var a in values) {
+        if (values.hasOwnProperty(a)) {
 
-            new ui.FFText(values[index], index, 'Label -' + index)
+            new ui.FFText('a' + values[a], 'a' + a, 'Label -' + a)
                 .setWidth(3)
                 .setWidthCaption(6)
                 .setLeftIcon('earphone')
-                .setRightMarker('@')
+                .setRightMarker('(8-029)')
                 .setSkin('success')
                 .appendHTML(APPEND_ELEMENT);
 
         }
     }
 
-    new ui.FFText({'name-field': 'значение объекта'}, 'name-field')
-        .setWidth(3)
-        .setDisabled()
-        .setLeftIcon('user')
-        .setRightMarker('@')
-        .setSkin('warning')
-        .appendHTML(APPEND_ELEMENT);
+    for(var b in values) {
+        if (values.hasOwnProperty(b)) {
 
-    new ui.FFText('Просто значение', 'name-field-2')
-        .setWidth(3)
-        .setRightIcon('signal')
-        .setSkin('error')
-        .appendHTML(APPEND_ELEMENT);
+            new ui.FFText('b' + values[b], 'b' + b, 'Label -' + b)
+                .setWidth(3)
+                .setLeftIcon('phone-alt')
+                .setRightMarker('(+375 29)')
+                .setSkin('warning')
+                .appendHTML(APPEND_ELEMENT);
 
-    new ui.FFText('Просто значение', 'name-field-3')
-        .setWidth(3)
-        .setLeftMarker('$')
-        .setRightMarker('@')
-        .appendHTML(APPEND_ELEMENT);
+        }
+    }
 
-    new ui.FFText('Просто значение', 'name-field-4', 'Test-label')
-        .setWidth(3)
-        .setWidthCaption(6)
-        .setLeftIcon('phone-alt')
-        .setRightMarker('@')
-        .appendHTML(APPEND_ELEMENT);
+    for(var c in values) {
+        if (values.hasOwnProperty(c)) {
+
+            new ui.FFText('c' + values[c], 'c' + c, 'Label -' + c)
+                .setWidth(2)
+                .setLeftIcon('euro')
+                .setSkin('error')
+                .appendHTML(APPEND_ELEMENT);
+
+        }
+    }
+
+    for(var e in values) {
+        if (values.hasOwnProperty(e)) {
+
+            new ui.FFText('e' + values[e], 'e' + e, 'Label -' + e)
+                .setWidth(4)
+                .setWidthCaption(3)
+                .appendHTML(APPEND_ELEMENT);
+
+        }
+    }

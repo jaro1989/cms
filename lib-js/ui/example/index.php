@@ -25,42 +25,7 @@
     ?>
 
     <script>
-//        console.log(
-//            new ui.Element('a')
-//                .setTypeElement('email')
-//                .setUrlElement('ssssss')
-//                .setIdElement('ssssssssssss')
-//                .addClassElement('sssssssss')
-//                .addClassElement('asdasd')
-//                .addClassElement('aaaaaa')
-//                .setDisabledElement()
-//                .setIconElement('sss')
-//                .setSkinElement('field', 'warning')
-//                .setSizeElement('input', 'lg')
-//                .setTextElement('ssssssssssssssssssssssssssssssss')
-//                .addChildBefore(
-//                    new ui.Element('li')
-//                        .setTextElement('sssssssssssssssssffffffff')
-//                        .getElement()
-//                )
-//                .addChildBefore(
-//                    new ui.Element('li')
-//                        .setTextElement('sssssssssss')
-//                        .getElement()
-//                )
-//                .addChildAfter(
-//                    new ui.Element('li')
-//                        .setTextElement('sssssssssss222sssssssssss2')
-//                        .getElement()
-//                )
-//                .addChildAfter(
-//                    new ui.Element('li')
-//                        .setTextElement('sssssssssss2222')
-//                        .getElement()
-//                )
-//                .appendHTML('#element_append, .element_append')
-//                .toHTML()
-//        );
+
     </script>
     </body>
 </html>
