@@ -50,7 +50,7 @@
 
                     this.element.id = htmlId;
 
-                } else if (htmlId === null) {
+                } else {
 
                     if (typeof htmlName === 'string') {
 
@@ -64,11 +64,25 @@
             /**
              * Set for in label
              * @param htmlId
+             * @param {string|null} htmlName
              * @returns {ui.Element}
              */
-            setForLabelElement: function(htmlId) {
-                if (ui.api.inArray(['label'], this.tag_name) != -1 && htmlId !== null) {
-                    this.element.setAttribute('for', htmlId);
+            setForLabelElement: function(htmlId, htmlName) {
+                if (ui.api.inArray(['label'], this.tag_name) != -1) {
+
+                    if (typeof htmlId === 'string') {
+
+                        this.element.setAttribute('for', htmlId);
+
+                    } else {
+
+                        if (typeof htmlName === 'string') {
+
+                            this.element.setAttribute('for', htmlName.replace('[', '-').replace(']', ''));
+
+                        }
+                    }
+
                 }
                 return this;
             },
@@ -146,12 +160,15 @@
 
             /**
              * Set html class disabled and attribute disabled on element
+             * @param {boolean} status
              * @returns {ui.Element}
              * @public
              */
-            setDisabledElement: function() {
-                this.element.classList.add(ui.CSS.disabledClass);
-                this.element.setAttribute('disabled', 'disabled');
+            setDisabledElement: function(status) {
+                if (status === true) {
+                    this.element.classList.add(ui.CSS.disabledClass);
+                    this.element.setAttribute('disabled', 'disabled');
+                }
                 return this;
             },
 

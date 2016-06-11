@@ -4,11 +4,12 @@
         /**
          * @memberOf ui
          * @namespace ui.FFText
-         * @param {string} value
-         * @param {string} name
+         * @param {string|null} value
+         * @param {string|null} name
+         * @param {string|null} caption
          * @constructor
          */
-        ui.FFText = function (value, name) {
+        ui.FFText = function (value, name, caption) {
             /**
              * @private
              * @type {string|null}
@@ -20,10 +21,28 @@
              * @type {string|null}
              */
             this._value = value;
+
+            /**
+             * @private
+             * @type {string|null}
+             */
+            this._caption = (caption != undefined) ? caption : null;
         };
 
         /** @protected */
         ui.FFText.prototype = {
+
+            /**
+             * @private
+             * @type {string|null}
+             */
+            _leftIcon: null,
+
+            /**
+             * @private
+             * @type {string|null}
+             */
+            _rightIcon: null,
 
             /**
              * @private
@@ -39,15 +58,9 @@
 
             /**
              * @private
-             * @type {string|null}
-             */
-            _label: null,
-
-            /**
-             * @private
              * @type {number|null}
              */
-            _widthLabel: null,
+            _widthCaption: null,
 
             /**
              * @private
@@ -65,7 +78,7 @@
              * @private
              * @type {string|null}
              */
-            _padding: 'lg',
+            _padding: 'sm',
 
             /**
              * @private
@@ -78,6 +91,21 @@
              * @type {string|null}
              */
             _size: null,
+
+            /**
+             * @private
+             * @type {boolean}
+             */
+            _disabled: false,
+
+            /**
+             * Set disables field
+             * @returns {ui.FFText}
+             */
+            setDisabled: function() {
+                this._disabled = true;
+                return this;
+            },
 
             /**
              * Set skin field
@@ -124,24 +152,35 @@
             },
 
             /**
-             * Set label field
-             * @param {string} label
+             * Set left icon field
+             * @param {string} iconName
              * @returns {ui.FFText}
              * @public
              */
-            setLabel: function(label) {
-                this._label = label;
+            setLeftIcon: function(iconName) {
+                this._leftIcon = iconName;
+                return this;
+            },
+
+            /**
+             * Set right icon field
+             * @param {string} iconName
+             * @returns {ui.FFText}
+             * @public
+             */
+            setRightIcon: function(iconName) {
+                this._rightIcon = iconName;
                 return this;
             },
 
             /**
              * Set width label field {1-10}
-             * @param {number} widthLabel {1-10}
+             * @param {number} widthCaption {1-10}
              * @returns {ui.FFText}
              * @public
              */
-            setWidthLabel: function(widthLabel) {
-                this._widthLabel = widthLabel;
+            setWidthCaption: function(widthCaption) {
+                this._widthCaption = widthCaption;
                 return this;
             },
 
@@ -185,15 +224,15 @@
              * @returns {*|Element}
              * @private
              */
-            _buildLabel: function() {
+            _buildCaption: function() {
                 var label =  new ui.Element('label')
                     .addClassElement(ui.CSS.controlLabelClass)
-                    .setForLabelElement(this._id)
-                    .setContentElement(this._label + ': ');
+                    .setForLabelElement(this._id, this._name)
+                    .setContentElement(this._caption + ': ');
 
-                if (typeof this._widthLabel === 'number') {
+                if (typeof this._widthCaption === 'number') {
                     label
-                        .setWidthElement(this._widthLabel)
+                        .setWidthElement(this._widthCaption)
                         .addClassElement(ui.CSS.alignClass.text.right);
                 }
 
@@ -212,6 +251,7 @@
                     .setIdElement(this._id, this._name)
                     .setValueElement(this._value, this._name)
                     .addClassElement(ui.CSS.formControlClass)
+                    .setDisabledElement(this._disabled)
                     .getElement();
             },
 
@@ -221,10 +261,21 @@
              * @private
              */
             _buildLeftMarker: function() {
-                return new ui.Element('span')
+                var leftMarker = new ui.Element('span')
                     .addClassElement(ui.CSS.inputGroupAddonClass)
-                    .setContentElement(this._leftMarker)
-                    .getElement();
+                    .setContentElement(this._leftMarker);
+
+                if (typeof this._leftIcon === 'string') {
+                    leftMarker
+                        .addChildBefore(
+                            new ui.Element('span')
+                                .setIconElement(this._leftIcon)
+                                .getElement()
+                        )
+
+                }
+
+                return leftMarker.getElement();
             },
 
             /**
@@ -233,10 +284,21 @@
              * @private
              */
             _buildRightMarker: function() {
-                return new ui.Element('span')
+                var rightMarker = new ui.Element('span')
                     .addClassElement(ui.CSS.inputGroupAddonClass)
-                    .setContentElement(this._rightMarker)
-                    .getElement();
+                    .setContentElement(this._rightMarker);
+
+                if (typeof this._rightIcon === 'string') {
+                    rightMarker
+                        .addChildAfter(
+                            new ui.Element('span')
+                                .setIconElement(this._rightIcon)
+                                .getElement()
+                        )
+
+                }
+
+                return rightMarker.getElement();
             },
 
             /**
@@ -250,19 +312,24 @@
                     .setSizeElement('input', this._size)
                     .addChildAfter(this._builInput());
 
-                if (this._leftMarker !== null || this._rightMarker !== null) {
+                if (
+                    this._leftMarker  !== null  ||
+                    this._rightMarker !== null  ||
+                    this._rightIcon   !== null  ||
+                    this._leftIcon    !== null
+                ) {
                     inputGroup.addClassElement(ui.CSS.inputGroupClass);
                 }
 
-                if (typeof this._widthLabel === 'number') {
-                    inputGroup.setWidthElement(12 - this._widthLabel);
+                if (typeof this._widthCaption === 'number') {
+                    inputGroup.setWidthElement(12 - this._widthCaption);
                 }
 
-                if (this._leftMarker !== null) {
+                if (this._leftMarker !== null || this._leftIcon !== null) {
                     inputGroup.addChildBefore(this._buildLeftMarker());
                 }
 
-                if (this._rightMarker !== null) {
+                if (this._rightMarker !== null || this._rightIcon !== null) {
                     inputGroup.addChildAfter(this._buildRightMarker())
                 }
 
@@ -281,8 +348,8 @@
                     .addChildBefore(this._buildGroupBlock())
                     .setPaddingElement(this._padding);
 
-                if (this._label !== null) {
-                    parentElement.addChildBefore(this._buildLabel());
+                if (this._caption !== null) {
+                    parentElement.addChildBefore(this._buildCaption());
                 }
 
                 if (this._width !== null) {

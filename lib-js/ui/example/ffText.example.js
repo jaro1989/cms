@@ -1,51 +1,49 @@
 
-    console.log(
+    var APPEND_ELEMENT = '#element_append';
 
-        new ui.FFText({'name-field': 'значение объекта'}, 'name-field')
-            .setLabel('Test-label')
-            .setWidth(3)
-            .setWidthLabel(6)
-            .setLeftMarker('$')
-            .setRightMarker('@')
-            .setSkin('success')
-            .setSize('lg')
-            .appendHTML('#element_append')
-            .toHTML()
+    var values = {};
 
+    for (var i = 1; i <= 30; i++) {
+        values['name-field-' + i] = 'value-' + i;
+    }
 
-    );
+    for(var index in values) {
+        if (values.hasOwnProperty(index)) {
+
+            new ui.FFText(values[index], index, 'Label -' + index)
+                .setWidth(3)
+                .setWidthCaption(6)
+                .setLeftIcon('earphone')
+                .setRightMarker('@')
+                .setSkin('success')
+                .appendHTML(APPEND_ELEMENT);
+
+        }
+    }
+
+    new ui.FFText({'name-field': 'значение объекта'}, 'name-field')
+        .setWidth(3)
+        .setDisabled()
+        .setLeftIcon('user')
+        .setRightMarker('@')
+        .setSkin('warning')
+        .appendHTML(APPEND_ELEMENT);
 
     new ui.FFText('Просто значение', 'name-field-2')
-        .setLabel('Test-label')
         .setWidth(3)
-        .setWidthLabel(6)
-        .setLeftMarker('$')
-        .setRightMarker('@')
-        .appendHTML('#element_append')
-        .toHTML();
+        .setRightIcon('signal')
+        .setSkin('error')
+        .appendHTML(APPEND_ELEMENT);
 
     new ui.FFText('Просто значение', 'name-field-3')
-        .setLabel('Test-label')
         .setWidth(3)
-        .setWidthLabel(6)
         .setLeftMarker('$')
         .setRightMarker('@')
-        .appendHTML('#element_append')
-        .toHTML();
+        .appendHTML(APPEND_ELEMENT);
 
-    new ui.FFText('Просто значение', 'name-field-4')
-        .setLabel('Test-label')
+    new ui.FFText('Просто значение', 'name-field-4', 'Test-label')
         .setWidth(3)
-        .setWidthLabel(6)
-        .setLeftMarker('$')
+        .setWidthCaption(6)
+        .setLeftIcon('phone-alt')
         .setRightMarker('@')
-        .appendHTML('#element_append')
-        .toHTML();
-
-    new ui.FFText('Просто значение', 'name-field-5')
-        .setLabel('Test-label')
-        .setWidthLabel(2)
-        .setLeftMarker('$')
-        .setRightMarker('@')
-        .appendHTML('#element_append')
-        .toHTML();
+        .appendHTML(APPEND_ELEMENT);
