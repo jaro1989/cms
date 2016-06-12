@@ -34,12 +34,14 @@ $pare = [
 
 
 
+
     <script src="../ui.Config.js" type="text/javascript"></script>
     <script src="../ui.CSS.js" type="text/javascript"></script>
     <script src="../ui.api.js" type="text/javascript"></script>
     <script src="../ui.Element.js" type="text/javascript"></script>
     <script src="../ui.FFText.js" type="text/javascript"></script>
     <script src="../ui.FFRadio.js" type="text/javascript"></script>
+    <script src="../ui.FFCheckbox.js" type="text/javascript"></script>
 
 
     <?php

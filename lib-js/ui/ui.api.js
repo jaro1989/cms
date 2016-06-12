@@ -58,6 +58,20 @@
         },
 
         /**
+         * If "property" exist - return "value" else "defaultValue"
+         * @param {{}} object
+         * @param {*} property
+         * @param {*} defaultValue
+         * @returns {*}
+         */
+        existProperty: function(object, property, defaultValue) {
+            if (object.hasOwnProperty(property)) {
+                return object[property];
+            }
+            return defaultValue;
+        },
+
+        /**
          * Set value field
          * @param {string|number} nameValue
          * @param {string} nameField
@@ -65,7 +79,7 @@
          * @public
          */
         setValue: function(nameValue, nameField) {
-            if (typeof nameValue === 'object') {
+            if (typeof nameValue === 'object' && nameValue !== null) {
                 if (nameValue.hasOwnProperty(nameField)) {
                     return nameValue[nameField];
                 }

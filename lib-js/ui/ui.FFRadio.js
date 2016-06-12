@@ -1,8 +1,6 @@
 
     (function(ui) {
 
-        var UNIQUE = new Date().getTime();
-
         /**
          * @memberOf ui
          * @namespace ui.FFRadio
@@ -110,13 +108,13 @@
             },
 
             /**
-             *
+             * Add radio button
              * @param {string} htmlId
              * @param {string} caption
              * @returns {ui.FFRadio}
              * @public
              */
-            addRadioList: function(htmlId, caption) {
+            addRadioButton: function(htmlId, caption) {
                 this._radioList[htmlId] = caption;
                 return this;
             },
@@ -162,7 +160,6 @@
              * @private
              */
             _buildField: function(htmlId) {
-                UNIQUE++;
                 var radio = new ui.Element('input')
                     .setTypeElement('radio')
                     .setNameElement(this._name)
