@@ -55,6 +55,22 @@
          */
         empty: function(value, defaultValue) {
             return (value != undefined && value !== null) ? value : defaultValue;
+        },
+
+        /**
+         * Set value field
+         * @param {string|number} nameValue
+         * @param {string} nameField
+         * @returns {string|number}
+         * @public
+         */
+        setValue: function(nameValue, nameField) {
+            if (typeof nameValue === 'object') {
+                if (nameValue.hasOwnProperty(nameField)) {
+                    return nameValue[nameField];
+                }
+            }
+            return nameValue;
         }
     };
 

@@ -13,7 +13,7 @@
          */
         ui.FFRadio = function (value, name, radioList) {
 
-            this._value     = ui.api.empty(value, null);
+            this._value     = ui.api.setValue(ui.api.empty(value, null), name);
             this._name      = ui.api.empty(name, null);
             this._radioList = ui.api.empty(radioList, null);
 
@@ -36,6 +36,12 @@
 
             /**
              * @private
+             * @type {string|number|null}
+             */
+            _widthCaption: null,
+
+            /**
+             * @private
              * @type {boolean}
              */
             _horizontal: false,
@@ -47,14 +53,13 @@
             _radioValue: ui.Config.radioValue,
 
             /**
-             * Set value if checked or nochecked
-             * @param {number|string} checked
-             * @param {number|string} nochecked
+             * Set width label field {1-10}
+             * @param {number} widthCaption {1-10}
              * @returns {ui.FFRadio}
+             * @public
              */
-            setCheckedValue: function(checked, nochecked) {
-                this._radioValue['checked']   = ui.api.empty(checked,   ui.Config.radioValue.checked);
-                this._radioValue['nochecked'] = ui.api.empty(nochecked, ui.Config.radioValue.checked);
+            setWidthCaption: function(widthCaption) {
+                this._widthCaption = widthCaption;
                 return this;
             },
 
@@ -63,6 +68,7 @@
              * @param {string} htmlId
              * @param {string} caption
              * @returns {ui.FFRadio}
+             * @public
              */
             addRadioList: function(htmlId, caption) {
                 this._radioList[htmlId] = caption;
@@ -72,6 +78,7 @@
             /**
              * draw fields horizontal
              * @returns {ui.FFRadio}
+             * @public
              */
             setFieldsHorizontal: function() {
                 this._horizontal = true;
@@ -113,8 +120,9 @@
                 var radio = new ui.Element('input')
                     .setTypeElement('radio')
                     .setNameElement(this._name)
+                    .addClassElement(this._name)
                     .setValueElement(this._value, this._name)
-                    .setIdElement(this._name + '-' + UNIQUE, null);
+                    .setIdElement(htmlId, null);
 
                 if (htmlId == this._value) {
                     radio.setCheckedElement(true);
@@ -131,7 +139,7 @@
              * @private
              */
             _buildCaption: function(htmlId, caption) {
-                return new ui.Element('label')
+                var label = new ui.Element('label')
                     .addChildAfter(
                         new ui.Element('span')
                             .setContentElement(caption)
@@ -139,8 +147,13 @@
                             .addStyleElement('paddingRight', '5px')
                             .getElement()
                     )
-                    .addChildBefore(this._buildField(htmlId))
-                    .getElement();
+                    .addChildBefore(this._buildField(htmlId));
+
+                if (typeof this._widthCaption === 'number') {
+                    label.setWidthElement(this._widthCaption);
+                }
+
+                return label.getElement();
             },
 
             /**
@@ -195,6 +208,7 @@
             /**
              * Get object current element
              * @returns {*|Element}
+             * @public
              */
             getElement: function() {
                 return this._buildParentBlock();
@@ -203,6 +217,7 @@
             /**
              * Get html current element
              * @returns {string}
+             * @public
              */
             toHTML: function() {
                 return this._buildParentBlock().outerHTML;
@@ -212,6 +227,7 @@
              * Add element in document
              * @param {string} selector
              * @returns {ui.FFRadio}
+             * @public
              */
             appendHTML: function(selector) {
                 new ui.$(selector).append(this.getElement());

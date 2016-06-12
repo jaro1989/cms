@@ -365,6 +365,7 @@
             /**
              * Get object current element
              * @returns {*|Element}
+             * @public
              */
             getElement: function() {
                 return this._buildParentBlock();
@@ -373,6 +374,7 @@
             /**
              * Get html current element
              * @returns {string}
+             * @public
              */
             toHTML: function() {
                 return this._buildParentBlock().outerHTML;
@@ -382,6 +384,7 @@
              * Add element in document
              * @param {string} selector
              * @returns {ui.FFText}
+             * @public
              */
             appendHTML: function(selector) {
                 new ui.$(selector).append(this.getElement());

@@ -6,22 +6,6 @@
         var TYPES_INPUT = ['text', 'password', 'image', 'button', 'checkbox', 'file', 'hidden', 'radio', 'reset', 'submit', 'week', 'url', 'time', 'tel', 'search', 'range', 'number', 'month', 'email', 'datetime-local', 'color', 'date', 'datetime'];
 
         /**
-         * Set value field
-         * @param {string} nameValue
-         * @param {string} nameField
-         * @returns {ui.Element}
-         * @public
-         */
-        var setValue = function(nameValue, nameField) {
-            if (typeof nameValue === 'object') {
-                if (nameValue.hasOwnProperty(nameField)) {
-                    return nameValue[nameField];
-                }
-            }
-            return nameValue;
-        };
-
-        /**
          * @memberOf ui
          * @namespace ui.Element
          * @constructor
@@ -109,7 +93,7 @@
              */
             setValueElement: function(nameValue, nameField) {
                 if (ui.api.inArray(['input', 'textarea', 'select'], this.tag_name) != -1) {
-                    this.element.value = setValue(nameValue, nameField);
+                    this.element.value = ui.api.setValue(nameValue, nameField);
                 }
                 return this;
             },
