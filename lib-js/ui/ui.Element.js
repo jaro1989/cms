@@ -5,6 +5,14 @@
          */
         var TYPES_INPUT = ['text', 'password', 'image', 'button', 'checkbox', 'file', 'hidden', 'radio', 'reset', 'submit', 'week', 'url', 'time', 'tel', 'search', 'range', 'number', 'month', 'email', 'datetime-local', 'color', 'date', 'datetime'];
 
+        var getStar = function() {
+            return new ui.Element('span')
+                .setContentElement(ui.Config.label.required)
+                .addClassElement(ui.CSS.satrClass)
+                .addStyleElement('color', ui.Config.label.colorStar)
+                .toHTML();
+        };
+
         /**
          * @memberOf ui
          * @namespace ui.Element
@@ -124,16 +132,28 @@
                 this.element.innerHTML = caption;
 
                 if (required) {
-
-                    this.element.innerHTML += new ui.Element('span')
-                        .setContentElement(ui.Config.label.required)
-                        .addClassElement(ui.CSS.satrClass)
-                        .addStyleElement('color', ui.Config.label.colorStar)
-                        .toHTML();
+                    this.element.innerHTML += getStar();
                 }
 
                 this.element.innerHTML += ui.Config.label.separator + ' ';
 
+                return this;
+            },
+
+            /**
+             * Set content in element
+             * @param {string} caption
+             * @param {boolean} required
+             * @returns {ui.Element}
+             * @public
+             */
+            setCaptionRadioElement: function(caption, required) {
+
+                if (required) {
+                    this.element.innerHTML += getStar();
+                }
+
+                this.element.innerHTML += caption;
                 return this;
             },
 

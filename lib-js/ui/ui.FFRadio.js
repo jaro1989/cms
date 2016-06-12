@@ -13,9 +13,11 @@
          */
         ui.FFRadio = function (value, name, radioList) {
 
-            this._value     = ui.api.setValue(ui.api.empty(value, null), name);
-            this._name      = ui.api.empty(name, null);
-            this._radioList = ui.api.empty(radioList, null);
+            this._value      = ui.api.setValue(ui.api.empty(value, null), name);
+            this._name       = ui.api.empty(name, null);
+            this._radioList  = ui.api.empty(radioList, null);
+            this._disabledIf = [];
+            this._requiredIf = [];
 
         };
 
@@ -48,9 +50,53 @@
 
             /**
              * @private
-             * @type { { checked: 1, nochecked: 0 } }
+             * @type {boolean}
              */
-            _radioValue: ui.Config.radioValue,
+            _disabled: false,
+
+            /**
+             * @private
+             * @type {boolean}
+             */
+            _required: false,
+
+            /**
+             * Set required field
+             * @returns {ui.FFRadio}
+             */
+            setRequired: function() {
+                this._required = true;
+                return this;
+            },
+
+            /**
+             * Set disables field
+             * @returns {ui.FFRadio}
+             */
+            setDisabled: function() {
+                this._disabled = true;
+                return this;
+            },
+
+            /**
+             * Set required field
+             * @param {string} htmlId
+             * @returns {ui.FFRadio}
+             */
+            setRequiredIf: function(htmlId) {
+                this._requiredIf.push(htmlId);
+                return this;
+            },
+
+            /**
+             * Set disables field
+             * @param {string} htmlId
+             * @returns {ui.FFRadio}
+             */
+            setDisabledIf: function(htmlId) {
+                this._disabledIf.push(htmlId);
+                return this;
+            },
 
             /**
              * Set width label field {1-10}
@@ -122,7 +168,17 @@
                     .setNameElement(this._name)
                     .addClassElement(this._name)
                     .setValueElement(this._value, this._name)
+                    .setDisabledElement(this._disabled)
+                    .setRequiredElement(this._required)
                     .setIdElement(htmlId, null);
+
+                if (ui.api.inArray(this._disabledIf, htmlId) != -1) {
+                    radio.setDisabledElement(true);
+                }
+
+                if (ui.api.inArray(this._requiredIf, htmlId) != -1) {
+                    radio.setRequiredElement(true);
+                }
 
                 if (htmlId == this._value) {
                     radio.setCheckedElement(true);
@@ -139,10 +195,15 @@
              * @private
              */
             _buildCaption: function(htmlId, caption) {
+                var req = false;
+                if (ui.api.inArray(this._requiredIf, htmlId) != -1 || this._required === true) {
+                    req = true;
+                }
+
                 var label = new ui.Element('label')
                     .addChildAfter(
                         new ui.Element('span')
-                            .setContentElement(caption)
+                            .setCaptionRadioElement(caption, req)
                             .addStyleElement('paddingLeft',  '5px')
                             .addStyleElement('paddingRight', '5px')
                             .getElement()
