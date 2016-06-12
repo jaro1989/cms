@@ -62,6 +62,48 @@
 
             /**
              * @public
+             * @type {string}
+             */
+            requiredClass: 'required',
+
+            /**
+             * @public
+             * @type {string}
+             */
+            checkedClass: 'checked',
+
+            /**
+             * @public
+             * @type {string}
+             */
+            satrClass: 'star',
+
+            /**
+             * @public
+             * @type {string}
+             */
+            radioClass: 'radio',
+
+            /**
+             * @public
+             * @type {string}
+             */
+            radioInlineClass: 'radio-inline',
+
+            /**
+             * @public
+             * @type {string}
+             */
+            checkboxClass: 'checkbox',
+
+            /**
+             * @public
+             * @type {string}
+             */
+            checkboxInlineClass: 'checkbox-inline',
+
+            /**
+             * @public
              * @type { { striped: string, bordered: string, borderedNone: string, hover: string, condensed: string } } }
              */
             tableClass: {

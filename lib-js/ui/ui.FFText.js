@@ -10,23 +10,10 @@
          * @constructor
          */
         ui.FFText = function (value, name, caption) {
-            /**
-             * @private
-             * @type {string|null}
-             */
-            this._name  = name;
 
-            /**
-             * @private
-             * @type {string|null}
-             */
-            this._value = value;
-
-            /**
-             * @private
-             * @type {string|null}
-             */
-            this._caption = (caption != undefined) ? caption : null;
+            this._value   = ui.api.empty(value, null);
+            this._name    = ui.api.empty(name, null);
+            this._caption = ui.api.empty(caption, null);
         };
 
         /** @protected */
@@ -97,6 +84,21 @@
              * @type {boolean}
              */
             _disabled: false,
+
+            /**
+             * @private
+             * @type {boolean}
+             */
+            _required: false,
+
+            /**
+             * Set required field
+             * @returns {ui.FFText}
+             */
+            setRequired: function() {
+                this._required = true;
+                return this;
+            },
 
             /**
              * Set disables field
@@ -228,7 +230,7 @@
                 var label =  new ui.Element('label')
                     .addClassElement(ui.CSS.controlLabelClass)
                     .setForLabelElement(this._id, this._name)
-                    .setContentElement(this._caption + ': ');
+                    .setCaptionElement(this._caption, this._required);
 
                 if (typeof this._widthCaption === 'number') {
                     label
@@ -244,7 +246,7 @@
              * @returns {*|Element}
              * @private
              */
-            _builInput: function() {
+            _buildField: function() {
                 return new ui.Element('input')
                     .setTypeElement('text')
                     .setNameElement(this._name)
@@ -252,6 +254,7 @@
                     .setValueElement(this._value, this._name)
                     .addClassElement(ui.CSS.formControlClass)
                     .setDisabledElement(this._disabled)
+                    .setRequiredElement(this._required)
                     .getElement();
             },
 
@@ -310,7 +313,7 @@
 
                 var inputGroup = new ui.Element('div')
                     .setSizeElement('input', this._size)
-                    .addChildAfter(this._builInput());
+                    .addChildAfter(this._buildField());
 
                 if (
                     this._leftMarker  !== null  ||

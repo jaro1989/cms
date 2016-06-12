@@ -115,6 +115,45 @@
             },
 
             /**
+             * Set html attribute checked on element
+             * @param {boolean} status
+             * @returns {ui.Element}
+             * @public
+             */
+            setCheckedElement: function(status) {
+                if (status === true && ui.api.inArray(['input'], this.tag_name) != -1) {
+                    this.element.classList.add(ui.CSS.checkedClass);
+                    this.element.setAttribute('checked', 'checked');
+                }
+                return this;
+            },
+
+            /**
+             * Set content in element
+             * @param {string} caption
+             * @param {boolean} required
+             * @returns {ui.Element}
+             * @public
+             */
+            setCaptionElement: function(caption, required) {
+
+                this.element.innerHTML = caption;
+
+                if (required) {
+
+                    this.element.innerHTML += new ui.Element('span')
+                        .setContentElement(ui.Config.label.required)
+                        .addClassElement(ui.CSS.satrClass)
+                        .addStyleElement('color', ui.Config.label.colorStar)
+                        .toHTML();
+                }
+
+                this.element.innerHTML += ui.Config.label.separator + ' ';
+
+                return this;
+            },
+
+            /**
              * Set content in element
              * @param {string} contentElement
              * @returns {ui.Element}
@@ -168,6 +207,22 @@
                 if (status === true) {
                     this.element.classList.add(ui.CSS.disabledClass);
                     this.element.setAttribute('disabled', 'disabled');
+                }
+                return this;
+            },
+
+
+
+            /**
+             * Set html class required and attribute required on element
+             * @param {boolean} status
+             * @returns {ui.Element}
+             * @public
+             */
+            setRequiredElement: function(status) {
+                if (status === true) {
+                    this.element.classList.add(ui.CSS.requiredClass);
+                    this.element.setAttribute('required', 'required');
                 }
                 return this;
             },
@@ -258,8 +313,9 @@
 
                     }
                 }
-
-                this.element.classList.add(skinClass);
+                if (skinClass !== null) {
+                    this.element.classList.add(skinClass);
+                }
                 return this;
             },
 
@@ -309,6 +365,19 @@
                 }
                 if (typeof elementWidth === 'string') {
                     this.element.style.width = elementWidth;
+                }
+                return this;
+            },
+
+            /**
+             * Add CSS style on element
+             * @param {string} property
+             * @param {string|number} value
+             * @returns {ui.Element}
+             */
+            addStyleElement: function(property, value) {
+                if (this.element.style.hasOwnProperty(property)) {
+                    this.element.style[property] = value;
                 }
                 return this;
             },

@@ -45,6 +45,16 @@
                 }
             }
             return -1;
+        },
+
+        /**
+         * If "value" not empty and not null - return "value" else "defaultValue"
+         * @param {*} value
+         * @param {*} defaultValue
+         * @returns {*}
+         */
+        empty: function(value, defaultValue) {
+            return (value != undefined && value !== null) ? value : defaultValue;
         }
     };
 

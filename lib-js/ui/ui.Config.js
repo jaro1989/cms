@@ -10,15 +10,22 @@
         /**
          * @memberOf ui
          * @namespace ui.Config
-         * @constructor
          */
-        ui.Config = function(name) {
+        ui.Config = {
+            label: {
+                required: '*',
+                separator: ':',
+                colorStar: '#F00'
+            },
+            radioValue:    {
+                'checked':   1,
+                'nochecked': 0
+            },
 
+            checkboxValue: {
+                'checked':   1,
+                'nochecked': 0
+            }
         };
-
-        /** @protected */
-        ui.Config.prototype = {
-
-        }
 
     } (window.ui || {}));
