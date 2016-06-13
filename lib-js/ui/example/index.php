@@ -4,7 +4,8 @@ $url = 'http://symfony.cms/lib-js/ui/example/?page=';
 $pare = [
     'ffText'     => 'Текстовые поля',
     'ffRadio'    => 'Radio кнопки',
-    'ffCheckbox' => 'Checkbox кнопки'
+    'ffCheckbox' => 'Checkbox кнопки',
+    'ffTextarea' => 'Textarea'
 ];
 ?>
 <!DOCTYPE html>
@@ -36,6 +37,7 @@ $pare = [
 
 
 
+
     <script src="../ui.Config.js" type="text/javascript"></script>
     <script src="../ui.CSS.js" type="text/javascript"></script>
     <script src="../ui.api.js" type="text/javascript"></script>
@@ -43,6 +45,7 @@ $pare = [
     <script src="../ui.FFText.js" type="text/javascript"></script>
     <script src="../ui.FFRadio.js" type="text/javascript"></script>
     <script src="../ui.FFCheckbox.js" type="text/javascript"></script>
+    <script src="../ui.FFTextarea.js" type="text/javascript"></script>
 
 
     <?php

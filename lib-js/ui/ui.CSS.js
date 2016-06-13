@@ -225,6 +225,16 @@
                 lg: 'well-lg',
                 sm: 'well-sm',
                 xs: 'well-xs'
+            },
+
+            /**
+             * @public
+             * @type { { none: string, vertical: string, horizontal: string } }
+             */
+            resizeStyle: {
+                none: 'none',
+                vertical: 'vertical',
+                horizontal: 'horizontal'
             }
         };
 

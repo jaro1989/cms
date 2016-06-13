@@ -1,5 +1,5 @@
 
-    // ID элемента в который будем добавлять текстовые поля
+    // ID элемента для вставки полей
     var APPEND_ELEMENT = '#element_append';
 
     new ui.FFCheckbox()

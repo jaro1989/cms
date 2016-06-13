@@ -392,6 +392,24 @@
             },
 
             /**
+             * Set height element
+             * @param {string|number} height
+             * @returns {ui.FFTextarea}
+             */
+            setHeightElement: function(height) {
+
+                if (typeof height == 'string') {
+
+                    this.element.style.height = height;
+
+                } if (typeof height == 'number') {
+
+                    this.element.style.height = height  + 'px';
+                }
+                return this;
+            },
+
+            /**
              * Set width element
              * @param {string|number} elementWidth if value - string set attribut width
              *                                     if value - number set html class
