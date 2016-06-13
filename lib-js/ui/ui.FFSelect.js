@@ -277,6 +277,7 @@
              * @private
              */
             _buildItem: function(params) {
+
                 var option = new ui.Element('option')
                     .setValueElement(ui.api.existProperty(params, 'value', null), null)
                     .setContentElement(ui.api.existProperty(params, 'text', null));
