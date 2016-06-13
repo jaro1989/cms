@@ -160,6 +160,7 @@
              * @private
              */
             _buildField: function(htmlId) {
+
                 var radio = new ui.Element('input')
                     .setTypeElement('radio')
                     .setNameElement(this._name)
@@ -170,14 +171,17 @@
                     .setIdElement(htmlId, null);
 
                 if (ui.api.inArray(this._disabledIf, htmlId) != -1) {
+
                     radio.setDisabledElement(true);
                 }
 
                 if (ui.api.inArray(this._requiredIf, htmlId) != -1) {
+
                     radio.setRequiredElement(true);
                 }
 
                 if (htmlId == this._value) {
+
                     radio.setCheckedElement(true);
                 }
 
@@ -192,8 +196,10 @@
              * @private
              */
             _buildCaption: function(htmlId, caption) {
+
                 var req = false;
                 if (ui.api.inArray(this._requiredIf, htmlId) != -1 || this._required === true) {
+
                     req = true;
                 }
 
@@ -208,6 +214,7 @@
                     .addChildBefore(this._buildField(htmlId));
 
                 if (typeof this._widthCaption === 'number') {
+
                     label.setWidthElement(this._widthCaption);
                 }
 
@@ -220,10 +227,10 @@
              * @private
              */
             _buildInlineBlock: function() {
+
                 var iblineBlock = new ui.Element('div')
                     .addClassElement(ui.CSS.radioClass)
                     .addClassElement(ui.CSS.radioInlineClass);
-
 
                 var block = new ui.Element('div')
                     .addClassElement(ui.CSS.radioClass);
@@ -231,8 +238,10 @@
                 if (this._horizontal === true) {
 
                     for(var htmlIda in this._radioList) {
+
                         block.addChildAfter(this._buildCaption(htmlIda, this._radioList[htmlIda]));
                     }
+
                     iblineBlock.addChildAfter(block.getElement());
 
                 } else {
@@ -247,6 +256,7 @@
                         );
                     }
                 }
+
                 return iblineBlock.getElement();
             },
 
@@ -256,6 +266,7 @@
              * @private
              */
             _buildParentBlock: function() {
+
                 return new ui.Element('div')
                     .setSkinElement('field', this._skin)
                     .setWidthElement(this._width)

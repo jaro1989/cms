@@ -3,10 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="e625a249-66d9-49c4-82c3-b892a980c4cc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/ffRadio.example.js" afterPath="$PROJECT_DIR$/lib-js/ui/example/ffRadio.example.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/ffCheckbox.example.js" afterPath="$PROJECT_DIR$/lib-js/ui/example/ffCheckbox.example.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/index.php" afterPath="$PROJECT_DIR$/lib-js/ui/example/index.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Element.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Element.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.FFCheckbox.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.FFCheckbox.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.FFText.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.FFText.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.api.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.api.js" />
     </list>
     <ignored path="cms.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,91 +52,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ui.Element.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Element.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.95">
-              <caret line="149" column="12" selection-start-line="149" selection-start-column="12" selection-end-line="149" selection-end-column="12" />
-              <folding>
-                <element signature="e#5540#5704#0" expanded="false" />
-                <element signature="e#5860#6024#0" expanded="false" />
-                <element signature="e#6077#6179#0" expanded="false" />
-                <element signature="e#7192#7346#0" expanded="false" />
-                <element signature="e#8669#8838#0" expanded="false" />
-                <element signature="e#8887#9252#0" expanded="false" />
-                <element signature="e#12947#12999#0" expanded="false" />
-                <element signature="e#13014#13121#0" expanded="false" />
-                <element signature="e#13231#13402#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.api.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.api.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-34.13793">
-              <caret line="66" column="16" selection-start-line="66" selection-start-column="8" selection-end-line="66" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.CSS.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.51724136">
-              <caret line="139" column="16" selection-start-line="139" selection-start-column="16" selection-end-line="139" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-19.875">
-              <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+            <state vertical-scroll-proportion="-16.25">
+              <caret line="26" column="113" selection-start-line="26" selection-start-column="113" selection-end-line="26" selection-end-column="113" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ffText.example.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffText.example.js">
+      <file leaf-file-name="ui.FFCheckbox.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFCheckbox.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.137931">
-              <caret line="8" column="5" selection-start-line="4" selection-start-column="4" selection-end-line="8" selection-end-column="5" />
+            <state vertical-scroll-proportion="-41.35">
+              <caret line="313" column="0" selection-start-line="313" selection-start-column="0" selection-end-line="313" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ffRadio.example.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffRadio.example.js">
+      <file leaf-file-name="ffCheckbox.example.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffCheckbox.example.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.01626898">
-              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.FFText.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFText.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-24.034483">
-              <caret line="255" column="20" selection-start-line="255" selection-start-column="20" selection-end-line="256" selection-end-column="55" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.FFRadio.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.7">
-              <caret line="205" column="65" selection-start-line="205" selection-start-column="65" selection-end-line="205" selection-end-column="65" />
+            <state vertical-scroll-proportion="0.9023861">
+              <caret line="56" column="27" selection-start-line="56" selection-start-column="27" selection-end-line="56" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -182,7 +125,6 @@
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFInputDateRange.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFInputNumber.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFInputFloat.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.FFCheckbox.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFTextarea.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFControl.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFSelect.js" />
@@ -196,15 +138,16 @@
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFImage.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/ffText.example.php" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/ffText.example.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/example/ffCheckbox.example.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.CSS.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.Config.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.api.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.FFText.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/example/index.php" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.Element.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/ffRadio.example.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.FFCheckbox.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.FFText.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.Element.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.api.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/example/index.php" />
+        <option value="$PROJECT_DIR$/lib-js/ui/example/ffCheckbox.example.js" />
       </list>
     </option>
   </component>
@@ -219,9 +162,9 @@
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
     <option name="x" value="65" />
-    <option name="y" value="24" />
+    <option name="y" value="-4" />
     <option name="width" value="1855" />
-    <option name="height" value="1056" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -268,7 +211,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -699,6 +641,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -967,17 +910,22 @@
       <option name="project" value="LOCAL" />
       <updated>1465746399439</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Lib-JS: Radio button  (update)">
+      <created>1465761669745</created>
+      <option name="number" value="00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1465761669745</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33333334" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3410724" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TypeScript Compiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32925585" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="165" y="252" width="1655" height="856" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20563847" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -986,6 +934,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1437309" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1173,7 +1122,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="6.8608413">
           <caret line="424" column="55" selection-start-line="424" selection-start-column="55" selection-end-line="424" selection-end-column="55" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1206,13 +1154,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFFloat.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFCheckbox.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1307,9 +1248,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="84.3">
           <caret line="2" column="22765" selection-start-line="2" selection-start-column="22765" selection-end-line="2" selection-end-column="22918" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1334,33 +1272,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffCheckbox.example.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffText.example.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.137931">
-          <caret line="8" column="5" selection-start-line="4" selection-start-column="4" selection-end-line="8" selection-end-column="5" />
+        <state vertical-scroll-proportion="-8.5172415">
+          <caret line="27" column="26" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.php">
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.875">
-          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+        <state vertical-scroll-proportion="-9.034483">
+          <caret line="268" column="0" selection-start-line="268" selection-start-column="0" selection-end-line="268" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFText.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-24.034483">
-          <caret line="255" column="20" selection-start-line="255" selection-start-column="20" selection-end-line="256" selection-end-column="55" />
+        <state vertical-scroll-proportion="-10.068966">
+          <caret line="369" column="0" selection-start-line="369" selection-start-column="0" selection-end-line="369" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.2613883">
+          <caret line="139" column="16" selection-start-line="139" selection-start-column="16" selection-end-line="139" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -1375,50 +1314,55 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.api.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-34.13793">
-          <caret line="66" column="16" selection-start-line="66" selection-start-column="8" selection-end-line="66" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.51724136">
-          <caret line="139" column="16" selection-start-line="139" selection-start-column="16" selection-end-line="139" selection-end-column="16" />
+        <state vertical-scroll-proportion="-0.38286334">
+          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Element.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.95">
-          <caret line="149" column="12" selection-start-line="149" selection-start-column="12" selection-end-line="149" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.35791758">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding>
-            <element signature="e#5540#5704#0" expanded="false" />
-            <element signature="e#5860#6024#0" expanded="false" />
-            <element signature="e#6077#6179#0" expanded="false" />
-            <element signature="e#7192#7346#0" expanded="false" />
-            <element signature="e#8669#8838#0" expanded="false" />
-            <element signature="e#8887#9252#0" expanded="false" />
-            <element signature="e#12947#12999#0" expanded="false" />
-            <element signature="e#13014#13121#0" expanded="false" />
-            <element signature="e#13231#13402#0" expanded="false" />
+            <element signature="e#5554#5718#0" expanded="false" />
+            <element signature="e#5874#6038#0" expanded="false" />
+            <element signature="e#7212#7366#0" expanded="false" />
+            <element signature="e#8693#8862#0" expanded="false" />
+            <element signature="e#13056#13163#0" expanded="false" />
+            <element signature="e#13273#13444#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.7">
-          <caret line="205" column="65" selection-start-line="205" selection-start-column="65" selection-end-line="205" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffRadio.example.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.01626898">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.26789588">
+          <caret line="43" column="5" selection-start-line="40" selection-start-column="4" selection-end-line="43" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.25">
+          <caret line="26" column="113" selection-start-line="26" selection-start-column="113" selection-end-line="26" selection-end-column="113" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFCheckbox.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-41.35">
+          <caret line="313" column="0" selection-start-line="313" selection-start-column="0" selection-end-line="313" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffCheckbox.example.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9023861">
+          <caret line="56" column="27" selection-start-line="56" selection-start-column="27" selection-end-line="56" selection-end-column="27" />
           <folding />
         </state>
       </provider>

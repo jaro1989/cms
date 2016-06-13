@@ -18,9 +18,12 @@
          * @returns {ui.$}
          */
         append: function(contentElement) {
+
             for (var i = 0; i < this.elements.length; i++) {
+
                 this.elements[i].appendChild(contentElement.cloneNode(true));
             }
+
             return this;
         }
     };
@@ -39,11 +42,15 @@
          * @public
          */
         inArray: function(array, value) {
+
             for (var i = 0; i < array.length; i++) {
+
                 if (array[i] === value) {
+
                     return i;
                 }
             }
+
             return -1;
         },
 
@@ -65,9 +72,12 @@
          * @returns {*}
          */
         existProperty: function(object, property, defaultValue) {
+
             if (object.hasOwnProperty(property)) {
+
                 return object[property];
             }
+
             return defaultValue;
         },
 
@@ -79,11 +89,15 @@
          * @public
          */
         setValue: function(nameValue, nameField) {
+
             if (typeof nameValue === 'object' && nameValue !== null) {
+
                 if (nameValue.hasOwnProperty(nameField)) {
+
                     return nameValue[nameField];
                 }
             }
+
             return nameValue;
         }
     };

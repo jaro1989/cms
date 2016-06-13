@@ -6,6 +6,7 @@
         var TYPES_INPUT = ['text', 'password', 'image', 'button', 'checkbox', 'file', 'hidden', 'radio', 'reset', 'submit', 'week', 'url', 'time', 'tel', 'search', 'range', 'number', 'month', 'email', 'datetime-local', 'color', 'date', 'datetime'];
 
         var getStar = function() {
+
             return new ui.Element('span')
                 .setContentElement(ui.Config.label.required)
                 .addClassElement(ui.CSS.satrClass)
@@ -19,6 +20,7 @@
          * @constructor
          */
         ui.Element = function(name) {
+
             /**
              * @type {Element}
              */
@@ -47,9 +49,9 @@
                     if (typeof htmlName === 'string') {
 
                         this.element.id = htmlName.replace('[', '-').replace(']', '');
-
                     }
                 }
+
                 return this;
             },
 
@@ -60,6 +62,7 @@
              * @returns {ui.Element}
              */
             setForLabelElement: function(htmlId, htmlName) {
+
                 if (ui.api.inArray(['label'], this.tag_name) != -1) {
 
                     if (typeof htmlId === 'string') {
@@ -71,11 +74,10 @@
                         if (typeof htmlName === 'string') {
 
                             this.element.setAttribute('for', htmlName.replace('[', '-').replace(']', ''));
-
                         }
                     }
-
                 }
+
                 return this;
             },
 
@@ -86,9 +88,12 @@
              * @public
              */
             setNameElement: function(nameField) {
+
                 if (ui.api.inArray(['input', 'textarea', 'select'], this.tag_name) != -1) {
+
                     this.element.setAttribute('name', nameField);
                 }
+
                 return this;
             },
 
@@ -100,9 +105,12 @@
              * @public
              */
             setValueElement: function(nameValue, nameField) {
+
                 if (ui.api.inArray(['input', 'textarea', 'select'], this.tag_name) != -1) {
+
                     this.element.value = ui.api.setValue(nameValue, nameField);
                 }
+
                 return this;
             },
 
@@ -113,10 +121,13 @@
              * @public
              */
             setCheckedElement: function(status) {
+
                 if (status === true && ui.api.inArray(['input'], this.tag_name) != -1) {
+
                     this.element.classList.add(ui.CSS.checkedClass);
                     this.element.setAttribute('checked', 'checked');
                 }
+
                 return this;
             },
 
@@ -132,6 +143,7 @@
                 this.element.innerHTML = caption;
 
                 if (required) {
+
                     this.element.innerHTML += getStar();
                 }
 
@@ -150,10 +162,12 @@
             setCaptionRadioElement: function(caption, required) {
 
                 if (required) {
+
                     this.element.innerHTML += getStar();
                 }
 
                 this.element.innerHTML += caption;
+
                 return this;
             },
 
@@ -208,10 +222,13 @@
              * @public
              */
             setDisabledElement: function(status) {
+
                 if (status === true) {
+
                     this.element.classList.add(ui.CSS.disabledClass);
                     this.element.setAttribute('disabled', 'disabled');
                 }
+
                 return this;
             },
 
@@ -224,10 +241,13 @@
              * @public
              */
             setRequiredElement: function(status) {
+
                 if (status === true) {
+
                     this.element.classList.add(ui.CSS.requiredClass);
                     this.element.setAttribute('required', 'required');
                 }
+
                 return this;
             },
 
@@ -238,8 +258,10 @@
              * @public
              */
             setIconElement: function(iconName) {
+
                 this.element.classList.add(ui.CSS.iconClass);
                 this.element.classList.add(ui.CSS.iconClass + '-' + iconName);
+
                 return this;
             },
 
@@ -259,6 +281,7 @@
 
                         elementType = 'text';
                     }
+
                     this.element.setAttribute('type', elementType);
                 }
 
@@ -266,6 +289,7 @@
 
                     this.element.setAttribute('type', elementType);
                 }
+
                 return this;
             },
 
@@ -275,12 +299,17 @@
              * @returns {ui.Element}
              */
             setUrlElement: function(elementUrl) {
+
                 if (ui.api.inArray(['a', 'link'], this.tag_name) != -1) {
+
                     this.element.setAttribute('href', elementUrl);
                 }
+
                 if (ui.api.inArray(['img', 'script'], this.tag_name) != -1) {
+
                     this.element.setAttribute('src', elementUrl);
                 }
+
                 return this;
             },
 
@@ -292,6 +321,7 @@
              * @public
              */
             setSkinElement: function(type, skin) {
+
                 var skinClass = null;
 
                 if (ui.CSS.skinClass.hasOwnProperty(type) && ui.CSS.skinClass[type].hasOwnProperty(skin)) {
@@ -314,12 +344,14 @@
 
                             skinClass = ui.CSS.skinClass.default[skin];
                         }
-
                     }
                 }
+
                 if (skinClass !== null) {
+
                     this.element.classList.add(skinClass);
                 }
+
                 return this;
             },
 
@@ -339,7 +371,6 @@
                         this.element.classList.add(ui.CSS.sizeClass[type][size]);
 
                     }
-
                 }
 
                 return this;
@@ -351,9 +382,12 @@
              * @returns {ui.Element}
              */
             setPaddingElement: function(padding) {
+
                 if (ui.CSS.paddingClass.hasOwnProperty(padding)) {
+
                     this.element.classList.add(ui.CSS.paddingClass[padding]);
                 }
+
                 return this;
             },
 
@@ -364,12 +398,17 @@
              * @returns {ui.Element}
              */
             setWidthElement: function(elementWidth) {
+
                 if (typeof elementWidth === 'number') {
+
                     this.element.classList.add(ui.CSS.widthClass + '-' + elementWidth);
                 }
+
                 if (typeof elementWidth === 'string') {
+
                     this.element.style.width = elementWidth;
                 }
+
                 return this;
             },
 
@@ -380,9 +419,12 @@
              * @returns {ui.Element}
              */
             addStyleElement: function(property, value) {
+
                 if (this.element.style.hasOwnProperty(property)) {
+
                     this.element.style[property] = value;
                 }
+
                 return this;
             },
 
@@ -415,5 +457,4 @@
                 return this;
             }
         };
-
     } (window.ui || {}));

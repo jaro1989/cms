@@ -17,7 +17,7 @@
         .appendHTML(APPEND_ELEMENT);
 
     new ui.FFCheckbox()
-        .addCheckbox(1,    'name-1.2', 'checkbox - 1')
+        .addCheckbox({'name-1.2': 1},    'name-1.2', 'checkbox - 1')
         .addCheckbox(null, 'name-2.2', 'checkbox - 2')
         .addCheckbox(null, 'name-3.2', 'checkbox - 3')
         .addCheckbox(null, 'name-4.2', 'checkbox - 4')
@@ -48,13 +48,12 @@
     new ui.FFCheckbox()
         .addCheckboxList(checkbox_list_1)
         .setWidth(2)
-        .setSkin('warning')
+        .setSkin('error')
         .appendHTML(APPEND_ELEMENT);
 
     new ui.FFCheckbox()
         .addCheckboxList(checkbox_list_2)
         .setWidth(6)
         .setWidthCaption(3)
-        .setSkin('warning')
         .setFieldsHorizontal()
         .appendHTML(APPEND_ELEMENT);

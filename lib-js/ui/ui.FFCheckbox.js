@@ -66,8 +66,10 @@
          * @returns {ui.FFCheckbox}
          */
         setDefaultValues: function(checked, nochecked) {
+
             this._checkboxValue.checked   = ui.api.empty(checked, ui.Config.checkboxValue.checked);
             this._checkboxValue.nochecked = ui.api.empty(nochecked, ui.Config.checkboxValue.nochecked);
+
             return this;
         },
 
@@ -129,11 +131,13 @@
          * @public
          */
         addCheckbox: function(value, name, caption) {
+
             this._checkboxList[this._checkboxList.length] = {
                 name:    ui.api.empty(name, null),
                 value:   ui.api.empty(value, null),
                 caption: ui.api.empty(caption, null)
             };
+
             return this;
         },
 
@@ -143,13 +147,16 @@
          * @returns {ui.FFCheckbox}
          */
         addCheckboxList: function(data) {
+
             for(var row in data) {
+
                 this._checkboxList[this._checkboxList.length] = {
                     name:    ui.api.existProperty(data[row], 'name', null),
                     value:   ui.api.existProperty(data[row], 'value', null),
                     caption: ui.api.existProperty(data[row], 'caption', null)
                 };
             }
+
             return this;
         },
 
@@ -194,6 +201,7 @@
          * @private
          */
         _buildField: function(params) {
+
             var checkbox = new ui.Element('input')
                 .setTypeElement('checkbox')
                 .setNameElement(params.name)
@@ -203,18 +211,22 @@
                 .setIdElement(null, params.name);
 
             if (ui.api.inArray(this._disabledIf, params.name) != -1) {
+
                 checkbox.setDisabledElement(true);
             }
 
             if (ui.api.inArray(this._requiredIf, params.name) != -1) {
+
                 checkbox.setRequiredElement(true);
             }
 
-            if (this._checkboxValue.checked == params.value) {
+            if (this._checkboxValue.checked == ui.api.setValue(params.value, params.name)) {
+
                 checkbox
                     .setCheckedElement(true)
                     .setValueElement(this._checkboxValue.checked, null);
             } else {
+
                 checkbox.setValueElement(this._checkboxValue.nochecked, null);
             }
 
@@ -228,8 +240,10 @@
          * @private
          */
         _buildCaption: function(params) {
+
             var req = false;
             if (ui.api.inArray(this._requiredIf, params.name) != -1 || this._required === true) {
+
                 req = true;
             }
 
@@ -244,6 +258,7 @@
                 .addChildBefore(this._buildField(params));
 
             if (typeof this._widthCaption === 'number') {
+
                 label.setWidthElement(this._widthCaption);
             }
 
@@ -256,6 +271,7 @@
          * @private
          */
         _buildInlineBlock: function() {
+
             var iblineBlock = new ui.Element('div')
                 .addClassElement(ui.CSS.checkboxClass)
                 .addClassElement(ui.CSS.checkboxInlineClass);
@@ -267,8 +283,10 @@
             if (this._horizontal === true) {
 
                 for(var htmlIda in this._checkboxList) {
+
                     block.addChildAfter(this._buildCaption(this._checkboxList[htmlIda]));
                 }
+
                 iblineBlock.addChildAfter(block.getElement());
 
             } else {
@@ -283,6 +301,7 @@
                     );
                 }
             }
+
             return iblineBlock.getElement();
         },
 
@@ -292,6 +311,7 @@
          * @private
          */
         _buildParentBlock: function() {
+
             return new ui.Element('div')
                 .setSkinElement('field', this._skin)
                 .setWidthElement(this._width)

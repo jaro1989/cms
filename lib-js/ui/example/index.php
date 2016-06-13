@@ -21,6 +21,7 @@ $pare = [
             <ul class="nav navbar-nav">
                 <?php
                     foreach ($pare as $key => $value) {
+
                         $active = '';
                         if ($key === $page) $active = 'active';
                         echo '<li class="' . $active . '"><a href="' . $url . $key . '">' . $value . '</a></li>';
@@ -49,11 +50,5 @@ $pare = [
         echo '<script src="' . $page . '.example.js' . '" type="text/javascript"></script>';
     }
     ?>
-
-    <script>
-
-    </script>
     </body>
 </html>
-
-<?php

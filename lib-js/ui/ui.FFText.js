@@ -227,12 +227,14 @@
              * @private
              */
             _buildCaption: function() {
+
                 var label =  new ui.Element('label')
                     .addClassElement(ui.CSS.controlLabelClass)
                     .setForLabelElement(this._id, this._name)
                     .setCaptionElement(this._caption, this._required);
 
                 if (typeof this._widthCaption === 'number') {
+
                     label
                         .setWidthElement(this._widthCaption)
                         .addClassElement(ui.CSS.alignClass.text.right);
@@ -247,6 +249,7 @@
              * @private
              */
             _buildField: function() {
+
                 return new ui.Element('input')
                     .setTypeElement('text')
                     .setNameElement(this._name)
@@ -264,11 +267,13 @@
              * @private
              */
             _buildLeftMarker: function() {
+
                 var leftMarker = new ui.Element('span')
                     .addClassElement(ui.CSS.inputGroupAddonClass)
                     .setContentElement(this._leftMarker);
 
                 if (typeof this._leftIcon === 'string') {
+
                     leftMarker
                         .addChildBefore(
                             new ui.Element('span')
@@ -287,11 +292,13 @@
              * @private
              */
             _buildRightMarker: function() {
+
                 var rightMarker = new ui.Element('span')
                     .addClassElement(ui.CSS.inputGroupAddonClass)
                     .setContentElement(this._rightMarker);
 
                 if (typeof this._rightIcon === 'string') {
+
                     rightMarker
                         .addChildAfter(
                             new ui.Element('span')
@@ -325,14 +332,17 @@
                 }
 
                 if (typeof this._widthCaption === 'number') {
+
                     inputGroup.setWidthElement(12 - this._widthCaption);
                 }
 
                 if (this._leftMarker !== null || this._leftIcon !== null) {
+
                     inputGroup.addChildBefore(this._buildLeftMarker());
                 }
 
                 if (this._rightMarker !== null || this._rightIcon !== null) {
+
                     inputGroup.addChildAfter(this._buildRightMarker())
                 }
 
@@ -352,10 +362,12 @@
                     .setPaddingElement(this._padding);
 
                 if (this._caption !== null) {
+
                     parentElement.addChildBefore(this._buildCaption());
                 }
 
                 if (this._width !== null) {
+
                     parentElement.setWidthElement(this._width);
                 }
 
