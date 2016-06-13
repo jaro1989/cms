@@ -106,7 +106,7 @@
              */
             setValueElement: function(nameValue, nameField) {
 
-                if (ui.api.inArray(['input', 'textarea', 'select'], this.tag_name) != -1) {
+                if (ui.api.inArray(['input', 'textarea', 'select', 'option'], this.tag_name) != -1) {
 
                     this.element.value = ui.api.setValue(nameValue, nameField);
                 }
@@ -126,6 +126,22 @@
 
                     this.element.classList.add(ui.CSS.checkedClass);
                     this.element.setAttribute('checked', 'checked');
+                }
+
+                return this;
+            },
+
+            /**
+             * Set html attribute selected on element
+             * @param {boolean} status
+             * @returns {ui.Element}
+             * @public
+             */
+            setSelectedElement: function(status) {
+
+                if (status === true && ui.api.inArray(['option'], this.tag_name) != -1) {
+
+                    this.element.setAttribute('selected', 'selected');
                 }
 
                 return this;

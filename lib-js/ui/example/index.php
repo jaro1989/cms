@@ -6,7 +6,8 @@ $pare = [
     'ffRadio'    => 'Radio кнопки',
     'ffCheckbox' => 'Checkbox кнопки',
     'ffTextarea' => 'Textarea',
-    'ffPassword' => 'Поле пароль'
+    'ffPassword' => 'Поле пароль',
+    'ffSelect'   => 'Select list'
 ];
 ?>
 <!DOCTYPE html>
@@ -46,6 +47,7 @@ $pare = [
     <script src="../ui.FFCheckbox.js" type="text/javascript"></script>
     <script src="../ui.FFTextarea.js" type="text/javascript"></script>
     <script src="../ui.FFPassword.js" type="text/javascript"></script>
+    <script src="../ui.FFSelect.js" type="text/javascript"></script>
 
 
     <?php
