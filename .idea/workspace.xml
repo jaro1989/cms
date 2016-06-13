@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e625a249-66d9-49c4-82c3-b892a980c4cc" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib-js/ui/example/ffTextarea.example.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/ffCheckbox.example.js" afterPath="$PROJECT_DIR$/lib-js/ui/example/ffCheckbox.example.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/ffRadio.example.js" afterPath="$PROJECT_DIR$/lib-js/ui/example/ffRadio.example.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/ffText.example.js" afterPath="$PROJECT_DIR$/lib-js/ui/example/ffText.example.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/index.php" afterPath="$PROJECT_DIR$/lib-js/ui/example/index.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.CSS.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.CSS.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Element.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Element.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.FFTextarea.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.FFTextarea.js" />
     </list>
     <ignored path="cms.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -939,7 +931,13 @@
       <option name="project" value="LOCAL" />
       <updated>1465835577429</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Lib-JS: Textarea  (create)">
+      <created>1465842026025</created>
+      <option name="number" value="00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1465842026025</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -980,7 +978,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update lib / Create page user / 2" />
     <MESSAGE value="Update lib / Create page user / 3" />
     <MESSAGE value="Calendar js fields" />
     <MESSAGE value="Update calendar js fields" />
@@ -1005,7 +1002,8 @@
     <MESSAGE value="New lib-js (update)" />
     <MESSAGE value="Lib-JS: (update)" />
     <MESSAGE value="Lib-JS: Radio button  (update)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Lib-JS: Radio button  (update)" />
+    <MESSAGE value="Lib-JS: Textarea  (create)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Lib-JS: Textarea  (create)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
