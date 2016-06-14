@@ -51,9 +51,10 @@
 
     for (var i = 0; i < 4; i++) {
 
-        new ui.FFSelect(1, 'nam-6.' + i, 'Select list-6.' + i)
+        new ui.FFSelect(2, 'nam-6.' + i, 'Select list-6.' + i)
             .addItem(1, 'Item - 1')
             .addItem(2, 'Item - 2')
+            .addItem(3, 'Item - 3')
             .setWidth(6)
             .setWidthCaption(6)
             .setLeftIcon('star')

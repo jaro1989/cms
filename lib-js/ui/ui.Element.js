@@ -106,7 +106,7 @@
              */
             setValueElement: function(nameValue, nameField) {
 
-                if (ui.api.inArray(['input', 'textarea', 'select', 'option'], this.tag_name) != -1) {
+                if (ui.api.inArray(['input', 'textarea', 'select', 'option', 'button'], this.tag_name) != -1) {
 
                     this.element.value = ui.api.setValue(nameValue, nameField);
                 }
@@ -291,7 +291,7 @@
              */
             setTypeElement: function(elementType) {
 
-                if (ui.api.inArray(['input'], this.tag_name) != -1) {
+                if (ui.api.inArray(['input', 'button'], this.tag_name) != -1) {
 
                     if (ui.api.inArray(TYPES_INPUT, elementType) == -1) {
 
@@ -355,6 +355,10 @@
                         } else if (type === 'field') {
 
                             skinClass = ui.CSS.prefixClass.field + '-' + ui.CSS.skinClass.default[skin];
+
+                        } else if (type === 'button') {
+
+                            skinClass = ui.CSS.prefixClass.button + '-' + ui.CSS.skinClass.default[skin];
 
                         } else {
 

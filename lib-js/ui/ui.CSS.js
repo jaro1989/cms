@@ -104,6 +104,21 @@
 
             /**
              * @public
+             * @type { {btnClass: string, btnGroupClass: string, btnGroup: { group: string, toolbar: string, vertical: string, justified: string } } }
+             */
+            btn: {
+                btnClass: 'btn',
+                btnBlockClass: 'btn-block',
+                btnGroup: {
+                    group:     'btn-group',
+                    toolbar:   'btn-toolbar',
+                    vertical:  'btn-group-vertical',
+                    justified: 'btn-group-justified'
+                }
+            },
+
+            /**
+             * @public
              * @type { { striped: string, bordered: string, borderedNone: string, hover: string, condensed: string } } }
              */
             tableClass: {
@@ -137,7 +152,8 @@
              */
             prefixClass: {
                 field: 'has',
-                text:  'text'
+                text:  'text',
+                button:  'btn'
             },
 
             /**
