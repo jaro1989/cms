@@ -126,10 +126,10 @@
 
         /**
          * Add button
-         * @param {number|null} value
+         * @param {string|number|null} value
          * @param {string} name
          * @param {string} caption
-         * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
+         * @param {string|null} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
          * @param {boolean} active
          * @returns {ui.FFButton}
          * @public
@@ -150,10 +150,10 @@
 
         /**
          * Add submit
-         * @param {number|null} value
+         * @param {string|number|null} value
          * @param {string} name
          * @param {string} caption
-         * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
+         * @param {string|null} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
          * @param {boolean} active
          * @returns {ui.FFButton}
          * @public
