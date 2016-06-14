@@ -50,12 +50,11 @@
       <file leaf-file-name="ui.Element.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Element.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.034483">
-              <caret line="400" column="66" selection-start-line="400" selection-start-column="15" selection-end-line="400" selection-end-column="66" />
+            <state vertical-scroll-proportion="-4.95">
+              <caret line="270" column="33" selection-start-line="270" selection-start-column="30" selection-end-line="270" selection-end-column="33" />
               <folding>
                 <element signature="e#6037#6201#0" expanded="false" />
                 <element signature="e#6357#6521#0" expanded="false" />
-                <element signature="e#7695#7849#0" expanded="false" />
                 <element signature="e#9186#9355#0" expanded="false" />
                 <element signature="e#14200#14307#0" expanded="false" />
                 <element signature="e#14417#14588#0" expanded="false" />
@@ -74,21 +73,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ffButton.example.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ffButton.example.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffButton.example.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.4">
-              <caret line="119" column="30" selection-start-line="119" selection-start-column="30" selection-end-line="119" selection-end-column="30" />
+            <state vertical-scroll-proportion="-0.271777">
+              <caret line="53" column="92" selection-start-line="53" selection-start-column="92" selection-end-line="53" selection-end-column="92" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ui.FFButton.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ui.FFButton.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFButton.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="4.6969695">
-              <caret line="279" column="51" selection-start-line="279" selection-start-column="51" selection-end-line="279" selection-end-column="51" />
+            <state vertical-scroll-proportion="-11.103448">
+              <caret line="246" column="0" selection-start-line="246" selection-start-column="0" selection-end-line="246" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -97,7 +96,7 @@
       <file leaf-file-name="ui.CSS.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.15">
+            <state vertical-scroll-proportion="-11.65">
               <caret line="115" column="29" selection-start-line="115" selection-start-column="20" selection-end-line="115" selection-end-column="29" />
               <folding />
             </state>
@@ -969,7 +968,13 @@
       <option name="project" value="LOCAL" />
       <updated>1465934390259</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Lib-JS: Button  (update)">
+      <created>1465935804603</created>
+      <option name="number" value="00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1465935804603</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1010,7 +1015,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update calendar js fields - 2" />
     <MESSAGE value="Update calendar js fields - 3" />
     <MESSAGE value="Update calendar js fields - 4" />
     <MESSAGE value="Update lib-js/ add module - buildTag" />
@@ -1035,7 +1039,8 @@
     <MESSAGE value="Lib-JS: Password  (create)" />
     <MESSAGE value="Lib-JS: Select list  (create)" />
     <MESSAGE value="Lib-JS: Select list  (update)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Lib-JS: Select list  (update)" />
+    <MESSAGE value="Lib-JS: Button  (update)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Lib-JS: Button  (update)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1371,14 +1376,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-31.125">
-          <caret line="51" column="34" selection-start-line="51" selection-start-column="34" selection-end-line="51" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffCheckbox.example.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.01626898">
@@ -1389,12 +1386,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Element.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.034483">
-          <caret line="400" column="66" selection-start-line="400" selection-start-column="15" selection-end-line="400" selection-end-column="66" />
+        <state vertical-scroll-proportion="-4.95">
+          <caret line="270" column="33" selection-start-line="270" selection-start-column="30" selection-end-line="270" selection-end-column="33" />
           <folding>
             <element signature="e#6037#6201#0" expanded="false" />
             <element signature="e#6357#6521#0" expanded="false" />
-            <element signature="e#7695#7849#0" expanded="false" />
             <element signature="e#9186#9355#0" expanded="false" />
             <element signature="e#14200#14307#0" expanded="false" />
             <element signature="e#14417#14588#0" expanded="false" />
@@ -1402,26 +1398,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.15">
-          <caret line="115" column="29" selection-start-line="115" selection-start-column="20" selection-end-line="115" selection-end-column="29" />
+        <state vertical-scroll-proportion="-31.125">
+          <caret line="51" column="34" selection-start-line="51" selection-start-column="34" selection-end-line="51" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffButton.example.js">
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.4">
-          <caret line="119" column="30" selection-start-line="119" selection-start-column="30" selection-end-line="119" selection-end-column="30" />
+        <state vertical-scroll-proportion="-11.65">
+          <caret line="115" column="29" selection-start-line="115" selection-start-column="20" selection-end-line="115" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFButton.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="4.6969695">
-          <caret line="279" column="51" selection-start-line="279" selection-start-column="51" selection-end-line="279" selection-end-column="51" />
+        <state vertical-scroll-proportion="-11.103448">
+          <caret line="246" column="0" selection-start-line="246" selection-start-column="0" selection-end-line="246" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffButton.example.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.271777">
+          <caret line="53" column="92" selection-start-line="53" selection-start-column="92" selection-end-line="53" selection-end-column="92" />
           <folding />
         </state>
       </provider>

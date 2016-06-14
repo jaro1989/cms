@@ -131,18 +131,21 @@
          * @param {string} caption
          * @param {string|null} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
          * @param {boolean} active
+         * @param {string|null} icon
          * @returns {ui.FFButton}
          * @public
          */
-        addButton: function(value, name, caption, skin, active) {
+        addButton: function(value, name, caption, skin, active, icon) {
 
             this._buttonList[this._buttonList.length] = {
-                type:    'button',
-                skin:    ui.api.empty(skin,    null),
-                name:    ui.api.empty(name,    null),
-                value:   ui.api.empty(value,   null),
-                active:  ui.api.empty(active,  null),
-                caption: ui.api.empty(caption, null)
+                type:      'button',
+                skin:      ui.api.empty(skin,    null),
+                name:      ui.api.empty(name,    null),
+                value:     ui.api.empty(value,   null),
+                active:    ui.api.empty(active,  null),
+                caption:   ui.api.empty(caption, null),
+                leftIcon:  ui.api.empty(icon,    null),
+                rightIcon: null
             };
 
             return this;
@@ -155,18 +158,21 @@
          * @param {string} caption
          * @param {string|null} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
          * @param {boolean} active
+         * @param {string|null} icon
          * @returns {ui.FFButton}
          * @public
          */
-        addSubmit: function(value, name, caption, skin, active) {
+        addSubmit: function(value, name, caption, skin, active, icon) {
 
             this._buttonList[this._buttonList.length] = {
-                type:    'submit',
-                skin:    ui.api.empty(skin,    null),
-                name:    ui.api.empty(name,    null),
-                value:   ui.api.empty(value,   null),
-                active:  ui.api.empty(active,  null),
-                caption: ui.api.empty(caption, null)
+                type:      'submit',
+                skin:      ui.api.empty(skin,    null),
+                name:      ui.api.empty(name,    null),
+                value:     ui.api.empty(value,   null),
+                active:    ui.api.empty(active,  null),
+                caption:   ui.api.empty(caption, null),
+                leftIcon:  ui.api.empty(icon,    null),
+                rightIcon: null
             };
 
             return this;
@@ -174,7 +180,7 @@
 
         /**
          * Add list buttons
-         * @param { { 0: { type: string, value: string, name: string, caption: string, skin: string, active: boolean } } } data
+         * @param { { 0: { type: string, value: string, name: string, caption: string, skin: string, active: boolean, leftIcon: string, rightIcon: string } } } data
          * @returns {ui.FFButton}
          * @public
          */
@@ -183,12 +189,14 @@
             for(var row in data) {
 
                 this._buttonList[this._buttonList.length] = {
-                    type:    ui.api.existProperty(data[row], 'type', 'button'),
-                    skin:    ui.api.existProperty(data[row], 'skin',     null),
-                    name:    ui.api.existProperty(data[row], 'name',     null),
-                    value:   ui.api.existProperty(data[row], 'value',    null),
-                    active:  ui.api.existProperty(data[row], 'active',   null),
-                    caption: ui.api.existProperty(data[row], 'caption',  null)
+                    type:      ui.api.existProperty(data[row], 'type',  'button'),
+                    skin:      ui.api.existProperty(data[row], 'skin',      null),
+                    name:      ui.api.existProperty(data[row], 'name',      null),
+                    value:     ui.api.existProperty(data[row], 'value',     null),
+                    active:    ui.api.existProperty(data[row], 'active',    null),
+                    caption:   ui.api.existProperty(data[row], 'caption',   null),
+                    leftIcon:  ui.api.existProperty(data[row], 'leftIcon',  null),
+                    rightIcon: ui.api.existProperty(data[row], 'rightIcon', null)
                 };
             }
 
@@ -220,8 +228,37 @@
         },
 
         /**
+         * @param {{ caption: string, leftIcon: string|null, rightIcon: string|null }} params
+         * @returns {string}
+         * @private
+         */
+        _getCaption: function(params) {
+
+            var caption = '';
+
+            if (params.leftIcon !== null) {
+
+                caption += new ui.Element('span')
+                    .setIconElement(params.leftIcon)
+                    .toHTML() + ' ';
+            }
+
+            caption += (params.caption !== null) ? params.caption : '';
+
+            if (params.rightIcon !== null) {
+
+                caption += ' ' + new ui.Element('span')
+                    .setIconElement(params.rightIcon)
+                    .toHTML();
+            }
+
+            caption.trim();
+            return caption;
+        },
+
+        /**
          * Build html button
-         * @param {{ type: string, value: string, name: string, caption: string, skin: string|null, active: boolean }} params
+         * @param {{ type: string, value: string, name: string, caption: string, skin: string|null, active: boolean, leftIcon: string|null, rightIcon: string|null }} params
          * @returns {*|Element}
          * @private
          */
@@ -244,7 +281,7 @@
                 .setSkinElement('button', skin)
                 .setSizeElement('button', this._size)
                 .setDisabledElement(this._disabled)
-                .setContentElement(params.caption);
+                .setContentElement(this._getCaption(params));
 
             if (this._active === true || params.active === true) {
 
