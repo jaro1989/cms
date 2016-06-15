@@ -12,6 +12,11 @@
          * @namespace ui.Config
          */
         ui.Config = {
+
+            widthDate: '280px',
+
+            padding: 'sm',
+
             label: {
                 required: '*',
                 separator: ':',

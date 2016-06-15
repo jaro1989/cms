@@ -8,7 +8,8 @@ $pare = [
     'ffTextarea' => 'Textarea',
     'ffPassword' => 'Поле пароль',
     'ffSelect'   => 'Select list',
-    'ffButton'   => 'Кнопки'
+    'ffButton'   => 'Кнопки',
+    'ffDate'     => 'Поле дата'
 ];
 ?>
 <!DOCTYPE html>
@@ -39,6 +40,8 @@ $pare = [
 
 
 
+
+
     <script src="../ui.Config.js" type="text/javascript"></script>
     <script src="../ui.CSS.js" type="text/javascript"></script>
     <script src="../ui.api.js" type="text/javascript"></script>
@@ -50,6 +53,7 @@ $pare = [
     <script src="../ui.FFPassword.js" type="text/javascript"></script>
     <script src="../ui.FFSelect.js" type="text/javascript"></script>
     <script src="../ui.FFButton.js" type="text/javascript"></script>
+    <script src="../ui.FFDate.js" type="text/javascript"></script>
 
 
     <?php

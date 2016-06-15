@@ -65,7 +65,7 @@
              * @private
              * @type {string|null}
              */
-            _padding: 'sm',
+            _padding: ui.Config.padding,
     
             /**
              * @private
