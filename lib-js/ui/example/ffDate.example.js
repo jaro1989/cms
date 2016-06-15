@@ -6,5 +6,4 @@
         .setWidthBlock(6)
         .setWidthCaption(2)
         .setRequired()
-        .setSkin('error')
         .appendHTML(APPEND_ELEMENT);

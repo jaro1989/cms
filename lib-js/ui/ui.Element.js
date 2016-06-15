@@ -227,7 +227,12 @@
              * @public
              */
             addClassElement: function(elementClass) {
-                this.element.classList.add(elementClass);
+
+                if (elementClass !== '') {
+
+                    this.element.classList.add(elementClass);
+                }
+
                 return this;
             },
 
@@ -448,6 +453,15 @@
                 }
 
                 return this;
+            },
+
+            /**
+             * Get clone current object
+             * @returns {Node}
+             */
+            getClone: function() {
+
+                return this.element.cloneNode(true);
             },
 
             /**

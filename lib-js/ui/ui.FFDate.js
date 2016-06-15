@@ -75,11 +75,26 @@
         _required: false,
 
         /**
+         * @private
+         * @type {boolean}
+         */
+        _activeBtn: false,
+
+        /**
+         * Set active button
+         * @returns {ui.FFDate}
+         */
+        setActive: function() {
+            this._activeBtn = true;
+            return this;
+        },
+
+        /**
          * Set skin buttons
          * @param {string} skinBtn1 { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
          * @param {string} skinBtn2 { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
          * @param {string} skinBtn3 { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
-         * @returns {ui.FFButton}
+         * @returns {ui.FFDate}
          * @public
          */
         setSkinBtn: function(skinBtn1, skinBtn2, skinBtn3) {
@@ -124,6 +139,8 @@
          */
         setSkin: function(skinName) {
             this._skin = skinName;
+            var skinNameBtn = skinName == 'error' ? 'danger' : skinName;
+            this._skinBtn = [skinNameBtn, skinNameBtn, skinNameBtn];
             return this;
         },
 
@@ -233,6 +250,11 @@
             var skin2 = ui.api.empty(this._skinBtn[1], defaulSkin);
             var skin3 = ui.api.empty(this._skinBtn[2], defaulSkin);
 
+            var active = '';
+            if (this._activeBtn === true) {
+                active = ui.CSS.skinClass.default.active;
+            }
+
             return new ui.Element('div')
                 .addClassElement(ui.CSS.inputGroupBtnClass)
                 .addChildAfter(
@@ -243,7 +265,7 @@
                         .setSkinElement('button', skin1)
                         .setSizeElement('button', this._size)
                         .setDisabledElement(this._disabled)
-                        .addClassElement(ui.CSS.skinClass.default.active)
+                        .addClassElement(active)
                         .addChildAfter(
                             new ui.Element('span')
                                 .setIconElement('star')
@@ -259,7 +281,7 @@
                         .setSkinElement('button', skin2)
                         .setSizeElement('button', this._size)
                         .setDisabledElement(this._disabled)
-                        .addClassElement(ui.CSS.skinClass.default.active)
+                        .addClassElement(active)
                         .addChildAfter(
                             new ui.Element('span')
                                 .setIconElement('star')
@@ -275,7 +297,7 @@
                         .setSkinElement('button', skin3)
                         .setSizeElement('button', this._size)
                         .setDisabledElement(this._disabled)
-                        .addClassElement(ui.CSS.skinClass.default.active)
+                        .addClassElement(active)
                         .addChildAfter(
                             new ui.Element('span')
                                 .setIconElement('star')
