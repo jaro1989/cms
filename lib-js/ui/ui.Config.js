@@ -13,7 +13,7 @@
          */
         ui.Config = {
 
-            widthDate: '280px',
+            widthField: '280px',
 
             padding: 'sm',
 

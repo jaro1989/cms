@@ -30,7 +30,7 @@
          * @private
          * @type {string}
          */
-        _widthField: ui.Config.widthDate,
+        _widthField: ui.Config.widthField,
 
         /**
          * @private
@@ -299,11 +299,6 @@
                 .addChildAfter(this._buildField())
                 .setWidthElement(this._widthField)
                 .addChildAfter(this._buildButtons());
-
-            if (typeof this._widthCaption === 'number') {
-
-                inputGroup.setWidthElement(12 - this._widthCaption);
-            }
 
             return inputGroup.getElement();
         },

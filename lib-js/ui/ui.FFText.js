@@ -53,7 +53,7 @@
              * @private
              * @type {string|number|null}
              */
-            _width: null,
+            _widthBlock: null,
 
             /**
              * @private
@@ -194,8 +194,8 @@
              * @returns {ui.FFText}
              * @public
              */
-            setWidth: function(width) {
-                this._width = width;
+            setWidthBlock: function(width) {
+                this._widthBlock = width;
                 return this;
             },
 
@@ -366,9 +366,9 @@
                     parentElement.addChildBefore(this._buildCaption());
                 }
 
-                if (this._width !== null) {
+                if (this._widthBlock !== null) {
 
-                    parentElement.setWidthElement(this._width);
+                    parentElement.setWidthElement(this._widthBlock);
                 }
 
                 return parentElement.getElement();
