@@ -9,7 +9,8 @@
     ui.FFButton = function () {
 
         this._buttonList  = [];
-        this._disabledIf    = [];
+        this._disabledIf  = [];
+        this._btnId = [];
     };
 
     /** @protected */
@@ -360,6 +361,7 @@
          * @public
          */
         getElement: function() {
+
             return this._buildParentBlock();
         },
 
@@ -369,6 +371,7 @@
          * @public
          */
         toHTML: function() {
+
             return this._buildParentBlock().outerHTML;
         },
 
@@ -379,6 +382,7 @@
          * @public
          */
         appendHTML: function(selector) {
+
             new ui.$(selector).append(this.getElement());
             return this;
         }

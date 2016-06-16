@@ -463,12 +463,12 @@
              */
             setEvent: function(event, fun, useCapture) {
 
-
-                //this.element.addEventListener('click',
-                //    function() {
-                //        alert('sada');
-                //    }, true
-                //);
+                this.element.addEventListener('click',
+                    function() {
+                        alert('sada');
+                    },
+                    false
+                );
                 return this;
             },
 

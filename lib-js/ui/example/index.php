@@ -38,7 +38,6 @@ $pare = [
 
     <div id="element_append" class="container col-md-12 well-lg"></div>
 
-    <input type="button" id="ssssss" value="ssss">
 
     <script src="../ui.Config.js" type="text/javascript"></script>
     <script src="../ui.CSS.js" type="text/javascript"></script>

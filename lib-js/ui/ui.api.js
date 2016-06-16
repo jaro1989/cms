@@ -28,7 +28,7 @@
             return this;
         },
 
-        event: function(event, fun, useCapture) {
+        on: function(event, fun, useCapture) {
 
             for (var i = 0; i < this.elements.length; i++) {
 

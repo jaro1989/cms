@@ -1,6 +1,8 @@
 
 (function(ui) {
 
+    var counter = 0;
+
     /**
      * @memberOf ui
      * @namespace ui.FFDate
@@ -297,10 +299,6 @@
 
                 parentElement.setWidthElement(this._widthBlock);
             }
-
-            new ui.$('#ssssss').event('click', function() {
-                alert('asd');
-            });
 
             return parentElement.getElement();
         },
