@@ -228,6 +228,17 @@
         },
 
         /**
+         * Set size button
+         * @param {string} sizeBtn { 'lg' | 'sm' }
+         * @returns {ui.FFButton}
+         * @public
+         */
+        setSize: function(sizeBtn) {
+            this._size = sizeBtn;
+            return this;
+        },
+
+        /**
          * @param {{ caption: string, leftIcon: string|null, rightIcon: string|null }} params
          * @returns {string}
          * @private

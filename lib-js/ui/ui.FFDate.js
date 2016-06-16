@@ -14,7 +14,6 @@
         this._value   = ui.api.empty(value, null);
         this._name    = ui.api.empty(name, null);
         this._caption = ui.api.empty(caption, null);
-        this._skinBtn = [null, null, null];
     };
 
     /** @protected */
@@ -78,7 +77,7 @@
          * @private
          * @type {boolean}
          */
-        _activeBtn: false,
+        _activeBtn: true,
 
         /**
          * Set active button
@@ -86,19 +85,6 @@
          */
         setActive: function() {
             this._activeBtn = true;
-            return this;
-        },
-
-        /**
-         * Set skin buttons
-         * @param {string} skinBtn1 { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
-         * @param {string} skinBtn2 { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
-         * @param {string} skinBtn3 { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
-         * @returns {ui.FFDate}
-         * @public
-         */
-        setSkinBtn: function(skinBtn1, skinBtn2, skinBtn3) {
-            this._skinBtn = [skinBtn1, skinBtn2, skinBtn3];
             return this;
         },
 
@@ -121,7 +107,7 @@
         },
 
         /**
-         * Set skin field
+         * Set size field
          * @param {string} sizeField { 'lg' | 'sm' }
          * @returns {ui.FFDate}
          * @public
@@ -139,8 +125,6 @@
          */
         setSkin: function(skinName) {
             this._skin = skinName;
-            var skinNameBtn = skinName == 'error' ? 'danger' : skinName;
-            this._skinBtn = [skinNameBtn, skinNameBtn, skinNameBtn];
             return this;
         },
 
@@ -232,77 +216,41 @@
          */
         _buildField: function() {
 
-            return new ui.Element('input')
-                .setTypeElement('text')
-                .setNameElement(this._name)
-                .setIdElement(this._id, this._name)
-                .setValueElement(this._value, this._name)
-                .addClassElement(ui.CSS.formControlClass)
-                .setDisabledElement(this._disabled)
-                .setRequiredElement(this._required)
+            return new ui.Element('div')
+                .setSizeElement('input', this._size)
+                .addClassElement(ui.CSS.btn.btnGroup.group)
+                .addChildAfter(
+                    new ui.Element('input')
+                        .setTypeElement('text')
+                        .setNameElement(this._name)
+                        .setIdElement(this._id, this._name)
+                        .setDisabledElement(this._disabled)
+                        .setRequiredElement(this._required)
+                        .setValueElement(this._value, this._name)
+                        .addClassElement(ui.CSS.formControlClass)
+                        .getElement()
+                )
                 .getElement();
         },
 
+        /**
+         *
+         * @returns {*|Element}
+         * @private
+         */
         _buildButtons: function() {
 
-            var defaulSkin = ui.CSS.skinClass.default.default;
-            var skin1 = ui.api.empty(this._skinBtn[0], defaulSkin);
-            var skin2 = ui.api.empty(this._skinBtn[1], defaulSkin);
-            var skin3 = ui.api.empty(this._skinBtn[2], defaulSkin);
-
-            var active = '';
-            if (this._activeBtn === true) {
-                active = ui.CSS.skinClass.default.active;
-            }
-
             return new ui.Element('div')
-                .addClassElement(ui.CSS.inputGroupBtnClass)
+                .addClassElement(ui.CSS.btn.btnGroup.group)
+                .addStyleElement('paddingLeft', '5px')
                 .addChildAfter(
-                    new ui.Element('button')
-                        .setTypeElement('button')
-                        //.setIdElement(null, params.name)
-                        .addClassElement(ui.CSS.btn.btnClass)
-                        .setSkinElement('button', skin1)
-                        .setSizeElement('button', this._size)
-                        .setDisabledElement(this._disabled)
-                        .addClassElement(active)
-                        .addChildAfter(
-                            new ui.Element('span')
-                                .setIconElement('star')
-                                .getElement()
-                        )
-                        .getElement()
-                )
-                .addChildAfter(
-                    new ui.Element('button')
-                        .setTypeElement('button')
-                        //.setIdElement(null, params.name)
-                        .addClassElement(ui.CSS.btn.btnClass)
-                        .setSkinElement('button', skin2)
-                        .setSizeElement('button', this._size)
-                        .setDisabledElement(this._disabled)
-                        .addClassElement(active)
-                        .addChildAfter(
-                            new ui.Element('span')
-                                .setIconElement('star')
-                                .getElement()
-                        )
-                        .getElement()
-                )
-                .addChildAfter(
-                    new ui.Element('button')
-                        .setTypeElement('button')
-                        //.setIdElement(null, params.name)
-                        .addClassElement(ui.CSS.btn.btnClass)
-                        .setSkinElement('button', skin3)
-                        .setSizeElement('button', this._size)
-                        .setDisabledElement(this._disabled)
-                        .addClassElement(active)
-                        .addChildAfter(
-                            new ui.Element('span')
-                                .setIconElement('star')
-                                .getElement()
-                        )
+                    new ui.FFButton()
+                        .addButton(null, null, null, null, this._activeBtn, 'star')
+                        .addButton(null, null, null, null, this._activeBtn, 'star')
+                        .addButton(null, null, null, null, this._activeBtn, 'star')
+                        .setPaddingBlock(null)
+                        .setGroup('group')
+                        .setSize(this._size)
                         .getElement()
                 )
                 .getElement();
@@ -316,11 +264,14 @@
         _buildGroupBlock: function() {
 
             var inputGroup = new ui.Element('div')
-                .setSizeElement('input', this._size)
-                .addClassElement(ui.CSS.inputGroupClass)
                 .addChildAfter(this._buildField())
                 .setWidthElement(this._widthField)
                 .addChildAfter(this._buildButtons());
+
+            if (typeof this._widthCaption === 'number') {
+
+                inputGroup.setWidthElement(12 - this._widthCaption);
+            }
 
             return inputGroup.getElement();
         },
@@ -346,6 +297,10 @@
 
                 parentElement.setWidthElement(this._widthBlock);
             }
+
+            new ui.$('#ssssss').event('click', function() {
+                alert('asd');
+            });
 
             return parentElement.getElement();
         },

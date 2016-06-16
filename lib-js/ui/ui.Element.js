@@ -456,6 +456,23 @@
             },
 
             /**
+             *
+             * @param {string} event
+             * @param {string|function} fun
+             * @param {boolean} useCapture
+             */
+            setEvent: function(event, fun, useCapture) {
+
+
+                //this.element.addEventListener('click',
+                //    function() {
+                //        alert('sada');
+                //    }, true
+                //);
+                return this;
+            },
+
+            /**
              * Get clone current object
              * @returns {Node}
              */

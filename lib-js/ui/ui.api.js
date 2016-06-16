@@ -7,6 +7,7 @@
      * @constructor
      */
     ui.$ = function (selector) {
+
         this.elements = document.querySelectorAll(selector);
     };
 
@@ -25,6 +26,14 @@
             }
 
             return this;
+        },
+
+        event: function(event, fun, useCapture) {
+
+            for (var i = 0; i < this.elements.length; i++) {
+
+                this.elements[i].addEventListener(event, fun, useCapture);
+            }
         }
     };
 
