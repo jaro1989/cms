@@ -2,6 +2,8 @@
 (function(ui) {
 
     var counter = new Date().getTime();
+    var inputClassUser = 'date-user';
+    var inputClassHidden = 'date-hidden';
 
     /**
      * @memberOf ui
@@ -236,6 +238,7 @@
                         .setRequiredElement(this._required)
                         .setValueElement(this._value, this._name)
                         .addClassElement(ui.CSS.formControlClass)
+                        .addClassElement(inputClassUser)
                         .getElement()
                 )
                 .getElement();
@@ -328,6 +331,38 @@
         },
 
         /**
+         *
+         * @returns {boolean}
+         * @private
+         */
+        _colbackFunction: function() {
+
+            var value = this._value;
+            var name = this._name;
+
+            new ui.api.addEvents(
+                [this._idbtn[0]],
+                'click',
+                function() {
+                    alert('Current date')
+                }
+            );
+
+            new ui.api.addEvents([this._idbtn[1]], 'click', function() {alert('Calendar date')});
+
+            new ui.api.addEvents(
+                [this._idbtn[2]],
+                'click',
+                function(event) {
+
+                    event.path[5].querySelector('.' + inputClassUser).value = ui.api.setValue(value, name);
+                }
+            );
+
+            return true
+        },
+
+        /**
          * Add element in document
          * @param {string} selector
          * @returns {ui.FFDate}
@@ -335,11 +370,7 @@
          */
         appendHTML: function(selector) {
             new ui.$(selector).append(this.getElement());
-
-            new ui.api.addEvents([this._idbtn[0]], 'click', function() {alert('Current date')});
-            new ui.api.addEvents([this._idbtn[1]], 'click', function() {alert('Calendar date')});
-            new ui.api.addEvents([this._idbtn[2]], 'click', function() {alert('Remove date')});
-
+            this._colbackFunction();
             return this;
         }
     };
