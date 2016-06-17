@@ -8,7 +8,7 @@
      */
     ui.$ = function (selector) {
 
-        this.elements = document.querySelectorAll(selector);
+        this.elements  = document.querySelector(selector);
     };
 
     /** @protected */
@@ -20,20 +20,18 @@
          */
         append: function(contentElement) {
 
-            for (var i = 0; i < this.elements.length; i++) {
-
-                this.elements[i].appendChild(contentElement.cloneNode(true));
-            }
-
+            this.elements.appendChild(contentElement);
             return this;
         },
 
         on: function(event, fun, useCapture) {
 
-            for (var i = 0; i < this.elements.length; i++) {
+            if (this.elements !== null) {
 
-                this.elements[i].addEventListener(event, fun, useCapture);
+                this.elements.addEventListener(event, fun, useCapture);
             }
+
+            return this;
         }
     };
 
@@ -42,6 +40,14 @@
      * @namespace ui.api
      */
     ui.api = {
+
+        addEvents: function(arrSelector, event, fun, useCapture) {
+
+            for (var i = 0, count = arrSelector.length; i < count; i++) {
+
+                new ui.$('#' + arrSelector[i]).on(event, fun, useCapture);
+            }
+        },
 
         /**
          * Find value in array
@@ -52,7 +58,7 @@
          */
         inArray: function(array, value) {
 
-            for (var i = 0; i < array.length; i++) {
+            for (var i = 0, count = array.length; i < count; i++) {
 
                 if (array[i] === value) {
 

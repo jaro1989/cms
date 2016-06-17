@@ -13,7 +13,7 @@
          */
         ui.Config = {
 
-            widthField: '280px',
+            widthField: '300px',
 
             padding: 'sm',
 
@@ -30,6 +30,15 @@
             checkboxValue: {
                 'checked':   1,
                 'nochecked': 0
+            },
+
+            formatDateUser: 'DD.MM.YYYY',
+            formatDateSave: 'YYYY-MM-DD',
+            iconBtnDate: {
+                currentDate:      'check',
+                calendarDate:     'calendar',
+                removeDate:       'refresh',
+                calendarDateTime: 'time'
             }
         };
 

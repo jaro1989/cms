@@ -1,7 +1,7 @@
 
 (function(ui) {
 
-    var counter = 0;
+    var counter = new Date().getTime();
 
     /**
      * @memberOf ui
@@ -16,6 +16,12 @@
         this._value   = ui.api.empty(value, null);
         this._name    = ui.api.empty(name, null);
         this._caption = ui.api.empty(caption, null);
+        this._idbtn = [
+            'set-current-date-' + counter,
+            'set-calendar-date-' + counter,
+            'remove-date-' + counter
+        ];
+        counter++;
     };
 
     /** @protected */
@@ -247,9 +253,9 @@
                 .addStyleElement('paddingLeft', '5px')
                 .addChildAfter(
                     new ui.FFButton()
-                        .addButton(null, null, null, null, this._activeBtn, 'star')
-                        .addButton(null, null, null, null, this._activeBtn, 'star')
-                        .addButton(null, null, null, null, this._activeBtn, 'star')
+                        .addButton(null, this._idbtn[0], null, null, this._activeBtn, ui.Config.iconBtnDate.currentDate)
+                        .addButton(null, this._idbtn[1], null, null, this._activeBtn, ui.Config.iconBtnDate.calendarDate)
+                        .addButton(null, this._idbtn[2], null, null, this._activeBtn, ui.Config.iconBtnDate.removeDate)
                         .setPaddingBlock(null)
                         .setGroup('group')
                         .setSize(this._size)
@@ -267,7 +273,7 @@
 
             var inputGroup = new ui.Element('div')
                 .addChildAfter(this._buildField())
-                .setWidthElement(this._widthField)
+                //.setWidthElement(this._widthField)
                 .addChildAfter(this._buildButtons());
 
             if (typeof this._widthCaption === 'number') {
@@ -329,6 +335,11 @@
          */
         appendHTML: function(selector) {
             new ui.$(selector).append(this.getElement());
+
+            new ui.api.addEvents([this._idbtn[0]], 'click', function() {alert('Current date')});
+            new ui.api.addEvents([this._idbtn[1]], 'click', function() {alert('Calendar date')});
+            new ui.api.addEvents([this._idbtn[2]], 'click', function() {alert('Remove date')});
+
             return this;
         }
     };
