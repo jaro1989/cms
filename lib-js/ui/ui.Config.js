@@ -34,6 +34,10 @@
 
             formatDateUser: 'DD.MM.YYYY',
             formatDateSave: 'YYYY-MM-DD',
+            formatDateTimeUser: 'DD.MM.YYYY HH:MI:SS',
+            formatDateTimeSave: 'YYYY-MM-DD HH:MI:SS',
+            separatorDate: ['.', '-', '/', ':'],
+
             iconBtnDate: {
                 currentDate:      'check',
                 calendarDate:     'calendar',

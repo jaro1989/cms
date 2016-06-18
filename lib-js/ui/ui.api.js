@@ -43,9 +43,15 @@
 
         addEvents: function(arrSelector, event, fun, useCapture) {
 
-            for (var i = 0, count = arrSelector.length; i < count; i++) {
+            if (typeof arrSelector === 'array') {
 
-                new ui.$('#' + arrSelector[i]).on(event, fun, useCapture);
+                for (var i = 0, count = arrSelector.length; i < count; i++) {
+
+                    new ui.$('#' + arrSelector[i]).on(event, fun, useCapture);
+                }
+            } else {
+
+                new ui.$('#' + arrSelector).on(event, fun, useCapture);
             }
         },
 

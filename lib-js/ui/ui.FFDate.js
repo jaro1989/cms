@@ -24,10 +24,14 @@
             'remove-date-' + counter
         ];
         counter++;
+        this._valueForEvent = [];
     };
 
     /** @protected */
     ui.FFDate.prototype = {
+
+        _formatDateUser: ui.Config.formatDateUser,
+        _formatDateSave: ui.Config.formatDateSave,
 
         /**
          * @private
@@ -90,8 +94,39 @@
         _activeBtn: true,
 
         /**
+         *
+         * @param {string} format
+         *                      'YYYY-MM-DD' | 'YYYY-MM-DD HH:MI:SS' | 'YYYY.MM.DD' | 'YYYY.MM.DD HH:MI:SS' | 'YYYY/MM/DD' | 'YYYY/MM/DD HH:MI:SS' |
+         *                      'DD-MM-YYYY' | 'DD-MM-YYYY HH:MI:SS' | 'DD.MM.YYYY' | 'DD.MM.YYYY HH:MI:SS' | 'DD/MM/YYYY' | 'DD/MM/YYYY HH:MI:SS' |
+         *                      'DD-MM-YY'   | 'DD-MM-YY HH:MI:SS'   | 'DD.MM.YY'   | 'DD.MM.YY HH:MI:SS'   | 'DD/MM/YY'   | 'DD/MM/YYYY HH:MI:SS'
+         * @returns {ui.FFDate}
+         * @public
+         */
+        setDateFormatUser: function(format) {
+
+            this._formatDateUser = format;
+            return this;
+        },
+
+        /**
+         *
+         * @param {string} format
+         *                      'YYYY-MM-DD' | 'YYYY-MM-DD HH:MI:SS' | 'YYYY.MM.DD' | 'YYYY.MM.DD HH:MI:SS' | 'YYYY/MM/DD' | 'YYYY/MM/DD HH:MI:SS' |
+         *                      'DD-MM-YYYY' | 'DD-MM-YYYY HH:MI:SS' | 'DD.MM.YYYY' | 'DD.MM.YYYY HH:MI:SS' | 'DD/MM/YYYY' | 'DD/MM/YYYY HH:MI:SS' |
+         *                      'DD-MM-YY'   | 'DD-MM-YY HH:MI:SS'   | 'DD.MM.YY'   | 'DD.MM.YY HH:MI:SS'   | 'DD/MM/YY'   | 'DD/MM/YYYY HH:MI:SS'
+         * @returns {ui.FFDate}
+         * @public
+         */
+        setDateFormatSave: function(format) {
+
+            this._formatDateSave = format;
+            return this;
+        },
+
+        /**
          * Set active button
          * @returns {ui.FFDate}
+         * @public
          */
         setActive: function() {
             this._activeBtn = true;
@@ -101,6 +136,7 @@
         /**
          * Set required field
          * @returns {ui.FFDate}
+         * @public
          */
         setRequired: function() {
             this._required = true;
@@ -110,6 +146,7 @@
         /**
          * Set disables field
          * @returns {ui.FFDate}
+         * @public
          */
         setDisabled: function() {
             this._disabled = true;
@@ -226,6 +263,10 @@
          */
         _buildField: function() {
 
+            var valueDate = ui.api.setValue(this._value, this._name);
+            var valueDateFormat = new ui.FormatDate(valueDate, this._formatDateUser).getDate();
+            this._valueForEvent = [valueDateFormat];
+
             return new ui.Element('div')
                 .setSizeElement('input', this._size)
                 .addClassElement(ui.CSS.btn.btnGroup.group)
@@ -237,6 +278,7 @@
                         .setDisabledElement(this._disabled)
                         .setRequiredElement(this._required)
                         .setValueElement(this._value, this._name)
+                        .setValueElement(valueDateFormat, null)
                         .addClassElement(ui.CSS.formControlClass)
                         .addClassElement(inputClassUser)
                         .getElement()
@@ -276,7 +318,6 @@
 
             var inputGroup = new ui.Element('div')
                 .addChildAfter(this._buildField())
-                //.setWidthElement(this._widthField)
                 .addChildAfter(this._buildButtons());
 
             if (typeof this._widthCaption === 'number') {
@@ -337,25 +378,27 @@
          */
         _colbackFunction: function() {
 
-            var value = this._value;
+            var valueForUser  = this._valueForEvent[0];
+            var formatForUser = this._formatDateUser;
             var name = this._name;
 
             new ui.api.addEvents(
-                [this._idbtn[0]],
+                this._idbtn[0],
                 'click',
-                function() {
-                    alert('Current date')
+                function(event) {
+
+                    event.path[5].querySelector('.' + inputClassUser).value = new ui.FormatDate(null, formatForUser).getCurrentDate();
                 }
             );
 
             new ui.api.addEvents([this._idbtn[1]], 'click', function() {alert('Calendar date')});
 
             new ui.api.addEvents(
-                [this._idbtn[2]],
+                this._idbtn[2],
                 'click',
                 function(event) {
 
-                    event.path[5].querySelector('.' + inputClassUser).value = ui.api.setValue(value, name);
+                    event.path[5].querySelector('.' + inputClassUser).value = valueForUser;
                 }
             );
 
@@ -371,6 +414,10 @@
         appendHTML: function(selector) {
             new ui.$(selector).append(this.getElement());
             this._colbackFunction();
+
+            console.log(new ui.FormatDate('2000/01/01 00:00:00', null).getDate());
+
+
             return this;
         }
     };
