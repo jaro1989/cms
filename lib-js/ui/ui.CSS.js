@@ -215,12 +215,15 @@
 
             /**
              * @public
-             * @type { { input: { lg: string, sm: string }, button: { lg: string, sm: string, xs: string }, pagination: { lg: string, sm: string }, } }
+             * @type { { input: { lg: string, sm: string }, button: { lg: string, sm: string, xs: string }, pagination: { lg: string, sm: string }, field: {sm: string}} }
              */
             sizeClass: {
                 input: {
                     lg: 'input-group-lg',
                     sm: 'input-group-sm'
+                },
+                field: {
+                    sm: 'input-sm'
                 },
                 button: {
                     lg: 'btn-lg',

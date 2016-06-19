@@ -31,6 +31,130 @@
         /** @protected */
         ui.Element.prototype = {
 
+            _thead: null,
+            _tbody: null,
+            _tfoot: null,
+            _tr:    null,
+            _th:    null,
+            _td:    null,
+
+            /**
+             * Add row table head
+             * @param {number} index
+             * @returns {ui.Element}
+             * @public
+             */
+            addRowHead: function(index) {
+
+                if (this._thead === null) {
+
+                    this._thead = this.element.createTHead();
+                }
+
+                this._tr = this._thead.insertRow(ui.api.empty(index, 0));
+
+                return this;
+            },
+
+            /**
+             * Add cell table head
+             * @param {string|null} content
+             * @param {number|null} index
+             * @returns {ui.Element}
+             * @public
+             */
+            addCellHead: function(content, index) {
+
+                this._th = this._tr.insertCell(ui.api.empty(index, 0));
+                this._th.innerHTML = ui.api.empty(content, '');
+
+                return this;
+            },
+
+            /**
+             * Add block table body
+             * @returns {ui.Element}
+             * @public
+             */
+            addBlockBody: function() {
+
+                this._tbody = this.element.appendChild(document.createElement('tbody'));
+                return this;
+            },
+
+            /**
+             * Add row table body
+             * @param {number} index
+             * @returns {ui.Element}
+             * @public
+             */
+            addRowBody: function(index) {
+
+
+                if (this._tbody === null) {
+                    this.addBlockBody();
+                }
+
+                this._tr = this._tbody.insertRow(ui.api.empty(index, 0));
+
+                return this;
+            },
+
+            /**
+             * Add cell table body
+             * @param {string|null} content
+             * @param {number|null} index
+             * @returns {ui.Element}
+             * @public
+             */
+            addCellBody: function(content, index) {
+                this._td = this._tr.insertCell(ui.api.empty(index, 0));
+                this._td.innerHTML = ui.api.empty(content, '');
+                return this;
+            },
+
+            /**
+             *
+             * @param type
+             * @param attrName
+             * @param value
+             * @returns {ui.Element}
+             */
+            setAttrTable: function(type, attrName, value) {
+
+                if (type === 'table') {
+
+                    this.element.setAttribute(attrName, value);
+
+                } else if (type === 'thead') {
+
+                    this._thead.setAttribute(attrName, value);
+
+                } else if (type === 'tbody') {
+
+                    this._tbody.setAttribute(attrName, value);
+
+                } else if (type === 'tfoot') {
+
+                    this._tfoot.setAttribute(attrName, value);
+
+                } else if (type === 'tr') {
+
+                    this._tr.setAttribute(attrName, value);
+
+                } else if (type === 'th') {
+
+                    this._th.setAttribute(attrName, value);
+
+                } else if (type === 'td') {
+
+                    this._td.setAttribute(attrName, value);
+
+                }
+
+                return this;
+            },
+
             /**
              * Set html ID on element
              * @param {string|null} htmlId
@@ -335,8 +459,21 @@
             },
 
             /**
+             *
+             * @param {string} attrName
+             * @param {string|number} attrValue
+             * @returns {ui.Element}
+             * @public
+             */
+            setAttrElement: function(attrName, attrValue) {
+
+                this.element.setAttribute(attrName, attrValue);
+                return this;
+            },
+
+            /**
              * Set html class - skin element
-             * @param {string|null} type {'default'|'text'|'field'|'panel'|'pagination'}
+             * @param {string|null} type {'button'|'default'|'text'|'field'|'panel'|'pagination'}
              * @param {string} skin {'disabled'|'active'|'success'|'warning'|'danger'|'info'|'link'|'default'|'error'|'primary'}
              * @returns {ui.Element}
              * @public
