@@ -10,6 +10,7 @@
         .addButton({name_5: 'value-btn'}, 'name_5', 'Название кнопки - 5', 'danger',  true, 'user'    )
         .addButton({name_6: 'value-btn'}, 'name-6', 'Название кнопки - 6', null,      true, 'search'  )
         .setGroup('vertical')
+        .setSize('sm')
         .setWidth(2)
         .appendHTML(APPEND_ELEMENT);
 

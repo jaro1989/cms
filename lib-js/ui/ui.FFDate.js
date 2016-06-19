@@ -376,11 +376,10 @@
          * @returns {boolean}
          * @private
          */
-        _colbackFunction: function() {
+        _collbackFunction: function() {
 
             var valueForUser  = this._valueForEvent[0];
             var formatForUser = this._formatDateUser;
-            var name = this._name;
 
             new ui.api.addEvents(
                 this._idbtn[0],
@@ -391,7 +390,13 @@
                 }
             );
 
-            new ui.api.addEvents([this._idbtn[1]], 'click', function() {alert('Calendar date')});
+            new ui.api.addEvents(
+                this._idbtn[1],
+                'click',
+                function() {
+                    alert('Calendar date')
+                }
+            );
 
             new ui.api.addEvents(
                 this._idbtn[2],
@@ -412,12 +417,10 @@
          * @public
          */
         appendHTML: function(selector) {
+
             new ui.$(selector).append(this.getElement());
-            this._colbackFunction();
-
-            console.log(new ui.FormatDate('2000/01/01 00:00:00', null).getDate());
-
-
+            this._collbackFunction();
+            
             return this;
         }
     };
