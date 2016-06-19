@@ -77,6 +77,7 @@ $pare = [
             year=1998
             today= new Date("January 1, "+year)
             start_day = today.getDay() + 1
+            console.log(start_day);
             fill_table("January",31)
             fill_table("February",28)
             fill_table("March",31)
@@ -93,6 +94,8 @@ $pare = [
 
 
         <br/>
+
+        <div id="calendar-test"></div>
 
         <div class="panel panel-default" style="width: 255px;">
             <div class="panel-heading">
@@ -282,7 +285,7 @@ $pare = [
             </div>
         </div>
 
-        <div id="calendar-test">
+
 
 
 

@@ -108,19 +108,20 @@
              * @public
              */
             addCellBody: function(content, index) {
-                this._td = this._tr.insertCell(ui.api.empty(index, 0));
+
+                this._td = this._tr.insertCell(ui.api.empty(index, this._tr.children.length));
                 this._td.innerHTML = ui.api.empty(content, '');
                 return this;
             },
 
             /**
              *
-             * @param type
-             * @param attrName
-             * @param value
+             * @param {string} type {'table' | 'thead' | 'tbody' | 'tfoot' | 'tr' | 'th' | 'td'}
+             * @param {string} attrName
+             * @param {string|number} value
              * @returns {ui.Element}
              */
-            setAttrTable: function(type, attrName, value) {
+            addAttrTable: function(type, attrName, value) {
 
                 if (type === 'table') {
 
@@ -150,6 +151,55 @@
 
                     this._td.setAttribute(attrName, value);
 
+                }
+
+                return this;
+            },
+
+            /**
+             *
+             * @param {string} type {'table' | 'thead' | 'tbody' | 'tfoot' | 'tr' | 'th' | 'td'}
+             * @param {string} attrName
+             * @param {string|number} value
+             * @returns {ui.Element}
+             */
+            addStyleTable: function(type, attrName, value) {
+
+                var element = {};
+
+                if (type === 'table') {
+
+                    element = this.element;
+
+                } else if (type === 'thead') {
+
+                    element = this._thead;
+
+                } else if (type === 'tbody') {
+
+                    element = this._tbody;
+
+                } else if (type === 'tfoot') {
+
+                    element = this._tfoot;
+
+                } else if (type === 'tr') {
+
+                    element = this._tr;
+
+                } else if (type === 'th') {
+
+                    element = this._th;
+
+                } else if (type === 'td') {
+
+                    element = this._td;
+
+                }
+
+                if (element.style.hasOwnProperty(attrName)) {
+
+                    element.style[attrName] = value;
                 }
 
                 return this;
