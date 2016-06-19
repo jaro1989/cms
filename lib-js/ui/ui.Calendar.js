@@ -6,16 +6,35 @@
          * @namespace ui.Calendar
          * @constructor
          */
-        ui.Calendar = function() {
+        ui.Calendar = function(date) {
 
+            if (typeof date === 'number') {
+
+                this._date   = new Date();
+                this._date.setTime(date * 1000);
+
+            } else if (typeof date === 'string') {
+
+                this._date   = new Date(date);
+
+            } else {
+
+                this._date   = new Date();
+            }
+
+            this._year        = this._date.getFullYear();
+            this._month       = this._language['ru']['month'][this._date.getMonth()];
+            this._choiceDay   = this._date.getDate();
+
+            this._currentDate = new Date();
+            this._currentDay  = this._currentDate.getDate();
+            console.log(this._date.getDay() + 1);
         };
 
         /** @protected */
         ui.Calendar.prototype = {
             _width: 255,
-            _year:  2010,
             _day:   1,
-            _month: 'Апрель',
             _language: {
                 ru: {
                     prev: 'Предыдущий месяц',
@@ -32,7 +51,10 @@
             _nextIcon:   'chevron-right',
             _skinBtn:    'default',
             _sizeInput:  'sm',
-            _sizeDays:   10,
+            _fontSizeDays:   10,
+
+
+
 
             _buildInput: function() {
 
@@ -61,6 +83,23 @@
                     )
                     .addChildAfter(dataList.getElement())
                     .toHTML();
+            },
+
+            _skinBtnDay: function(day) {
+
+                var skin = [this._skinBtn, null];
+                var current = this._currentDay === day ? 'danger' : null;
+                var choice  = this._choiceDay === day ? 'primary' : null;
+
+                if (current !== null) {
+                    skin = [current, ui.CSS.skinClass.default.active];
+                }
+
+                if (choice !== null) {
+                    skin = [choice, ui.CSS.skinClass.default.active];
+                }
+
+                return skin;
             },
 
             _buildHead: function() {
@@ -112,6 +151,20 @@
                     .getElement();
             },
 
+            _buildCell: function(indexDay) {
+
+                var skin = this._skinBtnDay(indexDay);
+
+                return new ui.Element('div')
+                        .addClassElement(ui.CSS.btn.btnClass)
+                        .setSkinElement('button', skin[0])
+                        .addClassElement(skin[1])
+                        .setWidthElement('100%')
+                        .addStyleElement('padding', '4px')
+                        .setContentElement(indexDay)
+                        .toHTML()
+            },
+
             _buildBody: function() {
 
                 var days = this._language.ru.days;
@@ -119,7 +172,7 @@
                 var table = new ui.Element('table')
                     .addRowHead(0)
                     .addStyleTable('tr', 'font-weight', 'bold')
-                    .addStyleTable('tr', 'font-size', this._sizeDays + 'px');
+                    .addStyleTable('tr', 'font-size', this._fontSizeDays + 'px');
 
                 for (var index in days) {
                     table
@@ -130,7 +183,8 @@
 
                 var indexDay = 1;
                 var month_length = 31;
-                var start_day = 4;
+                var start_day = this._date.getDay() + 1;
+
 
                 table.addBlockBody();
                 var indexRow = 0;
@@ -141,28 +195,16 @@
                 for (var i = 1; i < start_day; i++) {
 
                     table.addCellBody(
-                        new ui.Element('div')
-                            .addClassElement(ui.CSS.btn.btnClass)
-                            .setSkinElement('button', this._skinBtn)
-                            .setWidthElement('100%')
-                            .addStyleElement('padding', '4px')
-                            .setContentElement('&nbsp;')
-                            .toHTML(),
-                        null
-                    );
+                            this._buildCell('&nbsp;'),
+                            null
+                        );
                 }
 
                 // Отрисовка ячеек первой строки
                 for (var i = start_day; i < 8; i++) {
 
                     table.addCellBody(
-                        new ui.Element('div')
-                            .addClassElement(ui.CSS.btn.btnClass)
-                            .setSkinElement('button', this._skinBtn)
-                            .setWidthElement('100%')
-                            .addStyleElement('padding', '4px')
-                            .setContentElement(indexDay)
-                            .toHTML(),
+                        this._buildCell(indexDay),
                         null
                     );
 
@@ -179,13 +221,7 @@
                     for (var i = 1; i <= 7 && indexDay <= month_length; i++) {
 
                         table.addCellBody(
-                                new ui.Element('div')
-                                    .addClassElement(ui.CSS.btn.btnClass)
-                                    .setSkinElement('button', this._skinBtn)
-                                    .setWidthElement('100%')
-                                    .addStyleElement('padding', '4px')
-                                    .setContentElement(indexDay)
-                                    .toHTML(),
+                                this._buildCell(indexDay),
                                 null
                             )
                             .addStyleTable('td', 'padding', '1px');
@@ -193,24 +229,14 @@
                         indexDay++
                     }
 
-                    if (i < 8) {
 
-                        for (i; i < 8; i++) {
+                    for (i; i < 8; i++) {
 
-                            table.addCellBody(
-                                new ui.Element('div')
-                                    .addClassElement(ui.CSS.btn.btnClass)
-                                    .setSkinElement('button', this._skinBtn)
-                                    .setWidthElement('100%')
-                                    .addStyleElement('padding', '4px')
-                                    .setContentElement('&nbsp;')
-                                    .toHTML(),
+                        table.addCellBody(
+                                this._buildCell('&nbsp;'),
                                 null
                             );
-                        }
                     }
-
-
 
                     indexRow++;
                 }

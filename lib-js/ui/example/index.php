@@ -77,7 +77,6 @@ $pare = [
             year=1998
             today= new Date("January 1, "+year)
             start_day = today.getDay() + 1
-            console.log(start_day);
             fill_table("January",31)
             fill_table("February",28)
             fill_table("March",31)
