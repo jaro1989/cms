@@ -402,7 +402,7 @@
              */
             addClassElement: function(elementClass) {
 
-                if (elementClass !== '') {
+                if (elementClass !== '' && elementClass !== null) {
 
                     this.element.classList.add(elementClass);
                 }
@@ -517,7 +517,11 @@
              */
             setAttrElement: function(attrName, attrValue) {
 
-                this.element.setAttribute(attrName, attrValue);
+                if (attrValue !== null) {
+
+                    this.element.setAttribute(attrName, attrValue);
+                }
+
                 return this;
             },
 
@@ -690,6 +694,7 @@
              * @public
              */
             getElement: function() {
+
                 return this.element;
             },
 
@@ -699,6 +704,7 @@
              * @public
              */
             toHTML: function()  {
+
                 return this.element.outerHTML;
             },
 
@@ -709,6 +715,7 @@
              * @public
              */
             appendHTML: function(selector) {
+
                 new ui.$(selector).append(this.element);
                 return this;
             }
