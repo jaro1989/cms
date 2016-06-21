@@ -54,7 +54,7 @@
                     prev:    'Previous month',
                     next:    'Next month',
                     days:    ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                    month:   ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December',]
+                    month:   ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
                 }
             },
             _skinSwitchMonth: 'link',
@@ -93,7 +93,7 @@
             _buildInput: function() {
 
                 var dataList = new ui.Element('datalist')
-                    .setIdElement(this._listId);
+                    .setIdElement(this._listId, null);
 
                 for (var i = (this._year - 10), last = (this._year + 10); i <= last; i++) {
                     dataList.addChildAfter(
@@ -227,10 +227,14 @@
                     .addStyleTable('tr', 'font-size', this._fontSizeDays + 'px');
 
                 for (var index in days) {
-                    table
-                        .addCellHead(days[index], index)
-                        .addAttrTable('th', 'width', ((this._width - 30) / 7))
-                        .addAttrTable('th', 'class', ui.CSS.alignClass.text.center);
+
+                    if (days.hasOwnProperty(index)) {
+
+                        table
+                            .addCellHead(days[index], index)
+                            .addAttrTable('th', 'width', ((this._width - 30) / 7))
+                            .addAttrTable('th', 'class', ui.CSS.alignClass.text.center);
+                    }
                 }
 
                 var indexDay = 1;
@@ -253,7 +257,7 @@
                 }
 
                 // Отрисовка ячеек первой строки
-                for (var i = start_day; i < 8; i++) {
+                for (var a = start_day; a < 8; a++) {
 
                     table.addCellBody(
                         this._buildCell(indexDay),
@@ -270,7 +274,7 @@
 
                     table.addRowBody(indexRow);
 
-                    for (var i = 1; i <= 7 && indexDay <= month_length; i++) {
+                    for (var c = 1; c <= 7 && indexDay <= month_length; c++) {
 
                         table.addCellBody(
                                 this._buildCell(indexDay),
@@ -282,7 +286,7 @@
                     }
 
 
-                    for (i; i < 8; i++) {
+                    for (c; c < 8; c++) {
 
                         table.addCellBody('', null);
                     }

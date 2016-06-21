@@ -120,6 +120,44 @@
             }
 
             return nameValue;
+        },
+
+        /**
+         * GET PARAMETERS
+         * @param {string|number|null} key
+         *          if type key "string|number" this method is returning value or null
+         *          if type key "null" this method is returning object values
+         * @returns {*}
+         */
+        getParams: function (key) {
+
+            var prmstr = window.location.search.substr(1);
+            var data   = prmstr != null && prmstr != "" ? prmstr : {};
+
+            if (Object.keys(data).length) {
+                var params = {};
+                var prmarr = data.split("&");
+
+                for (var i = 0; i < prmarr.length; i++) {
+
+                    var tmparr = prmarr[i].split("=");
+                    params[tmparr[0]] = tmparr[1];
+                }
+
+                if (this.empty(key, false) !== false) {
+
+                    if (params.hasOwnProperty(key)) {
+
+                        return params[key];
+                    }
+
+                    return null;
+                }
+
+                return params;
+            }
+            
+            return null;
         }
     };
 

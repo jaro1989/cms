@@ -207,7 +207,7 @@
 
             /**
              * Set html ID on element
-             * @param {string|null} htmlId
+             * @param {string|number|null} htmlId
              * @param {string|null} htmlName
              * @returns {ui.Element}
              * @public
@@ -363,7 +363,7 @@
 
             /**
              * Set content in element
-             * @param {string} contentElement
+             * @param {string|number} contentElement
              * @returns {ui.Element}
              * @public
              */
