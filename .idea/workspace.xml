@@ -59,8 +59,8 @@
       <file leaf-file-name="ui.Calendar.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33670035">
-              <caret line="20" column="110" selection-start-line="20" selection-start-column="110" selection-end-line="20" selection-end-column="110" />
+            <state vertical-scroll-proportion="-5.952862">
+              <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -684,12 +684,6 @@
       <option name="number" value="Default" />
       <updated>1463857792974</updated>
     </task>
-    <task id="LOCAL-00010" summary="Create object FFDate, CssClasses, FormatDate">
-      <created>1464469735285</created>
-      <option name="number" value="00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1464469735285</updated>
-    </task>
     <task id="LOCAL-00011" summary="Update FormatDate - 2">
       <created>1464471608253</created>
       <option name="number" value="00011" />
@@ -978,7 +972,13 @@
       <option name="project" value="LOCAL" />
       <updated>1466538394391</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="Lib-JS: Calendar  (update)">
+      <created>1466538698596</created>
+      <option name="number" value="00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1466538698596</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1423,8 +1423,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33670035">
-          <caret line="20" column="110" selection-start-line="20" selection-start-column="110" selection-end-line="20" selection-end-column="110" />
+        <state vertical-scroll-proportion="-5.952862">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
           <folding />
         </state>
       </provider>
