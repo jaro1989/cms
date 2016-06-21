@@ -8,6 +8,11 @@
          */
         ui.Calendar = function(yyyy, mm, dd) {
 
+            if (Number(yyyy) > 9999) {
+
+                yyyy = 3000;
+            }
+
             this._date = new Date();
             this._date.setFullYear(ui.api.empty(yyyy, this._date.getFullYear()));
             this._date.setMonth(ui.api.empty(mm, this._date.getMonth()));
@@ -143,7 +148,9 @@
                             .setSizeElement('field', this._sizeInput)
                             .setAttrElement('value', this._year)
                             .setAttrElement('data-action', 'year')
-                            .setAttrElement('oninput', 'new ui.Calendar()._onChangeCalendar(this);')
+                            .setAttrElement('maxLength', 4)
+                            //.setAttrElement('onblur', 'new ui.Calendar()._onChangeCalendar(this);')
+                            .setAttrElement('onchange', 'new ui.Calendar()._onChangeCalendar(this);')
                             .getElement()
                     )
                     .addChildAfter(dataList.getElement())
@@ -380,6 +387,10 @@
                 var data_year  = parentElement.querySelector('.' + this._yearClass).value;
                 var data_month = parentElement.getAttribute('data-month');
 
+                if (Number(data_year) > 9999) {
+
+                    data_year = 3000;
+                }
 
                 var date = new Date(data_year, data_month, 1);
 

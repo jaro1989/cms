@@ -56,11 +56,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ui.Calendar.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ui.Calendar.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.952862">
-              <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+            <state vertical-scroll-proportion="-7.5">
+              <caret line="150" column="59" selection-start-line="150" selection-start-column="59" selection-end-line="151" selection-end-column="101" />
               <folding />
             </state>
           </provider>
@@ -76,11 +76,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-21.875">
-              <caret line="80" column="28" selection-start-line="80" selection-start-column="28" selection-end-line="80" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.579288">
+              <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="102" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -684,12 +684,6 @@
       <option name="number" value="Default" />
       <updated>1463857792974</updated>
     </task>
-    <task id="LOCAL-00011" summary="Update FormatDate - 2">
-      <created>1464471608253</created>
-      <option name="number" value="00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1464471608253</updated>
-    </task>
     <task id="LOCAL-00012" summary="Update FormatDate - 3">
       <created>1464517435063</created>
       <option name="number" value="00012" />
@@ -978,7 +972,13 @@
       <option name="project" value="LOCAL" />
       <updated>1466538698596</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="Lib-JS: Calendar  (update)">
+      <created>1466538734152</created>
+      <option name="number" value="00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1466538734152</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1413,18 +1413,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.php">
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.875">
-          <caret line="80" column="28" selection-start-line="80" selection-start-column="28" selection-end-line="80" selection-end-column="28" />
+        <state vertical-scroll-proportion="-7.5">
+          <caret line="150" column="59" selection-start-line="150" selection-start-column="59" selection-end-line="151" selection-end-column="101" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.952862">
-          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.579288">
+          <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="102" selection-end-column="19" />
           <folding />
         </state>
       </provider>
