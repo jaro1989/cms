@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e625a249-66d9-49c4-82c3-b892a980c4cc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/index.php" afterPath="$PROJECT_DIR$/lib-js/ui/example/index.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Calendar.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Calendar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Element.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Element.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.api.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.api.js" />
     </list>
     <ignored path="cms.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -63,8 +59,8 @@
       <file leaf-file-name="ui.Calendar.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.1626898">
-              <caret line="85" column="14" selection-start-line="85" selection-start-column="14" selection-end-line="85" selection-end-column="14" />
+            <state vertical-scroll-proportion="0.33670035">
+              <caret line="20" column="110" selection-start-line="20" selection-start-column="110" selection-end-line="20" selection-end-column="110" />
               <folding />
             </state>
           </provider>
@@ -688,12 +684,6 @@
       <option name="number" value="Default" />
       <updated>1463857792974</updated>
     </task>
-    <task id="LOCAL-00009" summary="Update lib-js/ add module - buildTag">
-      <created>1464424500349</created>
-      <option name="number" value="00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1464424500349</updated>
-    </task>
     <task id="LOCAL-00010" summary="Create object FFDate, CssClasses, FormatDate">
       <created>1464469735285</created>
       <option name="number" value="00010" />
@@ -982,7 +972,13 @@
       <option name="project" value="LOCAL" />
       <updated>1466527755682</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="Lib-JS: Calendar  (update)">
+      <created>1466538394391</created>
+      <option name="number" value="00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1466538394391</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1427,8 +1423,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1626898">
-          <caret line="85" column="14" selection-start-line="85" selection-start-column="14" selection-end-line="85" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.33670035">
+          <caret line="20" column="110" selection-start-line="20" selection-start-column="110" selection-end-line="20" selection-end-column="110" />
           <folding />
         </state>
       </provider>

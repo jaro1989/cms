@@ -13,23 +13,25 @@
             this._date.setMonth(ui.api.empty(mm, this._date.getMonth()));
             this._date.setDate(ui.api.empty(dd, 1));
 
-
-
-
-
-
-            this._choiceDay   = null;
-
-            this._currentDate  = new Date();
-            this._currentDay   = this._currentDate.getDate();
-
             this._year  = this._date.getFullYear();
             this._month = this._date.getMonth();
+
+            this._currentDate  = new Date();
+
+            if (this._currentDate.getFullYear() === this._year && this._currentDate.getMonth() === this._month) {
+                this._currentDay = this._currentDate.getDate();
+            }
+
+
+
         };
 
         /** @protected */
         ui.Calendar.prototype = {
-
+            // Текущий день
+            _currentDay: null,
+            // Выбранный день
+            _choiceDay:  null,
             _width: 255,
             _locale: 'ru',
             _language: {
