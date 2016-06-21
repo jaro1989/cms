@@ -84,13 +84,32 @@ $pare = [
             .addClassElement('navbar-fixed-top')
             .addChildAfter(ulElement.getElement())
             .appendHTML('#navbar');
-    </script>
 
-    <?php
-    if (file_exists($page . '.example.js')) {
-        echo '<script src="' . $page . '.example.js' . '" type="text/javascript"></script>';
-    }
-    ?>
+//        var xhr = new XMLHttpRequest();
+//
+//        xhr.open('GET', page + '.example.js', true);
+//
+//        xhr.send(); // (1)
+//
+//        xhr.onreadystatechange = function() { // (3)
+//            if (xhr.readyState != 4) return;
+//
+//            //button.innerHTML = 'Готово!';
+//
+//            if (xhr.status != 200) {
+//                alert(xhr.status + ': ' + xhr.statusText);
+//            } else {
+//                alert(xhr.responseText);
+//            }
+//
+//        }
+        var script = document.createElement('script');
+        script.src = page + '.example.js';
+
+        document.body.appendChild(script);
+
+    </script>
+    
             <script>
                 new ui.Calendar()
                     .appendHTML('#calendar-test')
