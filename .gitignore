@@ -15,3 +15,4 @@
 /vendor/
 /web/bundles/
 /lib-js/node_modules/*
+!/.idea/*
