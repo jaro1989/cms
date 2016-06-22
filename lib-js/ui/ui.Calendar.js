@@ -30,6 +30,9 @@
 
         /** @protected */
         ui.Calendar.prototype = {
+
+            _formatUser: ui.Config.formatDateUser,
+            _formatSave: ui.Config.formatDateSave,
             // Текущий день
             _currentDay: null,
             // Выбранный день
@@ -149,7 +152,6 @@
                             .setAttrElement('value', this._year)
                             .setAttrElement('data-action', 'year')
                             .setAttrElement('maxLength', 4)
-                            //.setAttrElement('onblur', 'new ui.Calendar()._onChangeCalendar(this);')
                             .setAttrElement('onchange', 'new ui.Calendar()._onChangeCalendar(this);')
                             .getElement()
                     )
@@ -242,12 +244,15 @@
 
                 return new ui.Element('div')
                         .addClassElement(ui.CSS.btn.btnClass)
-                        .setAttrElement('data-day', indexDay)
+                        .setAttrElement('data-day',   indexDay)
+                        .setAttrElement('data-month', this._month)
+                        .setAttrElement('data-year',  this._year)
                         .setSkinElement('button', btn_params[0])
                         .addClassElement(btn_params[1])
                         .setWidthElement('100%')
                         .setAttrElement('title', btn_params[2])
                         .addStyleElement('padding', '4px')
+                        .setAttrElement('onclick', "new ui.Calendar().setDateIn(this, '#name-3.4');")
                         .setContentElement(indexDay)
                         .toHTML()
             },
@@ -299,10 +304,7 @@
                 start_day = (start_day === 0) ? 1 : start_day;
                 for (var a = start_day; a < 8; a++) {
 
-                    table.addCellBody(
-                        this._buildCell(indexDay),
-                        null
-                    );
+                    table.addCellBody(this._buildCell(indexDay), null);
 
                     indexDay++;
                 }
@@ -316,10 +318,7 @@
 
                     for (var c = 1; c <= 7 && indexDay <= month_length; c++) {
 
-                        table.addCellBody(
-                                this._buildCell(indexDay),
-                                null
-                            )
+                        table.addCellBody(this._buildCell(indexDay), null)
                             .addStyleTable('td', 'padding', '1px');
 
                         indexDay++
@@ -406,7 +405,6 @@
 
                         date.setMonth(date.getMonth() - 1);
                     }
-
                 }
 
                 var parentElem = ui.api.findParent(element, '.calendar');
@@ -414,6 +412,27 @@
                 parentElem.replaceChild(
                     new ui.Calendar(date.getFullYear(), date.getMonth(), 1)._buildPanel(),
                     parentElem.children[0]);
+            },
+
+            setDateIn: function (element, selector) {
+
+                if (element.hasAttribute('data-day')) {
+
+                    var year  = element.getAttribute('data-year');
+                    var month = element.getAttribute('data-month');
+                    var day   = element.getAttribute('data-day');
+
+
+                    var date = year + '-' + month + '-' + day;
+                    console.log(
+                        new ui.FormatDate(date, this._formatUser).getDate(),
+                        new ui.FormatDate(date, this._formatSave).getDate()
+                        // new ui.$(selector)
+
+                    );
+
+                    document.body.querySelector('#name_test_date').value = new ui.FormatDate(date, this._formatUser).getDate();
+                }
             },
 
             /**

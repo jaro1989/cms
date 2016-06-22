@@ -12,7 +12,6 @@
     <div class="clearfix"></div>
     <div id="calendar-test"></div>
 
-
     <script src="../ui.Config.js" type="text/javascript"></script>
     <script src="../ui.FormatDate.js" type="text/javascript"></script>
     <script src="../ui.CSS.js" type="text/javascript"></script>
@@ -64,6 +63,7 @@
                         .getElement()
                 )
             }
+            
 
             new ui.Element('nav')
                 .addClassElement('navbar')
