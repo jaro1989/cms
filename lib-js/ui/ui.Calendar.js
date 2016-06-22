@@ -26,6 +26,8 @@
             if (this._currentDate.getFullYear() === this._year && this._currentDate.getMonth() === this._month) {
                 this._currentDay = this._currentDate.getDate();
             }
+
+            this._choiceDay = ui.api.empty(dd, null);
         };
 
         /** @protected */

@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e625a249-66d9-49c4-82c3-b892a980c4cc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/cms.iml" afterPath="$PROJECT_DIR$/.idea/cms.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/ffDate.example.js" afterPath="$PROJECT_DIR$/lib-js/ui/example/ffDate.example.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/index.php" afterPath="$PROJECT_DIR$/lib-js/ui/example/index.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Calendar.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Calendar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Element.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Element.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" />
     </list>
     <ignored path="cms.iws" />
@@ -61,21 +57,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ui.Calendar.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ui.Calendar.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.0498915">
-              <caret line="126" column="22" selection-start-line="126" selection-start-column="22" selection-end-line="126" selection-end-column="22" />
+            <state vertical-scroll-proportion="-2.0">
+              <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ui.FFDate.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ui.FFDate.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFDate.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-103.5">
-              <caret line="414" column="55" selection-start-line="414" selection-start-column="55" selection-end-line="414" selection-end-column="55" />
+            <state vertical-scroll-proportion="0.63973063">
+              <caret line="416" column="92" selection-start-line="416" selection-start-column="92" selection-end-line="416" selection-end-column="92" />
               <folding />
             </state>
           </provider>
@@ -719,12 +715,6 @@
       <option name="number" value="Default" />
       <updated>1463857792974</updated>
     </task>
-    <task id="LOCAL-00014" summary="Update FormatDate - 5">
-      <created>1464535512060</created>
-      <option name="number" value="00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1464535512060</updated>
-    </task>
     <task id="LOCAL-00015" summary="Update UserController- 5">
       <created>1464551992274</created>
       <option name="number" value="00015" />
@@ -1013,7 +1003,13 @@
       <option name="project" value="LOCAL" />
       <updated>1466627700097</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="Lib-js Calendar (update)&#10;">
+      <created>1466629113555</created>
+      <option name="number" value="00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1466629113555</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1447,18 +1443,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFDate.js">
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-103.5">
-          <caret line="414" column="55" selection-start-line="414" selection-start-column="55" selection-end-line="414" selection-end-column="55" />
+        <state vertical-scroll-proportion="-2.0">
+          <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFDate.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.0498915">
-          <caret line="126" column="22" selection-start-line="126" selection-start-column="22" selection-end-line="126" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.63973063">
+          <caret line="416" column="92" selection-start-line="416" selection-start-column="92" selection-end-line="416" selection-end-column="92" />
           <folding />
         </state>
       </provider>

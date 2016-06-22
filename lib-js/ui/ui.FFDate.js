@@ -412,9 +412,11 @@
 
                     var findDate = document.body.querySelector('#' + htmlId + '> input[type=hidden]').value;
                     var date = new Date(findDate);
-                    date.setMonth(date.getMonth() + 1);
+                    console.log(date);
+                    //date.setMonth(date.getMonth());
+                    //2111111111111111111111111111111111111111111111111111111111111111111111
 
-                    new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDay())
+                    new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDate())
                         .setPositionLeft(element.clientX)
                         .setPositionTop(element.clientY)
                         .addDateUserTo('#' + htmlId + '> input[type=text]')
