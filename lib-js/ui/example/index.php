@@ -1,17 +1,3 @@
-<?php
-$page = isset($_GET['page']) ? $_GET['page'] : null;
-$url = 'http://symfony.cms/lib-js/ui/example/?page=';
-$pare = [
-    'ffText'     => 'Текстовые поля',
-    'ffRadio'    => 'Radio кнопки',
-    'ffCheckbox' => 'Checkbox кнопки',
-    'ffTextarea' => 'Textarea',
-    'ffPassword' => 'Поле пароль',
-    'ffSelect'   => 'Select list',
-    'ffButton'   => 'Кнопки',
-    'ffDate'     => 'Поле дата'
-];
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,78 +28,79 @@ $pare = [
     <script src="../ui.FFButton.js" type="text/javascript"></script>
     <script src="../ui.FFDate.js" type="text/javascript"></script>
 
+        <script>
+            var key_page = 'page';
+            var page = ui.api.getParams(key_page);
+            var url = window.location.pathname + '?' + key_page + '=';
+            var pages = {
+                'ffText':      'Текстовые поля',
+                'ffRadio':     'Radio кнопки',
+                'ffCheckbox':  'Checkbox кнопки',
+                'ffTextarea':  'Textarea',
+                'ffPassword':  'Поле пароль',
+                'ffSelect':    'Select list',
+                'ffButton':    'Кнопки',
+                'ffDate':      'Поле дата'
+            };
+
+            // Генерация меню
+            var ulElement = new ui.Element('ul')
+                .addClassElement('nav')
+                .addClassElement('navbar-nav');
+
+            for (page_key in pages) {
+
+                var html_class_li = (page_key == page) ? 'active' : null;
+
+                ulElement.addChildAfter(
+                    new ui.Element('li')
+                        .addClassElement(html_class_li)
+                        .addChildAfter(
+                            new ui.Element('a')
+                                .setUrlElement(url + page_key)
+                                .setContentElement(pages[page_key])
+                                .getElement()
+                        )
+                        .getElement()
+                )
+            }
+
+            new ui.Element('nav')
+                .addClassElement('navbar')
+                .addClassElement('navbar-inverse')
+                .addClassElement('navbar-fixed-top')
+                .addChildAfter(ulElement.getElement())
+                .appendHTML('#navbar');
+
+            // Подгружаем скрипты
+            var script = document.createElement('script');
+            script.src = page + '.example.js';
+
+            document.body.appendChild(script);
+
+            new ui.Calendar()
+                .appendHTML('#calendar-test');
+
+        </script>
     <script>
-        var key_page = 'page';
-        var page = ui.api.getParams(key_page);
-        var url = window.location.pathname + '?' + key_page + '=';
-        var pages = {
-            'ffText':      'Текстовые поля',
-            'ffRadio':     'Radio кнопки',
-            'ffCheckbox':  'Checkbox кнопки',
-            'ffTextarea':  'Textarea',
-            'ffPassword':  'Поле пароль',
-            'ffSelect':    'Select list',
-            'ffButton':    'Кнопки',
-            'ffDate':      'Поле дата'
-        };
-
-        var ulElement = new ui.Element('ul')
-            .addClassElement('nav')
-            .addClassElement('navbar-nav');
-
-        for (page_key in pages) {
-
-            var html_class_li = (page_key == page) ? 'active' : null;
-
-            ulElement.addChildAfter(
-                new ui.Element('li')
-                    .addClassElement(html_class_li)
-                    .addChildAfter(
-                        new ui.Element('a')
-                            .setUrlElement(url + page_key)
-                            .setContentElement(pages[page_key])
-                            .getElement()
-                    )
-                    .getElement()
-            )
-        }
-
-        new ui.Element('nav')
-            .addClassElement('navbar')
-            .addClassElement('navbar-inverse')
-            .addClassElement('navbar-fixed-top')
-            .addChildAfter(ulElement.getElement())
-            .appendHTML('#navbar');
-
-//        var xhr = new XMLHttpRequest();
-//
-//        xhr.open('GET', page + '.example.js', true);
-//
-//        xhr.send(); // (1)
-//
-//        xhr.onreadystatechange = function() { // (3)
-//            if (xhr.readyState != 4) return;
-//
-//            //button.innerHTML = 'Готово!';
-//
-//            if (xhr.status != 200) {
-//                alert(xhr.status + ': ' + xhr.statusText);
-//            } else {
-//                alert(xhr.responseText);
-//            }
-//
-//        }
-        var script = document.createElement('script');
-        script.src = page + '.example.js';
-
-        document.body.appendChild(script);
-
+        //        var xhr = new XMLHttpRequest();
+        //
+        //        xhr.open('GET', page + '.example.js', true);
+        //
+        //        xhr.send(); // (1)
+        //
+        //        xhr.onreadystatechange = function() { // (3)
+        //            if (xhr.readyState != 4) return;
+        //
+        //            //button.innerHTML = 'Готово!';
+        //
+        //            if (xhr.status != 200) {
+        //                alert(xhr.status + ': ' + xhr.statusText);
+        //            } else {
+        //                alert(xhr.responseText);
+        //            }
+        //
+        //        }
     </script>
-    
-            <script>
-                new ui.Calendar()
-                    .appendHTML('#calendar-test')
-
-            </script>
     </body>
 </html>

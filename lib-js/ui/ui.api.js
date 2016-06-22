@@ -24,6 +24,8 @@
             return this;
         },
 
+
+
         on: function(event, fun, useCapture) {
 
             if (this.elements !== null) {
@@ -40,6 +42,17 @@
      * @namespace ui.api
      */
     ui.api = {
+
+        /**
+         * Find parent element with attribute
+         * @param {Element} element
+         * @param {string} selector
+         * @returns {*}
+         */
+        findParent: function(element, selector) {
+
+            return element.closest(selector);
+        },
 
         addEvents: function(arrSelector, event, fun, useCapture) {
 
@@ -135,6 +148,7 @@
             var data   = prmstr != null && prmstr != "" ? prmstr : {};
 
             if (Object.keys(data).length) {
+
                 var params = {};
                 var prmarr = data.split("&");
 

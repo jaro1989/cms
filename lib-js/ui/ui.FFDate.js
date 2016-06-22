@@ -270,6 +270,7 @@
             return new ui.Element('div')
                 .setSizeElement('input', this._size)
                 .addClassElement(ui.CSS.btn.btnGroup.group)
+                .setWidthElement(6)
                 .addChildAfter(
                     new ui.Element('input')
                         .setTypeElement('text')

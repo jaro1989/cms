@@ -6,37 +6,34 @@
          * @namespace ui.Calendar
          * @constructor
          */
-        ui.Calendar = function(date) {
+        ui.Calendar = function(yyyy, mm, dd) {
 
-            if (typeof date === 'number') {
+            if (Number(yyyy) > 9999) {
 
-                this._date   = new Date();
-                this._date.setTime(date * 1000);
-
-            } else if (typeof date === 'string') {
-
-                this._date   = new Date(date);
-
-            } else {
-
-                this._date   = new Date();
-
+                yyyy = 3000;
             }
-            this._date.setDate(1);
 
-
-            this._choiceDay   = null;
-
-            this._currentDate  = new Date();
-            this._currentDay   = this._currentDate.getDate();
+            this._date = new Date();
+            this._date.setFullYear(ui.api.empty(yyyy, this._date.getFullYear()));
+            this._date.setMonth(ui.api.empty(mm, this._date.getMonth()));
+            this._date.setDate(ui.api.empty(dd, 1));
 
             this._year  = this._date.getFullYear();
             this._month = this._date.getMonth();
+
+            this._currentDate  = new Date();
+
+            if (this._currentDate.getFullYear() === this._year && this._currentDate.getMonth() === this._month) {
+                this._currentDay = this._currentDate.getDate();
+            }
         };
 
         /** @protected */
         ui.Calendar.prototype = {
-
+            // Текущий день
+            _currentDay: null,
+            // Выбранный день
+            _choiceDay:  null,
             _width: 255,
             _locale: 'ru',
             _language: {
@@ -58,7 +55,6 @@
                 }
             },
             _skinSwitchMonth: 'link',
-            _monthClass:  'month-calendar',
             _yearClass:   'year-calendar',
             _prevIcon:    'chevron-left',
             _nextIcon:    'chevron-right',
@@ -90,36 +86,12 @@
                 return month_length;
             },
 
-            _buildInput: function() {
-
-                var dataList = new ui.Element('datalist')
-                    .setIdElement(this._listId, null);
-
-                for (var i = (this._year - 10), last = (this._year + 10); i <= last; i++) {
-                    dataList.addChildAfter(
-                        new ui.Element('option')
-                            .setContentElement(i)
-                            .getElement()
-                    );
-                }
-
-                return new ui.Element('div')
-                    .addStyleElement('paddingLeft', '10px')
-                    .addChildBefore(
-                        new ui.Element('input')
-                            .setTypeElement('text')
-                            .setAttrElement('list', this._listId)
-                            .addClassElement(this._yearClass)
-                            .addClassElement(ui.CSS.formControlClass)
-                            .setSizeElement('field', this._sizeInput)
-                            .setAttrElement('value', this._year)
-                            .setAttrElement('data-year', this._year)
-                            .getElement()
-                    )
-                    .addChildAfter(dataList.getElement())
-                    .toHTML();
-            },
-
+            /**
+             *
+             * @param day
+             * @returns {null[]}
+             * @private
+             */
             _paramsBtnDay: function(day) {
 
                 var skin = [this._skinBtn, null, null];
@@ -147,60 +119,123 @@
                 return skin;
             },
 
+            /**
+             * Build html input and list help
+             * @returns {*|string}
+             * @private
+             */
+            _buildInput: function() {
+
+                var dataList = new ui.Element('datalist')
+                    .setIdElement(this._listId, null);
+
+                for (var i = (this._year - 10), last = (this._year + 10); i <= last; i++) {
+                    dataList.addChildAfter(
+                        new ui.Element('option')
+                            .setContentElement(i)
+                            .getElement()
+                    );
+                }
+
+                return new ui.Element('div')
+                    .addStyleElement('paddingLeft', '10px')
+                    .addChildBefore(
+                        new ui.Element('input')
+                            .setTypeElement('text')
+                            .setAttrElement('list', this._listId)
+                            .addClassElement(ui.CSS.formControlClass)
+                            .addClassElement(this._yearClass)
+                            .setSizeElement('field', this._sizeInput)
+                            .setAttrElement('value', this._year)
+                            .setAttrElement('data-action', 'year')
+                            .setAttrElement('maxLength', 4)
+                            //.setAttrElement('onblur', 'new ui.Calendar()._onChangeCalendar(this);')
+                            .setAttrElement('onchange', 'new ui.Calendar()._onChangeCalendar(this);')
+                            .getElement()
+                    )
+                    .addChildAfter(dataList.getElement())
+                    .toHTML();
+            },
+
+            /**
+             * Build html icon next or prev
+             * @param {string} type 'prev'|'next'
+             * @param {string} icon_name
+             * @returns {*|string}
+             * @private
+             */
+            _buildIcon: function(type, icon_name) {
+
+                return new ui.Element('div')
+                    .addChildAfter(
+                        new ui.Element('div')
+                            .addClassElement(ui.CSS.btn.btnClass)
+                            .setAttrElement('title', this._language[this._locale][type])
+                            .setAttrElement('data-action', type)
+                            .setAttrElement('onclick', 'new ui.Calendar()._onChangeCalendar(this);')
+                            .setSkinElement('button', this._skinSwitchMonth)
+                            .addStyleElement('padding', 0)
+                            .addChildAfter(
+                                new ui.Element('span')
+                                    .setIconElement(icon_name)
+                                    .getElement()
+                            )
+                            .getElement()
+                    )
+                    .toHTML();
+            },
+
+            /**
+             * Build html month name
+             * @returns {*|string}
+             * @private
+             */
+            _buildMonthName: function() {
+
+                return new ui.Element('div')
+                    .addClassElement(ui.CSS.alignClass.text.center)
+                    .addStyleElement('font-weight', 'bold')
+                    .setContentElement(this._language[this._locale]['month'][this._month])
+                    .toHTML();
+            },
+
+            /**
+             *
+             * @returns {*|Element}
+             * @private
+             */
             _buildHead: function() {
 
                 return new ui.Element('table')
                     .addRowBody(0)
-                    .addCellBody(
-                        new ui.Element('div')
-                            .addClassElement(ui.CSS.btn.btnClass)
-                            .setAttrElement('title', this._language[this._locale]['prev'])
-                            .setAttrElement('data-prev-month', this._month)
-                            .setAttrElement('onclick', 'new ui.Calendar().onChangeCalendar(this);')
-                            .setSkinElement('button', this._skinSwitchMonth)
-                            .addStyleElement('padding', 0)
-                            .addChildAfter(
-                                new ui.Element('span')
-                                    .setIconElement(this._prevIcon)
-                                    .getElement()
-                            )
-                            .toHTML(),
-                        0
-                    )
+                    .addAttrTable('tr', 'data-month', this._month)
+                    .addAttrTable('tr', 'data-year', this._year)
+
+                    // ICON PREVIOUS
+                    .addCellBody(this._buildIcon('prev', this._prevIcon), 0)
                     .addAttrTable('td', 'width', '10px')
+
+                    // INPUT YEAR
                     .addCellBody(this._buildInput(), 1)
                     .addAttrTable('td', 'width', ((this._width - 2) / 2) + 'px')
-                    .addCellBody(
-                        new ui.Element('div')
-                            .addClassElement(ui.CSS.alignClass.text.center)
-                            .addClassElement(this._monthClass)
-                            .addStyleElement('font-weight', 'bold')
-                            .setAttrElement('data-month', this._month + 1)
-                            .setContentElement(this._language[this._locale]['month'][this._month])
-                            .toHTML(),
-                        2
-                    )
+
+                    // MONTH NAME
+                    .addCellBody(this._buildMonthName(), 2)
                     .addAttrTable('td', 'width', ((this._width - 2) / 2) + 'px')
-                    .addCellBody(
-                        new ui.Element('div')
-                            .addClassElement(ui.CSS.btn.btnClass)
-                            .setAttrElement('title', this._language[this._locale]['next'])
-                            .setAttrElement('data-next-month', this._month + 2)
-                            .setAttrElement('onclick', 'new ui.Calendar().onChangeCalendar(this);')
-                            .setSkinElement('button', this._skinSwitchMonth)
-                            .addStyleElement('padding', 0)
-                            .addChildAfter(
-                                new ui.Element('span')
-                                    .setIconElement(this._nextIcon)
-                                    .getElement()
-                            )
-                            .toHTML(),
-                        3
-                    )
+
+                    // ICON NEXT
+                    .addCellBody(this._buildIcon('next', this._nextIcon), 3)
                     .addAttrTable('td', 'width', '10px')
+
                     .getElement();
             },
 
+            /**
+             *
+             * @param {number} indexDay
+             * @returns {*|string}
+             * @private
+             */
             _buildCell: function(indexDay) {
 
                 var btn_params = this._paramsBtnDay(indexDay);
@@ -217,6 +252,11 @@
                         .toHTML()
             },
 
+            /**
+             *
+             * @returns {*|Element}
+             * @private
+             */
             _buildBody: function() {
 
                 var days = this._language[this._locale]['days'];
@@ -244,7 +284,6 @@
                 var locale_start_say = (this._locale == 'ru' ? 0 : 1);
                 var start_day = this._date.getDay() + locale_start_say;
 
-
                 table.addBlockBody();
                 var indexRow = 0;
 
@@ -257,6 +296,7 @@
                 }
 
                 // Отрисовка ячеек первой строки
+                start_day = (start_day === 0) ? 1 : start_day;
                 for (var a = start_day; a < 8; a++) {
 
                     table.addCellBody(
@@ -285,7 +325,6 @@
                         indexDay++
                     }
 
-
                     for (c; c < 8; c++) {
 
                         table.addCellBody('', null);
@@ -297,6 +336,11 @@
                 return table.getElement();
             },
 
+            /**
+             *
+             * @returns {*|Element}
+             * @private
+             */
             _buildPanel: function() {
 
                 return new ui.Element('div')
@@ -318,6 +362,11 @@
                     .getElement();
             },
 
+            /**
+             *
+             * @returns {*|Element}
+             * @private
+             */
             _buildParentBlock: function() {
 
                 return new ui.Element('div')
@@ -326,44 +375,45 @@
                     .getElement()
             },
 
-            onChangeCalendar: function(element) {
+            /**
+             * Update calendar
+             * @param element
+             * @returns voild
+             * @private
+             */
+            _onChangeCalendar: function(element) {
 
-                var trElement = element.parentNode.parentNode;
-                var data_year = trElement.querySelector('.' + this._yearClass).value;
-                var data_month = trElement.querySelector('.' + this._monthClass).getAttribute('data-month');
-                var newDate = new Date(data_year + '-' + data_month + '-01');
+                var parentElement = element.parentNode.parentNode.parentNode;
+                var data_year  = parentElement.querySelector('.' + this._yearClass).value;
+                var data_month = parentElement.getAttribute('data-month');
 
-                var parentElem = trElement
-                    .parentNode
-                    .parentNode
-                    .parentNode
-                    .parentNode
-                    .parentNode;
+                if (Number(data_year) > 9999) {
 
-                var month = 1;
-                if (element.hasAttribute('data-next-month')) {
-
-                    newDate.setMonth(newDate.getMonth() + 2);
-                    month = (newDate.getMonth() != 0) ? newDate.getMonth() : 1;
-
-                } else if (element.hasAttribute('data-prev-month')) {
-
-                    newDate.setMonth(newDate.getMonth());
-                    month = (newDate.getMonth() != 0) ? newDate.getMonth() : 12;
-
-                    if (month == 12) {
-
-                        newDate.setFullYear(newDate.getFullYear() - 1);
-                    }
-                } else if (element.hasAttribute('data-year')) {
-
-                    yy = element.getAttribute('data-year');
+                    data_year = 3000;
                 }
 
+                var date = new Date(data_year, data_month, 1);
+
+                if (element.hasAttribute('data-action')) {
+
+                    var action = element.getAttribute('data-action');
+
+                    if (action === 'next') {
+
+                        date.setMonth(date.getMonth() + 1);
+
+                    } else if (action === 'prev') {
+
+                        date.setMonth(date.getMonth() - 1);
+                    }
+
+                }
+
+                var parentElem = ui.api.findParent(element, '.calendar');
+
                 parentElem.replaceChild(
-                    new ui.Calendar(newDate.getFullYear() + '-' + month + '-01')._buildPanel(),
-                    parentElem.children[0]
-                );
+                    new ui.Calendar(date.getFullYear(), date.getMonth(), 1)._buildPanel(),
+                    parentElem.children[0]);
             },
 
             /**
