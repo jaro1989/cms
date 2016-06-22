@@ -63,6 +63,7 @@
                         .getElement()
                 )
             }
+            
 
             new ui.Element('nav')
                 .addClassElement('navbar')
