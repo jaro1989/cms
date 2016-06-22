@@ -118,39 +118,42 @@
              *
              * @param {string} type {'table' | 'thead' | 'tbody' | 'tfoot' | 'tr' | 'th' | 'td'}
              * @param {string} attrName
-             * @param {string|number} value
+             * @param {string|number|null} value
              * @returns {ui.Element}
              */
             addAttrTable: function(type, attrName, value) {
 
-                if (type === 'table') {
+                if (value !== null) {
 
-                    this.element.setAttribute(attrName, value);
+                    if (type === 'table') {
 
-                } else if (type === 'thead') {
+                        this.element.setAttribute(attrName, value);
 
-                    this._thead.setAttribute(attrName, value);
+                    } else if (type === 'thead') {
 
-                } else if (type === 'tbody') {
+                        this._thead.setAttribute(attrName, value);
 
-                    this._tbody.setAttribute(attrName, value);
+                    } else if (type === 'tbody') {
 
-                } else if (type === 'tfoot') {
+                        this._tbody.setAttribute(attrName, value);
 
-                    this._tfoot.setAttribute(attrName, value);
+                    } else if (type === 'tfoot') {
 
-                } else if (type === 'tr') {
+                        this._tfoot.setAttribute(attrName, value);
 
-                    this._tr.setAttribute(attrName, value);
+                    } else if (type === 'tr') {
 
-                } else if (type === 'th') {
+                        this._tr.setAttribute(attrName, value);
 
-                    this._th.setAttribute(attrName, value);
+                    } else if (type === 'th') {
 
-                } else if (type === 'td') {
+                        this._th.setAttribute(attrName, value);
 
-                    this._td.setAttribute(attrName, value);
+                    } else if (type === 'td') {
 
+                        this._td.setAttribute(attrName, value);
+
+                    }
                 }
 
                 return this;
@@ -511,7 +514,7 @@
             /**
              *
              * @param {string} attrName
-             * @param {string|number} attrValue
+             * @param {string|number|null} attrValue
              * @returns {ui.Element}
              * @public
              */

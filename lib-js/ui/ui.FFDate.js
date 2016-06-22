@@ -3,7 +3,7 @@
 
     var counter = new Date().getTime();
     var inputClassUser = 'date-user';
-    var inputClassHidden = 'date-hidden';
+    var inputClassSave = 'date-hidden';
 
     /**
      * @memberOf ui
@@ -18,6 +18,8 @@
         this._value   = ui.api.empty(value, null);
         this._name    = ui.api.empty(name, null);
         this._caption = ui.api.empty(caption, null);
+        this._id = ui.api.empty(this._name, counter);
+
         this._idbtn = [
             'set-current-date-' + counter,
             'set-calendar-date-' + counter,
@@ -264,24 +266,35 @@
         _buildField: function() {
 
             var valueDate = ui.api.setValue(this._value, this._name);
-            var valueDateFormat = new ui.FormatDate(valueDate, this._formatDateUser).getDate();
-            this._valueForEvent = [valueDateFormat];
+
+            this._valueForEvent = [
+                new ui.FormatDate(valueDate, this._formatDateUser).getDate(),
+                new ui.FormatDate(valueDate, this._formatDateSave).getDate()
+            ];
 
             return new ui.Element('div')
                 .setSizeElement('input', this._size)
                 .addClassElement(ui.CSS.btn.btnGroup.group)
+                .setIdElement(this._id, this._name)
                 .setWidthElement(6)
                 .addChildAfter(
                     new ui.Element('input')
                         .setTypeElement('text')
-                        .setNameElement(this._name)
-                        .setIdElement(this._id, this._name)
                         .setDisabledElement(this._disabled)
                         .setRequiredElement(this._required)
-                        .setValueElement(this._value, this._name)
-                        .setValueElement(valueDateFormat, null)
+                        .setValueElement(this._valueForEvent[0], null)
                         .addClassElement(ui.CSS.formControlClass)
                         .addClassElement(inputClassUser)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.Element('input')
+                        .setTypeElement('hidden')
+                        .setNameElement(this._name)
+                        .setDisabledElement(this._disabled)
+                        .setRequiredElement(this._required)
+                        .setValueElement(this._valueForEvent[1], null)
+                        .addClassElement(inputClassSave)
                         .getElement()
                 )
                 .getElement();
@@ -381,30 +394,41 @@
 
             var valueForUser  = this._valueForEvent[0];
             var formatForUser = this._formatDateUser;
+            var htmlId = this._id;
 
             new ui.api.addEvents(
                 this._idbtn[0],
                 'click',
-                function(event) {
+                function(element) {
 
-                    event.path[5].querySelector('.' + inputClassUser).value = new ui.FormatDate(null, formatForUser).getCurrentDate();
+                    element.path[5].querySelector('.' + inputClassUser).value = new ui.FormatDate(null, formatForUser).getCurrentDate();
                 }
             );
 
             new ui.api.addEvents(
                 this._idbtn[1],
                 'click',
-                function() {
-                    alert('Calendar date')
+                function(element) {
+
+                    var findDate = document.body.querySelector('#' + htmlId + '> input[type=hidden]').value;
+                    var date = new Date(findDate);
+                    date.setMonth(date.getMonth() + 1);
+
+                    new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDay())
+                        .setPositionLeft(element.clientX)
+                        .setPositionTop(element.clientY)
+                        .addDateUserTo('#' + htmlId + '> input[type=text]')
+                        .addDateSaveTo('#' + htmlId + '> input[type=hidden]')
+                        .appendHTML('body');
                 }
             );
 
             new ui.api.addEvents(
                 this._idbtn[2],
                 'click',
-                function(event) {
+                function(element) {
 
-                    event.path[5].querySelector('.' + inputClassUser).value = valueForUser;
+                    element.path[5].querySelector('.' + inputClassUser).value = valueForUser;
                 }
             );
 

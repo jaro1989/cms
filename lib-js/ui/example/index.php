@@ -78,8 +78,8 @@
 
             document.body.appendChild(script);
 
-            new ui.Calendar()
-                .appendHTML('#calendar-test');
+//            new ui.Calendar()
+//                .appendHTML('#calendar-test');
 
         </script>
     <script>
