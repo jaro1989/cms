@@ -53,7 +53,7 @@
         .setRequired()
         .appendHTML(APPEND_ELEMENT);
 
-    new ui.FFDate('01/01/2001', 'name-3.4', 'Cption 3.4')
+    new ui.FFDate('01/01/2001', 'name_test_date', 'Cption 3.4')
         .setWidthBlock(3)
         .setWidthCaption(3)
         .setRequired()
