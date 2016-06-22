@@ -406,7 +406,6 @@
 
                         date.setMonth(date.getMonth() - 1);
                     }
-
                 }
 
                 var parentElem = ui.api.findParent(element, '.calendar');
