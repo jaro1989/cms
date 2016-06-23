@@ -3,6 +3,7 @@
 
         var MIN_YEAR = 1000;
         var MAX_YEAR = 3000;
+        var CALENDAR = 'calendar';
 
         function setYear(year) {
 
@@ -12,6 +13,16 @@
             }
 
             return year
+        }
+
+
+        function removeCalendar(e) {
+            console.log(e.target);
+            if(!e.target.matches('.' + CALENDAR + ', .' + CALENDAR + ' *')) {
+                var calendar = document.querySelector('.' + CALENDAR);
+                calendar.remove();
+                this.removeEventListener('click', removeCalendar);
+            }
         }
 
         /**
@@ -77,7 +88,6 @@
             _sizeInput:   'sm',
             _fontSizeDays: 10,
             _listId: 'list-years-calendar',
-            _parentBlockClass: 'calendar',
 
             /**
              * Set date in element
@@ -316,7 +326,7 @@
                         .setWidthElement('100%')
                         .setAttrElement('title', btn_params[2])
                         .addStyleElement('padding', '4px')
-                        //.setAttrElement('onclick', "new ui.Calendar().setDateIn(this);")
+                        .setAttrElement('onclick', "new ui.Calendar()._setDateIn(this);")
                         .setContentElement(indexDay)
                         .toHTML()
             },
@@ -435,7 +445,7 @@
             _buildParentBlock: function() {
 
                 var parentElement = new ui.Element('div')
-                    .addClassElement(this._parentBlockClass)
+                    .addClassElement(CALENDAR)
                     .setAttrElement('data-month', this._month)
                     .setAttrElement('data-year',  this._year)
                     .setAttrElement('data-day',  this._day)
@@ -444,11 +454,13 @@
                 if (this._selectorUser !== null) {
 
                     parentElement.setAttrElement('data-selector-user',  this._selectorUser);
+                    parentElement.setAttrElement('date-format-user', this._formatUser)
                 }
 
                 if (this._selectorSave !== null) {
 
                     parentElement.setAttrElement('data-selector-save',  this._selectorSave);
+                    parentElement.setAttrElement('date-format-save', this._formatSave)
                 }
 
                 if (this._x !== null || this._y !== null) {
@@ -460,12 +472,14 @@
                         .addStyleElement('z-index', 10000);
                 }
 
+                window.addEventListener('click', removeCalendar);
+
                 return parentElement.getElement();
             },
 
             changeMonth: function(element, side) {
 
-                var parentElement = ui.api.findParent(element, '.' + this._parentBlockClass);
+                var parentElement = ui.api.findParent(element, '.' + CALENDAR);
                 var panel_body = parentElement.querySelector('.' + ui.CSS.panelClass.panelBody);
                 var oldDataList = parentElement.querySelector('#' + this._listId);
 
@@ -500,52 +514,51 @@
 
             changeYear: function(element) {
 
-                var parentElement = ui.api.findParent(element, '.' + this._parentBlockClass);
+                var parentElement = ui.api.findParent(element, '.' + CALENDAR);
 
                 if (String(element.value).length == 4) {
 
                     parentElement.setAttribute('data-year', setYear(element.value));
-                    parentElement.className = this._parentBlockClass + ' has-success';
+                    parentElement.className = CALENDAR + ' has-success';
                     this.changeMonth(element, null);
 
                 } else {
 
-                    parentElement.className = this._parentBlockClass + ' has-error';
+                    parentElement.className = CALENDAR + ' has-error';
                 }
             },
 
-            //
-            ///**
-            // * Set date in element input
-            // * @param {string} element
-            // */
-            //setDateIn: function (element) {
-            //
-            //    if (element.hasAttribute('data-day')) {
-            //
-            //        var year  = element.getAttribute('data-year');
-            //        var month = element.getAttribute('data-month');
-            //        var day   = element.getAttribute('data-day');
-            //
-            //        this._selectorUser = element.getAttribute('date-setDateUser');
-            //        this._selectorSave = element.getAttribute('date-setDateSave');
-            //
-            //        var date = new Date(year, month, day);
-            //        var setDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-            //
-            //        if (this._selectorUser !== null) {
-            //
-            //            document.body.querySelector(this._selectorUser).value = new ui.FormatDate(setDate, this._formatUser).getDate();
-            //        }
-            //
-            //        if (this._selectorSave !== null) {
-            //
-            //            document.body.querySelector(this._selectorSave).value = new ui.FormatDate(setDate, this._formatSave).getDate();
-            //        }
-            //    }
-            //
-            //    document.body.removeChild(document.body.querySelector('.' + this._parentBlockClass))
-            //},
+            /**
+             * Set date in element input
+             * @param {Element} element
+             */
+            _setDateIn: function (element) {
+
+                var parentElement = ui.api.findParent(element, '.' + CALENDAR);
+
+                var month = parentElement.getAttribute('data-month');
+                var year  = parentElement.getAttribute('data-year');
+                var day   = element.getAttribute('data-day');
+
+                var date = new Date(year, month, day);
+                var setDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+
+                if (parentElement.hasAttribute('data-selector-user')) {
+
+                    var selectorUser = parentElement.getAttribute('data-selector-user');
+                    var formatUser = parentElement.getAttribute('date-format-user');
+                    document.body.querySelector(selectorUser).value = new ui.FormatDate(setDate, formatUser).getDate();
+                }
+
+                if (parentElement.hasAttribute('data-selector-save')) {
+
+                    var selectorSave = parentElement.getAttribute('data-selector-save');
+                    var formatSave = parentElement.getAttribute('date-format-save');
+                    document.body.querySelector(selectorSave).value = new ui.FormatDate(setDate, formatSave).getDate();
+                }
+                //
+                //document.body.removeChild(document.body.querySelector('.' + CALENDAR))
+            },
 
             /**
              * Get html current element
@@ -570,3 +583,4 @@
         };
 
     } (window.ui || {}));
+
