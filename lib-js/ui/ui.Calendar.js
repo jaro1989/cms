@@ -1,6 +1,19 @@
 
     (function(ui) {
 
+        var MIN_YEAR = 1000;
+        var MAX_YEAR = 3000;
+
+        function setYear(year) {
+
+            if (Number(year) < MIN_YEAR || Number(year) > MAX_YEAR) {
+
+                return  MIN_YEAR;
+            }
+
+            return year
+        }
+
         /**
          * @memberOf ui
          * @namespace ui.Calendar
@@ -8,13 +21,8 @@
          */
         ui.Calendar = function(yyyy, mm, dd) {
 
-            if (Number(yyyy) > 9999) {
-
-                yyyy = 3000;
-            }
-
             this._date = new Date();
-            this._date.setFullYear(ui.api.empty(yyyy, this._date.getFullYear()));
+            this._date.setFullYear(ui.api.empty(setYear(yyyy), this._date.getFullYear()));
             this._date.setMonth(ui.api.empty(mm, this._date.getMonth()));
             this._date.setDate(ui.api.empty(dd, 1));
 
@@ -27,24 +35,21 @@
                 this._currentDay = this._currentDate.getDate();
             }
 
-            this._choiceDay = ui.api.empty(dd, null);
+            this._day = ui.api.empty(dd, this._date.getDate);
         };
 
         /** @protected */
         ui.Calendar.prototype = {
 
-
-            _x: 400,
-            _y: 200,
+            _x: null,
+            _y: null,
 
             _formatUser: ui.Config.formatDateUser,
             _formatSave: ui.Config.formatDateSave,
-            _selectorUser: null,
-            _selectorSave: null,
-            // Текущий день
-            _currentDay: null,
-            // Выбранный день
-            _choiceDay:  null,
+
+            _selectorUser: '#name-3_1 input[type=text]',
+            _selectorSave: '#name-3_1 input[type=hidden]',
+
             _width: 255,
             _locale: 'ru',
             _language: {
@@ -66,7 +71,6 @@
                 }
             },
             _skinSwitchMonth: 'link',
-            _yearClass:   'year-calendar',
             _prevIcon:    'chevron-left',
             _nextIcon:    'chevron-right',
             _skinBtn:     'default',
@@ -160,7 +164,7 @@
 
                 var skin = [this._skinBtn, null, null];
                 var current = this._currentDay === day ? 'danger' : null;
-                var choice  = this._choiceDay === day ? 'primary' : null;
+                var choice  = this._day === day ? 'primary' : null;
 
                 if (current !== null) {
 
@@ -183,12 +187,7 @@
                 return skin;
             },
 
-            /**
-             * Build html input and list help
-             * @returns {*|string}
-             * @private
-             */
-            _buildInput: function() {
+            _buildDataList: function() {
 
                 var dataList = new ui.Element('datalist')
                     .setIdElement(this._listId, null);
@@ -201,6 +200,16 @@
                     );
                 }
 
+                return dataList.getElement();
+            },
+
+            /**
+             * Build html input and list help
+             * @returns {*|string}
+             * @private
+             */
+            _buildInput: function() {
+
                 return new ui.Element('div')
                     .addStyleElement('paddingLeft', '10px')
                     .addChildBefore(
@@ -208,15 +217,13 @@
                             .setTypeElement('text')
                             .setAttrElement('list', this._listId)
                             .addClassElement(ui.CSS.formControlClass)
-                            .addClassElement(this._yearClass)
                             .setSizeElement('field', this._sizeInput)
                             .setAttrElement('value', this._year)
-                            .setAttrElement('data-action', 'year')
                             .setAttrElement('maxLength', 4)
-                            .setAttrElement('onchange', 'new ui.Calendar()._onChangeCalendar(this);')
+                            .setAttrElement('oninput', 'new ui.Calendar().changeYear(this);')
                             .getElement()
                     )
-                    .addChildAfter(dataList.getElement())
+                    .addChildAfter(this._buildDataList())
                     .toHTML();
             },
 
@@ -235,7 +242,7 @@
                             .addClassElement(ui.CSS.btn.btnClass)
                             .setAttrElement('title', this._language[this._locale][type])
                             .setAttrElement('data-action', type)
-                            .setAttrElement('onclick', 'new ui.Calendar()._onChangeCalendar(this);')
+                            .setAttrElement('onclick', "new ui.Calendar().changeMonth(this, '" + type + "');")
                             .setSkinElement('button', this._skinSwitchMonth)
                             .addStyleElement('padding', 0)
                             .addChildAfter(
@@ -271,10 +278,6 @@
 
                 return new ui.Element('table')
                     .addRowBody(0)
-                    .addAttrTable('tr', 'data-month', this._month)
-                    .addAttrTable('tr', 'data-year', this._year)
-                    .addAttrTable('tr', 'date-setDateUser', this._selectorUser)
-                    .addAttrTable('tr', 'date-setDateSave', this._selectorSave)
 
                     // ICON PREVIOUS
                     .addCellBody(this._buildIcon('prev', this._prevIcon), 0)
@@ -308,16 +311,12 @@
                 return new ui.Element('div')
                         .addClassElement(ui.CSS.btn.btnClass)
                         .setAttrElement('data-day',   indexDay)
-                        .setAttrElement('data-month', this._month)
-                        .setAttrElement('data-year',  this._year)
-                        .setAttrElement('date-setDateUser', this._selectorUser)
-                        .setAttrElement('date-setDateSave', this._selectorSave)
                         .setSkinElement('button', btn_params[0])
                         .addClassElement(btn_params[1])
                         .setWidthElement('100%')
                         .setAttrElement('title', btn_params[2])
                         .addStyleElement('padding', '4px')
-                        .setAttrElement('onclick', "new ui.Calendar().setDateIn(this);")
+                        //.setAttrElement('onclick', "new ui.Calendar().setDateIn(this);")
                         .setContentElement(indexDay)
                         .toHTML()
             },
@@ -350,8 +349,10 @@
                 var indexDay = 1;
                 // Количество дней в месяце
                 var month_length = this.getDaysInMonth();
+
                 // День с которого начинается месяц
                 var locale_start_say = (this._locale == 'ru' ? 0 : 1);
+                this._date.setDate(1);
                 var start_day = this._date.getDay() + locale_start_say;
 
                 table.addBlockBody();
@@ -435,97 +436,116 @@
 
                 var parentElement = new ui.Element('div')
                     .addClassElement(this._parentBlockClass)
+                    .setAttrElement('data-month', this._month)
+                    .setAttrElement('data-year',  this._year)
+                    .setAttrElement('data-day',  this._day)
                     .addChildAfter(this._buildPanel());
+
+                if (this._selectorUser !== null) {
+
+                    parentElement.setAttrElement('data-selector-user',  this._selectorUser);
+                }
+
+                if (this._selectorSave !== null) {
+
+                    parentElement.setAttrElement('data-selector-save',  this._selectorSave);
+                }
 
                 if (this._x !== null || this._y !== null) {
 
                     parentElement
-                        .addStyleElement('position', 'absolute')
                         .addStyleElement('left', (Number(this._x) - (this._width / 2)) + 'px')
-                        .addStyleElement('top', (Number(this._y) + 20) + 'px')
+                        .addStyleElement('top', (Number(this._y) + 30) + 'px')
+                        .addStyleElement('position', 'absolute')
                         .addStyleElement('z-index', 10000);
                 }
 
                 return parentElement.getElement();
             },
 
-            /**
-             * Update calendar
-             * @param element
-             * @returns voild
-             * @private
-             */
-            _onChangeCalendar: function(element) {
+            changeMonth: function(element, side) {
 
-                var parentElement = element.parentNode.parentNode.parentNode;
-                var data_year  = parentElement.querySelector('.' + this._yearClass).value;
-                var data_month = parentElement.getAttribute('data-month');
+                var parentElement = ui.api.findParent(element, '.' + this._parentBlockClass);
+                var panel_body = parentElement.querySelector('.' + ui.CSS.panelClass.panelBody);
+                var oldDataList = parentElement.querySelector('#' + this._listId);
 
-                this._selectorUser = parentElement.getAttribute('date-setDateUser');
-                this._selectorSave = parentElement.getAttribute('date-setDateSave');
+                var month = parentElement.getAttribute('data-month');
+                var year  = parentElement.getAttribute('data-year');
+                var day   = parentElement.getAttribute('data-day');
 
-                if (Number(data_year) > 9999) {
+                var date = new Date(year, month, day);
 
-                    data_year = 3000;
+                if (side === 'next') {
+
+                    date.setMonth(date.getMonth() + 1);
+
+                } else if (side === 'prev') {
+
+                    date.setMonth(date.getMonth() - 1);
                 }
 
-                var date = new Date(data_year, data_month, 1);
+                var newMonth = date.getMonth();
+                var newYear  = date.getFullYear();
+                var newDay   = date.getDate();
 
-                if (element.hasAttribute('data-action')) {
+                parentElement.setAttribute('data-month', newMonth);
+                parentElement.setAttribute('data-year', newYear);
+                parentElement.setAttribute('data-day', newDay);
 
-                    var action = element.getAttribute('data-action');
+                var newCalendar = new ui.Calendar(newYear, newMonth, newDay);
 
-                    if (action === 'next') {
-
-                        date.setMonth(date.getMonth() + 1);
-
-                    } else if (action === 'prev') {
-
-                        date.setMonth(date.getMonth() - 1);
-                    }
-                }
-
-                var parentElem = ui.api.findParent(element, '.calendar');
-
-                parentElem.replaceChild(
-                    new ui.Calendar(date.getFullYear(), date.getMonth(), 1)
-                        .addDateUserTo(this._selectorUser)
-                        .addDateSaveTo(this._selectorSave)
-                        ._buildPanel(),
-                    parentElem.children[0]);
+                panel_body.replaceChild(newCalendar._buildBody(), panel_body.children[0]);
+                oldDataList.parentNode.replaceChild(newCalendar._buildDataList(), oldDataList);
             },
 
-            /**
-             * Set date in element input
-             * @param {string} element
-             */
-            setDateIn: function (element) {
+            changeYear: function(element) {
 
-                if (element.hasAttribute('data-day')) {
+                var parentElement = ui.api.findParent(element, '.' + this._parentBlockClass);
 
-                    var year  = element.getAttribute('data-year');
-                    var month = element.getAttribute('data-month');
-                    var day   = element.getAttribute('data-day');
+                if (String(element.value).length == 4) {
 
-                    this._selectorUser = element.getAttribute('date-setDateUser');
-                    this._selectorSave = element.getAttribute('date-setDateSave');
+                    parentElement.setAttribute('data-year', setYear(element.value));
+                    parentElement.className = this._parentBlockClass + ' has-success';
+                    this.changeMonth(element, null);
 
-                    var date = new Date(year, month, day);
-                    var setDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+                } else {
 
-                    if (this._selectorUser !== null) {
-
-                        document.body.querySelector(this._selectorUser).value = new ui.FormatDate(setDate, this._formatUser).getDate();
-                    }
-
-                    if (this._selectorSave !== null) {
-
-                        document.body.querySelector(this._selectorSave).value = new ui.FormatDate(setDate, this._formatSave).getDate();
-                    }
+                    parentElement.className = this._parentBlockClass + ' has-error';
                 }
-
-                document.body.removeChild(document.body.querySelector('.' + this._parentBlockClass))
             },
+
+            //
+            ///**
+            // * Set date in element input
+            // * @param {string} element
+            // */
+            //setDateIn: function (element) {
+            //
+            //    if (element.hasAttribute('data-day')) {
+            //
+            //        var year  = element.getAttribute('data-year');
+            //        var month = element.getAttribute('data-month');
+            //        var day   = element.getAttribute('data-day');
+            //
+            //        this._selectorUser = element.getAttribute('date-setDateUser');
+            //        this._selectorSave = element.getAttribute('date-setDateSave');
+            //
+            //        var date = new Date(year, month, day);
+            //        var setDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+            //
+            //        if (this._selectorUser !== null) {
+            //
+            //            document.body.querySelector(this._selectorUser).value = new ui.FormatDate(setDate, this._formatUser).getDate();
+            //        }
+            //
+            //        if (this._selectorSave !== null) {
+            //
+            //            document.body.querySelector(this._selectorSave).value = new ui.FormatDate(setDate, this._formatSave).getDate();
+            //        }
+            //    }
+            //
+            //    document.body.removeChild(document.body.querySelector('.' + this._parentBlockClass))
+            //},
 
             /**
              * Get html current element
