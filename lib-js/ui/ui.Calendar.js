@@ -15,15 +15,22 @@
             return year
         }
 
-
         function removeCalendar(e) {
-            console.log(e.target);
-            if(!e.target.matches('.' + CALENDAR + ', .' + CALENDAR + ' *')) {
+            console.log(e.target.matches('.' + CALENDAR + ', .' + CALENDAR + ' *'));
+
+            if(!e.target.matches('.btn, .' + CALENDAR + ', .btn *, .' + CALENDAR + ' *')) {
+
                 var calendar = document.querySelector('.' + CALENDAR);
-                calendar.remove();
-                this.removeEventListener('click', removeCalendar);
+
+                if (calendar !== null) {
+
+                    calendar.remove();
+                    //this.removeEventListener('click', removeCalendar);
+                }
             }
         }
+
+        window.addEventListener('click', removeCalendar);
 
         /**
          * @memberOf ui
@@ -444,7 +451,15 @@
              */
             _buildParentBlock: function() {
 
+                var calendar = document.querySelector('.' + CALENDAR);
+
+                if (calendar !== null) {
+
+                    calendar.remove();
+                }
+
                 var parentElement = new ui.Element('div')
+                    .setWidthElement(this._width + 'px')
                     .addClassElement(CALENDAR)
                     .setAttrElement('data-month', this._month)
                     .setAttrElement('data-year',  this._year)
@@ -467,12 +482,12 @@
 
                     parentElement
                         .addStyleElement('left', (Number(this._x) - (this._width / 2)) + 'px')
-                        .addStyleElement('top', (Number(this._y) + 30) + 'px')
+                        .addStyleElement('top', (Number(this._y) + 20) + 'px')
                         .addStyleElement('position', 'absolute')
                         .addStyleElement('z-index', 10000);
                 }
 
-                window.addEventListener('click', removeCalendar);
+                //window.addEventListener('click', removeCalendar);
 
                 return parentElement.getElement();
             },
@@ -556,8 +571,6 @@
                     var formatSave = parentElement.getAttribute('date-format-save');
                     document.body.querySelector(selectorSave).value = new ui.FormatDate(setDate, formatSave).getDate();
                 }
-                //
-                //document.body.removeChild(document.body.querySelector('.' + CALENDAR))
             },
 
             /**
