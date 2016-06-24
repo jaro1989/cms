@@ -415,7 +415,7 @@
 
                     var findDate = document.body.querySelector('#' + htmlId + '> input[type=hidden]').value;
                     var date = new Date(findDate);
-
+                    console.log(element);
                     new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDate())
                         .setPositionLeft(element.clientX)
                         .setPositionTop(element.clientY)
@@ -448,7 +448,7 @@
 
             new ui.$(selector).append(this.getElement());
             this._collbackFunction();
-            
+
             return this;
         }
     };

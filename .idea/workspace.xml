@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e625a249-66d9-49c4-82c3-b892a980c4cc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/index.html" afterPath="$PROJECT_DIR$/lib-js/ui/example/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Calendar.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Calendar.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" />
     </list>
     <ignored path="cms.iws" />
@@ -58,21 +56,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ui.Calendar.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ui.Calendar.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="531" column="26" selection-start-line="531" selection-start-column="26" selection-end-line="531" selection-end-column="26" />
+            <state relative-caret-position="2877">
+              <caret line="517" column="50" selection-start-line="517" selection-start-column="50" selection-end-line="517" selection-end-column="50" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ui.FFDate.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ui.FFDate.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFDate.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="433">
-              <caret line="424" column="17" selection-start-line="424" selection-start-column="17" selection-end-line="424" selection-end-column="17" />
+            <state relative-caret-position="373">
+              <caret line="420" column="55" selection-start-line="420" selection-start-column="55" selection-end-line="420" selection-end-column="55" />
               <folding />
             </state>
           </provider>
@@ -182,8 +180,8 @@
         <option value="$PROJECT_DIR$/lib-js/ui/example/ffDate.example.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/index.php" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/index.html" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.Calendar.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" />
       </list>
     </option>
   </component>
@@ -406,14 +404,7 @@
       <option name="presentableId" value="Default" />
       <updated>1463857792974</updated>
       <workItem from="1466767526091" duration="3899000" />
-      <workItem from="1466779639592" duration="3447000" />
-    </task>
-    <task id="LOCAL-00019" summary="Table refactor code - 3">
-      <created>1464724281214</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1464724281214</updated>
+      <workItem from="1466779639592" duration="4272000" />
     </task>
     <task id="LOCAL-00020" summary="Table refactor code - 4">
       <created>1464727219711</created>
@@ -751,11 +742,18 @@
       <option name="project" value="LOCAL" />
       <updated>1466771564325</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="Calendar (update job)&#10;">
+      <created>1466784068001</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1466784068006</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7346000" />
+    <option name="totallyTimeSpent" value="8171000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -770,7 +768,7 @@
     <frame x="65" y="24" width="1855" height="941" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19460917" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.08301887" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32925585" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TypeScript Compiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328341" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -1183,18 +1181,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFDate.js">
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="424" column="17" selection-start-line="424" selection-start-column="17" selection-end-line="424" selection-end-column="17" />
+        <state relative-caret-position="2877">
+          <caret line="517" column="50" selection-start-line="517" selection-start-column="50" selection-end-line="517" selection-end-column="50" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFDate.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="531" column="26" selection-start-line="531" selection-start-column="26" selection-end-line="531" selection-end-column="26" />
+        <state relative-caret-position="373">
+          <caret line="420" column="55" selection-start-line="420" selection-start-column="55" selection-end-line="420" selection-end-column="55" />
           <folding />
         </state>
       </provider>
