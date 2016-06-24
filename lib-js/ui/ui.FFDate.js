@@ -285,6 +285,7 @@
                         .setValueElement(this._valueForEvent[0], null)
                         .addClassElement(ui.CSS.formControlClass)
                         .addClassElement(inputClassUser)
+                        .setReadOnly()
                         .getElement()
                 )
                 .addChildAfter(
@@ -331,8 +332,12 @@
         _buildGroupBlock: function() {
 
             var inputGroup = new ui.Element('div')
-                .addChildAfter(this._buildField())
-                .addChildAfter(this._buildButtons());
+                .addChildAfter(
+                    new ui.Element('div')
+                        .addChildAfter(this._buildField())
+                        .addChildAfter(this._buildButtons())
+                        .getElement()
+                );
 
             if (typeof this._widthCaption === 'number') {
 
@@ -411,14 +416,15 @@
             new ui.api.addEvents(
                 this._idbtn[1],
                 'click',
-                function(element) {
+                function() {
 
+                    var position = this.getBoundingClientRect();
                     var findDate = document.body.querySelector('#' + htmlId + '> input[type=hidden]').value;
                     var date = new Date(findDate);
-                    console.log(element);
+
                     new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDate())
-                        .setPositionLeft(element.clientX)
-                        .setPositionTop(element.clientY)
+                        .setPositionLeft(position.left + ((position.right - position.left) / 2))
+                        .setPositionTop(position.bottom)
                         .addDateUserTo('#' + htmlId + '> input[type=text]')
                         .addDateSaveTo('#' + htmlId + '> input[type=hidden]')
                         .appendHTML('body');

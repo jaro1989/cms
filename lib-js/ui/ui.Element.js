@@ -430,7 +430,15 @@
                 return this;
             },
 
+            /**
+             * Set a text field to read-only
+             * @returns {ui.Element}
+             */
+            setReadOnly: function() {
 
+                this.element.readOnly = true;
+                return this;
+            },
 
             /**
              * Set html class required and attribute required on element
