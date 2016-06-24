@@ -392,8 +392,10 @@
          */
         _collbackFunction: function() {
 
-            var valueForUser  = this._valueForEvent[0];
-            var formatForUser = this._formatDateUser;
+            var defaultValueUser  = this._valueForEvent[0];
+            var formatForUser     = this._formatDateUser;
+            var defaultValueSave  = this._valueForEvent[1];
+            var formatForSave     = this._formatDateSave;
             var htmlId = this._id;
 
             new ui.api.addEvents(
@@ -402,6 +404,7 @@
                 function(element) {
 
                     element.path[5].querySelector('.' + inputClassUser).value = new ui.FormatDate(null, formatForUser).getCurrentDate();
+                    element.path[5].querySelector('.' + inputClassSave).value = new ui.FormatDate(null, formatForSave).getCurrentDate();
                 }
             );
 
@@ -409,7 +412,7 @@
                 this._idbtn[1],
                 'click',
                 function(element) {
-                    //console.log(element, element.clientY + (element.srcElement.offsetHeight - element.offsetY));
+
                     var findDate = document.body.querySelector('#' + htmlId + '> input[type=hidden]').value;
                     var date = new Date(findDate);
 
@@ -427,7 +430,8 @@
                 'click',
                 function(element) {
 
-                    element.path[5].querySelector('.' + inputClassUser).value = valueForUser;
+                    element.path[5].querySelector('.' + inputClassUser).value = defaultValueUser;
+                    element.path[5].querySelector('.' + inputClassSave).value = defaultValueSave;
                 }
             );
 

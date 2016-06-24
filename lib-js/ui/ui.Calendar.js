@@ -62,8 +62,8 @@
             _formatUser: ui.Config.formatDateUser,
             _formatSave: ui.Config.formatDateSave,
 
-            _selectorUser: null,//'#name-3_1 input[type=text]',
-            _selectorSave: null,//'#name-3_1 input[type=hidden]',
+            _selectorUser: null,
+            _selectorSave: null,
 
             _width: 255,
             _locale: 'ru',
@@ -92,6 +92,7 @@
             _sizeInput:   'sm',
             _fontSizeDays: 10,
             _listId: 'list-years-calendar',
+            _monthId: 'month-name-calendar',
 
             /**
              * Set date in element
@@ -277,6 +278,7 @@
             _buildMonthName: function() {
 
                 return new ui.Element('div')
+                    .setIdElement(this._monthId, null)
                     .addClassElement(ui.CSS.alignClass.text.center)
                     .addStyleElement('font-weight', 'bold')
                     .setContentElement(this._language[this._locale]['month'][this._month])
@@ -332,7 +334,7 @@
                         .addStyleElement('padding', '4px')
                         .setAttrElement('onclick', "new ui.Calendar()._setDateIn(this);")
                         .setContentElement(indexDay)
-                        .toHTML()
+                        .toHTML();
             },
 
             /**
@@ -493,7 +495,9 @@
 
                 var parentElement = ui.api.findParent(element, '.' + CALENDAR);
                 var panel_body = parentElement.querySelector('.' + ui.CSS.panelClass.panelBody);
+                var oldMonthName = parentElement.querySelector('#' + this._monthId);
                 var oldDataList = parentElement.querySelector('#' + this._listId);
+                var oldYaer = parentElement.querySelector('input[list=' + this._listId + ']');
 
                 var month = parentElement.getAttribute('data-month');
                 var year  = parentElement.getAttribute('data-year');
@@ -519,9 +523,14 @@
                 parentElement.setAttribute('data-day', newDay);
 
                 var newCalendar = new ui.Calendar(newYear, newMonth, newDay);
-
+                // Set new name month
+                oldMonthName.innerHTML = this._language[this._locale]['month'][newMonth];
+                // Set new table days
                 panel_body.replaceChild(newCalendar._buildBody(), panel_body.children[0]);
+                // Set new data list
                 oldDataList.parentNode.replaceChild(newCalendar._buildDataList(), oldDataList);
+                // Set new Year
+                oldYaer.value = newYear;
             },
 
             changeYear: function(element) {
@@ -568,6 +577,9 @@
                     var formatSave = parentElement.getAttribute('date-format-save');
                     document.body.querySelector(selectorSave).value = new ui.FormatDate(setDate, formatSave).getDate();
                 }
+
+                parentElement.remove();
+                window.removeEventListener('click', removeCalendar);
             },
 
             /**
