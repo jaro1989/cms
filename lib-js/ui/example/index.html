@@ -7,25 +7,25 @@
 </head>
     <body style="padding-top: 50px;">
 
-    <div id="navbar"></div>
-    <div id="element_append" class="container col-md-12 well-lg"></div>
-    <div class="clearfix"></div>
-    <div id="calendar-test"></div>
+        <div id="navbar"></div>
+        <div id="element_append" class="container col-md-12 well-lg"></div>
+        <div class="clearfix"></div>
+        <div id="calendar-test"></div>
 
-    <script src="../ui.Config.js" type="text/javascript"></script>
-    <script src="../ui.FormatDate.js" type="text/javascript"></script>
-    <script src="../ui.CSS.js" type="text/javascript"></script>
-    <script src="../ui.api.js" type="text/javascript"></script>
-    <script src="../ui.Element.js" type="text/javascript"></script>
-    <script src="../ui.Calendar.js" type="text/javascript"></script>
-    <script src="../ui.FFText.js" type="text/javascript"></script>
-    <script src="../ui.FFRadio.js" type="text/javascript"></script>
-    <script src="../ui.FFCheckbox.js" type="text/javascript"></script>
-    <script src="../ui.FFTextarea.js" type="text/javascript"></script>
-    <script src="../ui.FFPassword.js" type="text/javascript"></script>
-    <script src="../ui.FFSelect.js" type="text/javascript"></script>
-    <script src="../ui.FFButton.js" type="text/javascript"></script>
-    <script src="../ui.FFDate.js" type="text/javascript"></script>
+        <script src="../ui.Config.js" type="text/javascript"></script>
+        <script src="../ui.FormatDate.js" type="text/javascript"></script>
+        <script src="../ui.CSS.js" type="text/javascript"></script>
+        <script src="../ui.api.js" type="text/javascript"></script>
+        <script src="../ui.Element.js" type="text/javascript"></script>
+        <script src="../ui.Calendar.js" type="text/javascript"></script>
+        <script src="../ui.FFText.js" type="text/javascript"></script>
+        <script src="../ui.FFRadio.js" type="text/javascript"></script>
+        <script src="../ui.FFCheckbox.js" type="text/javascript"></script>
+        <script src="../ui.FFTextarea.js" type="text/javascript"></script>
+        <script src="../ui.FFPassword.js" type="text/javascript"></script>
+        <script src="../ui.FFSelect.js" type="text/javascript"></script>
+        <script src="../ui.FFButton.js" type="text/javascript"></script>
+        <script src="../ui.FFDate.js" type="text/javascript"></script>
 
         <script>
             var key_page = 'page';
@@ -63,7 +63,7 @@
                         .getElement()
                 )
             }
-            
+
 
             new ui.Element('nav')
                 .addClassElement('navbar')
@@ -75,32 +75,7 @@
             // Подгружаем скрипты
             var script = document.createElement('script');
             script.src = page + '.example.js';
-
             document.body.appendChild(script);
-
-            new ui.Calendar(2016, 5, 5)
-                .appendHTML('#calendar-test');
-
         </script>
-    <script>
-        //        var xhr = new XMLHttpRequest();
-        //
-        //        xhr.open('GET', page + '.example.js', true);
-        //
-        //        xhr.send(); // (1)
-        //
-        //        xhr.onreadystatechange = function() { // (3)
-        //            if (xhr.readyState != 4) return;
-        //
-        //            //button.innerHTML = 'Готово!';
-        //
-        //            if (xhr.status != 200) {
-        //                alert(xhr.status + ': ' + xhr.statusText);
-        //            } else {
-        //                alert(xhr.responseText);
-        //            }
-        //
-        //        }
-    </script>
     </body>
 </html>
