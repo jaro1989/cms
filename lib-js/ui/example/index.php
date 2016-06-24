@@ -78,7 +78,7 @@
 
             document.body.appendChild(script);
 
-            new ui.Calendar()
+            new ui.Calendar(2016, 5, 5)
                 .appendHTML('#calendar-test');
 
         </script>
