@@ -409,12 +409,9 @@
                 this._idbtn[1],
                 'click',
                 function(element) {
-
+                    //console.log(element, element.clientY + (element.srcElement.offsetHeight - element.offsetY));
                     var findDate = document.body.querySelector('#' + htmlId + '> input[type=hidden]').value;
                     var date = new Date(findDate);
-                    console.log(date);
-                    //date.setMonth(date.getMonth());
-                    //2111111111111111111111111111111111111111111111111111111111111111111111
 
                     new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDate())
                         .setPositionLeft(element.clientX)

@@ -16,7 +16,6 @@
         }
 
         function removeCalendar(e) {
-            console.log(e.target.matches('.' + CALENDAR + ', .' + CALENDAR + ' *'));
 
             if(!e.target.matches('.btn, .' + CALENDAR + ', .btn *, .' + CALENDAR + ' *')) {
 
@@ -25,12 +24,10 @@
                 if (calendar !== null) {
 
                     calendar.remove();
-                    //this.removeEventListener('click', removeCalendar);
+                    this.removeEventListener('click', removeCalendar);
                 }
             }
         }
-
-        window.addEventListener('click', removeCalendar);
 
         /**
          * @memberOf ui
@@ -65,8 +62,8 @@
             _formatUser: ui.Config.formatDateUser,
             _formatSave: ui.Config.formatDateSave,
 
-            _selectorUser: '#name-3_1 input[type=text]',
-            _selectorSave: '#name-3_1 input[type=hidden]',
+            _selectorUser: null,//'#name-3_1 input[type=text]',
+            _selectorSave: null,//'#name-3_1 input[type=hidden]',
 
             _width: 255,
             _locale: 'ru',
@@ -482,12 +479,12 @@
 
                     parentElement
                         .addStyleElement('left', (Number(this._x) - (this._width / 2)) + 'px')
-                        .addStyleElement('top', (Number(this._y) + 20) + 'px')
+                        .addStyleElement('top', (Number(this._y)) + 'px')
                         .addStyleElement('position', 'absolute')
                         .addStyleElement('z-index', 10000);
                 }
 
-                //window.addEventListener('click', removeCalendar);
+                window.addEventListener('click', removeCalendar);
 
                 return parentElement.getElement();
             },
