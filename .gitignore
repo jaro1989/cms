@@ -12,6 +12,7 @@
 /var/sessions/*
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
+.idea/workspace.xml
 /vendor/
 /web/bundles/
 /lib-js/node_modules/*
