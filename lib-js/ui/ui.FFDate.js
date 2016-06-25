@@ -276,7 +276,7 @@
                 .setSizeElement('input', this._size)
                 .addClassElement(ui.CSS.btn.btnGroup.group)
                 .setIdElement(this._id, this._name)
-                .setWidthElement(6)
+                .setWidthElement(5)
                 .addChildAfter(
                     new ui.Element('input')
                         .setTypeElement('text')
@@ -310,14 +310,17 @@
 
             return new ui.Element('div')
                 .addClassElement(ui.CSS.btn.btnGroup.group)
-                .addStyleElement('paddingLeft', '5px')
+                .setWidthElement(7)
                 .addChildAfter(
                     new ui.FFButton()
                         .addButton(null, this._idbtn[0], null, null, this._activeBtn, ui.Config.iconBtnDate.currentDate)
+                        .setWidth('120px')
                         .addButton(null, this._idbtn[1], null, null, this._activeBtn, ui.Config.iconBtnDate.calendarDate)
+                        .setWidth('120px')
                         .addButton(null, this._idbtn[2], null, null, this._activeBtn, ui.Config.iconBtnDate.removeDate)
+                        .setWidth('120px')
                         .setPaddingBlock(null)
-                        .setGroup('group')
+                        .setGroup('justified')
                         .setSize(this._size)
                         .getElement()
                 )
@@ -332,8 +335,10 @@
         _buildGroupBlock: function() {
 
             var inputGroup = new ui.Element('div')
+                //.addClassElement('row')
                 .addChildAfter(
                     new ui.Element('div')
+                        .addClassElement('row')
                         .addChildAfter(this._buildField())
                         .addChildAfter(this._buildButtons())
                         .getElement()
