@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e625a249-66d9-49c4-82c3-b892a980c4cc" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib-js/ui/example/form.example.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/lib-js/ui/ui.FFControl.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Form.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Element.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Element.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.FFButton.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.FFButton.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/index.html" afterPath="$PROJECT_DIR$/lib-js/ui/example/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.api.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.api.js" />
     </list>
     <ignored path="cms.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,71 +49,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ui.api.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.api.js">
+      <file leaf-file-name="ui.Form.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Form.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.75862">
-              <caret line="134" column="41" selection-start-line="134" selection-start-column="32" selection-end-line="134" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.Calendar.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.95">
-              <caret line="469" column="38" selection-start-line="469" selection-start-column="25" selection-end-line="469" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.FFDate.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFDate.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7396963">
-              <caret line="360" column="53" selection-start-line="360" selection-start-column="53" selection-end-line="360" selection-end-column="53" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.Config.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Config.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-22.241379">
-              <caret line="43" column="46" selection-start-line="43" selection-start-column="35" selection-end-line="43" selection-end-column="46" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.FFButton.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFButton.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.2">
-              <caret line="137" column="30" selection-start-line="137" selection-start-column="30" selection-end-line="137" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.Element.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Element.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.883333">
-              <caret line="405" column="0" selection-start-line="405" selection-start-column="0" selection-end-line="405" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ffDate.example.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffDate.example.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="39" column="26" selection-start-line="39" selection-start-column="26" selection-end-line="39" selection-end-column="26" />
+            <state vertical-scroll-proportion="1.3015184">
+              <caret line="134" column="53" selection-start-line="134" selection-start-column="53" selection-end-line="134" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -120,18 +62,18 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="12.0">
-              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+            <state vertical-scroll-proportion="-10.5">
+              <caret line="50" column="37" selection-start-line="50" selection-start-column="37" selection-end-line="50" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ui.CSS.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
+      <file leaf-file-name="form.example.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib-js/ui/example/form.example.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="18" column="31" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="31" />
+            <state vertical-scroll-proportion="-2.0689654">
+              <caret line="4" column="39" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -152,8 +94,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/lib-js/builder/Table.js" />
-        <option value="$PROJECT_DIR$/src/Admin/Home/Controller/UserController.php" />
         <option value="$PROJECT_DIR$/src/Admin/Home/Resources/views/user/edit.html.twig" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui_tag.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/css/bootstrap.css" />
@@ -194,15 +134,17 @@
         <option value="$PROJECT_DIR$/lib-js/ui/example/ffButton.example.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/ui.Calendar.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/index.php" />
-        <option value="$PROJECT_DIR$/lib-js/ui/example/ffDate.example.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/example/index.html" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.CSS.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.api.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.Config.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.Calendar.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.Element.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFButton.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.api.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/example/ffDate.example.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/example/index.html" />
+        <option value="$PROJECT_DIR$/lib-js/ui/example/form.example.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.Form.js" />
       </list>
     </option>
   </component>
@@ -735,12 +677,6 @@
       <option name="number" value="Default" />
       <updated>1463857792974</updated>
     </task>
-    <task id="LOCAL-00022" summary="Table refactor code - 6">
-      <created>1464895205621</created>
-      <option name="number" value="00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1464895205621</updated>
-    </task>
     <task id="LOCAL-00023" summary="Table refactor code - 6">
       <created>1464898583796</created>
       <option name="number" value="00023" />
@@ -1029,7 +965,13 @@
       <option name="project" value="LOCAL" />
       <updated>1466956046701</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="Calendar update&#10;">
+      <created>1466956260682</created>
+      <option name="number" value="00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1466956260682</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1052,6 +994,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="165" y="252" width="1655" height="856" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20563847" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32925585" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5005097" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2498618" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1437309" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1062,7 +1005,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32925585" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1114,13 +1056,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib-js/builder/Grid.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.1666665">
-          <caret line="34" column="37" selection-start-line="34" selection-start-column="37" selection-end-line="34" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/admin/js/html-builder.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
@@ -1212,13 +1147,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFControl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.DataLists.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1282,13 +1210,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffTextarea.example.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9303136">
-          <caret line="105" column="20" selection-start-line="105" selection-start-column="20" selection-end-line="105" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffPassword.example.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.03253796">
@@ -1303,24 +1224,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFCheckbox.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-161.89655">
-          <caret line="313" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="351" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffCheckbox.example.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.01626898">
           <caret line="1" column="4" selection-start-line="1" selection-start-column="4" selection-end-line="2" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFButtonList.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1409,50 +1316,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffDate.example.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="26" selection-start-line="39" selection-start-column="26" selection-end-line="39" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="31" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="12.0">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.75862">
-          <caret line="134" column="41" selection-start-line="134" selection-start-column="32" selection-end-line="134" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Config.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-22.241379">
           <caret line="43" column="46" selection-start-line="43" selection-start-column="35" selection-end-line="43" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.95">
-          <caret line="469" column="38" selection-start-line="469" selection-start-column="25" selection-end-line="469" selection-end-column="38" />
           <folding />
         </state>
       </provider>
@@ -1473,10 +1340,90 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.6262626">
+          <caret line="469" column="38" selection-start-line="469" selection-start-column="25" selection-end-line="469" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.01626898">
+          <caret line="18" column="31" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5694143">
+          <caret line="35" column="6" selection-start-line="3" selection-start-column="4" selection-end-line="35" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffDate.example.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9023861">
+          <caret line="59" column="36" selection-start-line="59" selection-start-column="36" selection-end-line="59" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFCheckbox.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0813449">
+          <caret line="5" column="31" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFButtonList.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFDate.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7396963">
-          <caret line="360" column="53" selection-start-line="360" selection-start-column="53" selection-end-line="360" selection-end-column="53" />
+        <state vertical-scroll-proportion="-40.58621">
+          <caret line="453" column="46" selection-start-line="453" selection-start-column="46" selection-end-line="453" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/ffTextarea.example.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.5">
+          <caret line="50" column="37" selection-start-line="50" selection-start-column="37" selection-end-line="50" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/form.example.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.0689654">
+          <caret line="4" column="39" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Form.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.3015184">
+          <caret line="134" column="53" selection-start-line="134" selection-start-column="53" selection-end-line="134" selection-end-column="53" />
           <folding />
         </state>
       </provider>

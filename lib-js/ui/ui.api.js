@@ -24,8 +24,6 @@
             return this;
         },
 
-
-
         on: function(event, fun, useCapture) {
 
             if (this.elements !== null) {
