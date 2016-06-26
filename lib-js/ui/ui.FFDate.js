@@ -4,6 +4,8 @@
     var counter = new Date().getTime();
     var inputClassUser = 'date-user';
     var inputClassSave = 'date-hidden';
+    var inputClassBlock = 'block-field-date';
+    var idFieldUser = 'field-date';
 
     /**
      * @memberOf ui
@@ -18,15 +20,10 @@
         this._value   = ui.api.empty(value, null);
         this._name    = ui.api.empty(name, null);
         this._caption = ui.api.empty(caption, null);
-        this._id = ui.api.empty(this._name, counter);
+        this._id = ui.api.empty(this._name, idFieldUser + '-' + counter);
 
-        this._idbtn = [
-            'set-current-date-' + counter,
-            'set-calendar-date-' + counter,
-            'remove-date-' + counter
-        ];
-        counter++;
         this._valueForEvent = [];
+        counter++;
     };
 
     /** @protected */
@@ -93,7 +90,7 @@
          * @private
          * @type {boolean}
          */
-        _activeBtn: true,
+        _activeBtn: false,
 
         /**
          *
@@ -313,11 +310,14 @@
                 .setWidthElement(7)
                 .addChildAfter(
                     new ui.FFButton()
-                        .addButton(null, this._idbtn[0], null, null, this._activeBtn, ui.Config.iconBtnDate.currentDate)
+                        .setOnClick('new ui.FFDate()._setCurrentDate(this);')
+                        .addButton(null, null, null, null, this._activeBtn, ui.Config.iconBtnDate.currentDate)
                         .setWidth('120px')
-                        .addButton(null, this._idbtn[1], null, null, this._activeBtn, ui.Config.iconBtnDate.calendarDate)
+                        .setOnClick("new ui.FFDate()._calendar(this, '" + this._id + "');")
+                        .addButton(null, null, null, null, this._activeBtn, ui.Config.iconBtnDate.calendarDate)
                         .setWidth('120px')
-                        .addButton(null, this._idbtn[2], null, null, this._activeBtn, ui.Config.iconBtnDate.removeDate)
+                        .setOnClick('new ui.FFDate()._clearDate(this);')
+                        .addButton(null, null, null, null, this._activeBtn, ui.Config.iconBtnDate.removeDate)
                         .setWidth('120px')
                         .setPaddingBlock(null)
                         .setGroup('justified')
@@ -335,7 +335,6 @@
         _buildGroupBlock: function() {
 
             var inputGroup = new ui.Element('div')
-                //.addClassElement('row')
                 .addChildAfter(
                     new ui.Element('div')
                         .addClassElement('row')
@@ -360,6 +359,7 @@
         _buildParentBlock: function() {
 
             var parentElement = new ui.Element('div')
+                .addClassElement(inputClassBlock)
                 .setSkinElement('field', this._skin)
                 .addChildBefore(this._buildGroupBlock())
                 .setPaddingElement(this._padding);
@@ -396,57 +396,51 @@
         },
 
         /**
-         *
-         * @returns {boolean}
+         * @param {Element} e
          * @private
          */
-        _collbackFunction: function() {
+        _setCurrentDate: function(e) {
 
-            var defaultValueUser  = this._valueForEvent[0];
-            var formatForUser     = this._formatDateUser;
-            var defaultValueSave  = this._valueForEvent[1];
-            var formatForSave     = this._formatDateSave;
-            var htmlId = this._id;
+            var parentElement = ui.api.findParent(e, '.' + inputClassBlock);
+            parentElement.querySelector('input[type=text]').value   = new ui.FormatDate(null, this._formatDateUser).getCurrentDate();
+            parentElement.querySelector('input[type=hidden]').value = new ui.FormatDate(null, this._formatDateSave).getCurrentDate();
+        },
 
-            new ui.api.addEvents(
-                this._idbtn[0],
-                'click',
-                function(element) {
+        /**
+         * @param {Element} e
+         * @param {string} selectorParentField <div id="selectorParentField"><input type="text"><input type="hidden"></div>
+         * @private
+         */
+        _calendar: function(e, selectorParentField) {
 
-                    element.path[5].querySelector('.' + inputClassUser).value = new ui.FormatDate(null, formatForUser).getCurrentDate();
-                    element.path[5].querySelector('.' + inputClassSave).value = new ui.FormatDate(null, formatForSave).getCurrentDate();
-                }
-            );
+            var position = e.getBoundingClientRect();
+            var parentElement = ui.api.findParent(e, '.' + inputClassBlock);
+            var findDate = parentElement.querySelector('#' + selectorParentField + ' > input[type=hidden]').value;
 
-            new ui.api.addEvents(
-                this._idbtn[1],
-                'click',
-                function() {
+            var date = new Date();
 
-                    var position = this.getBoundingClientRect();
-                    var findDate = document.body.querySelector('#' + htmlId + '> input[type=hidden]').value;
-                    var date = new Date(findDate);
+            if (findDate != '') {
 
-                    new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDate())
-                        .setPositionLeft(position.left + ((position.right - position.left) / 2))
-                        .setPositionTop(position.bottom)
-                        .addDateUserTo('#' + htmlId + '> input[type=text]')
-                        .addDateSaveTo('#' + htmlId + '> input[type=hidden]')
-                        .appendHTML('body');
-                }
-            );
+                date = new Date(findDate);
+            }
 
-            new ui.api.addEvents(
-                this._idbtn[2],
-                'click',
-                function(element) {
+            new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDate())
+                .setPositionLeft(position.left + ((position.right - position.left) / 2))
+                .setPositionTop(position.bottom)
+                .addDateUserTo('#' + selectorParentField + ' > input[type=text]')
+                .addDateSaveTo('#' + selectorParentField + ' > input[type=hidden]')
+                .appendHTML('body');
+        },
 
-                    element.path[5].querySelector('.' + inputClassUser).value = defaultValueUser;
-                    element.path[5].querySelector('.' + inputClassSave).value = defaultValueSave;
-                }
-            );
+        /**
+         * @param {Element} e
+         * @private
+         */
+        _clearDate: function(e) {
 
-            return true
+            var parentElement = ui.api.findParent(e, '.' + inputClassBlock);
+            parentElement.querySelector('input[type=text]').value   = '';
+            parentElement.querySelector('input[type=hidden]').value = '';
         },
 
         /**
@@ -458,8 +452,6 @@
         appendHTML: function(selector) {
 
             new ui.$(selector).append(this.getElement());
-            this._collbackFunction();
-
             return this;
         }
     };

@@ -7,7 +7,9 @@
 
         function setYear(year) {
 
-            if (Number(year) < MIN_YEAR || Number(year) > MAX_YEAR) {
+            year = Number(year);
+
+            if (year < MIN_YEAR || year > MAX_YEAR || isNaN(year)) {
 
                 return  MIN_YEAR;
             }

@@ -62,6 +62,12 @@
          * @private
          * @type {string|null}
          */
+        _onClick: null,
+
+        /**
+         * @private
+         * @type {string|null}
+         */
         _padding: ui.Config.padding,
 
         /**
@@ -146,6 +152,7 @@
                 active:    ui.api.empty(active,  null),
                 caption:   ui.api.empty(caption, null),
                 leftIcon:  ui.api.empty(icon,    null),
+                onclick:   this._onClick,
                 rightIcon: null
             };
 
@@ -173,6 +180,7 @@
                 active:    ui.api.empty(active,  null),
                 caption:   ui.api.empty(caption, null),
                 leftIcon:  ui.api.empty(icon,    null),
+                onclick:   this._onClick,
                 rightIcon: null
             };
 
@@ -240,6 +248,16 @@
         },
 
         /**
+         * @param {string} action
+         * @returns {ui.FFButton}
+         */
+        setOnClick: function(action) {
+
+            this._onClick = action;
+            return this;
+        },
+
+        /**
          * @param {{ caption: string, leftIcon: string|null, rightIcon: string|null }} params
          * @returns {string}
          * @private
@@ -270,7 +288,7 @@
 
         /**
          * Build html button
-         * @param {{ type: string, value: string, name: string, caption: string, skin: string|null, active: boolean, leftIcon: string|null, rightIcon: string|null }} params
+         * @param {{ type: string, value: string, name: string, caption: string, skin: string|null, active: boolean, leftIcon: string|null, rightIcon: string|null, onclick: string }} params
          * @returns {*|Element}
          * @private
          */
@@ -293,7 +311,8 @@
                 .setSkinElement('button', skin)
                 .setSizeElement('button', this._size)
                 .setDisabledElement(this._disabled)
-                .setContentElement(this._getCaption(params));
+                .setContentElement(this._getCaption(params))
+                .setOnClick(params.onclick);
 
             if (this._active === true || params.active === true) {
 
@@ -311,6 +330,7 @@
             }
 
             if (this._group === ui.CSS.btn.btnGroup.justified) {
+
                 button = new ui.Element('div')
                     .addClassElement(ui.CSS.btn.btnGroup.group)
                     .addChildAfter(button.getElement());

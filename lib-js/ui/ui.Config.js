@@ -41,7 +41,7 @@
             iconBtnDate: {
                 currentDate:      'check',
                 calendarDate:     'calendar',
-                removeDate:       'refresh',
+                removeDate:       'remove-sign',
                 calendarDateTime: 'time'
             }
         };

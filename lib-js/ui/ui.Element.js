@@ -39,6 +39,23 @@
             _td:    null,
 
             /**
+             *
+             * @param {string|null} action
+             * @returns {ui.Element}
+             */
+            setOnClick: function(action) {
+
+                action = ui.api.empty(action, false);
+
+                if (action !== false) {
+
+                    this.element.setAttribute('onclick', action);
+                }
+
+                return this;
+            },
+
+            /**
              * Add row table head
              * @param {number} index
              * @returns {ui.Element}
@@ -285,7 +302,12 @@
 
                 if (ui.api.inArray(['input', 'textarea', 'select', 'option', 'button'], this.tag_name) != -1) {
 
-                    this.element.value = ui.api.setValue(nameValue, nameField);
+                    var value = ui.api.setValue(nameValue, nameField);
+
+                    if (value != '') {
+
+                        this.element.value = ui.api.setValue(nameValue, nameField);
+                    }
                 }
 
                 return this;
