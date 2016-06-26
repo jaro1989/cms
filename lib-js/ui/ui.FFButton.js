@@ -134,8 +134,8 @@
         /**
          * Add button
          * @param {string|number|null} value
-         * @param {string} name
-         * @param {string} caption
+         * @param {string|null} name
+         * @param {string|null} caption
          * @param {string|null} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
          * @param {boolean} active
          * @param {string|null} icon

@@ -293,8 +293,8 @@
 
             /**
              * Set value field
-             * @param {string} nameValue
-             * @param {string} nameField
+             * @param {string|null} nameValue
+             * @param {string|null} nameField
              * @returns {ui.Element}
              * @public
              */
