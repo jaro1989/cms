@@ -5,16 +5,22 @@
      */
     ui.Form = function (group) {
 
-        this._settings = {
-            id:          {type: 'number'},
-            login:       {type: 'varchar'},
-            name:        {type: 'text'},
-            email:       {type: 'email'},
-            phone:       {type: 'select', item: {'7980498': 7980498, '7980422': 7980422}},
-            kod:         {type: 'text'},
-            description: {type: 'textarea'},
-            date:        {type: 'date'}
-        };
+        this._settings = [
+            {
+                id: {type: 'number'},
+                login: {type: 'varchar'},
+                name: {type: 'text'}
+            },
+            {
+                email: {type: 'email'},
+                phone: {type: 'select', data: [{vaue: '7980498', text: 7980498}, {vaue: '7980422', text: 7980422}]},
+                kod: {type: 'text'}
+            },
+            {
+                description: {type: 'textarea'},
+                date: {type: 'date'}
+            }
+        ];
 
         this._data = {id: 1, login: 'admin', name: 'Валера', email: '1xvx1@mail.ru', phone: '7980498', kod: '029', description: 'text', date: '2008-04-01'};
     };
@@ -58,80 +64,70 @@
             return this;
         },
 
-        /**
-         * @returns {{}}
-         * @private
-         */
-        _groupObject: function() {
-
-            var newObj = {};
-            var i = 1;
-            var a = 0;
-
-            for (field in this._settings) {
-
-                if (!newObj.hasOwnProperty(a)) {
-
-                    newObj[a] = {};
-                }
-
-                newObj[a][field] = this._settings[field];
-
-                if (i === 4) {
-                    a++;
-                    i = 0;
-                }
-                i++;
-            }
-
-            return newObj;
-        },
-
         _buildRow: function() {
 
-            var settings = this._groupObject();
             var pareElement = new ui.Element('div');
 
-            for (var index in settings) {
+            for (var index in this._settings) {
 
                 var elementRow = new ui.Element('div')
                     .addClassElement('row');
 
-                for (var field in settings[index]) {
+                for (var field in this._settings[index]) {
 
-                    var type = settings[index][field].type;
+                    var countGroup = 12 / Object.keys(this._settings[index]).length;
+                    var dataField = this._settings[index][field];
+                    var type = dataField.type;
 
-                    if (type == 'text') {
+                    var dataList = {};
 
-                        elementRow.addChildAfter(
-                            new ui.Element('div')
-                                .setWidthElement(12 / this._groupFields)
-                                .addChildAfter(
-                                    new ui.FFText(this._data, field, 'Caption')
-                                        .getElement()
-                                )
-                                .getElement()
-                        );
+                    if (dataField.hasOwnProperty('data')) {
 
-                    } else if (type == 'textarea') {
+                        dataList = dataField.data
+                    }
+
+                    if (type == 'textarea') {
 
                         elementRow.addChildAfter(
                             new ui.Element('div')
-                                .setWidthElement(12 / this._groupFields)
+                                .setWidthElement(countGroup)
                                 .addChildAfter(
                                     new ui.FFTextarea(this._data, field, 'Caption')
+                                        .setResize('vertical')
                                         .getElement()
                                 )
                                 .getElement()
                         );
-
                     } else if (type == 'date') {
 
                         elementRow.addChildAfter(
                             new ui.Element('div')
-                                .setWidthElement(12 / this._groupFields)
+                                .setWidthElement(countGroup)
                                 .addChildAfter(
                                     new ui.FFDate(this._data, field, 'Caption')
+                                        .getElement()
+                                )
+                                .getElement()
+                        );
+                    } else if (type == 'select') {
+
+                        elementRow.addChildAfter(
+                            new ui.Element('div')
+                                .setWidthElement(countGroup)
+                                .addChildAfter(
+                                    new ui.FFSelect(this._data, field, 'Caption')
+                                        .setList(dataList)
+                                        .getElement()
+                                )
+                                .getElement()
+                        );
+                    } else {
+
+                        elementRow.addChildAfter(
+                            new ui.Element('div')
+                                .setWidthElement(countGroup)
+                                .addChildAfter(
+                                    new ui.FFText(this._data, field, 'Caption')
                                         .getElement()
                                 )
                                 .getElement()
@@ -146,8 +142,6 @@
         },
 
         _buildForrm: function() {
-
-
 
             return new ui.Element('form')
                 .setAttrElement('action', '')
