@@ -99,9 +99,9 @@
         /**
          * If "property" exist - return "value" else "defaultValue"
          * @param {{}} object
-         * @param {*} property
-         * @param {*} defaultValue
-         * @returns {*}
+         * @param {string} property
+         * @param {{}|string|number|boolean} defaultValue
+         * @returns {{}|string|number|boolean}
          */
         existProperty: function(object, property, defaultValue) {
 

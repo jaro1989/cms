@@ -3,53 +3,77 @@
      * @namespace ui.Form
      * @constructor
      */
-    ui.Form = function (group) {
+    ui.Form = function () {
 
         this._settings = [
             {
-                id: {type: 'text'},
-                login: {type: 'text'},
-                date: {type: 'date'}
+                id:    {type: 'checkbox', caption: 'Record-ID'},
+                login: {type: 'text',     caption: 'Логин'},
+                date:  {type: 'date',     caption: 'Дата'}
             },
             {
-                email: {type: 'text'},
-                phone: {type: 'select', list: [{value: '7980498', text: 7980498}, {value: '7980422', text: 7980422}]},
-                kod: {type: 'text'}
+                email: {type: 'text',   caption: 'Email'},
+                phone: {type: 'select', caption: 'Телефон', list: [{value: '7980498', text: 7980498}, {value: '7980422', text: 7980422}]},
+                kod:   {type: 'text',   caption: 'Код'}
             },
             {
-                description: {type: 'textarea'},
-                name: {type: 'text'}
+                description: {type: 'textarea', caption: 'Описание'},
+                name: {type: 'text', caption: 'Название'}
+            },
+            {
+                radio_1: {
+                    type: 'radio',
+                    list: {
+                        r_1: 'radio_1',
+                        r_2: 'radio_2',
+                        r_3: 'radio_3'
+                    }
+                }
             }
         ];
 
-        this._values = {id: 1, login: 'admin', name: 'Валера', email: '1xvx1@mail.ru', phone: '7980422', kod: '029', description: 'text', date: '2008-04-01'};
+        this._values = {
+            id: 1,
+            login: 'admin',
+            name: 'Валера',
+            email: '1xvx1@mail.ru',
+            phone: '7980422',
+            kod: '029',
+            description: 'text',
+            date: '2008-04-01',
+            checkbox_1: 1,
+            checkbox_2: 0,
+            checkbox_3: 1,
+            checkbox_4: 0,
+            radio_1: 'r_2'
+        };
     };
 
     /** @protected */
     ui.Form.prototype = {
 
-        _fields: {
+        _htmlFields: {
 
-            text: function(value, name, caption, data) {
+            text: function(value, name, caption) {
 
                 return new ui.FFText(value, name, caption)
                     .getElement();
             },
 
-            password: function(value, name, caption, data) {
+            password: function(value, name, caption) {
 
                 return new ui.FFPassword(value, name, caption)
                     .getElement();
             },
 
-            textarea: function(value, name, caption, data) {
+            textarea: function(value, name, caption) {
 
                 return new ui.FFTextarea(value, name, caption)
                     .setResize('vertical')
                     .getElement();
             },
 
-            date: function(value, name, caption, data) {
+            date: function(value, name, caption) {
 
                 return new ui.FFDate(value, name, caption)
                     .getElement();
@@ -57,8 +81,27 @@
 
             select: function(value, name, caption, data) {
 
+                var dataList = ui.api.existProperty(data, 'list', {});
+
                 return  new ui.FFSelect(value, name, caption)
-                    .setList(ui.api.existProperty(data, 'list', {}))
+                    .setList(dataList)
+                    .getElement();
+            },
+
+            checkbox: function(value, name, caption, data) {
+
+                return new ui.FFCheckbox()
+                    .addCheckbox(value, name, caption)
+                    .setFieldsHorizontal()
+                    .getElement();
+            },
+
+            radio: function(value, name, caption, data) {
+
+                var dataList = ui.api.existProperty(data, 'list', {});
+
+                return  new ui.FFRadio(value, name, dataList)
+                    .setFieldsHorizontal()
                     .getElement();
             }
         },
@@ -100,21 +143,24 @@
                 var elementRow = new ui.Element('div')
                     .addClassElement('row');
 
-                for (var nameField in this._settings[index]) {
+                if (this._settings.hasOwnProperty(index)) {
 
-                    var countGroup = 12 / Object.keys(this._settings[index]).length;
-                    var dataField = this._settings[index][nameField];
-                    var type = dataField.type;
-                    var caption = ui.api.existProperty(dataField, 'caption', null);
+                    for (var nameField in this._settings[index]) {
 
-                    if (this._fields.hasOwnProperty(type)) {
+                        var countGroup = 12 / Object.keys(this._settings[index]).length;
+                        var dataField = this._settings[index][nameField];
+                        var type = dataField.type;
+                        var caption = ui.api.existProperty(dataField, 'caption', null);
 
-                        elementRow.addChildAfter(
-                            new ui.Element('div')
-                                .setWidthElement(countGroup)
-                                .addChildAfter(this._fields[type](this._values, nameField, caption, dataField))
-                                .getElement()
-                        );
+                        if (this._htmlFields.hasOwnProperty(type)) {
+
+                            elementRow.addChildAfter(
+                                new ui.Element('div')
+                                    .setWidthElement(countGroup)
+                                    .addChildAfter(this._htmlFields[type](this._values, nameField, caption, dataField))
+                                    .getElement()
+                            );
+                        }
                     }
                 }
 
