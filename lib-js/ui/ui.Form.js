@@ -29,7 +29,11 @@
                         r_2: 'radio_2',
                         r_3: 'radio_3'
                     }
-                }
+                },
+                id:    {type: 'textarea', caption: 'Record-ID'}
+            },
+            {
+                id:    {type: 'textarea', caption: 'Record-ID'}
             }
         ];
 
