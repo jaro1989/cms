@@ -7,33 +7,60 @@
 
         this._settings = [
             {
-                id: {type: 'number'},
-                login: {type: 'varchar'},
-                name: {type: 'text'}
+                id: {type: 'text'},
+                login: {type: 'text'},
+                date: {type: 'date'}
             },
             {
-                email: {type: 'email'},
-                phone: {type: 'select', data: [{vaue: '7980498', text: 7980498}, {vaue: '7980422', text: 7980422}]},
+                email: {type: 'text'},
+                phone: {type: 'select', list: [{value: '7980498', text: 7980498}, {value: '7980422', text: 7980422}]},
                 kod: {type: 'text'}
             },
             {
                 description: {type: 'textarea'},
-                date: {type: 'date'}
+                name: {type: 'text'}
             }
         ];
 
-        this._data = {id: 1, login: 'admin', name: 'Валера', email: '1xvx1@mail.ru', phone: '7980498', kod: '029', description: 'text', date: '2008-04-01'};
+        this._values = {id: 1, login: 'admin', name: 'Валера', email: '1xvx1@mail.ru', phone: '7980422', kod: '029', description: 'text', date: '2008-04-01'};
     };
 
     /** @protected */
     ui.Form.prototype = {
 
-        _groupFields: 4,
+        _fields: {
 
-        setGroup: function() {
+            text: function(value, name, caption, data) {
 
-            this._groupFields = 4;
-            return this;
+                return new ui.FFText(value, name, caption)
+                    .getElement();
+            },
+
+            password: function(value, name, caption, data) {
+
+                return new ui.FFPassword(value, name, caption)
+                    .getElement();
+            },
+
+            textarea: function(value, name, caption, data) {
+
+                return new ui.FFTextarea(value, name, caption)
+                    .setResize('vertical')
+                    .getElement();
+            },
+
+            date: function(value, name, caption, data) {
+
+                return new ui.FFDate(value, name, caption)
+                    .getElement();
+            },
+
+            select: function(value, name, caption, data) {
+
+                return  new ui.FFSelect(value, name, caption)
+                    .setList(ui.api.existProperty(data, 'list', {}))
+                    .getElement();
+            }
         },
 
         /**
@@ -60,7 +87,7 @@
          */
         setDataValues: function(data) {
 
-            this.data = data;
+            this._values = data;
             return this;
         },
 
@@ -73,63 +100,19 @@
                 var elementRow = new ui.Element('div')
                     .addClassElement('row');
 
-                for (var field in this._settings[index]) {
+                for (var nameField in this._settings[index]) {
 
                     var countGroup = 12 / Object.keys(this._settings[index]).length;
-                    var dataField = this._settings[index][field];
+                    var dataField = this._settings[index][nameField];
                     var type = dataField.type;
+                    var caption = ui.api.existProperty(dataField, 'caption', null);
 
-                    var dataList = {};
-
-                    if (dataField.hasOwnProperty('data')) {
-
-                        dataList = dataField.data
-                    }
-
-                    if (type == 'textarea') {
+                    if (this._fields.hasOwnProperty(type)) {
 
                         elementRow.addChildAfter(
                             new ui.Element('div')
                                 .setWidthElement(countGroup)
-                                .addChildAfter(
-                                    new ui.FFTextarea(this._data, field, 'Caption')
-                                        .setResize('vertical')
-                                        .getElement()
-                                )
-                                .getElement()
-                        );
-                    } else if (type == 'date') {
-
-                        elementRow.addChildAfter(
-                            new ui.Element('div')
-                                .setWidthElement(countGroup)
-                                .addChildAfter(
-                                    new ui.FFDate(this._data, field, 'Caption')
-                                        .getElement()
-                                )
-                                .getElement()
-                        );
-                    } else if (type == 'select') {
-
-                        elementRow.addChildAfter(
-                            new ui.Element('div')
-                                .setWidthElement(countGroup)
-                                .addChildAfter(
-                                    new ui.FFSelect(this._data, field, 'Caption')
-                                        .setList(dataList)
-                                        .getElement()
-                                )
-                                .getElement()
-                        );
-                    } else {
-
-                        elementRow.addChildAfter(
-                            new ui.Element('div')
-                                .setWidthElement(countGroup)
-                                .addChildAfter(
-                                    new ui.FFText(this._data, field, 'Caption')
-                                        .getElement()
-                                )
+                                .addChildAfter(this._fields[type](this._values, nameField, caption, dataField))
                                 .getElement()
                         );
                     }
