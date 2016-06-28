@@ -18,7 +18,8 @@
             },
             {
                 description: {type: 'textarea', caption: 'Описание'},
-                name: {type: 'text', caption: 'Название'}
+                name:        {type: 'text',     caption: 'Название'},
+                password:    {type: 'password', caption: 'Пароль'}
             },
             {
                 radio_1: {
@@ -45,7 +46,8 @@
             checkbox_2: 0,
             checkbox_3: 1,
             checkbox_4: 0,
-            radio_1: 'r_2'
+            radio_1: 'r_2',
+            password: 'admin'
         };
     };
 
@@ -88,7 +90,7 @@
                     .getElement();
             },
 
-            checkbox: function(value, name, caption, data) {
+            checkbox: function(value, name, caption) {
 
                 return new ui.FFCheckbox()
                     .addCheckbox(value, name, caption)
