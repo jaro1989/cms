@@ -15,23 +15,7 @@
      */
     ui.Form = function () {
 
-        this._values = {
-            id: 1,
-            login: 'admin',
-            name: 'Валера',
-            email: '1xvx1@mail.ru',
-            phone: '7980422',
-            kod: '029',
-            description: 'text',
-            date: '2008-04-01',
-            checkbox_1: 1,
-            checkbox_2: 0,
-            checkbox_3: 1,
-            checkbox_4: 0,
-            radio_1: 'r_2',
-            password: 'admin'
-        };
-
+        this._values   = {};
         this._settings = [];
     };
 
@@ -92,43 +76,14 @@
             }
         },
 
-    //    this._settings = [
-    //    {
-    //        id:    {type: 'checkbox', caption: 'Record-ID'},
-    //        id1:    {type: 'checkbox', caption: 'Record-ID'},
-    //        id2:    {type: 'checkbox', caption: 'Record-ID'},
-    //        id3:    {type: 'checkbox', caption: 'Record-ID'},
-    //        id4:    {type: 'checkbox', caption: 'Record-ID'},
-    //        id5:    {type: 'checkbox', caption: 'Record-ID'},
-    //        login: {type: 'text',     caption: 'Логин'},
-    //        date:  {type: 'date',     caption: 'Дата'}
-    //    },
-    //    {
-    //        email: {type: 'text',   caption: 'Email'},
-    //        phone: {type: 'select', caption: 'Телефон', list: [{value: '7980498', text: 7980498}, {value: '7980422', text: 7980422}]},
-    //        kod:   {type: 'text',   caption: 'Код'}
-    //    },
-    //    {
-    //        description: {type: 'textarea', caption: 'Описание'},
-    //        name:        {type: 'text',     caption: 'Название'},
-    //        password:    {type: 'password', caption: 'Пароль'}
-    //    },
-    //    {
-    //        radio_1: {
-    //            type: 'radio',
-    //            list: {
-    //                r_1: 'radio_1',
-    //                r_2: 'radio_2',
-    //                r_3: 'radio_3'
-    //            }
-    //        },
-    //        id:    {type: 'textarea', caption: 'Record-ID'}
-    //    },
-    //    {
-    //        id:    {type: 'textarea', caption: 'Record-ID'}
-    //    }
-    //];
-
+        /**
+         *
+         * @param {string} type
+         * @param {string|number} caption
+         * @param {{}|[]} listData
+         * @returns {{type: *, caption: *}|{type: *, caption: *, list: {}}}
+         * @private
+         */
         _getDataField: function(type, caption, listData) {
 
             var data = {
@@ -255,23 +210,6 @@
         },
 
         /**
-         * @param field
-         * @param {string} type text|textarea|date|checkbox|radio
-         * @param {{}} data
-         * @returns {ui.Form}
-         * @public
-         */
-        setTypeField: function(field, type, data) {
-
-            this._settings[field] = {type: type, data: data};
-            return this;
-        },
-
-        setFormatDate: function() {
-            return this;
-        },
-
-        /**
          *
          * @param {{}} data
          * @returns {ui.Form}
@@ -282,6 +220,11 @@
             return this;
         },
 
+        /**
+         *
+         * @returns {*|Element}
+         * @private
+         */
         _buildRow: function() {
 
             var pareElement = new ui.Element('div');
