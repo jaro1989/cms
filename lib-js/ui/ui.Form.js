@@ -1,7 +1,12 @@
 (function(ui) {
 
-    var _TYPE_TEXT = 'text';
-    var _TYPE_PASS = 'password';
+    var _TYPE_TEXT     = 'text';
+    var _TYPE_PASS     = 'password';
+    var _TYPE_TEXTAREA = 'textarea';
+    var _TYPE_DATE     = 'date';
+    var _TYPE_SELECT   = 'select';
+    var _TYPE_CHECKBOX = 'checkbox';
+    var _TYPE_RADIO    = 'radio';
 
     /**
      * @memberOf ui
@@ -169,22 +174,47 @@
 
         addTextareaField: function(name, caption) {
 
+            var countRow = this._settings.length - 1;
+
+            this._settings[countRow][name] = this._getDataField(_TYPE_TEXTAREA, caption, null);
+
+            return this;
         },
 
         addDateField: function(name, caption) {
 
+            var countRow = this._settings.length - 1;
+
+            this._settings[countRow][name] = this._getDataField(_TYPE_DATE, caption, null);
+
+            return this;
         },
 
         addSelectField: function(name, caption, data) {
 
+            var countRow = this._settings.length - 1;
+
+            this._settings[countRow][name] = this._getDataField(_TYPE_SELECT, caption, data);
+
+            return this;
         },
 
         addCheckboxField: function(name, caption) {
 
+            var countRow = this._settings.length - 1;
+
+            this._settings[countRow][name] = this._getDataField(_TYPE_CHECKBOX, caption, data);
+
+            return this;
         },
 
-        addRadioField: function(ыname, caption, data) {
+        addRadioField: function(name, caption, data) {
 
+            var countRow = this._settings.length - 1;
+
+            this._settings[countRow][name] = this._getDataField(_TYPE_RADIO, caption, data);
+
+            return this;
         },
 
         /**
