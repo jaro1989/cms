@@ -1,41 +1,14 @@
+(function(ui) {
+
+    var _TYPE_TEXT = 'text';
+    var _TYPE_PASS = 'password';
+
     /**
      * @memberOf ui
      * @namespace ui.Form
      * @constructor
      */
     ui.Form = function () {
-
-        this._settings = [
-            {
-                id:    {type: 'checkbox', caption: 'Record-ID'},
-                login: {type: 'text',     caption: 'Логин'},
-                date:  {type: 'date',     caption: 'Дата'}
-            },
-            {
-                email: {type: 'text',   caption: 'Email'},
-                phone: {type: 'select', caption: 'Телефон', list: [{value: '7980498', text: 7980498}, {value: '7980422', text: 7980422}]},
-                kod:   {type: 'text',   caption: 'Код'}
-            },
-            {
-                description: {type: 'textarea', caption: 'Описание'},
-                name:        {type: 'text',     caption: 'Название'},
-                password:    {type: 'password', caption: 'Пароль'}
-            },
-            {
-                radio_1: {
-                    type: 'radio',
-                    list: {
-                        r_1: 'radio_1',
-                        r_2: 'radio_2',
-                        r_3: 'radio_3'
-                    }
-                },
-                id:    {type: 'textarea', caption: 'Record-ID'}
-            },
-            {
-                id:    {type: 'textarea', caption: 'Record-ID'}
-            }
-        ];
 
         this._values = {
             id: 1,
@@ -53,6 +26,8 @@
             radio_1: 'r_2',
             password: 'admin'
         };
+
+        this._settings = [];
     };
 
     /** @protected */
@@ -112,6 +87,106 @@
             }
         },
 
+    //    this._settings = [
+    //    {
+    //        id:    {type: 'checkbox', caption: 'Record-ID'},
+    //        id1:    {type: 'checkbox', caption: 'Record-ID'},
+    //        id2:    {type: 'checkbox', caption: 'Record-ID'},
+    //        id3:    {type: 'checkbox', caption: 'Record-ID'},
+    //        id4:    {type: 'checkbox', caption: 'Record-ID'},
+    //        id5:    {type: 'checkbox', caption: 'Record-ID'},
+    //        login: {type: 'text',     caption: 'Логин'},
+    //        date:  {type: 'date',     caption: 'Дата'}
+    //    },
+    //    {
+    //        email: {type: 'text',   caption: 'Email'},
+    //        phone: {type: 'select', caption: 'Телефон', list: [{value: '7980498', text: 7980498}, {value: '7980422', text: 7980422}]},
+    //        kod:   {type: 'text',   caption: 'Код'}
+    //    },
+    //    {
+    //        description: {type: 'textarea', caption: 'Описание'},
+    //        name:        {type: 'text',     caption: 'Название'},
+    //        password:    {type: 'password', caption: 'Пароль'}
+    //    },
+    //    {
+    //        radio_1: {
+    //            type: 'radio',
+    //            list: {
+    //                r_1: 'radio_1',
+    //                r_2: 'radio_2',
+    //                r_3: 'radio_3'
+    //            }
+    //        },
+    //        id:    {type: 'textarea', caption: 'Record-ID'}
+    //    },
+    //    {
+    //        id:    {type: 'textarea', caption: 'Record-ID'}
+    //    }
+    //];
+
+        _getDataField: function(type, caption, listData) {
+
+            var data = {
+                type:    type,
+                caption: caption
+            };
+
+            if (listData !== null) {
+
+                data['list'] = listData;
+            }
+
+            return data;
+        },
+
+        /**
+         * Add new row for fields
+         * @returns {ui.Form}
+         */
+        newLine: function()  {
+
+            this._settings.push({});
+            return this;
+        },
+
+        addTextField: function(name, caption) {
+
+            var countRow = this._settings.length - 1;
+
+            this._settings[countRow][name] = this._getDataField(_TYPE_TEXT, caption, null);
+
+            return this;
+        },
+
+        addPasswordField: function(name, caption) {
+
+            var countRow = this._settings.length - 1;
+
+            this._settings[countRow][name] = this._getDataField(_TYPE_PASS, caption, null);
+
+            return this;
+        },
+
+        addTextareaField: function(name, caption) {
+
+        },
+
+        addDateField: function(name, caption) {
+
+        },
+
+        addSelectField: function(name, caption, data) {
+
+        },
+
+        addCheckboxField: function(name, caption) {
+
+        },
+
+        addRadioField: function(ыname, caption, data) {
+
+        },
+
         /**
          * @param field
          * @param {string} type text|textarea|date|checkbox|radio
@@ -153,7 +228,7 @@
 
                     for (var nameField in this._settings[index]) {
 
-                        var countGroup = 12 / Object.keys(this._settings[index]).length;
+                        var countGroup = Math.round(12 / Object.keys(this._settings[index]).length);
                         var dataField = this._settings[index][nameField];
                         var type = dataField.type;
                         var caption = ui.api.existProperty(dataField, 'caption', null);
@@ -216,3 +291,4 @@
             return this;
         }
     };
+} (window.ui || {}));

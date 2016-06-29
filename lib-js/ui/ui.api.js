@@ -93,6 +93,7 @@
          * @returns {*}
          */
         empty: function(value, defaultValue) {
+
             return (value != undefined && value !== null) ? value : defaultValue;
         },
 
@@ -128,6 +129,8 @@
 
                     return nameValue[nameField];
                 }
+
+                return '';
             }
 
             return ui.api.empty(nameValue, '');
