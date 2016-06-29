@@ -154,6 +154,11 @@
             return this;
         },
 
+        /**
+         * @param {string} name
+         * @param {string|number} caption
+         * @returns {ui.Form}
+         */
         addTextField: function(name, caption) {
 
             var countRow = this._settings.length - 1;
@@ -163,6 +168,11 @@
             return this;
         },
 
+        /**
+         * @param {string} name
+         * @param {string|number} caption
+         * @returns {ui.Form}
+         */
         addPasswordField: function(name, caption) {
 
             var countRow = this._settings.length - 1;
@@ -172,6 +182,11 @@
             return this;
         },
 
+        /**
+         * @param {string} name
+         * @param {string|number} caption
+         * @returns {ui.Form}
+         */
         addTextareaField: function(name, caption) {
 
             var countRow = this._settings.length - 1;
@@ -181,6 +196,11 @@
             return this;
         },
 
+        /**
+         * @param {string} name
+         * @param {string|number} caption
+         * @returns {ui.Form}
+         */
         addDateField: function(name, caption) {
 
             var countRow = this._settings.length - 1;
@@ -190,6 +210,12 @@
             return this;
         },
 
+        /**
+         * @param {string} name
+         * @param {string|number} caption
+         * @param {{}|[]} data
+         * @returns {ui.Form}
+         */
         addSelectField: function(name, caption, data) {
 
             var countRow = this._settings.length - 1;
@@ -199,15 +225,26 @@
             return this;
         },
 
+        /**
+         * @param {string} name
+         * @param {string|number} caption
+         * @returns {ui.Form}
+         */
         addCheckboxField: function(name, caption) {
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_CHECKBOX, caption, data);
+            this._settings[countRow][name] = this._getDataField(_TYPE_CHECKBOX, caption, null);
 
             return this;
         },
 
+        /**
+         * @param {string} name
+         * @param {string|number} caption
+         * @param {{}|[]} data
+         * @returns {ui.Form}
+         */
         addRadioField: function(name, caption, data) {
 
             var countRow = this._settings.length - 1;

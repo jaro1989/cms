@@ -19,7 +19,7 @@
                 this._date   = new Date();
                 this._date.setTime(date * 1000);
 
-            } else if (typeof date === 'string') {
+            } else if (typeof date === 'string' && date !== '') {
 
                 this._date   = new Date(date);
 
