@@ -337,7 +337,6 @@
             var inputGroup = new ui.Element('div')
                 .addChildAfter(
                     new ui.Element('div')
-                        .addClassElement('row')
                         .addChildAfter(this._buildField())
                         .addChildAfter(this._buildButtons())
                         .getElement()

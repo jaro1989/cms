@@ -11,16 +11,27 @@
     /**
      * @memberOf ui
      * @namespace ui.Form
+     * @param {string|null} action
      * @constructor
      */
-    ui.Form = function () {
+    ui.Form = function (action) {
 
+        this._action = action;
         this._values   = {};
         this._settings = [];
+        this._buttons  = [
+            {type: 'button', name: 'btn_save',   leftIcon: 'save',    skin: 'primary', caption: 'Сохранить'},
+            {type: 'button', name: 'btn_clean',  leftIcon: 'refresh', skin: 'primary', caption: 'Очистить'},
+            {type: 'button', name: 'btn_remove', leftIcon: 'trash',   skin: 'danger'},
+            {type: 'button', name: 'btn_back',   leftIcon: 'retweet', skin: 'primary', caption: 'Назад'}
+        ];
     };
 
     /** @protected */
     ui.Form.prototype = {
+
+        _title: null,
+        _method: ui.Config.defaultMethodForm,
 
         _htmlFields: {
 
@@ -74,6 +85,12 @@
                     .setFieldsHorizontal()
                     .getElement();
             }
+        },
+
+        setMethod: function(method) {
+
+            this._method = ui.api.empty(method, ui.Config.defaultMethodForm);
+            return this;
         },
 
         /**
@@ -227,7 +244,7 @@
          */
         _buildRow: function() {
 
-            var pareElement = new ui.Element('div');
+            var parentElement = new ui.Element('div');
 
             for (var index in this._settings) {
 
@@ -255,20 +272,34 @@
                     }
                 }
 
-                pareElement.addChildAfter(elementRow.getElement());
+                parentElement.addChildAfter(elementRow.getElement());
             }
 
-            return pareElement.getElement();
+            parentElement.addChildAfter(
+                new ui.FFButton()
+                    .addButtonList(this._buttons)
+                    .setPaddingBlock('lg')
+                    .setActive()
+                    .setGroup('toolbar')
+                    .getElement()
+            );
+
+            return parentElement.getElement();
         },
 
         _buildForrm: function() {
 
-            return new ui.Element('form')
-                .setAttrElement('action', '')
-                .setAttrElement('method', '')
+            var form = new ui.Element('form')
+                .setAttrElement('method', this._method)
                 .setIdElement(this._id)
-                .addChildAfter(this._buildRow())
-                .getElement();
+                .addChildAfter(this._buildRow());
+
+            if (this._action !== null) {
+
+                form.setAttrElement('action', this._action)
+            }
+
+            return form.getElement();
         },
 
         /**

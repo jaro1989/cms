@@ -43,7 +43,9 @@
                 calendarDate:     'calendar',
                 removeDate:       'remove-sign',
                 calendarDateTime: 'time'
-            }
+            },
+
+            defaultMethodForm: 'POST'
         };
 
     } (window.ui || {}));
