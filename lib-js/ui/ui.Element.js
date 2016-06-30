@@ -641,6 +641,21 @@
             },
 
             /**
+             * Set html class - Psition element
+             * @param {string|null} psition { 'legt' | 'right' | 'center' | 'clear' | null }
+             * @returns {ui.Element}
+             */
+            setPsitionElement: function(psition) {
+
+                if (ui.CSS.alignClass.block.hasOwnProperty(psition)) {
+
+                    this.element.classList.add(ui.CSS.alignClass.block[psition]);
+                }
+
+                return this;
+            },
+
+            /**
              * Set height element
              * @param {string|number} height
              * @returns {ui.FFTextarea}

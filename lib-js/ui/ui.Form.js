@@ -19,10 +19,13 @@
         this._action = action;
         this._values   = {};
         this._settings = [];
-        this._buttons  = [
+        this._buttonsLeft  = [
             {type: 'button', name: 'btn_save',   leftIcon: 'save',    skin: 'primary', caption: 'Сохранить'},
             {type: 'button', name: 'btn_clean',  leftIcon: 'refresh', skin: 'primary', caption: 'Очистить'},
-            {type: 'button', name: 'btn_remove', leftIcon: 'trash',   skin: 'danger'},
+            {type: 'button', name: 'btn_remove', leftIcon: 'trash',   skin: 'danger'}
+        ];
+
+        this._buttonsRight  = [
             {type: 'button', name: 'btn_back',   leftIcon: 'retweet', skin: 'primary', caption: 'Назад'}
         ];
     };
@@ -277,9 +280,21 @@
 
             parentElement.addChildAfter(
                 new ui.FFButton()
-                    .addButtonList(this._buttons)
+                    .addButtonList(this._buttonsLeft)
                     .setPaddingBlock('lg')
                     .setActive()
+                    .setWidth(6)
+                    .setGroup('toolbar')
+                    .getElement()
+            );
+
+            parentElement.addChildAfter(
+                new ui.FFButton()
+                    .addButtonList(this._buttonsRight)
+                    .setPositionBlock('right')
+                    .setPaddingBlock('lg')
+                    .setActive()
+                    .setWidth(6)
                     .setGroup('toolbar')
                     .getElement()
             );

@@ -71,6 +71,22 @@
         _padding: ui.Config.padding,
 
         /**
+         * @private
+         * @type {string|null}
+         */
+        _position: null,
+
+        /**
+         * Set psition block button
+         * @param {string|null} psition { 'legt' | 'right' | 'center' | 'clear' | null }
+         * @returns {ui.FFButton}
+         */
+        setPositionBlock: function(psition) {
+            this._position = psition;
+            return this;
+        },
+
+        /**
          * Set padding block button
          * @param {string|null} padding { 'lg' | 'sm' | 'xs' }
          * @returns {ui.FFButton}
@@ -347,6 +363,7 @@
         _buildInlineBlock: function() {
 
             var iblineBlock = new ui.Element('div')
+                .setPsitionElement(this._position)
                 .setPaddingElement(this._padding);
 
             if (this._block === false && this._group !== null) {
