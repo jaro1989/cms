@@ -293,6 +293,7 @@
                 .setRequiredElement(this._required);
 
             if (typeof this._resize === 'string') {
+
                 textarea.addStyleElement('resize', this._resize)
             }
 
@@ -343,7 +344,6 @@
                             .setIconElement(this._rightIcon)
                             .getElement()
                     )
-
             }
 
             return rightMarker.getElement();

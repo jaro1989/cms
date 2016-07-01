@@ -305,11 +305,11 @@
         _buildForrm: function() {
 
             var form = new ui.Element('form')
-                .setAttrElement('method', this._method)
+                //.setAttrElement('method', this._method)
                 .setIdElement(this._id)
                 .addChildAfter(this._buildRow());
 
-            if (this._action !== null) {
+            if (ui.api.empty(this._action, null) !== null) {
 
                 form.setAttrElement('action', this._action)
             }

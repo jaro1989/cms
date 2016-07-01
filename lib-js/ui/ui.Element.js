@@ -728,10 +728,11 @@
              */
             addStyleElement: function(property, value) {
 
-                if (this.element.style.hasOwnProperty(property)) {
+
+                //if (this.element.style.hasOwnProperty(property)) {
 
                     this.element.style[property] = value;
-                }
+                //}
 
                 return this;
             },

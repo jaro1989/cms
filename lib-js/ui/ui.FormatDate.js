@@ -1,6 +1,49 @@
 
     (function(ui) {
 
+        function editDate(date) {
+
+            if (ui.api.empty(date, null) !== null) {
+
+                var arr = date.split(' ');
+                var newDate = '';
+
+                var countArr = arr.length;
+                var separatorDate = ui.Config.separatorDate;
+                var countSeparator = separatorDate.length;
+
+                for (var i = 0; i < countArr; i++) {
+
+                    for (var a = 0; a < countSeparator; a++) {
+
+                        if (typeof arr[i] === 'string' && ~arr[i].indexOf(separatorDate[a])) {
+
+                            var arrOldDate = arr[i].split(separatorDate[a]);
+
+                            for (var key in arrOldDate) {
+
+                                if (arrOldDate[key].length == 1) {
+
+                                    newDate += '0' + arrOldDate[key] + separatorDate[a];
+
+                                } else {
+
+                                    newDate += arrOldDate[key] + separatorDate[a];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (newDate == '') {
+
+                newDate = date;
+            }
+
+            return newDate.replace(/^\s(:)*/, ':').replace(/\s(:)*$/, ':');
+        }
+
         /**
          * @memberOf ui
          * @namespace ui.FormatDate
@@ -20,8 +63,9 @@
                 this._date.setTime(date * 1000);
 
             } else if (typeof date === 'string' && date !== '') {
-
-                this._date   = new Date(date);
+                console.log(editDate(date));
+                //=======================
+                this._date   = new Date(editDate(date));
 
             } else {
 
