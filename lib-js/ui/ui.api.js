@@ -97,6 +97,15 @@
             return (value != undefined && value !== null) ? value : defaultValue;
         },
 
+        trim: function(str, character_mask) {
+
+            character_mask = this.empty(character_mask, '\s');
+
+            var reg = '^' + character_mask + '+|' + character_mask + '+$';
+
+            return str.replace(new RegExp(reg), "");
+        },
+
         /**
          * If "property" exist - return "value" else "defaultValue"
          * @param {{}} object

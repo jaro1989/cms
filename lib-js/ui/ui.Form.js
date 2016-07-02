@@ -11,12 +11,10 @@
     /**
      * @memberOf ui
      * @namespace ui.Form
-     * @param {string|null} action
      * @constructor
      */
     ui.Form = function (action) {
 
-        this._action = action;
         this._values   = {};
         this._settings = [];
         this._buttonsLeft  = [
@@ -33,8 +31,11 @@
     /** @protected */
     ui.Form.prototype = {
 
-        _title: null,
+        _title:  null,
+        _titleSmall: null,
+
         _method: ui.Config.defaultMethodForm,
+        _action: null,
 
         _htmlFields: {
 
@@ -90,9 +91,37 @@
             }
         },
 
+        /**
+         * @param title
+         * @param titleSmall
+         * @returns {ui.Form}
+         */
+        setTitle: function(title, titleSmall) {
+
+            this._title = ui.api.empty(title, null);
+            this._titleSmall = ui.api.empty(titleSmall, null);
+
+            return this;
+        },
+
+        /**
+         *
+         * @param {string} method {'GET'|'POST'}
+         * @returns {ui.Form}
+         */
         setMethod: function(method) {
 
             this._method = ui.api.empty(method, ui.Config.defaultMethodForm);
+            return this;
+        },
+
+        /**
+         * @param {string} action
+         * @returns {ui.Form}
+         */
+        setAction: function(action) {
+
+            this._action = action;
             return this;
         },
 
@@ -252,7 +281,7 @@
             for (var index in this._settings) {
 
                 var elementRow = new ui.Element('div')
-                    .addClassElement('row');
+                    .addClassElement(ui.CSS.newLine);
 
                 if (this._settings.hasOwnProperty(index)) {
 
@@ -305,7 +334,7 @@
         _buildForrm: function() {
 
             var form = new ui.Element('form')
-                //.setAttrElement('method', this._method)
+                .setAttrElement('method', this._method)
                 .setIdElement(this._id)
                 .addChildAfter(this._buildRow());
 
@@ -314,7 +343,10 @@
                 form.setAttrElement('action', this._action)
             }
 
-            return form.getElement();
+            return new ui.Page()
+                .setTitle(this._title, this._titleSmall, null)
+                .setBody(form.toHTML())
+                .getElement();
         },
 
         /**

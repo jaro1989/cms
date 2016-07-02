@@ -1,12 +1,20 @@
 
     (function(ui) {
 
+        /**
+         * Edit string date from "2000-1-1 00:00:00" to "2000-01-01 00:00:00" or
+         *                       "2000-1-1"          to "2000-01-01 00:00:00"
+         * @param {string} date
+         * @returns {{string: '2000-01-01 00:00:00', array: ['2000', '01', '01', '00', '00', '00']}}
+         */
         function editDate(date) {
 
             if (ui.api.empty(date, null) !== null) {
 
-                var arr = date.split(' ');
                 var newDate = '';
+                var arrParseDate = [];
+
+                var arr = date.split(' ');
 
                 var countArr = arr.length;
                 var separatorDate = ui.Config.separatorDate;
@@ -22,18 +30,31 @@
 
                             for (var key in arrOldDate) {
 
+
+
                                 if (arrOldDate[key].length == 1) {
 
                                     newDate += '0' + arrOldDate[key] + separatorDate[a];
+                                    arrParseDate.push('0' + arrOldDate[key]);
 
                                 } else {
 
                                     newDate += arrOldDate[key] + separatorDate[a];
+                                    arrParseDate.push(arrOldDate[key]);
                                 }
                             }
+
+                            newDate = ui.api.trim(newDate, separatorDate[a]) + ' ';
                         }
                     }
                 }
+            }
+
+            if (countArr == 1) {
+
+                arrParseDate.push('00');
+                arrParseDate.push('00');
+                arrParseDate.push('00');
             }
 
             if (newDate == '') {
@@ -41,7 +62,12 @@
                 newDate = date;
             }
 
-            return newDate.replace(/^\s(:)*/, ':').replace(/\s(:)*$/, ':');
+            if (newDate.length < 20) {
+
+                newDate += '00:00:00';
+            }
+
+            return {string: ui.api.trim(newDate, ' '), array: arrParseDate};
         }
 
         /**
@@ -63,9 +89,10 @@
                 this._date.setTime(date * 1000);
 
             } else if (typeof date === 'string' && date !== '') {
-                console.log(editDate(date));
-                //=======================
-                this._date   = new Date(editDate(date));
+
+                var newDare = editDate(date)['array'];
+
+                this._date   = new Date(newDare[0], (newDare[1] - 1), newDare[2], newDare[3], newDare[4], newDare[5]);
 
             } else {
 

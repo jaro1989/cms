@@ -6,6 +6,13 @@
          * @namespace ui.CSS
          */
         ui.CSS = {
+
+            page: {
+                main: 'main',
+                header: 'page-header'
+            },
+
+            newLine: 'row',
             /**
              * @public
              * @type {string}
