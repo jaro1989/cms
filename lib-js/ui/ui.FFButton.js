@@ -213,16 +213,19 @@
 
             for(var row in data) {
 
-                this._buttonList[this._buttonList.length] = {
-                    type:      ui.api.existProperty(data[row], 'type',  'button'),
-                    skin:      ui.api.existProperty(data[row], 'skin',      null),
-                    name:      ui.api.existProperty(data[row], 'name',      null),
-                    value:     ui.api.existProperty(data[row], 'value',     null),
-                    active:    ui.api.existProperty(data[row], 'active',    null),
-                    caption:   ui.api.existProperty(data[row], 'caption',   null),
-                    leftIcon:  ui.api.existProperty(data[row], 'leftIcon',  null),
-                    rightIcon: ui.api.existProperty(data[row], 'rightIcon', null)
-                };
+                if (data.hasOwnProperty(row)) {
+
+                    this._buttonList[this._buttonList.length] = {
+                        type: ui.api.existProperty(data[row], 'type', 'button'),
+                        skin: ui.api.existProperty(data[row], 'skin', null),
+                        name: ui.api.existProperty(data[row], 'name', null),
+                        value: ui.api.existProperty(data[row], 'value', null),
+                        active: ui.api.existProperty(data[row], 'active', null),
+                        caption: ui.api.existProperty(data[row], 'caption', null),
+                        leftIcon: ui.api.existProperty(data[row], 'leftIcon', null),
+                        rightIcon: ui.api.existProperty(data[row], 'rightIcon', null)
+                    };
+                }
             }
 
             return this;

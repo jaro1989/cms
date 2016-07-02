@@ -93,6 +93,7 @@
             _buildHeader: function() {
 
                 return new ui.Element('div')
+                    .addClassElement(ui.CSS.alignClass.block.clear)
                     .setContentElement(this._header)
                     .getElement();
             },
@@ -100,6 +101,7 @@
             _buildBody: function() {
 
                 return new ui.Element('div')
+                    .addClassElement(ui.CSS.alignClass.block.clear)
                     .setContentElement(this._body)
                     .getElement();
             },
@@ -114,6 +116,7 @@
             _buildMainBlock: function() {
 
                 var page =  new ui.Element('div')
+                    .addClassElement(ui.CSS.alignClass.block.clear)
                     .addClassElement(ui.CSS.page.main);
 
                 if (this._title !== null || this._titleSmall !== null) {

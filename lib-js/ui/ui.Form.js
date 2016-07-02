@@ -17,21 +17,34 @@
 
         this._values   = {};
         this._settings = [];
-        this._buttonsLeft  = [
-            {type: 'button', name: 'btn_save',   leftIcon: 'save',    skin: 'primary', caption: 'Сохранить'},
-            {type: 'button', name: 'btn_clean',  leftIcon: 'refresh', skin: 'primary', caption: 'Очистить'},
-            {type: 'button', name: 'btn_remove', leftIcon: 'trash',   skin: 'danger'}
+        this._addBtnBottom  = [];
+        this._addBtnTop     = [];
+
+        this._btnDefaultTop = [
+            {type: 'button', name: '_btnBack',   leftIcon: 'retweet', skin: 'primary', caption: 'Назад'}
         ];
 
-        this._buttonsRight  = [
-            {type: 'button', name: 'btn_back',   leftIcon: 'retweet', skin: 'primary', caption: 'Назад'}
+        this._btnDefaultBottom = [
+            {type: 'button', name: '_btnSave',   leftIcon: 'save',    skin: 'primary', caption: 'Сохранить'},
+            {type: 'button', name: '_btnClean',  leftIcon: 'refresh', skin: 'primary', caption: 'Очистить'},
+            {type: 'button', name: '_btnRemove', leftIcon: 'trash',   skin: 'danger'}
         ];
     };
 
     /** @protected */
     ui.Form.prototype = {
 
-        _title:  null,
+        _positionBtnTop:    'left',
+        _positionBtnBottom: 'right',
+
+        _hideBtn: {
+            _btnSave:   false,
+            _btnClean:  false,
+            _btnRemove: false,
+            _btnBack:   false
+        },
+
+        _title:      null,
         _titleSmall: null,
 
         _method: ui.Config.defaultMethodForm,
@@ -92,8 +105,8 @@
         },
 
         /**
-         * @param title
-         * @param titleSmall
+         * @param {string|null} title
+         * @param {string|null} titleSmall
          * @returns {ui.Form}
          */
         setTitle: function(title, titleSmall) {
@@ -245,7 +258,7 @@
 
         /**
          * @param {string} name
-         * @param {string|number} caption
+         * @param {string|number|null} caption
          * @param {{}|[]} data
          * @returns {ui.Form}
          */
@@ -307,27 +320,6 @@
                 parentElement.addChildAfter(elementRow.getElement());
             }
 
-            parentElement.addChildAfter(
-                new ui.FFButton()
-                    .addButtonList(this._buttonsLeft)
-                    .setPaddingBlock('lg')
-                    .setActive()
-                    .setWidth(6)
-                    .setGroup('toolbar')
-                    .getElement()
-            );
-
-            parentElement.addChildAfter(
-                new ui.FFButton()
-                    .addButtonList(this._buttonsRight)
-                    .setPositionBlock('right')
-                    .setPaddingBlock('lg')
-                    .setActive()
-                    .setWidth(6)
-                    .setGroup('toolbar')
-                    .getElement()
-            );
-
             return parentElement.getElement();
         },
 
@@ -345,8 +337,65 @@
 
             return new ui.Page()
                 .setTitle(this._title, this._titleSmall, null)
+                .setHead(
+                    new ui.FFButton()
+                        .addButtonList(ui.api.arrayMerge(this._btnDefaultTop, this._addBtnTop))
+                        .setPositionBlock(this._positionBtnTop)
+                        .setActive()
+                        .setGroup('toolbar')
+                        .toHTML()
+                )
                 .setBody(form.toHTML())
+                .setFooter(
+                    new ui.FFButton()
+                        .addButtonList(ui.api.arrayMerge(this._btnDefaultBottom, this._addBtnBottom))
+                        .setPositionBlock(this._positionBtnBottom)
+                        .setPaddingBlock('lg')
+                        .setActive()
+                        .setGroup('toolbar')
+                        .toHTML()
+                )
                 .getElement();
+        },
+
+        /**
+         * @param {boolean} hide
+         * @returns {ui.Form}
+         */
+        hideBtnSave: function(hide) {
+
+            this._hideBtn._btnSave = ui.api.empty(hide, true);
+            return this;
+        },
+
+        /**
+         * @param {boolean} hide
+         * @returns {ui.Form}
+         */
+        hideBtnClean: function(hide) {
+
+            this._hideBtn._btnClean = ui.api.empty(hide, true);
+            return this;
+        },
+
+        /**
+         * @param {boolean} hide
+         * @returns {ui.Form}
+         */
+        hideBtnRemove: function(hide) {
+
+            this._hideBtn._btnRemove = ui.api.empty(hide, true);
+            return this;
+        },
+
+        /**
+         * @param {boolean} hide
+         * @returns {ui.Form}
+         */
+        hideBtnBack: function(hide) {
+
+            this._hideBtn._btnBack = ui.api.empty(hide, true);
+            return this;
         },
 
         /**

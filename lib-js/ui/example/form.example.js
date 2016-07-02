@@ -3,8 +3,8 @@
 var APPEND_ELEMENT = '#element_append';
 
 
-    new ui.Form(null)
-        .setTitle('Title form', 'mini title form', null)
+    new ui.Form()
+        .setTitle('Title form', 'mini title form')
         .newLine()
         .addTextField('surname', 'Фамилия')
         .addTextField('name',    'Имя')
@@ -80,3 +80,4 @@ var APPEND_ELEMENT = '#element_append';
             }
         )
         .appendHTML(APPEND_ELEMENT);
+

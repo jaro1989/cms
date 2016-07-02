@@ -106,6 +106,16 @@
             return str.replace(new RegExp(reg), "");
         },
 
+        arrayMerge: function(defaultArr, mergeArray) {
+
+            for (var index in mergeArray) {
+
+                defaultArr.push(mergeArray[index]);
+            }
+
+            return defaultArr;
+        },
+
         /**
          * If "property" exist - return "value" else "defaultValue"
          * @param {{}} object
