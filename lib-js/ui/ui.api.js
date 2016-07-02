@@ -106,6 +106,12 @@
             return str.replace(new RegExp(reg), "");
         },
 
+        /**
+         *
+         * @param {array} defaultArr
+         * @param {array} mergeArray
+         * @returns {*}
+         */
         arrayMerge: function(defaultArr, mergeArray) {
 
             for (var index in mergeArray) {

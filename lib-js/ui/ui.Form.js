@@ -13,29 +13,19 @@
      * @namespace ui.Form
      * @constructor
      */
-    ui.Form = function (action) {
+    ui.Form = function () {
 
         this._values   = {};
         this._settings = [];
         this._addBtnBottom  = [];
         this._addBtnTop     = [];
 
-        this._btnDefaultTop = [
-            {type: 'button', name: '_btnBack',   leftIcon: 'retweet', skin: 'primary', caption: 'Назад'}
-        ];
-
-        this._btnDefaultBottom = [
-            {type: 'button', name: '_btnSave',   leftIcon: 'save',    skin: 'primary', caption: 'Сохранить'},
-            {type: 'button', name: '_btnClean',  leftIcon: 'refresh', skin: 'primary', caption: 'Очистить'},
-            {type: 'button', name: '_btnRemove', leftIcon: 'trash',   skin: 'danger'}
-        ];
+        this._btnDefaultTop    = [];
+        this._btnDefaultBottom = [];
     };
 
     /** @protected */
     ui.Form.prototype = {
-
-        _positionBtnTop:    'left',
-        _positionBtnBottom: 'right',
 
         _hideBtn: {
             _btnSave:   false,
@@ -43,6 +33,9 @@
             _btnRemove: false,
             _btnBack:   false
         },
+
+        _positionBtnTop:    'left',
+        _positionBtnBottom: 'right',
 
         _title:      null,
         _titleSmall: null,
@@ -101,6 +94,41 @@
                 return  new ui.FFRadio(value, name, dataList)
                     .setFieldsHorizontal()
                     .getElement();
+            }
+        },
+
+        /**
+         * @private
+         * returns {voild}
+         */
+        _addDefaultBtn: function() {
+
+            if (this._hideBtn._btnBack === false) {
+
+                this._btnDefaultTop.push(
+                    {type: 'button', name: '_btnBack',   leftIcon: 'retweet', skin: 'primary', caption: 'Назад'}
+                );
+            }
+
+            if (this._hideBtn._btnSave === false) {
+
+                this._btnDefaultBottom.push(
+                    {type: 'button', name: '_btnSave',   leftIcon: 'save',    skin: 'primary', caption: 'Сохранить'}
+                );
+            }
+
+            if (this._hideBtn._btnClean === false) {
+
+                this._btnDefaultBottom.push(
+                    {type: 'button', name: '_btnClean',  leftIcon: 'refresh', skin: 'primary', caption: 'Очистить'}
+                );
+            }
+
+            if (this._hideBtn._btnRemove === false) {
+
+                this._btnDefaultBottom.push(
+                    {type: 'button', name: '_btnRemove', leftIcon: 'trash',   skin: 'danger'}
+                );
             }
         },
 
@@ -335,27 +363,46 @@
                 form.setAttrElement('action', this._action)
             }
 
-            return new ui.Page()
-                .setTitle(this._title, this._titleSmall, null)
-                .setHead(
-                    new ui.FFButton()
-                        .addButtonList(ui.api.arrayMerge(this._btnDefaultTop, this._addBtnTop))
-                        .setPositionBlock(this._positionBtnTop)
-                        .setActive()
-                        .setGroup('toolbar')
-                        .toHTML()
-                )
-                .setBody(form.toHTML())
-                .setFooter(
-                    new ui.FFButton()
-                        .addButtonList(ui.api.arrayMerge(this._btnDefaultBottom, this._addBtnBottom))
-                        .setPositionBlock(this._positionBtnBottom)
-                        .setPaddingBlock('lg')
-                        .setActive()
-                        .setGroup('toolbar')
-                        .toHTML()
-                )
-                .getElement();
+            this._addDefaultBtn();
+
+            var page = new ui.Page()
+                .setTitle(this._title, this._titleSmall, null);
+
+            var btnTop = ui.api.arrayMerge(this._btnDefaultTop, this._addBtnTop);
+
+            if (btnTop.length > 0) {
+
+                page
+                    .setHead(
+                        new ui.FFButton()
+                            .addButtonList(btnTop)
+                            .setPositionBlock(this._positionBtnTop)
+                            .setActive()
+                            .setGroup('toolbar')
+                            .toHTML()
+                    );
+            }
+
+            page
+                .setBody(form.toHTML());
+
+            var btnBottom = ui.api.arrayMerge(this._btnDefaultBottom, this._addBtnBottom);
+
+            if (btnBottom.length > 0) {
+
+                page
+                    .setFooter(
+                        new ui.FFButton()
+                            .addButtonList(btnBottom)
+                            .setPositionBlock(this._positionBtnBottom)
+                            .setPaddingBlock('lg')
+                            .setActive()
+                            .setGroup('toolbar')
+                            .toHTML()
+                    );
+            }
+
+            return page.getElement();
         },
 
         /**
