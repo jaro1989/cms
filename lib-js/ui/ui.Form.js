@@ -8,12 +8,15 @@
     var _TYPE_CHECKBOX = 'checkbox';
     var _TYPE_RADIO    = 'radio';
 
+    var uniqueId = new Date().getTime();
+
     /**
      * @memberOf ui
      * @namespace ui.Form
+     * @param {string} idForm
      * @constructor
      */
-    ui.Form = function () {
+    ui.Form = function (idForm) {
 
         this._values   = {};
         this._settings = [];
@@ -22,6 +25,9 @@
 
         this._btnDefaultTop    = [];
         this._btnDefaultBottom = [];
+
+        this._idForm = ui.api.empty(idForm, uniqueId);
+        uniqueId++;
     };
 
     /** @protected */
@@ -33,6 +39,8 @@
             _btnRemove: false,
             _btnBack:   false
         },
+
+        _urlBack: document.referrer,
 
         _positionBtnTop:    'left',
         _positionBtnBottom: 'right',
@@ -103,24 +111,24 @@
          */
         _addDefaultBtn: function() {
 
-            if (this._hideBtn._btnBack === false) {
+            if (this._hideBtn._btnBack === false && this._urlBack != '') {
 
                 this._btnDefaultTop.push(
-                    {type: 'button', name: '_btnBack',   leftIcon: 'retweet', skin: 'primary', caption: 'Назад'}
+                    {type: 'button', name: '_btnBack', leftIcon: 'retweet', skin: 'primary', caption: 'Назад', onclick: "window.location.href = '" + this._urlBack + "'"}
                 );
             }
 
             if (this._hideBtn._btnSave === false) {
 
                 this._btnDefaultBottom.push(
-                    {type: 'button', name: '_btnSave',   leftIcon: 'save',    skin: 'primary', caption: 'Сохранить'}
+                    {type: 'button', name: '_btnSave', leftIcon: 'save', skin: 'primary', caption: 'Сохранить'}
                 );
             }
 
             if (this._hideBtn._btnClean === false) {
 
                 this._btnDefaultBottom.push(
-                    {type: 'button', name: '_btnClean',  leftIcon: 'refresh', skin: 'primary', caption: 'Очистить'}
+                    {type: 'button', name: '_btnClean', leftIcon: 'refresh', skin: 'primary', caption: 'Очистить'}
                 );
             }
 
@@ -354,6 +362,7 @@
         _buildForrm: function() {
 
             var form = new ui.Element('form')
+                .setIdElement(this._idForm, null)
                 .setAttrElement('method', this._method)
                 .setIdElement(this._id)
                 .addChildAfter(this._buildRow());
@@ -443,6 +452,16 @@
 
             this._hideBtn._btnBack = ui.api.empty(hide, true);
             return this;
+        },
+
+        /**
+         * @param {string} url
+         * @returns {ui.Form}
+         */
+        setUrlBack: function(url) {
+
+            this._urlBack = ui.api.empty(url, null);
+            return this
         },
 
         /**
