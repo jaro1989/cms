@@ -388,13 +388,13 @@
 
                 var parentBlock = ui.api.findParent(element, '.' + ui.CSS.validateFieldBlockClass);
                 var errorBlock  = parentBlock.querySelector('.' + ui.CSS.validateErrorClass);
-                var skinClass = ui.CSS.prefixClass.field + '-' + ui.CSS.skinClass.default['error'];
+                var skinClass   = ui.CSS.prefixClass.field + '-' + ui.CSS.skinClass.default['error'];
 
                 element.parentNode.classList.remove(skinClass);
 
                 errorBlock.innerHTML = '';
 
-                if (element.type === 'checkbox' && !element.checked) {
+                if ((element.type === 'checkbox' || element.type === 'radio') && !element.checked) {
 
                     res = false;
                     errorBlock.innerHTML = this._errorText;
@@ -424,6 +424,7 @@
             var form = document.getElementById(idForm).elements;
 
             var obj = {fields: {}, validate: []};
+            var radio = {};
 
             for (var key in form) {
 
@@ -449,10 +450,18 @@
 
                     } else if (element.type === 'radio') {
 
+                        if (!radio.hasOwnProperty(element.name)) {
+
+                            radio[element.name] = [element.checked];
+
+                        } else {
+
+                            radio[element.name].push(element.checked);
+                        }
+
                         if (element.checked) {
 
                             obj.fields[element.name] = element.value;
-
                         }
 
                     } else {
@@ -461,7 +470,41 @@
                     }
                 }
             }
-            console.log(obj);
+
+            for (var name in radio) {
+
+                var i = 0;
+
+                for (var keyRadio in radio[name]) {
+
+                    if (radio[name][keyRadio] == true) {
+
+                        i++;
+                    }
+                }
+
+                if (i == 0) {
+
+                    element = document.querySelector('input[name=' + name + ']');
+
+                    if (this.validationField(element) === false) {
+
+                        obj.validate.push(element.name);
+                    }
+                } else {
+
+                    element = document.querySelectorAll('input[name=' + name + ']');
+
+                    for (var keyEl in element) {
+
+                        if (element[keyEl].checked) {
+
+                            this.validationField(element[keyEl]);
+                        }
+                    }
+                }
+            }
+
             return obj;
         },
 

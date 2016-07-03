@@ -176,11 +176,14 @@
                 if (ui.api.inArray(this._disabledIf, htmlId) != -1) {
 
                     radio.setDisabledElement(true);
+
                 }
 
                 if (htmlId == this._value) {
 
-                    radio.setCheckedElement(true);
+                    radio
+                        .setIdElement(null, this._name)
+                        .setCheckedElement(true);
                 }
 
                 return radio.getElement();
@@ -228,6 +231,7 @@
                     iblineBlock
                         .addChildBefore(
                             new ui.Element('label')
+                                .setForLabelElement(this._name)
                                 .addClassElement(ui.CSS.controlLabelClass)
                                 .setCaptionElement(this._caption, this._required)
                                 .getElement()
