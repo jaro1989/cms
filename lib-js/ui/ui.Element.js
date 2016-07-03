@@ -235,7 +235,7 @@
             setIdElement: function(htmlId, htmlName) {
 
                 if (typeof htmlId === 'string') {
-
+                    console.log(htmlId);
                     this.element.id = htmlId;
 
                 } else {
