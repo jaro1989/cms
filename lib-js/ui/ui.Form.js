@@ -400,9 +400,11 @@
 
             for (var key in form) {
 
+                //noinspection JSUnfilteredForInLoop
                 var element = form.item(key);
                 element.removeAttribute('value');
 
+                //noinspection JSUnfilteredForInLoop
                 if (element.name != '' && !isNaN(Number(key))) {
 
                     if (element.required || element.classList.contains(ui.CSS.requiredClass)) {
@@ -570,7 +572,6 @@
         },
 
         /**
-         *
          * @returns {*|Element}
          * @private
          */
@@ -588,12 +589,13 @@
                     for (var nameField in this._settings[index]) {
 
                         var countGroup = Math.round(12 / Object.keys(this._settings[index]).length);
+                        //noinspection JSUnfilteredForInLoop
                         var dataField = this._settings[index][nameField];
                         var type = dataField.type;
                         var caption = ui.api.existProperty(dataField, 'caption', null);
 
                         if (this._htmlFields.hasOwnProperty(type)) {
-
+                            //noinspection JSUnfilteredForInLoop
                             elementRow.addChildAfter(
                                 new ui.Element('div')
                                     .setWidthElement(countGroup)
