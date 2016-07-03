@@ -6,21 +6,21 @@ var APPEND_ELEMENT = '#element_append';
     new ui.Form()
         .setTitle('Title form', 'mini title form')
         .newLine()
-        .addTextField('surname', 'Фамилия')
-        .addTextField('name',    'Имя')
-        .addTextField('middlename', 'Отчество')
+        .addTextField('surname', 'Фамилия', true)
+        .addTextField('name',    'Имя', true)
+        .addTextField('middlename', 'Отчество', false)
 
         .newLine()
-        .addTextareaField('description_kr', 'Краткое описание')
-        .addTextareaField('description_pl', 'Полное описание')
+        .addTextareaField('description_kr', 'Краткое описание', true)
+        .addTextareaField('description_pl', 'Полное описание', false)
 
         .newLine()
-        .addTextField('email', 'E-mail')
-        .addPasswordField('password', 'Пароль')
-        .addPasswordField('password_repeat', 'Повторите пароль')
+        .addTextField('email', 'E-mail', true)
+        .addPasswordField('password', 'Пароль', true)
+        .addPasswordField('password_repeat', 'Повторите пароль', true)
 
         .newLine()
-        .addCheckboxField('send_pass', 'Отправить пароль на почту')
+        .addCheckboxField('send_pass', 'Отправить пароль на почту', true)
 
         .newLine()
         .addSelectField(
@@ -33,7 +33,8 @@ var APPEND_ELEMENT = '#element_append';
                 {value: 'YYYY.MM.DD', text: 'YYYY.MM.DD'},
                 {value: 'YYYY-MM-DD', text: 'YYYY-MM-DD'},
                 {value: 'YYYY/MM/DD', text: 'YYYY/MM/DD'}
-            ]
+            ],
+            true
         )
         .addSelectField(
             'test_select',
@@ -43,7 +44,8 @@ var APPEND_ELEMENT = '#element_append';
                 {value: 'DD.MM.YYYY', text: 'DD.MM.YYYY'},
                 {value: 'DD.MM.YYYY', text: 'DD.MM.YYYY'},
                 {value: 'DD.MM.YYYY', text: 'DD.MM.YYYY'}
-            ]
+            ],
+            false
         )
         .addSelectField(
             'test_select_2',
@@ -53,18 +55,20 @@ var APPEND_ELEMENT = '#element_append';
                 {value: 'DD.MM.YYYY', text: 'DD.MM.YYYY'},
                 {value: 'DD.MM.YYYY', text: 'DD.MM.YYYY'},
                 {value: 'DD.MM.YYYY', text: 'DD.MM.YYYY'}
-            ]
+            ],
+            false
         )
 
         .newLine()
-        .addDateField('period_n', 'Период надало')
-        .addDateField('period_k', 'Период конец')
+        .addDateField('period_n', 'Период надало', true)
+        .addDateField('period_k', 'Период конец', true)
         .addRadioField(
             'type',
             null,
-            ['Тип-1', 'Тип-2', 'Тип-3', 'Тип-4']
+            ['Тип-1', 'Тип-2', 'Тип-3', 'Тип-4'],
+            true
         )
-        .setDataValues(
+        .setDataFields(
             {
                 surname: 'Киселев',
                 name: 'Валерий',

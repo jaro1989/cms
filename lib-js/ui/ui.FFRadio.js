@@ -60,10 +60,11 @@
 
             /**
              * Set required field
+             * @param {boolean} required
              * @returns {ui.FFRadio}
              */
-            setRequired: function() {
-                this._required = true;
+            setRequired: function(required) {
+                this._required = ui.api.empty(required, true);
                 return this;
             },
 
@@ -165,10 +166,9 @@
                     .setTypeElement('radio')
                     .setNameElement(this._name)
                     .addClassElement(this._name)
-                    .setValueElement(this._value, this._name)
+                    .setValueElement(htmlId, this._name)
                     .setDisabledElement(this._disabled)
-                    .setRequiredElement(this._required)
-                    .setIdElement(htmlId, null);
+                    .setRequiredElement(this._required);
 
                 if (ui.api.inArray(this._disabledIf, htmlId) != -1) {
 

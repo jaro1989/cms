@@ -126,10 +126,11 @@
 
         /**
          * Set required field
+         * @param {boolean} required
          * @returns {ui.FFTextarea}
          */
-        setRequired: function() {
-            this._required = true;
+        setRequired: function(required) {
+            this._required = ui.api.empty(required, true);
             return this;
         },
 

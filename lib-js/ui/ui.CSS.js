@@ -77,6 +77,12 @@
              * @public
              * @type {string}
              */
+            validateErrorClass: 'validate-error',
+
+            /**
+             * @public
+             * @type {string}
+             */
             checkedClass: 'checked',
 
             /**

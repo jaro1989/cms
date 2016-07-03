@@ -11,6 +11,12 @@
                 .setContentElement(ui.Config.label.required)
                 .addClassElement(ui.CSS.satrClass)
                 .addStyleElement('color', ui.Config.label.colorStar)
+                .addChildAfter(
+                    new ui.Element('small')
+                        .addClassElement(ui.CSS.validateErrorClass)
+                        .addClassElement(ui.CSS.prefixClass.text + '-' + ui.CSS.skinClass.default.danger)
+                        .getElement()
+                )
                 .toHTML();
         };
 
@@ -234,8 +240,8 @@
              */
             setIdElement: function(htmlId, htmlName) {
 
-                if (typeof htmlId === 'string') {
-                    console.log(htmlId);
+                if (typeof htmlId === 'string' || typeof htmlId === 'number') {
+
                     this.element.id = htmlId;
 
                 } else {

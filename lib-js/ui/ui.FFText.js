@@ -95,8 +95,8 @@
              * Set required field
              * @returns {ui.FFText}
              */
-            setRequired: function() {
-                this._required = true;
+            setRequired: function(required) {
+                this._required = ui.api.empty(required, true);
                 return this;
             },
 

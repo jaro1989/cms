@@ -18,12 +18,40 @@
      */
     ui.Form = function (idForm) {
 
+        /**
+         * @type {{}}
+         * @private
+         */
         this._values   = {};
+
+        /**
+         * @type {Array}
+         * @private
+         */
         this._settings = [];
+
+        /**
+         * @type {Array}
+         * @private
+         */
         this._addBtnBottom  = [];
+
+        /**
+         * @type {Array}
+         * @private
+         */
         this._addBtnTop     = [];
 
+        /**
+         * @type {Array}
+         * @private
+         */
         this._btnDefaultTop    = [];
+
+        /**
+         * @type {Array}
+         * @private
+         */
         this._btnDefaultBottom = [];
 
         this._idForm = ui.api.empty(idForm, uniqueId);
@@ -53,28 +81,32 @@
 
         _htmlFields: {
 
-            text: function(value, name, caption) {
+            text: function(value, name, caption, data) {
 
                 return new ui.FFText(value, name, caption)
+                    .setRequired(ui.api.existProperty(data, 'required', false))
                     .getElement();
             },
 
-            password: function(value, name, caption) {
+            password: function(value, name, caption, data) {
 
                 return new ui.FFPassword(value, name, caption)
+                    .setRequired(ui.api.existProperty(data, 'required', false))
                     .getElement();
             },
 
-            textarea: function(value, name, caption) {
+            textarea: function(value, name, caption, data) {
 
                 return new ui.FFTextarea(value, name, caption)
+                    .setRequired(ui.api.existProperty(data, 'required', false))
                     .setResize('vertical')
                     .getElement();
             },
 
-            date: function(value, name, caption) {
+            date: function(value, name, caption, data) {
 
                 return new ui.FFDate(value, name, caption)
+                    .setRequired(ui.api.existProperty(data, 'required', false))
                     .getElement();
             },
 
@@ -83,14 +115,16 @@
                 var dataList = ui.api.existProperty(data, 'list', {});
 
                 return  new ui.FFSelect(value, name, caption)
+                    .setRequired(ui.api.existProperty(data, 'required', false))
                     .setList(dataList)
                     .getElement();
             },
 
-            checkbox: function(value, name, caption) {
+            checkbox: function(value, name, caption, data) {
 
                 return new ui.FFCheckbox()
                     .addCheckbox(value, name, caption)
+                    .setRequired(ui.api.existProperty(data, 'required', false))
                     .setFieldsHorizontal()
                     .getElement();
             },
@@ -100,6 +134,7 @@
                 var dataList = ui.api.existProperty(data, 'list', {});
 
                 return  new ui.FFRadio(value, name, dataList)
+                    .setRequired(ui.api.existProperty(data, 'required', false))
                     .setFieldsHorizontal()
                     .getElement();
             }
@@ -121,7 +156,7 @@
             if (this._hideBtn._btnSave === false) {
 
                 this._btnDefaultBottom.push(
-                    {type: 'button', name: '_btnSave', leftIcon: 'save', skin: 'primary', caption: 'Сохранить'}
+                    {type: 'button', name: '_btnSave', leftIcon: 'save', skin: 'primary', caption: 'Сохранить', onclick: "new ui.Form().getDataFields('" + this._idForm + "')"}
                 );
             }
 
@@ -179,14 +214,16 @@
          * @param {string} type
          * @param {string|number} caption
          * @param {{}|[]} listData
+         * @param {boolean} required
          * @returns {{type: *, caption: *}|{type: *, caption: *, list: {}}}
          * @private
          */
-        _getDataField: function(type, caption, listData) {
+        _getDataField: function(type, caption, listData, required) {
 
             var data = {
-                type:    type,
-                caption: caption
+                type:     type,
+                caption:  caption,
+                required: ui.api.empty(required, false)
             };
 
             if (listData !== null) {
@@ -210,13 +247,14 @@
         /**
          * @param {string} name
          * @param {string|number} caption
+         * @param {boolean} required
          * @returns {ui.Form}
          */
-        addTextField: function(name, caption) {
+        addTextField: function(name, caption, required) {
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_TEXT, caption, null);
+            this._settings[countRow][name] = this._getDataField(_TYPE_TEXT, caption, null, required);
 
             return this;
         },
@@ -224,13 +262,14 @@
         /**
          * @param {string} name
          * @param {string|number} caption
+         * @param {boolean} required
          * @returns {ui.Form}
          */
-        addPasswordField: function(name, caption) {
+        addPasswordField: function(name, caption, required) {
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_PASS, caption, null);
+            this._settings[countRow][name] = this._getDataField(_TYPE_PASS, caption, null, required);
 
             return this;
         },
@@ -238,13 +277,14 @@
         /**
          * @param {string} name
          * @param {string|number} caption
+         * @param {boolean} required
          * @returns {ui.Form}
          */
-        addTextareaField: function(name, caption) {
+        addTextareaField: function(name, caption, required) {
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_TEXTAREA, caption, null);
+            this._settings[countRow][name] = this._getDataField(_TYPE_TEXTAREA, caption, null, required);
 
             return this;
         },
@@ -252,13 +292,14 @@
         /**
          * @param {string} name
          * @param {string|number} caption
+         * @param {boolean} required
          * @returns {ui.Form}
          */
-        addDateField: function(name, caption) {
+        addDateField: function(name, caption, required) {
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_DATE, caption, null);
+            this._settings[countRow][name] = this._getDataField(_TYPE_DATE, caption, null, required);
 
             return this;
         },
@@ -267,13 +308,14 @@
          * @param {string} name
          * @param {string|number} caption
          * @param {{}|[]} data
+         * @param {boolean} required
          * @returns {ui.Form}
          */
-        addSelectField: function(name, caption, data) {
+        addSelectField: function(name, caption, data, required) {
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_SELECT, caption, data);
+            this._settings[countRow][name] = this._getDataField(_TYPE_SELECT, caption, data, required);
 
             return this;
         },
@@ -281,13 +323,14 @@
         /**
          * @param {string} name
          * @param {string|number} caption
+         * @param {boolean} required
          * @returns {ui.Form}
          */
-        addCheckboxField: function(name, caption) {
+        addCheckboxField: function(name, caption, required) {
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_CHECKBOX, caption, null);
+            this._settings[countRow][name] = this._getDataField(_TYPE_CHECKBOX, caption, null, required);
 
             return this;
         },
@@ -296,13 +339,14 @@
          * @param {string} name
          * @param {string|number|null} caption
          * @param {{}|[]} data
+         * @param {boolean} required
          * @returns {ui.Form}
          */
-        addRadioField: function(name, caption, data) {
+        addRadioField: function(name, caption, data, required) {
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_RADIO, caption, data);
+            this._settings[countRow][name] = this._getDataField(_TYPE_RADIO, caption, data, required);
 
             return this;
         },
@@ -312,10 +356,87 @@
          * @param {{}} data
          * @returns {ui.Form}
          */
-        setDataValues: function(data) {
+        setDataFields: function(data) {
 
             this._values = data;
             return this;
+        },
+
+        validationField: function(element) {
+
+            var res = true;
+
+            console.log(element, ui.api.findParent(ui.api.findParent(element, 'div'), 'div'));
+
+            //=========================================
+
+            if (element.required || element.classList.contains(ui.CSS.requiredClass)) {
+
+                if (element.type === 'checkbox' && !element.checked) {
+
+                    res = false;
+
+                } else {
+
+                    if (element.value == '') {
+
+                        res = false;
+                    }
+                }
+            }
+
+            return res;
+        },
+
+        /**
+         * Get values fields
+         * @param {string} idForm
+         * @returns {{}}
+         */
+        getDataFields: function(idForm) {
+
+            var form = document.getElementById(idForm).elements;
+
+            var obj = {fields: {}, validate: []};
+
+            for (var key in form) {
+
+                var element = form.item(key);
+
+                if (element.name != '' && !isNaN(Number(key))) {
+
+                    if (this.validationField(element) === false) {
+
+                        obj.validate.push(element.name);
+                    }
+
+                    if (element.type === 'checkbox') {
+
+                        if (element.checked) {
+
+                            obj.fields[element.name] = ui.Config.checkboxValue.checked;
+
+                        } else {
+
+                            obj.fields[element.name] = ui.Config.checkboxValue.nochecked;
+                        }
+
+                    } else if (element.type === 'radio') {
+
+                        if (element.checked) {
+
+                            obj.fields[element.name] = element.value;
+
+                        }
+
+                    } else {
+
+                        obj.fields[element.name] = element.value;
+                    }
+                }
+            }
+            console.log(obj);
+            return obj;
         },
 
         /**
@@ -364,7 +485,6 @@
             var form = new ui.Element('form')
                 .setIdElement(this._idForm, null)
                 .setAttrElement('method', this._method)
-                .setIdElement(this._id)
                 .addChildAfter(this._buildRow());
 
             if (ui.api.empty(this._action, null) !== null) {
