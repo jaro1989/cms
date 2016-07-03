@@ -64,7 +64,7 @@ var APPEND_ELEMENT = '#element_append';
         .addDateField('period_k', 'Период конец', true)
         .addRadioField(
             'type',
-            null,
+            'Radio',
             ['Тип-1', 'Тип-2', 'Тип-3', 'Тип-4'],
             true
         )

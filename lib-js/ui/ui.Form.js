@@ -137,6 +137,7 @@
 
                 return  new ui.FFRadio(value, name, dataList)
                     .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setCaption(caption)
                     .setFieldsHorizontal()
                     .getElement();
             }

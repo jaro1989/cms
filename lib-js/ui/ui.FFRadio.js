@@ -15,8 +15,6 @@
             this._name       = ui.api.empty(name, null);
             this._radioList  = ui.api.empty(radioList, null);
             this._disabledIf = [];
-            this._requiredIf = [];
-
         };
 
         /** @protected */
@@ -59,6 +57,21 @@
             _required: false,
 
             /**
+             * @private
+             * @type {string|null}
+             */
+            _caption: null,
+
+            /**
+             * @param {string|null} caption
+             * @returns {ui.FFRadio}
+             */
+            setCaption: function(caption) {
+                this._caption = caption;
+                return this;
+            },
+
+            /**
              * Set required field
              * @param {boolean} required
              * @returns {ui.FFRadio}
@@ -74,16 +87,6 @@
              */
             setDisabled: function() {
                 this._disabled = true;
-                return this;
-            },
-
-            /**
-             * Set required field
-             * @param {string} htmlId
-             * @returns {ui.FFRadio}
-             */
-            setRequiredIf: function(htmlId) {
-                this._requiredIf.push(htmlId);
                 return this;
             },
 
@@ -175,11 +178,6 @@
                     radio.setDisabledElement(true);
                 }
 
-                if (ui.api.inArray(this._requiredIf, htmlId) != -1) {
-
-                    radio.setRequiredElement(true);
-                }
-
                 if (htmlId == this._value) {
 
                     radio.setCheckedElement(true);
@@ -197,16 +195,10 @@
              */
             _buildCaption: function(htmlId, caption) {
 
-                var req = false;
-                if (ui.api.inArray(this._requiredIf, htmlId) != -1 || this._required === true) {
-
-                    req = true;
-                }
-
                 var label = new ui.Element('label')
                     .addChildAfter(
                         new ui.Element('span')
-                            .setCaptionRadioElement(caption, req)
+                            .setCaptionRadioElement(caption, false)
                             .addStyleElement('paddingLeft',  '5px')
                             .addStyleElement('paddingRight', '5px')
                             .getElement()
@@ -229,8 +221,18 @@
             _buildInlineBlock: function() {
 
                 var iblineBlock = new ui.Element('div')
-                    .addClassElement(ui.CSS.radioClass)
-                    .addClassElement(ui.CSS.radioInlineClass);
+                    .setPaddingElement('sm');
+
+                if (this._caption !== null) {
+
+                    iblineBlock
+                        .addChildBefore(
+                            new ui.Element('label')
+                                .addClassElement(ui.CSS.controlLabelClass)
+                                .setCaptionElement(this._caption, this._required)
+                                .getElement()
+                        );
+                }
 
                 var block = new ui.Element('div')
                     .addClassElement(ui.CSS.radioClass);
