@@ -45,7 +45,8 @@
                 calendarDateTime: 'time'
             },
 
-            defaultMethodForm: 'POST'
+            defaultMethodForm: 'POST',
+            errorTextField: ' Обязательное поле для заполнения '
         };
 
     } (window.ui || {}));

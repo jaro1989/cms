@@ -83,6 +83,12 @@
              * @public
              * @type {string}
              */
+            validateFieldBlockClass: 'validate-field-block',
+
+            /**
+             * @public
+             * @type {string}
+             */
             checkedClass: 'checked',
 
             /**

@@ -280,7 +280,7 @@
                         .setTypeElement('text')
                         .setDisabledElement(this._disabled)
                         .setRequiredElement(this._required)
-                        .setValueElement(this._valueForEvent[0], null)
+                        .setAttrElement('value', this._valueForEvent[0])
                         .addClassElement(ui.CSS.formControlClass)
                         .addClassElement(inputClassUser)
                         .setReadOnly()
@@ -292,7 +292,7 @@
                         .setNameElement(this._name)
                         .setDisabledElement(this._disabled)
                         .setRequiredElement(this._required)
-                        .setValueElement(this._valueForEvent[1], null)
+                        .setAttrElement('value', this._valueForEvent[1])
                         .addClassElement(inputClassSave)
                         .getElement()
                 )
@@ -336,12 +336,8 @@
         _buildGroupBlock: function() {
 
             var inputGroup = new ui.Element('div')
-                .addChildAfter(
-                    new ui.Element('div')
-                        .addChildAfter(this._buildField())
-                        .addChildAfter(this._buildButtons())
-                        .getElement()
-                );
+                .addChildAfter(this._buildField())
+                .addChildAfter(this._buildButtons());
 
             if (typeof this._widthCaption === 'number') {
 
@@ -359,6 +355,7 @@
         _buildParentBlock: function() {
 
             var parentElement = new ui.Element('div')
+                .addClassElement(ui.CSS.validateFieldBlockClass)
                 .addClassElement(inputClassBlock)
                 .setSkinElement('field', this._skin)
                 .addChildBefore(this._buildGroupBlock())

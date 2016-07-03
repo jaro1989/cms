@@ -61,6 +61,8 @@
     /** @protected */
     ui.Form.prototype = {
 
+        _errorText: ui.Config.errorTextField,
+
         _hideBtn: {
             _btnSave:   false,
             _btnClean:  false,
@@ -138,6 +140,16 @@
                     .setFieldsHorizontal()
                     .getElement();
             }
+        },
+
+        /**
+         * @param {string} text
+         * @returns {ui.Form}
+         */
+        setErrorTextRequred: function(text) {
+
+            this._errorText = ' ' + text + ' ';
+            return this;
         },
 
         /**
@@ -362,25 +374,38 @@
             return this;
         },
 
+        /**
+         *
+         * @param {Element} element
+         * @returns {boolean}
+         */
         validationField: function(element) {
 
             var res = true;
 
-            console.log(element, ui.api.findParent(ui.api.findParent(element, 'div'), 'div'));
-
-            //=========================================
-
             if (element.required || element.classList.contains(ui.CSS.requiredClass)) {
+
+                var parentBlock = ui.api.findParent(element, '.' + ui.CSS.validateFieldBlockClass);
+                var errorBlock  = parentBlock.querySelector('.' + ui.CSS.validateErrorClass);
+                var skinClass = ui.CSS.prefixClass.field + '-' + ui.CSS.skinClass.default['error'];
+
+                element.parentNode.classList.remove(skinClass);
+
+                errorBlock.innerHTML = '';
 
                 if (element.type === 'checkbox' && !element.checked) {
 
                     res = false;
+                    errorBlock.innerHTML = this._errorText;
+                    element.parentNode.classList.add(skinClass);
 
                 } else {
 
                     if (element.value == '') {
 
                         res = false;
+                        errorBlock.innerHTML = this._errorText;
+                        element.parentNode.classList.add(skinClass);
                     }
                 }
             }

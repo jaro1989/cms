@@ -357,6 +357,7 @@
             _buildParentBlock: function() {
 
                 var parentElement = new ui.Element('div')
+                    .addClassElement(ui.CSS.validateFieldBlockClass)
                     .setSkinElement('field', this._skin)
                     .addChildBefore(this._buildGroupBlock())
                     .setPaddingElement(this._padding);

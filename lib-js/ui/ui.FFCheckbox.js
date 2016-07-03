@@ -314,6 +314,7 @@
         _buildParentBlock: function() {
 
             return new ui.Element('div')
+                .addClassElement(ui.CSS.validateFieldBlockClass)
                 .setSkinElement('field', this._skin)
                 .setWidthElement(this._width)
                 .addChildBefore(this._buildInlineBlock())
