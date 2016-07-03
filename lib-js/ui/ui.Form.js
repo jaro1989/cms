@@ -25,31 +25,31 @@
         this._values   = {};
 
         /**
-         * @type {Array}
+         * @type {array}
          * @private
          */
         this._settings = [];
 
         /**
-         * @type {Array}
+         * @type {array}
          * @private
          */
         this._addBtnBottom  = [];
 
         /**
-         * @type {Array}
+         * @type {array}
          * @private
          */
         this._addBtnTop     = [];
 
         /**
-         * @type {Array}
+         * @type {array}
          * @private
          */
         this._btnDefaultTop    = [];
 
         /**
-         * @type {Array}
+         * @type {array}
          * @private
          */
         this._btnDefaultBottom = [];
@@ -60,6 +60,8 @@
 
     /** @protected */
     ui.Form.prototype = {
+
+        _validation: true,
 
         _errorText: ui.Config.errorTextField,
 
@@ -144,6 +146,16 @@
         },
 
         /**
+         * Shut off validator
+         * @returns {ui.Form}
+         */
+        disableValidation: function() {
+
+            this._validation = false;
+            return this;
+        },
+
+        /**
          * @param {string} text
          * @returns {ui.Form}
          */
@@ -169,14 +181,14 @@
             if (this._hideBtn._btnSave === false) {
 
                 this._btnDefaultBottom.push(
-                    {type: 'button', name: '_btnSave', leftIcon: 'save', skin: 'primary', caption: 'Сохранить', onclick: "new ui.Form().getDataFields('" + this._idForm + "')"}
+                    {type: 'button', name: '_btnSave', leftIcon: 'save', skin: 'primary', caption: 'Сохранить', onclick: "new ui.Form().getDataFields('" + this._idForm + "', " + this._validation + ")"}
                 );
             }
 
             if (this._hideBtn._btnClean === false) {
 
                 this._btnDefaultBottom.push(
-                    {type: 'button', name: '_btnClean', leftIcon: 'refresh', skin: 'primary', caption: 'Очистить'}
+                    {type: 'button', name: '_btnClean', leftIcon: 'refresh', skin: 'primary', caption: 'Очистить', onclick: "new ui.Form().resetForm('" + this._idForm + "')"}
                 );
             }
 
@@ -377,13 +389,47 @@
 
         /**
          *
-         * @param {Element} element
+         * @param {string} idForm
+         * @returns {boolean}
+         */
+        resetForm: function(idForm) {
+
+            document.getElementById(idForm).reset();
+
+            var form = document.getElementById(idForm).elements;
+
+            for (var key in form) {
+
+                var element = form.item(key);
+                element.removeAttribute('value');
+
+                if (element.name != '' && !isNaN(Number(key))) {
+
+                    if (element.required || element.classList.contains(ui.CSS.requiredClass)) {
+
+                        var parentBlock = ui.api.findParent(element, '.' + ui.CSS.validateFieldBlockClass);
+                        var errorBlock = parentBlock.querySelector('.' + ui.CSS.validateErrorClass);
+                        var skinClass = ui.CSS.prefixClass.field + '-' + ui.CSS.skinClass.default['error'];
+
+                        element.parentNode.classList.remove(skinClass);
+                        errorBlock.innerHTML = '';
+                    }
+                }
+            }
+
+            return true;
+        },
+
+        /**
+         *
+         * @param {*|Element} element
          * @returns {boolean}
          */
         validationField: function(element) {
 
             var res = true;
 
+            //noinspection JSUnresolvedVariable
             if (element.required || element.classList.contains(ui.CSS.requiredClass)) {
 
                 var parentBlock = ui.api.findParent(element, '.' + ui.CSS.validateFieldBlockClass);
@@ -391,9 +437,9 @@
                 var skinClass   = ui.CSS.prefixClass.field + '-' + ui.CSS.skinClass.default['error'];
 
                 element.parentNode.classList.remove(skinClass);
-
                 errorBlock.innerHTML = '';
 
+                //noinspection JSUnresolvedVariable
                 if ((element.type === 'checkbox' || element.type === 'radio') && !element.checked) {
 
                     res = false;
@@ -402,6 +448,7 @@
 
                 } else {
 
+                    //noinspection JSUnresolvedVariable
                     if (element.value == '') {
 
                         res = false;
@@ -417,9 +464,10 @@
         /**
          * Get values fields
          * @param {string} idForm
-         * @returns {{}}
+         * @param {boolean} validate
+         * @returns {{fields: {}, validate: []}}
          */
-        getDataFields: function(idForm) {
+        getDataFields: function(idForm, validate) {
 
             var form = document.getElementById(idForm).elements;
 
@@ -428,13 +476,18 @@
 
             for (var key in form) {
 
+                //noinspection JSUnfilteredForInLoop
                 var element = form.item(key);
 
+                //noinspection JSUnfilteredForInLoop
                 if (element.name != '' && !isNaN(Number(key))) {
 
-                    if (this.validationField(element) === false) {
+                    if (validate === true) {
 
-                        obj.validate.push(element.name);
+                        if (this.validationField(element, validate) === false) {
+
+                            obj.validate.push(element.name);
+                        }
                     }
 
                     if (element.type === 'checkbox') {
@@ -471,35 +524,43 @@
                 }
             }
 
-            for (var name in radio) {
+            if (validate === true) {
 
-                var i = 0;
+                for (var name in radio) {
 
-                for (var keyRadio in radio[name]) {
+                    var i = 0;
 
-                    if (radio[name][keyRadio] == true) {
+                    //noinspection JSUnfilteredForInLoop
+                    for (var keyRadio in radio[name]) {
 
-                        i++;
+                        //noinspection JSUnfilteredForInLoop
+                        if (radio[name][keyRadio] == true) {
+
+                            i++;
+                        }
                     }
-                }
 
-                if (i == 0) {
+                    if (i == 0) {
 
-                    element = document.querySelector('input[name=' + name + ']');
+                        element = document.querySelector('input[name=' + name + ']');
 
-                    if (this.validationField(element) === false) {
+                        if (this.validationField(element) === false) {
 
-                        obj.validate.push(element.name);
-                    }
-                } else {
+                            obj.validate.push(element.name);
+                        }
 
-                    element = document.querySelectorAll('input[name=' + name + ']');
+                    } else {
 
-                    for (var keyEl in element) {
+                        element = document.querySelectorAll('input[name=' + name + ']');
 
-                        if (element[keyEl].checked) {
+                        for (var keyEl in element) {
 
-                            this.validationField(element[keyEl]);
+                            //noinspection JSUnfilteredForInLoop
+                            if (element[keyEl].checked) {
+
+                                //noinspection JSUnfilteredForInLoop
+                                this.validationField(element[keyEl]);
+                            }
                         }
                     }
                 }
@@ -549,6 +610,11 @@
             return parentElement.getElement();
         },
 
+        /**
+         * Generate html form
+         * @returns {*|Element}
+         * @private
+         */
         _buildForrm: function() {
 
             var form = new ui.Element('form')

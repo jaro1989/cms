@@ -399,8 +399,8 @@
         _setCurrentDate: function(e) {
 
             var parentElement = ui.api.findParent(e, '.' + inputClassBlock);
-            parentElement.querySelector('input[type=text]').value   = new ui.FormatDate(null, this._formatDateUser).getCurrentDate();
-            parentElement.querySelector('input[type=hidden]').value = new ui.FormatDate(null, this._formatDateSave).getCurrentDate();
+            parentElement.querySelector('input[type=text]').setAttribute('value', new ui.FormatDate(null, this._formatDateUser).getCurrentDate());
+            parentElement.querySelector('input[type=hidden]').setAttribute('value', new ui.FormatDate(null, this._formatDateSave).getCurrentDate());
         },
 
         /**
@@ -436,8 +436,8 @@
         _clearDate: function(e) {
 
             var parentElement = ui.api.findParent(e, '.' + inputClassBlock);
-            parentElement.querySelector('input[type=text]').value   = '';
-            parentElement.querySelector('input[type=hidden]').value = '';
+            parentElement.querySelector('input[type=text]').removeAttribute('value');
+            parentElement.querySelector('input[type=hidden]').removeAttribute('value');
         },
 
         /**

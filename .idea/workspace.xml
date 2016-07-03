@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e625a249-66d9-49c4-82c3-b892a980c4cc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.CSS.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.CSS.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Calendar.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Calendar.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Form.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Form.js" />
     </list>
     <ignored path="cms.iws" />
@@ -47,11 +49,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ui.Form.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ui.Form.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Form.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.2758621">
-              <caret line="473" column="34" selection-start-line="473" selection-start-column="29" selection-end-line="473" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.3329718">
+              <caret line="405" column="56" selection-start-line="405" selection-start-column="56" selection-end-line="405" selection-end-column="56" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ui.FFDate.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFDate.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.95">
+              <caret line="410" column="8" selection-start-line="410" selection-start-column="8" selection-end-line="410" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ui.Calendar.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.95">
+              <caret line="430" column="63" selection-start-line="430" selection-start-column="60" selection-end-line="430" selection-end-column="67" />
               <folding />
             </state>
           </provider>
@@ -90,8 +112,8 @@
       <file leaf-file-name="ui.Element.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Element.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.95">
-              <caret line="361" column="47" selection-start-line="361" selection-start-column="40" selection-end-line="361" selection-end-column="47" />
+            <state vertical-scroll-proportion="-3.95">
+              <caret line="84" column="23" selection-start-line="84" selection-start-column="23" selection-end-line="84" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -100,17 +122,17 @@
       <file leaf-file-name="ui.CSS.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.2">
-              <caret line="217" column="25" selection-start-line="217" selection-start-column="20" selection-end-line="217" selection-end-column="25" />
+            <state vertical-scroll-proportion="-12.0">
+              <caret line="119" column="23" selection-start-line="119" selection-start-column="22" selection-end-line="119" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="form.example.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="form.example.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/example/form.example.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.84598696">
+            <state vertical-scroll-proportion="-26.896551">
               <caret line="82" column="16" selection-start-line="82" selection-start-column="16" selection-end-line="82" selection-end-column="16" />
               <folding />
             </state>
@@ -174,25 +196,25 @@
         <option value="$PROJECT_DIR$/lib-js/ui/example/ui.Calendar.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/index.php" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/ffDate.example.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.Calendar.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FormatDate.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/ui.Page.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/index.html" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.Page.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFButton.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.api.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.CSS.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFPassword.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFSelect.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFText.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFTextarea.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.Config.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.Element.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFCheckbox.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.Form.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.FFDate.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.Calendar.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/example/form.example.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.CSS.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.Form.js" />
       </list>
     </option>
   </component>
@@ -725,12 +747,6 @@
       <option name="number" value="Default" />
       <updated>1463857792974</updated>
     </task>
-    <task id="LOCAL-00042" summary="Lib-JS: Select list  (update)">
-      <created>1465851362914</created>
-      <option name="number" value="00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1465851362915</updated>
-    </task>
     <task id="LOCAL-00043" summary="Lib-JS: Select list  (update)">
       <created>1465934390259</created>
       <option name="number" value="00043" />
@@ -1019,7 +1035,13 @@
       <option name="project" value="LOCAL" />
       <updated>1467566227317</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="Form update">
+      <created>1467571082563</created>
+      <option name="number" value="00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1467571082563</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1336,14 +1358,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.26681128">
-          <caret line="569" column="0" selection-start-line="569" selection-start-column="0" selection-end-line="569" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Page.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1408,22 +1422,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.2">
-          <caret line="217" column="25" selection-start-line="217" selection-start-column="20" selection-end-line="217" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFDate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.64859">
-          <caret line="293" column="59" selection-start-line="293" selection-start-column="59" selection-end-line="293" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFCheckbox.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.35">
@@ -1448,14 +1446,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Element.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.95">
-          <caret line="361" column="47" selection-start-line="361" selection-start-column="40" selection-end-line="361" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-17.7">
@@ -1464,18 +1454,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Form.js">
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/form.example.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.2758621">
-          <caret line="473" column="34" selection-start-line="473" selection-start-column="29" selection-end-line="473" selection-end-column="34" />
+        <state vertical-scroll-proportion="-26.896551">
+          <caret line="82" column="16" selection-start-line="82" selection-start-column="16" selection-end-line="82" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/form.example.js">
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Element.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.84598696">
-          <caret line="82" column="16" selection-start-line="82" selection-start-column="16" selection-end-line="82" selection-end-column="16" />
+        <state vertical-scroll-proportion="-3.95">
+          <caret line="84" column="23" selection-start-line="84" selection-start-column="23" selection-end-line="84" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Calendar.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.95">
+          <caret line="430" column="63" selection-start-line="430" selection-start-column="60" selection-end-line="430" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.0">
+          <caret line="119" column="23" selection-start-line="119" selection-start-column="22" selection-end-line="119" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFDate.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.95">
+          <caret line="410" column="8" selection-start-line="410" selection-start-column="8" selection-end-line="410" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Form.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3329718">
+          <caret line="405" column="56" selection-start-line="405" selection-start-column="56" selection-end-line="405" selection-end-column="56" />
           <folding />
         </state>
       </provider>

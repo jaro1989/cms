@@ -570,14 +570,14 @@
 
                     var selectorUser = parentElement.getAttribute('data-selector-user');
                     var formatUser = parentElement.getAttribute('date-format-user');
-                    document.body.querySelector(selectorUser).value = new ui.FormatDate(setDate, formatUser).getDate();
+                    document.body.querySelector(selectorUser).setAttribute('value', new ui.FormatDate(setDate, formatUser).getDate());
                 }
 
                 if (parentElement.hasAttribute('data-selector-save')) {
 
                     var selectorSave = parentElement.getAttribute('data-selector-save');
                     var formatSave = parentElement.getAttribute('date-format-save');
-                    document.body.querySelector(selectorSave).value = new ui.FormatDate(setDate, formatSave).getDate();
+                    document.body.querySelector(selectorSave).setAttribute('value', new ui.FormatDate(setDate, formatSave).getDate());
                 }
 
                 parentElement.remove();

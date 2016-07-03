@@ -15,115 +15,115 @@
             newLine: 'row',
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             iconClass: 'glyphicon',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             widthClass: 'col-md',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             inputGroupClass: 'input-group',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             inputGroupAddonClass: 'input-group-addon',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             formGroupClass: 'form-group',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             formControlClass: 'form-control',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             controlLabelClass: 'control-label',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             inputGroupBtnClass: 'input-group-btn',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             disabledClass: 'disabled',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             requiredClass: 'required',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             validateErrorClass: 'validate-error',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             validateFieldBlockClass: 'validate-field-block',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             checkedClass: 'checked',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             satrClass: 'star',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             radioClass: 'radio',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             radioInlineClass: 'radio-inline',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             checkboxClass: 'checkbox',
 
             /**
              * @public
-             * @type {string}
+             * @type {*}
              */
             checkboxInlineClass: 'checkbox-inline',
 
             /**
              * @public
-             * @type { {btnClass: string, btnGroupClass: string, btnGroup: { group: string, toolbar: string, vertical: string, justified: string } } }
+             * @type { {btnClass: *, btnGroupClass: *, btnGroup: { group: *, toolbar: *, vertical: *, justified: * } } }
              */
             btn: {
                 btnClass: 'btn',
@@ -138,7 +138,7 @@
 
             /**
              * @public
-             * @type { { striped: string, bordered: string, borderedNone: string, hover: string, condensed: string } } }
+             * @type { { striped: *, bordered: *, borderedNone: *, hover: *, condensed: * } } }
              */
             tableClass: {
                 striped:      'table-striped',
@@ -150,7 +150,7 @@
 
             /**
              * @public
-             * @type { { text: { right: string, center: string }, block: { clear: string, left: string, right: string, center: string } } }
+             * @type { { text: { right: *, center: * }, block: { clear: *, left: *, right: *, center: * } } }
              */
             alignClass: {
                 text: {
@@ -167,7 +167,7 @@
 
             /**
              * @public
-             * @type { { field: string, text: string } }
+             * @type { { field: *, text: *, button: * } }
              */
             prefixClass: {
                 field: 'has',
@@ -177,7 +177,7 @@
 
             /**
              * @public
-             * @type { { panel: string, panelBody: string, panelFoot: string, panelHead: string, panelTitle: string } }
+             * @type { { panel: *, panelBody: *, panelFoot: *, panelHead: *, panelTitle: * } }
              */
             panelClass: {
                 panel:      'panel',
@@ -188,7 +188,7 @@
             },
 
             /**
-             * @type { { item: { disabled: string, active: string }, side: { left: string, rirht: string } } }
+             * @type { { item: { disabled: *, active: * }, side: { left: *, rirht: * } } }
              */
             paginationClass: {
                 item: {
@@ -203,7 +203,7 @@
 
             /**
              * @public
-             * @type { { default: {disabled: string, active: string, success: string, warning: string, danger: string, info: string, link: string, default: string, error: string, primary: string}, panel: {default: string, primary: string, success: string, warning: string, danger: string, info: string} } }
+             * @type { { default: {disabled: *, active: *, success: *, warning: *, danger: *, info: *, link: *, default: *, error: *, primary: *}, panel: {default: *, primary: *, success: *, warning: *, danger: *, info: *} } }
              */
             skinClass: {
                 default: {
@@ -234,7 +234,7 @@
 
             /**
              * @public
-             * @type { { input: { lg: string, sm: string }, button: { lg: string, sm: string, xs: string }, pagination: { lg: string, sm: string }, field: {sm: string}} }
+             * @type { { input: { lg: *, sm: * }, button: { lg: *, sm: *, xs: * }, pagination: { lg: *, sm: * }, field: {sm: *}} }
              */
             sizeClass: {
                 input: {
@@ -257,7 +257,7 @@
 
             /**
              * @public
-             * @type { { lg: string, sm: string, xs: string } }
+             * @type { { lg: *, sm: *, xs: * } }
              */
             paddingClass: {
                 lg: 'well-lg',
@@ -267,7 +267,7 @@
 
             /**
              * @public
-             * @type { { none: string, vertical: string, horizontal: string } }
+             * @type { { none: *, vertical: *, horizontal: * } }
              */
             resizeStyle: {
                 none: 'none',
