@@ -46,7 +46,7 @@
             },
 
             defaultMethodForm: 'POST',
-            errorTextField: ' Обязательное поле для заполнения '
+            errorTextRequred: ' Обязательное поле для заполнения '
         };
 
     } (window.ui || {}));

@@ -5,6 +5,7 @@ var APPEND_ELEMENT = '#element_append';
 
     new ui.Form()
         .setTitle('Title form', 'mini title form')
+        .setDeletion('id', 'url/action/delete')
         .newLine()
         .addTextField('surname', 'Фамилия', true)
         .addTextField('name',    'Имя', true)
@@ -70,6 +71,7 @@ var APPEND_ELEMENT = '#element_append';
         )
         .setDataFields(
             {
+                id: 2,
                 surname: 'Киселев',
                 name: 'Валерий',
                 middlename: 'Александрович',
