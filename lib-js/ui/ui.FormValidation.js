@@ -84,7 +84,7 @@
 
                     if (this._disableValidator === false) {
 
-                        if (this.validationField(element) === false) {
+                        if (this.validationField(element) === false && element.type !== 'radio') {
 
                             this.errorField.push(element.name);
                         }

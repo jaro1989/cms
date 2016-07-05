@@ -46,6 +46,7 @@
             },
 
             defaultMethodForm: 'POST',
+            defaultMethodAjax: 'POST',
             errorTextRequred: ' Обязательное поле для заполнения '
         };
 
