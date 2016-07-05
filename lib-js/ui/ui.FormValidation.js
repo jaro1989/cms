@@ -178,6 +178,7 @@
         save: function() {
 
             var data = this.getDataFields();
+
             new ui.Ajax()
                 .setUrl('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
                 .setParams(data['data'])
@@ -185,6 +186,7 @@
                 .addCallbackFunction(function(e) {
 
                     console.log(e);
+
                 })
                 .send();
 
@@ -199,8 +201,17 @@
             this._disableValidator = true;
             var data = this.getDataFields();
 
-            //Ajax
-            console.log(data);
+            new ui.Ajax()
+                .setUrl('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+                .setParams(data['data'])
+                .addParam('action', 'remove')
+                .addCallbackFunction(function(e) {
+
+                    console.log(e);
+
+                })
+                .send();
+
             return true
         },
 
