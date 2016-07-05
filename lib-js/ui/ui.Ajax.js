@@ -3,16 +3,13 @@
     /**
      * @memberOf ui
      * @namespace ui.Ajax
-     * @param {string} url
-     * @param {{}} data
      * @constructor
      */
-    ui.Ajax = function (url, data) {
+    ui.Ajax = function (data) {
 
-        this._url = url;
-        this._paramsObj = ui.api.empty(data, {});
         this._xhr = new XMLHttpRequest();
         this._callback = [];
+        this._params = {};
     };
 
     /** @protected */
@@ -21,6 +18,16 @@
         _method: ui.Config.defaultMethodAjax,
         _async: true,
         _timeout: 30000,
+
+        /**
+         * @param {string} url
+         * @returns {ui.Ajax}
+         */
+        setUrl: function(url) {
+
+            this._url = url;
+            return this;
+        },
 
         /**
          * @param {string} method
@@ -82,14 +89,14 @@
             var delimiter = '';
             var str = '';
 
-            for (var key in this._paramsObj) {
+            for (var key in this._params) {
 
                 if (i == 1) {
 
                     delimiter = '&';
                 }
 
-                str += (delimiter + key + '=' + this._paramsObj[key]);
+                str += (delimiter + key + '=' + this._params[key]);
                 i++;
             }
 
@@ -140,7 +147,7 @@
 
                     for (var key in callback) {
 
-                        callback[key].call(this.responseText);
+                        callback[key](this.responseText, this);
                     }
 
                 } else if (this.readyState === 4 && this.status !== 200) {

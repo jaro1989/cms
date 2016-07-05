@@ -70,19 +70,18 @@
             _btnBack:   false
         },
 
-        _urlBack: document.referrer,
-
         _positionBtnTop:    'left',
         _positionBtnBottom: 'right',
 
-        _deletingField:  null,
-        _deletingAction: null,
-
+        _delField:   null,
         _title:      null,
         _titleSmall: null,
 
         _method: ui.Config.defaultMethodForm,
-        _action: null,
+        _urlBack: document.referrer,
+        _urlAdd:  null,
+        _urlEdit: null,
+        _urlDel:  null,
 
         _htmlFields: {
 
@@ -194,7 +193,7 @@
                 );
             }
 
-            if (this._hideBtn._btnRemove === false && this._values.hasOwnProperty(this._deletingField)) {
+            if (this._hideBtn._btnRemove === false && this._values.hasOwnProperty(this._delField)) {
 
                 this._btnDefaultBottom.push(
                     {
@@ -286,9 +285,9 @@
                 .setAttrElement('method', this._method)
                 .addChildAfter(this._buildRow());
 
-            if (ui.api.empty(this._action, null) !== null) {
+            if (ui.api.empty(this._urlAdd, null) !== null) {
 
-                form.setAttrElement('action', this._action)
+                form.setAttrElement('action', this._urlAdd)
             }
 
             this._addDefaultBtn();
@@ -501,28 +500,6 @@
         },
 
         /**
-         * @param {string} field
-         * @param {string} action
-         * @returns {ui.Form}
-         */
-        setDeletion: function(field, action) {
-
-            this._deletingField  = field;
-            this._deletingAction = action;
-            return this;
-        },
-
-        /**
-         * @param {string} text
-         * @returns {ui.Form}
-         */
-        setErrorTextRequred: function(text) {
-
-            this._errorText = ' ' + text + ' ';
-            return this;
-        },
-
-        /**
          *
          * @param {{}} data
          * @returns {ui.Form}
@@ -531,16 +508,6 @@
 
             this._values = data;
             return this;
-        },
-
-        /**
-         * @param {string} url
-         * @returns {ui.Form}
-         */
-        setUrlBack: function(url) {
-
-            this._urlBack = ui.api.empty(url, null);
-            return this
         },
 
         /**
@@ -568,12 +535,44 @@
         },
 
         /**
-         * @param {string} action
+         * @param {string} url
          * @returns {ui.Form}
          */
-        setAction: function(action) {
+        setUrlBack: function(url) {
 
-            this._action = action;
+            this._urlBack = url;
+            return this
+        },
+
+        /**
+         * @param {string} url
+         * @returns {ui.Form}
+         */
+        setUrlAdd: function(url) {
+
+            this._urlAdd = url;
+            return this;
+        },
+
+        /**
+         * @param {string} url
+         * @returns {ui.Form}
+         */
+        setUrlEdit: function(url) {
+
+            this._urlEdit = url;
+            return this;
+        },
+
+        /**
+         * @param {string} url
+         * @param {string|number} field
+         * @returns {ui.Form}
+         */
+        setUrtDel: function(field, url) {
+
+            this._delField  = field;
+            this._urlDel = url;
             return this;
         },
 

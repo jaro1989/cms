@@ -5,7 +5,9 @@ var APPEND_ELEMENT = '#element_append';
 
     new ui.Form()
         .setTitle('Title form', 'mini title form')
-        .setDeletion('id', 'url/action/delete')
+        .setUrtDel('id', 'http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+        .setUrlAdd('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+        .setUrlEdit('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .newLine()
         .addTextField('surname', 'Фамилия', true)
         .addTextField('name',    'Имя', true)
@@ -87,15 +89,15 @@ var APPEND_ELEMENT = '#element_append';
         )
         .appendHTML(APPEND_ELEMENT);
 
-new ui.Ajax('http://symfony.cms/lib-js/ui/example/ajaxTest.php', {action: 'my-test'})
-    .addCallbackFunction(function() {
-        alert('asdas1');
-    })
-    .addCallbackFunction(function() {
-        alert('asdas2');
-    })
-    .addCallbackFunction(function() {
-        alert('asdas3');
-    })
-    .send();
+    //new ui.Ajax('http://symfony.cms/lib-js/ui/example/ajaxTest.php', {action: 'my-test'})
+    //    .addCallbackFunction(function() {
+    //        alert('asdas1');
+    //    })
+    //    .addCallbackFunction(function() {
+    //        alert('asdas2');
+    //    })
+    //    .addCallbackFunction(function() {
+    //        alert('asdas3');
+    //    })
+    //    .send();
 
