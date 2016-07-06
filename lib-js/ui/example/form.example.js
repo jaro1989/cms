@@ -3,9 +3,9 @@
 var APPEND_ELEMENT = '#element_append';
 
 
-    new ui.Form()
+    new ui.Form('id', 'form-user')
         .setTitle('Title form', 'mini title form')
-        .setUrtDel('id', 'http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+        .setUrtDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setUrlAdd('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setUrlEdit('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .newLine()

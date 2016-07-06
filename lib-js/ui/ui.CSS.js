@@ -89,6 +89,12 @@
              * @public
              * @type {*}
              */
+            formBlockHiddenClass: 'form-hidden-data',
+
+            /**
+             * @public
+             * @type {*}
+             */
             checkedClass: 'checked',
 
             /**

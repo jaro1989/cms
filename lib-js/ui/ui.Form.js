@@ -8,18 +8,31 @@
     var _TYPE_CHECKBOX = 'checkbox';
     var _TYPE_RADIO    = 'radio';
 
+    var URL_DEL   = 'urlDel';
+    var URL_ADD   = 'urlAdd';
+    var URL_BACK  = 'urlBack';
+    var URL_EDIT  = 'urlEdit';
+    var ID_RECORD = 'idRecord';
+
     var uniqueId = new Date().getTime();
 
     /**
      * @memberOf ui
      * @namespace ui.Form
+     * @param {string} idRecord
      * @param {string} idForm
      * @constructor
      */
-    ui.Form = function (idForm) {
+    ui.Form = function (idRecord, idForm) {
 
         /**
-         * @type {{}}
+         * @type {{}|string}
+         * @private
+         */
+        this._idRecord = idRecord;
+
+        /**
+         * @type {{}|string}
          * @private
          */
         this._values   = {};
@@ -73,7 +86,7 @@
         _positionBtnTop:    'left',
         _positionBtnBottom: 'right',
 
-        _delField:   null,
+        _idRecord:   null,
         _title:      null,
         _titleSmall: null,
 
@@ -193,7 +206,7 @@
                 );
             }
 
-            if (this._hideBtn._btnRemove === false && this._values.hasOwnProperty(this._delField)) {
+            if (this._hideBtn._btnRemove === false && this._values.hasOwnProperty(this._idRecord)) {
 
                 this._btnDefaultBottom.push(
                     {
@@ -274,6 +287,38 @@
         },
 
         /**
+         * @returns {*|Element}
+         * @private
+         */
+        _buildBlockHidden: function() {
+
+            return new ui.Element('div')
+                .setAttrElement('hidden',  true)
+                .addClassElement(ui.CSS.formBlockHiddenClass)
+                .addChildAfter(
+                    new ui.FFHidden(this._urlAdd, URL_ADD)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(this._urlEdit, URL_EDIT)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(this._urlDel, URL_DEL)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(this._urlBack, URL_BACK)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(ui.api.existProperty(this._values, this._idRecord, null), ID_RECORD)
+                        .getElement()
+                )
+                .getElement();
+        },
+
+        /**
          * Generate html form
          * @returns {*|Element}
          * @private
@@ -283,6 +328,7 @@
             var form = new ui.Element('form')
                 .setIdElement(this._idForm, null)
                 .setAttrElement('method', this._method)
+                .addChildBefore(this._buildBlockHidden())
                 .addChildAfter(this._buildRow());
 
             if (ui.api.empty(this._urlAdd, null) !== null) {
@@ -566,12 +612,10 @@
 
         /**
          * @param {string} url
-         * @param {string|number} field
          * @returns {ui.Form}
          */
-        setUrtDel: function(field, url) {
+        setUrtDel: function(url) {
 
-            this._delField  = field;
             this._urlDel = url;
             return this;
         },
