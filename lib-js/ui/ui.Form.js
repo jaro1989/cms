@@ -296,23 +296,23 @@
                 .setAttrElement('hidden',  true)
                 .addClassElement(ui.CSS.formBlockHiddenClass)
                 .addChildAfter(
-                    new ui.FFHidden(this._urlAdd, URL_ADD)
+                    new ui.FFHidden(this._urlAdd, ui.Config.FORM_URL_ADD)
                         .getElement()
                 )
                 .addChildAfter(
-                    new ui.FFHidden(this._urlEdit, URL_EDIT)
+                    new ui.FFHidden(this._urlEdit, ui.Config.FORM_URL_EDIT)
                         .getElement()
                 )
                 .addChildAfter(
-                    new ui.FFHidden(this._urlDel, URL_DEL)
+                    new ui.FFHidden(this._urlDel, ui.Config.FORM_URL_DEL)
                         .getElement()
                 )
                 .addChildAfter(
-                    new ui.FFHidden(this._urlBack, URL_BACK)
+                    new ui.FFHidden(this._urlBack, ui.Config.FORM_URL_BACK)
                         .getElement()
                 )
                 .addChildAfter(
-                    new ui.FFHidden(ui.api.existProperty(this._values, this._idRecord, null), ID_RECORD)
+                    new ui.FFHidden(ui.api.existProperty(this._values, this._idRecord, null), ui.Config.FORM_ID_RECORD)
                         .getElement()
                 )
                 .getElement();
@@ -331,9 +331,14 @@
                 .addChildBefore(this._buildBlockHidden())
                 .addChildAfter(this._buildRow());
 
-            if (ui.api.empty(this._urlAdd, null) !== null) {
+            var record = ui.api.existProperty(this._values, this._idRecord, false);
 
-                form.setAttrElement('action', this._urlAdd)
+            if (this._urlAdd !== null || this._urlEdit !== null) {
+
+                (this._urlAdd == null)  ? this._urlAdd  = this._urlEdit : '';
+                (this._urlEdit == null) ? this._urlEdit = this._urlAdd  : '';
+
+                form.setAttrElement('action', (record === false) ? this._urlEdit : this._urlAdd)
             }
 
             this._addDefaultBtn();

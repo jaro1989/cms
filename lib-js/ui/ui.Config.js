@@ -47,7 +47,13 @@
 
             defaultMethodForm: 'POST',
             defaultMethodAjax: 'POST',
-            errorTextRequred: ' Обязательное поле для заполнения '
+            errorTextRequred: ' Обязательное поле для заполнения ',
+
+            FORM_URL_DEL:    'urlDel',
+            FORM_URL_ADD:    'urlAdd',
+            FORM_URL_BACK:   'urlBack',
+            FORM_URL_EDIT:   'urlEdit',
+            FORM_ID_RECORD:  'idRecord'
         };
 
     } (window.ui || {}));

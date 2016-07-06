@@ -178,11 +178,14 @@
         save: function() {
 
             var data = this.getDataFields();
+            var add  = document.getElementById(ui.Config.FORM_URL_ADD).value;
+            var edit = document.getElementById(ui.Config.FORM_URL_EDIT).value;
+            var record = document.getElementById(ui.Config.FORM_ID_RECORD).value;
 
             new ui.Ajax()
-                .setUrl('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+                .setUrl((record == '') ? add : edit)
                 .setParams(data['data'])
-                .addParam('action', 'save')
+                .addParam('action', (record == '') ? 'save' : 'edit')
                 .addCallbackFunction(function(e) {
 
                     console.log(e);
@@ -201,16 +204,22 @@
             this._disableValidator = true;
             var data = this.getDataFields();
 
-            new ui.Ajax()
-                .setUrl('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
-                .setParams(data['data'])
-                .addParam('action', 'remove')
-                .addCallbackFunction(function(e) {
+            var del = document.getElementById(ui.Config.FORM_URL_DEL).value;
+            var record = document.getElementById(ui.Config.FORM_ID_RECORD).value;
 
-                    console.log(e);
+            if (record != '' &&  deldel != '') {
 
-                })
-                .send();
+                new ui.Ajax()
+                    .setUrl(del)
+                    .setParams(data['data'])
+                    .addParam('action', 'remove')
+                    .addCallbackFunction(function (e) {
+
+                        console.log(e);
+
+                    })
+                    .send();
+            }
 
             return true
         },
