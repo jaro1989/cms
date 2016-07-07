@@ -130,7 +130,7 @@
 
         /**
          * Set width label field {1-10}
-         * @param {number} widthCaption {1-10}
+         * @param {number|null} widthCaption {1-10}
          * @returns {ui.FFReadOnly}
          * @public
          */

@@ -9,6 +9,7 @@ var APPEND_ELEMENT = '#element_append';
         .setUrlAdd('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setUrlEdit('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setFormReadOnly(false)
+        .setWidthCaption(4)
         .newLine()
         .addTextField('surname', 'Фамилия', true)
         .addReadOnlyField(null, null)

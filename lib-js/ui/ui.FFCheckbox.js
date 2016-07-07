@@ -114,7 +114,7 @@
 
         /**
          * Set width label field {1-10}
-         * @param {number} widthCaption {1-10}
+         * @param {number|null} widthCaption {1-10}
          * @returns {ui.FFCheckbox}
          * @public
          */
@@ -125,7 +125,7 @@
 
         /**
          * Add checkbox
-         * @param {number|null} value
+         * @param {{}|string|number|null} value
          * @param {string} name
          * @param {string} caption
          * @returns {ui.FFCheckbox}
@@ -258,10 +258,10 @@
                 )
                 .addChildBefore(this._buildField(params));
 
-            if (typeof this._widthCaption === 'number') {
-
-                label.setWidthElement(this._widthCaption);
-            }
+            //if (typeof this._widthCaption === 'number') {
+            //
+            //    label.setWidthElement(this._widthCaption);
+            //}
 
             return label.getElement();
         },
@@ -317,6 +317,12 @@
                 .addClassElement(ui.CSS.validateFieldBlockClass)
                 .setSkinElement('field', this._skin)
                 .setWidthElement(this._width)
+                .addChildBefore(
+                    new ui.Element('div')
+                        .setWidthElement(this._widthCaption)
+                        .addClassElement(ui.CSS.alignClass.text.right)
+                        .getElement()
+                )
                 .addChildBefore(this._buildInlineBlock())
                 .getElement();
         },

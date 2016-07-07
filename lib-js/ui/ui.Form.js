@@ -94,6 +94,10 @@
 
         _htmlFields: {
 
+            widthCaption: null,
+            formatDate: ui.Config.formatDateUser,
+            checkboxText: ui.Config.checkboxText,
+
             readonly: function(value, name, caption, data, type) {
 
                 var dataList = ui.api.existProperty(data, 'list', false);
@@ -106,11 +110,11 @@
 
                 if (type == _TYPE_DATE) {
 
-                    value = new ui.FormatDate(dataValue, ui.Config.formatDateUser).getDate();
+                    value = new ui.FormatDate(dataValue, this.formatDate).getDate();
 
                 } else if (type === _TYPE_CHECKBOX) {
 
-                    value = ui.api.existProperty(ui.Config.checkboxText, dataValue, null);
+                    value = ui.api.existProperty(this.checkboxText, dataValue, null);
 
                 } else if (type === _TYPE_PASS) {
 
@@ -118,7 +122,7 @@
                 }
 
                 return new ui.FFReadOnly(value, name, caption)
-                    .setWidthCaption(4)
+                    .setWidthCaption(this.widthCaption)
                     .getElement();
             },
 
@@ -126,7 +130,7 @@
 
                 return new ui.FFText(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
-                    .setWidthCaption(4)
+                    .setWidthCaption(this.widthCaption)
                     .getElement();
             },
 
@@ -134,7 +138,7 @@
 
                 return new ui.FFPassword(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
-                    .setWidthCaption(4)
+                    .setWidthCaption(this.widthCaption)
                     .getElement();
             },
 
@@ -142,7 +146,7 @@
 
                 return new ui.FFTextarea(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
-                    .setWidthCaption(4)
+                    .setWidthCaption(this.widthCaption)
                     .setResize('vertical')
                     .getElement();
             },
@@ -151,7 +155,7 @@
 
                 return new ui.FFDate(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
-                    .setWidthCaption(4)
+                    .setWidthCaption(this.widthCaption)
                     .getElement();
             },
 
@@ -161,7 +165,7 @@
 
                 return  new ui.FFSelect(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
-                    .setWidthCaption(4)
+                    .setWidthCaption(this.widthCaption)
                     .setList(dataList)
                     .getElement();
             },
@@ -171,7 +175,7 @@
                 return new ui.FFCheckbox()
                     .addCheckbox(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
-                    .setWidthCaption(4)
+                    .setWidthCaption(this.widthCaption)
                     .setFieldsHorizontal()
                     .getElement();
             },
@@ -183,7 +187,7 @@
                 return  new ui.FFRadio(value, name, dataList)
                     .setRequired(ui.api.existProperty(data, 'required', false))
                     .setCaption(caption)
-                    .setWidthCaption(4)
+                    .setWidthCaption(this.widthCaption)
                     .setFieldsHorizontal()
                     .getElement();
             }
@@ -646,6 +650,18 @@
         },
 
         /**
+         * Set width label field {1-10}
+         * @param {number|null} widthCaption {1-10}
+         * @returns {ui.Form}
+         * @public
+         */
+        setWidthCaption: function(widthCaption) {
+
+            this._htmlFields.widthCaption = widthCaption;
+            return this;
+        },
+
+        /**
          * @param {string} url
          * @returns {ui.Form}
          */
@@ -694,6 +710,33 @@
         setFormReadOnly: function(read) {
 
             this._readOnly = ui.api.empty(read, true);
+            return this;
+        },
+
+        /**
+         *
+         * @param {string} format
+         * @returns {ui.Form}
+         */
+        setFormatDate: function(format) {
+
+            this._htmlFields.formatDate = format;
+            return this;
+        },
+
+        /**
+         * @param {{}|[]} data
+         * @example
+         *          {0: 'Нет', 1: 'Да'}
+         * @returns {ui.Form}
+         */
+        setCheckboxValuesRead: function(data) {
+
+            if (typeof data == 'object') {
+
+                this._htmlFields.checkboxText = data;
+            }
+
             return this;
         },
 
