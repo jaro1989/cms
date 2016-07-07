@@ -32,6 +32,13 @@
                 'nochecked': 0
             },
 
+            checkboxText: {
+                0: 'Нет',
+                1: 'Да'
+            },
+
+            valuePassword: '*********',
+
             formatDateUser: 'DD.MM.YYYY',
             formatDateSave: 'YYYY-MM-DD',
             formatDateTimeUser: 'DD.MM.YYYY HH:MI:SS',

@@ -1,12 +1,13 @@
 (function(ui) {
 
-    var _TYPE_TEXT     = 'text';
-    var _TYPE_PASS     = 'password';
-    var _TYPE_TEXTAREA = 'textarea';
-    var _TYPE_DATE     = 'date';
-    var _TYPE_SELECT   = 'select';
-    var _TYPE_CHECKBOX = 'checkbox';
-    var _TYPE_RADIO    = 'radio';
+    var _TYPE_TEXT      = 'text';
+    var _TYPE_PASS      = 'password';
+    var _TYPE_TEXTAREA  = 'textarea';
+    var _TYPE_DATE      = 'date';
+    var _TYPE_SELECT    = 'select';
+    var _TYPE_CHECKBOX  = 'checkbox';
+    var _TYPE_RADIO     = 'radio';
+    var _TYPE_READ_ONLY = 'readonly';
 
     var URL_DEL   = 'urlDel';
     var URL_ADD   = 'urlAdd';
@@ -84,17 +85,48 @@
         _titleSmall: null,
 
         _method: ui.Config.defaultMethodForm,
+        _checkboxText: ui.Config.checkboxText,
         _urlBack: document.referrer,
         _urlAdd:  null,
         _urlEdit: null,
         _urlDel:  null,
+        _readOnly: false,
 
         _htmlFields: {
+
+            readonly: function(value, name, caption, data, type) {
+
+                var dataList = ui.api.existProperty(data, 'list', false);
+                var dataValue = ui.api.setValue(value, name);
+
+                if (dataList !== false) {
+
+                    value = ui.api.existProperty(dataList, dataValue, null);
+                }
+
+                if (type == _TYPE_DATE) {
+
+                    value = new ui.FormatDate(dataValue, ui.Config.formatDateUser).getDate();
+
+                } else if (type === _TYPE_CHECKBOX) {
+
+                    value = ui.api.existProperty(ui.Config.checkboxText, dataValue, null);
+
+                } else if (type === _TYPE_PASS) {
+
+                    value = ui.Config.valuePassword;
+                }
+
+                return new ui.FFReadOnly(value, name, caption)
+                    .setWidthCaption(4)
+                    .getElement();
+            },
 
             text: function(value, name, caption, data) {
 
                 return new ui.FFText(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setWidthCaption(4)
                     .getElement();
             },
 
@@ -102,6 +134,7 @@
 
                 return new ui.FFPassword(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setWidthCaption(4)
                     .getElement();
             },
 
@@ -109,6 +142,7 @@
 
                 return new ui.FFTextarea(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setWidthCaption(4)
                     .setResize('vertical')
                     .getElement();
             },
@@ -117,6 +151,7 @@
 
                 return new ui.FFDate(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setWidthCaption(4)
                     .getElement();
             },
 
@@ -126,6 +161,7 @@
 
                 return  new ui.FFSelect(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setWidthCaption(4)
                     .setList(dataList)
                     .getElement();
             },
@@ -135,6 +171,7 @@
                 return new ui.FFCheckbox()
                     .addCheckbox(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setWidthCaption(4)
                     .setFieldsHorizontal()
                     .getElement();
             },
@@ -146,6 +183,7 @@
                 return  new ui.FFRadio(value, name, dataList)
                     .setRequired(ui.api.existProperty(data, 'required', false))
                     .setCaption(caption)
+                    .setWidthCaption(4)
                     .setFieldsHorizontal()
                     .getElement();
             }
@@ -262,11 +300,22 @@
                         var caption = ui.api.existProperty(dataField, 'caption', null);
 
                         if (this._htmlFields.hasOwnProperty(type)) {
-                            //noinspection JSUnfilteredForInLoop
+
+                            var field = '';
+
+                            if (this._readOnly === false) {
+
+                                field = this._htmlFields[type](this._values, nameField, caption, dataField, type);
+
+                            } else {
+
+                                field = this._htmlFields.readonly(this._values, nameField, caption, dataField, type);
+                            }
+
                             elementRow.addChildAfter(
                                 new ui.Element('div')
                                     .setWidthElement(countGroup)
-                                    .addChildAfter(this._htmlFields[type](this._values, nameField, caption, dataField))
+                                    .addChildAfter(field)
                                     .getElement()
                             );
                         }
@@ -437,6 +486,20 @@
         newLine: function()  {
 
             this._settings.push({});
+            return this;
+        },
+
+        /**
+         * @param {string|null} name
+         * @param {string|number|null} caption
+         * @returns {ui.Form}
+         */
+        addReadOnlyField: function(name, caption) {
+
+            var countRow = this._settings.length - 1;
+
+            this._settings[countRow][name] = this._getDataField(_TYPE_READ_ONLY, caption, null, false);
+
             return this;
         },
 
@@ -621,6 +684,16 @@
 
             this._idRecord = idRecord;
             this._urlDel = url;
+            return this;
+        },
+
+        /**
+         * @param {boolean} read
+         * @returns {ui.Form}
+         */
+        setFormReadOnly: function(read) {
+
+            this._readOnly = ui.api.empty(read, true);
             return this;
         },
 

@@ -14,7 +14,7 @@
             this._value   = ui.api.empty(value, null);
             this._name    = ui.api.empty(name, null);
             this._caption = ui.api.empty(caption, null);
-            this._items   = [];
+            this._items   = {};
         };
     
         /** @protected */
@@ -93,8 +93,9 @@
             _required: false,
 
             /**
+             *
              * Set data list
-             * @param {[]} data [ { value: string, text: string }, { value: string, text: string }, ... ]
+             * @param {[]|{}} data [ 'valu-1', 'valu-2', 'valu-3', ... ]
              * @returns {ui.FFSelect}
              */
             setList: function(data) {
@@ -109,12 +110,7 @@
              * @returns {ui.FFSelect}
              */
             addItem: function(value, text) {
-
-                this._items[this._items.length] = {
-                    value: value,
-                    text:  text
-                };
-
+                this._items[value] = text;
                 return this;
             },
     
@@ -273,17 +269,18 @@
 
             /**
              * Build html option
-             * @param {{}} params {value: string, text: string}
+             * @param {string|number} value
+             * @param {string|number} text
              * @returns {*|Element}
              * @private
              */
-            _buildItem: function(params) {
+            _buildItem: function(value, text) {
 
                 var option = new ui.Element('option')
-                    .setValueElement(ui.api.existProperty(params, 'value', null), null)
-                    .setContentElement(ui.api.existProperty(params, 'text', null));
+                    .setValueElement(value, null)
+                    .setContentElement(text);
 
-                if (ui.api.setValue(this._value, this._name) == ui.api.existProperty(params, 'value', null)) {
+                if (ui.api.setValue(this._value, this._name) == value) {
 
                     option.setSelectedElement(true);
                 }
@@ -305,9 +302,9 @@
                     .setDisabledElement(this._disabled)
                     .setRequiredElement(this._required);
 
-                for(var key in this._items) {
+                for(var value in this._items) {
 
-                    setect.addChildAfter(this._buildItem(this._items[key]));
+                    setect.addChildAfter(this._buildItem(value, this._items[value]));
                 }
 
                 return setect.getElement();

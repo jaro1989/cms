@@ -399,7 +399,12 @@
              * @public
              */
             setContentElement: function(contentElement) {
-                this.element.innerHTML = contentElement;
+
+                if (contentElement !== null) {
+
+                    this.element.innerHTML = contentElement;
+                }
+
                 return this;
             },
 
