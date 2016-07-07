@@ -3,9 +3,9 @@
 var APPEND_ELEMENT = '#element_append';
 
 
-    new ui.Form('id', 'form-user')
+    new ui.Form('form-user')
         .setTitle('Title form', 'mini title form')
-        .setUrtDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+        .setUrtDel('id', 'http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setUrlAdd('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setUrlEdit('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .newLine()
@@ -88,6 +88,13 @@ var APPEND_ELEMENT = '#element_append';
             }
         )
         .appendHTML(APPEND_ELEMENT);
+
+new ui.FFReadOnly('asdasdasdas', 'name-rrr', 'caption')
+    .setWidthCaption(3)
+    .setSkin('muted')
+    //.setLeftIcon('star')
+    //.setRightMarker('9999')
+    .appendHTML(APPEND_ELEMENT);
 
     //new ui.Ajax('http://symfony.cms/lib-js/ui/example/ajaxTest.php', {action: 'my-test'})
     //    .addCallbackFunction(function() {

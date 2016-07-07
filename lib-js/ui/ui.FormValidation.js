@@ -181,17 +181,24 @@
             var add  = document.getElementById(ui.Config.FORM_URL_ADD).value;
             var edit = document.getElementById(ui.Config.FORM_URL_EDIT).value;
             var record = document.getElementById(ui.Config.FORM_ID_RECORD).value;
+            console.log(data.error.length);
 
-            new ui.Ajax()
-                .setUrl((record == '') ? add : edit)
-                .setParams(data['data'])
-                .addParam('action', (record == '') ? 'save' : 'edit')
-                .addCallbackFunction(function(e) {
+            if (data.error.length === 0) {
 
-                    console.log(e);
+                new ui.Ajax()
+                    .setUrl((record == '') ? add : edit)
+                    .setParams(data['data'])
+                    .addParam('action', (record == '') ? 'save' : 'edit')
+                    .addCallbackFunction(function (e) {
 
-                })
-                .send();
+                        console.log(e);
+
+                    })
+                    .send();
+            } else {
+
+                alert('Заполните обязательные поля и повторите!');
+            }
 
             return true
         },
@@ -201,17 +208,21 @@
          */
         remove: function() {
 
-            this._disableValidator = true;
-            var data = this.getDataFields();
+            //this._disableValidator = true;
+            //var data = this.getDataFields();
 
-            var del = document.getElementById(ui.Config.FORM_URL_DEL).value;
-            var record = document.getElementById(ui.Config.FORM_ID_RECORD).value;
+            var obj = {};
+            var urlDel = document.getElementById(ui.Config.FORM_URL_DEL).value;
+            var idRecord = document.getElementById(ui.Config.FORM_ID_RECORD).value;
+            var fieldRecord = document.getElementById(ui.Config.FORM_FIELD_RECORD).value;
 
-            if (record != '' &&  deldel != '') {
+            if (idRecord != '' &&  urlDel != '' && fieldRecord != '') {
+
+                obj[fieldRecord] = idRecord;
 
                 new ui.Ajax()
-                    .setUrl(del)
-                    .setParams(data['data'])
+                    .setUrl(urlDel)
+                    .setParams(obj)
                     .addParam('action', 'remove')
                     .addCallbackFunction(function (e) {
 

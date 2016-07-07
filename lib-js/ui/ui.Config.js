@@ -53,7 +53,8 @@
             FORM_URL_ADD:    'urlAdd',
             FORM_URL_BACK:   'urlBack',
             FORM_URL_EDIT:   'urlEdit',
-            FORM_ID_RECORD:  'idRecord'
+            FORM_ID_RECORD:  'idRecord',
+            FORM_FIELD_RECORD: 'fieldRecord'
         };
 
     } (window.ui || {}));

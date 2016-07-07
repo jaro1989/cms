@@ -19,17 +19,10 @@
     /**
      * @memberOf ui
      * @namespace ui.Form
-     * @param {string} idRecord
      * @param {string} idForm
      * @constructor
      */
-    ui.Form = function (idRecord, idForm) {
-
-        /**
-         * @type {{}|string}
-         * @private
-         */
-        this._idRecord = idRecord;
+    ui.Form = function (idForm) {
 
         /**
          * @type {{}|string}
@@ -206,7 +199,7 @@
                 );
             }
 
-            if (this._hideBtn._btnRemove === false && this._values.hasOwnProperty(this._idRecord)) {
+            if (this._hideBtn._btnRemove === false && this._values.hasOwnProperty(this._idRecord) && this._urlDel !== null) {
 
                 this._btnDefaultBottom.push(
                     {
@@ -313,6 +306,10 @@
                 )
                 .addChildAfter(
                     new ui.FFHidden(ui.api.existProperty(this._values, this._idRecord, null), ui.Config.FORM_ID_RECORD)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(this._idRecord, ui.Config.FORM_FIELD_RECORD)
                         .getElement()
                 )
                 .getElement();
@@ -617,10 +614,12 @@
 
         /**
          * @param {string} url
+         * @param {string} idRecord
          * @returns {ui.Form}
          */
-        setUrtDel: function(url) {
+        setUrtDel: function(idRecord, url) {
 
+            this._idRecord = idRecord;
             this._urlDel = url;
             return this;
         },

@@ -222,7 +222,8 @@
                     link:     'link',
                     default:  'default',
                     error:    'error',
-                    primary:  'primary'
+                    primary:  'primary',
+                    muted:    'muted'
                 },
                 panel: {
                     default: 'panel-default',
