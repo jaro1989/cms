@@ -3,6 +3,7 @@
     var APPEND_ELEMENT = '#element_append';
 
     new ui.FFCheckbox()
+        .setCaptionBlock('Caption block Checkbox')
         .addCheckbox(0, 'name-1.1', 'checkbox - 1')
         .addCheckbox(1, 'name-2.1', 'checkbox - 2')
         .addCheckbox(1, 'name-3.1', 'checkbox - 3')
@@ -13,7 +14,7 @@
         .setFieldsHorizontal()
         .setSkin('success')
         .setWidth(3)
-        .setWidthCaption(6)
+        .setWidthCaptionItem(6)
         .appendHTML(APPEND_ELEMENT);
 
     new ui.FFCheckbox()
@@ -54,6 +55,6 @@
     new ui.FFCheckbox()
         .addCheckboxList(checkbox_list_2)
         .setWidth(6)
-        .setWidthCaption(3)
+        .setCaptionBlock('Caption block', 3)
         .setFieldsHorizontal()
         .appendHTML(APPEND_ELEMENT);

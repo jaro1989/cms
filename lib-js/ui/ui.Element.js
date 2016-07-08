@@ -11,13 +11,15 @@
                 .setContentElement(ui.Config.label.required)
                 .addClassElement(ui.CSS.satrClass)
                 .addStyleElement('color', ui.Config.label.colorStar)
-                .addChildAfter(
-                    new ui.Element('small')
-                        .addClassElement(ui.CSS.validateErrorClass)
-                        .addClassElement(ui.CSS.prefixClass.text + '-' + ui.CSS.skinClass.default.danger)
-                        .getElement()
-                )
                 .toHTML();
+        };
+
+        var getError = function() {
+
+            return new ui.Element('small')
+                .addClassElement(ui.CSS.validateErrorClass)
+                .addClassElement(ui.CSS.prefixClass.text + '-' + ui.CSS.skinClass.default.danger)
+                .toHTML()
         };
 
         /**
@@ -299,8 +301,8 @@
 
             /**
              * Set value field
-             * @param {string|null} nameValue
-             * @param {string|null} nameField
+             * @param {string|number|null} nameValue
+             * @param {string|number|null} nameField
              * @returns {ui.Element}
              * @public
              */
@@ -368,7 +370,15 @@
                     this.element.innerHTML += getStar();
                 }
 
-                this.element.innerHTML += ui.Config.label.separator + ' ';
+                if (ui.api.empty(caption, false)) {
+
+                    this.element.innerHTML += ui.Config.label.separator + ' ';
+                }
+
+                if (required) {
+
+                    this.element.innerHTML += getError();
+                }
 
                 return this;
             },

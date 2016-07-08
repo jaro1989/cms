@@ -175,7 +175,7 @@
                 return new ui.FFCheckbox()
                     .addCheckbox(value, name, caption)
                     .setRequired(ui.api.existProperty(data, 'required', false))
-                    .setWidthCaption(this.widthCaption)
+                    .setCaptionBlock('', this.widthCaption)
                     .setFieldsHorizontal()
                     .getElement();
             },

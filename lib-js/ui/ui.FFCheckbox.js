@@ -21,6 +21,12 @@
          * @private
          * @type {string|null}
          */
+        _caption: null,
+
+        /**
+         * @private
+         * @type {string|null}
+         */
         _skin: null,
 
         /**
@@ -33,7 +39,13 @@
          * @private
          * @type {string|number|null}
          */
-        _widthCaption: null,
+        _widthCaptionBlock: null,
+
+        /**
+         * @private
+         * @type {string|number|null}
+         */
+        _widthCaptionItem: null,
 
         /**
          * @private
@@ -58,6 +70,24 @@
          * @type {{checked: 1, nochecked: 0}}
          */
         _checkboxValue: ui.Config.checkboxValue,
+
+        /**
+         * @private
+         * @type {string|null}
+         */
+        _padding: ui.Config.padding,
+
+        /**
+         * @param {string|number|null} caption
+         * @param {string|number|null} widthCaption
+         * @returns {ui.FFCheckbox}
+         */
+        setCaptionBlock: function(caption, widthCaption) {
+
+            this._caption = caption;
+            this._widthCaptionBlock = widthCaption;
+            return this;
+        },
 
         /**
          * Set default value
@@ -113,13 +143,13 @@
         },
 
         /**
-         * Set width label field {1-10}
-         * @param {number|null} widthCaption {1-10}
+         * Set width label item field {1-10}
+         * @param {string|number|null} widthCaptionItem {1-10}
          * @returns {ui.FFCheckbox}
          * @public
          */
-        setWidthCaption: function(widthCaption) {
-            this._widthCaption = widthCaption;
+        setWidthCaptionItem: function(widthCaptionItem) {
+            this._widthCaptionItem = widthCaptionItem;
             return this;
         },
 
@@ -158,6 +188,17 @@
                 };
             }
 
+            return this;
+        },
+
+        /**
+         * Set html class padding
+         * @param {string} padding { 'lg' | 'sm' | 'xs' }
+         * @returns {ui.FFCheckbox}
+         * @public
+         */
+        setPadding: function(padding) {
+            this._padding = padding;
             return this;
         },
 
@@ -226,6 +267,7 @@
                 checkbox
                     .setCheckedElement(true)
                     .setValueElement(this._checkboxValue.checked, null);
+
             } else {
 
                 checkbox.setValueElement(this._checkboxValue.nochecked, null);
@@ -235,33 +277,52 @@
         },
 
         /**
-         * Build html label
-         * @param {{}} params {value: '..', name: '..', caption: '..'}
+         * Build html label block
          * @returns {*|Element}
          * @private
          */
-        _buildCaption: function(params) {
+        _buildCaptionBlock: function() {
 
-            var req = false;
-            if (ui.api.inArray(this._requiredIf, params.name) != -1 || this._required === true) {
+            var label = new ui.Element('div')
+                .addChildAfter(
+                    new ui.Element('label')
+                        .setCaptionElement(this._caption, this._required)
+                        .getElement()
+                );
+                //.addClassElement(ui.CSS.checkboxClass);
 
-                req = true;
+            if (typeof this._widthCaptionBlock === 'number') {
+
+                label
+                    .setWidthElement(this._widthCaptionBlock)
+                    .addClassElement(ui.CSS.alignClass.text.right);
             }
+
+            return label.getElement();
+        },
+
+        /**
+         * Build html label item
+         * @param {{}} params {value: *, name: *, caption: *}
+         * @returns {*|Element}
+         * @private
+         */
+        _buildCaptionItem: function(params) {
 
             var label = new ui.Element('label')
                 .addChildAfter(
                     new ui.Element('span')
-                        .setCaptionRadioElement(params.caption, req)
+                        .setContentElement(params.caption)
                         .addStyleElement('paddingLeft',  '5px')
                         .addStyleElement('paddingRight', '5px')
                         .getElement()
                 )
                 .addChildBefore(this._buildField(params));
 
-            //if (typeof this._widthCaption === 'number') {
-            //
-            //    label.setWidthElement(this._widthCaption);
-            //}
+            if (typeof this._widthCaptionItem === 'number') {
+
+                label.setWidthElement(this._widthCaptionItem);
+            }
 
             return label.getElement();
         },
@@ -275,17 +336,23 @@
 
             var iblineBlock = new ui.Element('div')
                 .addClassElement(ui.CSS.checkboxClass)
+                .addStyleElement('marginTop',  0)
                 .addClassElement(ui.CSS.checkboxInlineClass);
 
+            if (typeof this._widthCaptionBlock === 'number') {
+
+                iblineBlock.setWidthElement(Math.round(12 - this._widthCaptionBlock))
+            }
 
             var block = new ui.Element('div')
-                .addClassElement(ui.CSS.checkboxClass);
+                .addClassElement(ui.CSS.checkboxClass)
+                .addStyleElement('marginTop', 0);
 
             if (this._horizontal === true) {
 
                 for(var htmlIda in this._checkboxList) {
 
-                    block.addChildAfter(this._buildCaption(this._checkboxList[htmlIda]));
+                    block.addChildAfter(this._buildCaptionItem(this._checkboxList[htmlIda]));
                 }
 
                 iblineBlock.addChildAfter(block.getElement());
@@ -297,7 +364,7 @@
                     iblineBlock.addChildAfter(
                         new ui.Element('div')
                             .addClassElement(ui.CSS.checkboxClass)
-                            .addChildAfter(this._buildCaption(this._checkboxList[htmlIdb]))
+                            .addChildAfter(this._buildCaptionItem(this._checkboxList[htmlIdb]))
                             .getElement()
                     );
                 }
@@ -313,18 +380,20 @@
          */
         _buildParentBlock: function() {
 
-            return new ui.Element('div')
+            var parentBlock =  new ui.Element('div')
                 .addClassElement(ui.CSS.validateFieldBlockClass)
+                .setPaddingElement(this._padding)
                 .setSkinElement('field', this._skin)
                 .setWidthElement(this._width)
-                .addChildBefore(
-                    new ui.Element('div')
-                        .setWidthElement(this._widthCaption)
-                        .addClassElement(ui.CSS.alignClass.text.right)
-                        .getElement()
-                )
-                .addChildBefore(this._buildInlineBlock())
-                .getElement();
+                .addChildAfter(this._buildInlineBlock());
+
+            if (this._caption !== null) {
+
+                parentBlock
+                    .addChildBefore(this._buildCaptionBlock())
+            }
+
+            return parentBlock.getElement();
         },
 
         /**

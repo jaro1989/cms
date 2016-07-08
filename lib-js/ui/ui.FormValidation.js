@@ -49,7 +49,7 @@
                 if ((element.type === 'checkbox' || element.type === 'radio') && !element.checked) {
 
                     res = false;
-                    errorBlock.innerHTML = this._textRequred;
+                    errorBlock.innerHTML = '<br/>' + this._textRequred;
                     element.parentNode.classList.add(skinClass);
 
                 } else {
@@ -57,7 +57,7 @@
                     if (element.value == '') {
 
                         res = false;
-                        errorBlock.innerHTML = this._textRequred;
+                        errorBlock.innerHTML = '<br/>' + this._textRequred;
                         element.parentNode.classList.add(skinClass);
                     }
                 }
