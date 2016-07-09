@@ -4,7 +4,7 @@
         /**
          * @memberOf ui
          * @namespace ui.FFRadio
-         * @param {string|null} value
+         * @param {{}|string|null} value
          * @param {string|null} name
          * @param {{}} radioList {'htmlId1' => 'caption1', 'htmlId2' => 'caption2', ...}
          * @constructor
@@ -36,7 +36,13 @@
              * @private
              * @type {string|number|null}
              */
-            _widthCaption: null,
+            _widthCaptionBlock: null,
+
+            /**
+             * @private
+             * @type {string|number|null}
+             */
+            _widthCaptionItem: null,
 
             /**
              * @private
@@ -63,11 +69,31 @@
             _caption: null,
 
             /**
-             * @param {string|null} caption
+             * @private
+             * @type {string|null}
+             */
+            _padding: ui.Config.padding,
+
+            /**
+             * @param {string|number|null} caption
+             * @param {string|number|null} widthCaption
              * @returns {ui.FFRadio}
              */
-            setCaption: function(caption) {
+            setCaptionBlock: function(caption, widthCaption) {
+
                 this._caption = caption;
+                this._widthCaptionBlock = widthCaption;
+                return this;
+            },
+
+            /**
+             * Set width label item field {1-10}
+             * @param {string|number|null} widthCaptionItem {1-10}
+             * @returns {ui.FFRadio}
+             * @public
+             */
+            setWidthCaptionItem: function(widthCaptionItem) {
+                this._widthCaptionItem = widthCaptionItem;
                 return this;
             },
 
@@ -97,17 +123,6 @@
              */
             setDisabledIf: function(htmlId) {
                 this._disabledIf.push(htmlId);
-                return this;
-            },
-
-            /**
-             * Set width label field {1-10}
-             * @param {number|null} widthCaption {1-10}
-             * @returns {ui.FFRadio}
-             * @public
-             */
-            setWidthCaption: function(widthCaption) {
-                this._widthCaption = widthCaption;
                 return this;
             },
 
@@ -176,7 +191,6 @@
                 if (ui.api.inArray(this._disabledIf, htmlId) != -1) {
 
                     radio.setDisabledElement(true);
-
                 }
 
                 if (htmlId == this._value) {
@@ -190,30 +204,61 @@
             },
 
             /**
+             * Build html label block
+             * @returns {*|Element}
+             * @private
+             */
+            _buildCaptionBlock: function() {
+
+                var label = new ui.Element('div')
+                    .addChildAfter(
+                        new ui.Element('label')
+                            .setCaptionElement(this._caption, (this._required && ui.api.empty(this._caption, false)))
+                            .getElement()
+                    );
+
+                if (typeof this._widthCaptionBlock === 'number') {
+
+                    label
+                        .setWidthElement(this._widthCaptionBlock)
+                        .addClassElement(ui.CSS.alignClass.text.right);
+                }
+
+                return label.getElement();
+            },
+
+            /**
              * Build html label
              * @param {string|number} htmlId
              * @param {string|number} caption
              * @returns {*|Element}
              * @private
              */
-            _buildCaption: function(htmlId, caption) {
+            _buildCaptionItem: function(htmlId, caption) {
 
                 var label = new ui.Element('label')
                     .addChildAfter(
                         new ui.Element('span')
-                            .setCaptionRadioElement(caption, false)
-                            .addStyleElement('paddingLeft',  '5px')
-                            .addStyleElement('paddingRight', '5px')
                             .getElement()
-                    )
-                    .addChildBefore(this._buildField(htmlId));
+                    );
 
-                if (typeof this._widthCaption === 'number') {
+                if (this._required && ui.api.empty(this._caption, false)) {
 
-                    label.setWidthElement(this._widthCaption);
+                    label.setContentElement(caption);
+
+                } else {
+
+                    label.setCaptionRadioElement(caption, this._required);
                 }
 
-                return label.getElement();
+                if (typeof this._widthCaptionItem === 'number') {
+
+                    label.setWidthElement(this._widthCaptionItem);
+                }
+
+                return label
+                    .addChildBefore(this._buildField(htmlId))
+                    .getElement();
             },
 
             /**
@@ -224,28 +269,24 @@
             _buildInlineBlock: function() {
 
                 var iblineBlock = new ui.Element('div')
-                    .setPaddingElement('sm');
+                    .addClassElement(ui.CSS.radioClass)
+                    .addStyleElement('marginTop',  0)
+                    .addClassElement(ui.CSS.radioInlineClass);
 
-                if (this._caption !== null) {
+                if (typeof this._widthCaptionBlock === 'number') {
 
-                    iblineBlock
-                        .addChildBefore(
-                            new ui.Element('label')
-                                .setForLabelElement(this._name)
-                                .addClassElement(ui.CSS.controlLabelClass)
-                                .setCaptionElement(this._caption, this._required)
-                                .getElement()
-                        );
+                    iblineBlock.setWidthElement(Math.round(12 - this._widthCaptionBlock))
                 }
 
                 var block = new ui.Element('div')
-                    .addClassElement(ui.CSS.radioClass);
+                    .addClassElement(ui.CSS.radioClass)
+                    .addStyleElement('marginTop', 0);
 
                 if (this._horizontal === true) {
 
                     for(var htmlIda in this._radioList) {
 
-                        block.addChildAfter(this._buildCaption(htmlIda, this._radioList[htmlIda]));
+                        block.addChildAfter(this._buildCaptionItem(htmlIda, this._radioList[htmlIda]));
                     }
 
                     iblineBlock.addChildAfter(block.getElement());
@@ -256,8 +297,8 @@
 
                         iblineBlock.addChildAfter(
                             new ui.Element('div')
-                                .addClassElement(ui.CSS.radioClass)
-                                .addChildAfter(this._buildCaption(htmlIdb, this._radioList[htmlIdb]))
+                                //.addClassElement(ui.CSS.radioClass)
+                                .addChildAfter(this._buildCaptionItem(htmlIdb, this._radioList[htmlIdb]))
                                 .getElement()
                         );
                     }
@@ -273,12 +314,20 @@
              */
             _buildParentBlock: function() {
 
-                return new ui.Element('div')
+                var parentBlock = new ui.Element('div')
                     .addClassElement(ui.CSS.validateFieldBlockClass)
+                    .setPaddingElement(this._padding)
                     .setSkinElement('field', this._skin)
                     .setWidthElement(this._width)
-                    .addChildBefore(this._buildInlineBlock())
-                    .getElement();
+                    .addChildBefore(this._buildInlineBlock());
+
+                if (this._caption !== null) {
+
+                    parentBlock
+                        .addChildBefore(this._buildCaptionBlock())
+                }
+
+                return parentBlock.getElement();
             },
 
             /**

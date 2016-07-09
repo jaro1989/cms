@@ -399,6 +399,11 @@
 
                 this.element.innerHTML += caption;
 
+                if (required) {
+
+                    this.element.innerHTML += getError();
+                }
+
                 return this;
             },
 

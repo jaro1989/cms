@@ -286,10 +286,9 @@
             var label = new ui.Element('div')
                 .addChildAfter(
                     new ui.Element('label')
-                        .setCaptionElement(this._caption, this._required)
+                        .setCaptionElement(this._caption, (this._required && ui.api.empty(this._caption, false)))
                         .getElement()
                 );
-                //.addClassElement(ui.CSS.checkboxClass);
 
             if (typeof this._widthCaptionBlock === 'number') {
 
@@ -312,19 +311,28 @@
             var label = new ui.Element('label')
                 .addChildAfter(
                     new ui.Element('span')
-                        .setContentElement(params.caption)
-                        .addStyleElement('paddingLeft',  '5px')
-                        .addStyleElement('paddingRight', '5px')
                         .getElement()
-                )
-                .addChildBefore(this._buildField(params));
+                );
+
+            if (this._required && ui.api.empty(this._caption, false)) {
+
+                label.setContentElement(params.caption);
+
+            } else {
+
+                var req = (ui.api.inArray(this._requiredIf, params.name) != -1) ? true : this._required;
+
+                label.setCaptionRadioElement(params.caption, req);
+            }
 
             if (typeof this._widthCaptionItem === 'number') {
 
                 label.setWidthElement(this._widthCaptionItem);
             }
 
-            return label.getElement();
+            return label
+                .addChildBefore(this._buildField(params))
+                .getElement();
         },
 
         /**

@@ -5,9 +5,10 @@ console.time('test');
 
     // Конфигерируем 4 вертикальных радио кнопки
     new ui.FFRadio({'name-radio-1-1': 'id-3.1'}, 'name-radio-1-1', {})
-        .setWidth(1)
-        .setRequired()
+        .setWidth(2)
+        .setRequired(true)
         .setSkin('warning')
+        .setCaptionBlock('Caption block radio-1', null)
         .addRadioButton('id-1.1', 'Чекбокс-1.1')
         .addRadioButton('id-2.1', 'Чекбокс-1.2')
         .addRadioButton('id-3.1', 'Чекбокс-1.3')
@@ -16,8 +17,9 @@ console.time('test');
 
     // Конфигерируем 4 вертикальных заблокированых радио кнопки
     new ui.FFRadio('id-3.2', 'name-radio-1-2', {})
-        .setWidth(1)
+        .setWidth(8)
         .setDisabled()
+        .setCaptionBlock('Caption block radio-2', 4)
         .addRadioButton('id-1.2', 'Чекбокс-2.1')
         .addRadioButton('id-2.2', 'Чекбокс-2.2')
         .addRadioButton('id-3.2', 'Чекбокс-2.3')
@@ -26,7 +28,8 @@ console.time('test');
 
     // Конфигерируем 4 горизонтальных радио кнопки
     new ui.FFRadio('id-3.2.2', 'name-radio-1-2-2', {})
-        .setWidth(4)
+        .setWidth(12)
+        .setWidthCaptionItem(3)
         .setFieldsHorizontal()
         .addRadioButton('id-1.2.2', 'Чекбокс-2.1')
         .addRadioButton('id-2.2.2', 'Чекбокс-2.2')
@@ -46,15 +49,17 @@ console.time('test');
     // Конфигерируем 12 горизонтальных радио кнопок с фиксированной щириной текста
     new ui.FFRadio({'radioList_1_3': 'id-3.3'}, 'radioList_1_3', radioList_1_3)
         .setWidth(3)
+        .setRequired(true)
         .setFieldsHorizontal()
-        .setWidthCaption(3)
+        .setWidthCaptionItem(3)
         .setSkin('error')
         .appendHTML(APPEND_ELEMENT);
 
     // Конфигерируем 12 горизонтальных радио кнопок с фиксированной щириной текста
     new ui.FFRadio('id-4.4', 'radioList_1_4', radioList_1_4)
-        .setWidth(2)
-        .setWidthCaption(6)
+        .setWidth(6)
+        .setWidthCaptionItem(6)
+        .setCaptionBlock('', 3)
         .setFieldsHorizontal()
         .setSkin('success')
         .appendHTML(APPEND_ELEMENT);
@@ -75,7 +80,8 @@ console.time('test');
         .setDisabledIf('id-30.5')
         .setDisabledIf('id-31.5')
 
-        .setWidthCaption(1)
+        .setCaptionBlock('Caption block radio', 3)
+        .setWidthCaptionItem(1)
         .setSkin('success')
         .appendHTML(APPEND_ELEMENT);
 
