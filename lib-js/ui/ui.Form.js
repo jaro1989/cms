@@ -213,7 +213,7 @@
                 );
             }
 
-            if (this._hideBtn._btnSave === false) {
+            if (this._hideBtn._btnSave === false && this._readOnly === false) {
 
                 this._btnDefaultBottom.push(
                     {
@@ -227,7 +227,7 @@
                 );
             }
 
-            if (this._hideBtn._btnClean === false) {
+            if (this._hideBtn._btnClean === false && this._readOnly === false) {
 
                 this._btnDefaultBottom.push(
                     {

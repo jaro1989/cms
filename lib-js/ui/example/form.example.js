@@ -9,6 +9,7 @@ var APPEND_ELEMENT = '#element_append';
         .setUrlAdd('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setUrlEdit('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setFormReadOnly(false)
+        //.hideBtnRemove(true)
         .setWidthCaption(4)
         .newLine()
         .addTextField('surname', 'Фамилия', true)
@@ -83,7 +84,7 @@ var APPEND_ELEMENT = '#element_append';
                 format_date: 4,
                 period_n: '2000-01-01 00:00:00',
                 period_k: '2016-12-31 00:00:00',
-               // type: 2
+                type: 2
             }
         )
         .appendHTML(APPEND_ELEMENT);
