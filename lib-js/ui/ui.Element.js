@@ -570,7 +570,7 @@
             /**
              *
              * @param {string} attrName
-             * @param {string|number|null} attrValue
+             * @param {string|number|boolean|null} attrValue
              * @returns {ui.Element}
              * @public
              */

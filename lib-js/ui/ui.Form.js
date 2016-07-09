@@ -9,12 +9,6 @@
     var _TYPE_RADIO     = 'radio';
     var _TYPE_READ_ONLY = 'readonly';
 
-    var URL_DEL   = 'urlDel';
-    var URL_ADD   = 'urlAdd';
-    var URL_BACK  = 'urlBack';
-    var URL_EDIT  = 'urlEdit';
-    var ID_RECORD = 'idRecord';
-
     var uniqueId = new Date().getTime();
 
     /**
@@ -65,6 +59,7 @@
         uniqueId++;
     };
 
+    //noinspection JSUnusedGlobalSymbols
     /** @protected */
     ui.Form.prototype = {
 
@@ -99,9 +94,15 @@
             formatDate: ui.Config.formatDateUser,
             checkboxText: ui.Config.checkboxText,
 
-            readonly: function(value, name, caption, data, type, dataParams) {
+            /**
+             * @param {string|number|null} value
+             * @param {string|null} name
+             * @param {{}} params
+             * @returns {*|Element}
+             */
+            readonly: function(value, name, params) {
 
-                var dataList = ui.api.existProperty(data, 'list', false);
+                var dataList = ui.api.existProperty(params, 'list', false);
                 var dataValue = ui.api.setValue(value, name);
 
                 if (dataList !== false) {
@@ -109,87 +110,143 @@
                     value = ui.api.existProperty(dataList, dataValue, null);
                 }
 
-                if (type == _TYPE_DATE) {
+                if (params.type === _TYPE_DATE) {
 
                     value = new ui.FormatDate(dataValue, this.formatDate).getDate();
 
-                } else if (type === _TYPE_CHECKBOX) {
+                } else if (params.type === _TYPE_CHECKBOX) {
 
                     value = ui.api.existProperty(this.checkboxText, dataValue, null);
 
-                } else if (type === _TYPE_PASS) {
+                } else if (params.type === _TYPE_PASS) {
 
                     value = ui.Config.valuePassword;
                 }
 
+                var caption = ui.api.existProperty(params, 'caption', null);
+
                 return new ui.FFReadOnly(value, name, caption)
                     .setWidthCaption(this.widthCaption)
-                    .setMaxHeight(ui.api.existProperty(dataParams, 'height', this.maxHeightReeadOnly))
+                    .setMaxHeight(ui.api.existProperty(params, 'height', this.maxHeightReeadOnly))
                     .getElement();
             },
 
-            text: function(value, name, caption, data) {
+            /**
+             * @param {string|number|null} value
+             * @param {string|null} name
+             * @param {{}} params
+             * @returns {*|Element}
+             */
+            text: function(value, name, params) {
+
+                var caption = ui.api.existProperty(params, 'caption', null);
 
                 return new ui.FFText(value, name, caption)
-                    .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .getElement();
             },
 
-            password: function(value, name, caption, data) {
+            /**
+             * @param {string|number|null} value
+             * @param {string|null} name
+             * @param {{}} params
+             * @returns {*|Element}
+             */
+            password: function(value, name, params) {
+
+                var caption = ui.api.existProperty(params, 'caption', null);
 
                 return new ui.FFPassword(value, name, caption)
-                    .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .getElement();
             },
 
-            textarea: function(value, name, caption, data) {
+            /**
+             * @param {string|number|null} value
+             * @param {string|null} name
+             * @param {{}} params
+             * @returns {*|Element}
+             */
+            textarea: function(value, name, params) {
+
+                var caption = ui.api.existProperty(params, 'caption', null);
 
                 return new ui.FFTextarea(value, name, caption)
-                    .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .setResize('vertical')
                     .getElement();
             },
 
-            date: function(value, name, caption, data) {
+            /**
+             * @param {string|number|null} value
+             * @param {string|null} name
+             * @param {{}} params
+             * @returns {*|Element}
+             */
+            date: function(value, name, params) {
+
+                var caption = ui.api.existProperty(params, 'caption', null);
 
                 return new ui.FFDate(value, name, caption)
-                    .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .getElement();
             },
 
-            select: function(value, name, caption, data) {
+            /**
+             * @param {string|number|null} value
+             * @param {string|null} name
+             * @param {{}} params
+             * @returns {*|Element}
+             */
+            select: function(value, name, params) {
 
-                var dataList = ui.api.existProperty(data, 'list', {});
+                var caption = ui.api.existProperty(params, 'caption', null);
+                var dataList = ui.api.existProperty(params, 'list', {});
 
                 return  new ui.FFSelect(value, name, caption)
-                    .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .setList(dataList)
                     .getElement();
             },
 
-            checkbox: function(value, name, caption, data) {
+            /**
+             * @param {string|number|null} value
+             * @param {string|null} name
+             * @param {{}} params
+             * @returns {*|Element}
+             */
+            checkbox: function(value, name, params) {
+
+                var caption = ui.api.existProperty(params, 'caption', null);
 
                 return new ui.FFCheckbox()
                     .addCheckbox(value, name, caption)
-                    .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setRequired(ui.api.existProperty(params, 'required', false))
                     .setCaptionBlock('', this.widthCaption)
                     .setFieldsHorizontal()
                     .getElement();
             },
 
-            radio: function(value, name, caption, data, type, dataParams) {
+            /**
+             * @param {string|number|null} value
+             * @param {string|null} name
+             * @param {{}} params
+             * @returns {*|Element}
+             */
+            radio: function(value, name, params) {
 
-                var dataList = ui.api.existProperty(data, 'list', {});
+                var caption = ui.api.existProperty(params, 'caption', null);
+                var dataList = ui.api.existProperty(params, 'list', {});
 
                 return  new ui.FFRadio(value, name, dataList)
-                    .setRequired(ui.api.existProperty(data, 'required', false))
+                    .setRequired(ui.api.existProperty(params, 'required', false))
                     .setCaptionBlock(caption, this.widthCaption)
-                    .setWidthCaptionItem(ui.api.existProperty(dataParams, 'width', 2))
+                    .setWidthCaptionItem(ui.api.existProperty(params, 'width', 2))
                     .setFieldsHorizontal()
                     .getElement();
             }
@@ -258,33 +315,6 @@
         },
 
         /**
-         *
-         * @param {string} type
-         * @param {string|number} caption
-         * @param {{}|[]} listData
-         * @param {boolean} required
-         * @param {{}} dataParams
-         * @returns {{type: *, caption: *}|{type: *, caption: *, list: {}}}
-         * @private
-         */
-        _getDataField: function(type, caption, listData, required, dataParams) {
-
-            var data = {
-                type:     type,
-                caption:  caption,
-                required: ui.api.empty(required, false),
-                data:     dataParams
-            };
-
-            if (listData !== null) {
-
-                data['list'] = listData;
-            }
-
-            return data;
-        },
-
-        /**
          * @returns {*|Element}
          * @private
          */
@@ -303,28 +333,24 @@
 
                         var countGroup = Math.round(12 / Object.keys(this._settings[index]).length);
                         //noinspection JSUnfilteredForInLoop
-                        var dataField = this._settings[index][nameField];
-                        var type = dataField.type;
-                        var caption = ui.api.existProperty(dataField, 'caption', null);
+                        var params = this._settings[index][nameField];
 
-                        if (this._htmlFields.hasOwnProperty(type)) {
+                        if (this._readOnly !== false) {
 
-                            var field = '';
-
-                            if (this._readOnly !== false) {
-
-                                type = 'readonly';
-                            }
-
-                            field = this._htmlFields[type](this._values, nameField, caption, dataField, type, dataField.data);
-
-                            elementRow.addChildAfter(
-                                new ui.Element('div')
-                                    .setWidthElement(countGroup)
-                                    .addChildAfter(field)
-                                    .getElement()
-                            );
+                            params.type = _TYPE_READ_ONLY;
                         }
+
+                        /**
+                         * @type ui.Element
+                         */
+                        var field = this._htmlFields[params.type](this._values, nameField, params);
+
+                        elementRow.addChildAfter(
+                            new ui.Element('div')
+                                .setWidthElement(countGroup)
+                                .addChildAfter(field)
+                                .getElement()
+                        );
                     }
                 }
 
@@ -505,7 +531,11 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_READ_ONLY, caption, null, false, {height: height});
+            this._settings[countRow][name] = {
+                type:     _TYPE_READ_ONLY,
+                caption:  caption,
+                height:   height
+            };
 
             return this;
         },
@@ -520,7 +550,11 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_TEXT, caption, null, required, null);
+            this._settings[countRow][name] = {
+                type:     _TYPE_TEXT,
+                caption:  caption,
+                required: ui.api.empty(required, false)
+            };
 
             return this;
         },
@@ -535,7 +569,11 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_PASS, caption, null, required, null);
+            this._settings[countRow][name] = {
+                type:     _TYPE_PASS,
+                caption:  caption,
+                required: ui.api.empty(required, false)
+            };
 
             return this;
         },
@@ -550,7 +588,11 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_TEXTAREA, caption, null, required, null);
+            this._settings[countRow][name] = {
+                type:     _TYPE_TEXTAREA,
+                caption:  caption,
+                required: ui.api.empty(required, false)
+            };
 
             return this;
         },
@@ -565,7 +607,11 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_DATE, caption, null, required, null);
+            this._settings[countRow][name] = {
+                type:     _TYPE_DATE,
+                caption:  caption,
+                required: ui.api.empty(required, false)
+            };
 
             return this;
         },
@@ -581,7 +627,12 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_SELECT, caption, data, required, null);
+            this._settings[countRow][name] = {
+                type:     _TYPE_SELECT,
+                caption:  caption,
+                required: ui.api.empty(required, false),
+                list:     data
+            };
 
             return this;
         },
@@ -596,7 +647,11 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_CHECKBOX, caption, null, required, null);
+            this._settings[countRow][name] = {
+                type:     _TYPE_CHECKBOX,
+                caption:  caption,
+                required: ui.api.empty(required, false)
+            };
 
             return this;
         },
@@ -613,7 +668,13 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_RADIO, caption, data, required, {width: width});
+            this._settings[countRow][name] = {
+                type:     _TYPE_RADIO,
+                caption:  caption,
+                required: ui.api.empty(required, false),
+                list:     data,
+                width:    width
+            };
 
             return this;
         },
@@ -774,7 +835,7 @@
         /**
          * Add element in document
          * @param {string} selector
-         * @returns {ui.FFDate}
+         * @returns {ui.Form}
          * @public
          */
         appendHTML: function(selector) {
