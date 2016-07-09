@@ -75,7 +75,7 @@
         _positionBtnTop:    'left',
         _positionBtnBottom: 'right',
 
-        _idRecord:   null,
+        _idRecord:   '',
         _title:      null,
         _titleSmall: null,
 
@@ -439,8 +439,7 @@
                     );
             }
 
-            page
-                .setBody(form.toHTML());
+            page.setBody(form.toHTML());
 
             var btnBottom = ui.api.arrayMerge(this._btnDefaultBottom, this._addBtnBottom);
 

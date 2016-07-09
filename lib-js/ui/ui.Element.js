@@ -30,7 +30,7 @@
         ui.Element = function(name) {
 
             /**
-             * @type {Element}
+             * @type {Node}
              */
             this.element = document.createElement(name);
             this.tag_name = name;
@@ -425,7 +425,7 @@
 
             /**
              * Add children element before
-             * @param {ui.Element} element
+             * @param {Node} element
              * @returns {ui.Element}
              * @public
              */
@@ -436,7 +436,7 @@
 
             /**
              * Add children element after
-             * @param {ui.Element} element
+             * @param {Node} element
              * @returns {ui.Element}
              * @public
              */
@@ -684,7 +684,7 @@
             /**
              * Set height element
              * @param {string|number} height
-             * @returns {ui.FFTextarea}
+             * @returns {ui.Element}
              */
             setHeightElement: function(height) {
 
@@ -721,23 +721,6 @@
             },
 
             /**
-             *
-             * @param {string} event
-             * @param {string|function} fun
-             * @param {boolean} useCapture
-             */
-            setEvent: function(event, fun, useCapture) {
-
-                this.element.addEventListener('click',
-                    function() {
-                        alert('sada');
-                    },
-                    false
-                );
-                return this;
-            },
-
-            /**
              * Get clone current object
              * @returns {Node}
              */
@@ -754,12 +737,7 @@
              */
             addStyleElement: function(property, value) {
 
-
-                //if (this.element.style.hasOwnProperty(property)) {
-
-                    this.element.style[property] = value;
-                //}
-
+                this.element.style[property] = value;
                 return this;
             },
 

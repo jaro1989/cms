@@ -43,7 +43,7 @@
 
         /**
          * Find parent element with attribute
-         * @param {Element} element
+         * @param {*} element
          * @param {string} selector
          * @returns {*}
          */
@@ -54,7 +54,7 @@
 
         addEvents: function(arrSelector, event, fun, useCapture) {
 
-            if (typeof arrSelector === 'array') {
+            if (typeof arrSelector === 'object') {
 
                 for (var i = 0, count = arrSelector.length; i < count; i++) {
 
@@ -108,8 +108,8 @@
 
         /**
          *
-         * @param {array} defaultArr
-         * @param {array} mergeArray
+         * @param {[]} defaultArr
+         * @param {[]} mergeArray
          * @returns {*}
          */
         arrayMerge: function(defaultArr, mergeArray) {

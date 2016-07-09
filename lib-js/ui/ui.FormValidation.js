@@ -76,10 +76,8 @@
 
             for (var key in this._elementsForm) {
 
-                //noinspection JSUnfilteredForInLoop
                 var element = this._elementsForm.item(key);
 
-                //noinspection JSUnfilteredForInLoop
                 if (element.name != '' && !isNaN(Number(key))) {
 
                     if (this._disableValidator === false) {
@@ -130,10 +128,8 @@
 
                     var i = 0;
 
-                    //noinspection JSUnfilteredForInLoop
                     for (var keyRadio in radio[name]) {
 
-                        //noinspection JSUnfilteredForInLoop
                         if (radio[name][keyRadio] == true) {
 
                             i++;
@@ -155,10 +151,8 @@
 
                         for (var keyEl in element) {
 
-                            //noinspection JSUnfilteredForInLoop
                             if (element[keyEl].checked) {
 
-                                //noinspection JSUnfilteredForInLoop
                                 this.validationField(element[keyEl]);
                             }
                         }
@@ -244,11 +238,9 @@
 
             for (var key in this._elementsForm) {
 
-                //noinspection JSUnfilteredForInLoop
                 var element = this._elementsForm.item(key);
                 element.removeAttribute('value');
 
-                //noinspection JSUnfilteredForInLoop
                 if (element.name != '' && !isNaN(Number(key))) {
 
                     if (element.required || element.classList.contains(ui.CSS.requiredClass)) {

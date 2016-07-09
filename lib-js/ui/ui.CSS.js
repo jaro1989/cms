@@ -13,12 +13,21 @@
              */
             readOnlyMaxHeight: 'read-only-max-height',
 
+            /**
+             * @public
+             * @type {*}
+             */
             page: {
                 main: 'main',
                 header: 'page-header'
             },
 
+            /**
+             * @public
+             * @type {*}
+             */
             newLine: 'row',
+
             /**
              * @public
              * @type {*}
