@@ -74,6 +74,28 @@
         _skin: null,
 
         /**
+         * @private
+         * @type {string|null}
+         */
+        _maxHeight: null,
+
+        /**
+         *
+         * @param {string|number|null} height
+         * @returns {ui.FFReadOnly}
+         */
+        setMaxHeight: function(height) {
+
+            if (typeof height === 'number') {
+
+                height += 'px';
+            }
+
+            this._maxHeight = ui.api.empty(height, null);
+            return this;
+        },
+
+        /**
          * Set skin field
          * @param {string} skinName {'muted'|'primary'|'success'|'info'|'warning'|'danger'}
          * @returns {ui.FFReadOnly}
@@ -206,9 +228,15 @@
             var value = ui.api.setValue(this._value, this._name);
 
             var field = new ui.Element('p')
+                .addClassElement(ui.CSS.readOnlyMaxHeight)
                 .setSkinElement('text', this._skin)
                 .setIdElement(this._id, this._name)
                 .setContentElement(value);
+
+            if (this._maxHeight !== null) {
+
+                field.addStyleElement('maxHeight', this._maxHeight)
+            }
 
             if (
                 this._leftMarker  !== null || this._leftIcon  !== null ||

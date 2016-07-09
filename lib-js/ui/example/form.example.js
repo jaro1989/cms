@@ -9,11 +9,10 @@ var APPEND_ELEMENT = '#element_append';
         .setUrlAdd('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setUrlEdit('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setFormReadOnly(false)
-        //.hideBtnRemove(true)
         .setWidthCaption(4)
         .newLine()
         .addTextField('surname', 'Фамилия', true)
-        .addReadOnlyField(null, null)
+        .addReadOnlyField(null, null, null)
 
         .newLine()
         .addTextField('name',    'Имя', true)
@@ -25,7 +24,7 @@ var APPEND_ELEMENT = '#element_append';
 
         .newLine()
         .addTextField('email', 'E-mail', true)
-        .addReadOnlyField(null, null)
+        .addReadOnlyField(null, null, null)
 
         .newLine()
         .addPasswordField('password', 'Пароль', true)
@@ -33,7 +32,7 @@ var APPEND_ELEMENT = '#element_append';
 
         .newLine()
         .addCheckboxField('send_pass', 'Отправить пароль на почту', true)
-        .addReadOnlyField(null, null)
+        .addReadOnlyField(null, null, null)
 
         .newLine()
         .addSelectField(
@@ -56,7 +55,7 @@ var APPEND_ELEMENT = '#element_append';
             ['DD.MM.YYYY', 'DD/MM/YYYY', 'YYYY.MM.DD', 'YYYY-MM-DD', 'YYYY/MM/DD'],
             false
         )
-        .addReadOnlyField(null, null)
+        .addReadOnlyField(null, null, null)
 
         .newLine()
         .addDateField('period_n', 'Период надало', true)
@@ -66,10 +65,11 @@ var APPEND_ELEMENT = '#element_append';
         .addRadioField(
             'type',
             'Radio',
-            ['Тип-1', 'Тип-2', 'Тип-3', 'Тип-4'],
-            true
+            ['Тип-1', 'Тип-2', 'Тип-3', 'Тип-4', 'Тип-1', 'Тип-2'],
+            true,
+            4
         )
-        .addReadOnlyField(null, null)
+        .addReadOnlyField(null, null, null)
 
         .setDataFields(
             {
@@ -77,7 +77,7 @@ var APPEND_ELEMENT = '#element_append';
                 surname: 'Киселев',
                 name: 'Валерий',
                 middlename: 'Александрович',
-                description_kr: 'Оптимизация, о которой здесь идёт речь, важна в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.',
+                description_kr: 'Оптимизация, о которой здесь идёт речь, важна в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.Оптимизация, о которой здесь идёт речь, важна в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.Оптимизация, о которой здесь идёт речь, важна в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.Оптимизация, о которой здесь идёт речь, важна в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.',
                 description_pl: 'Его «Фишка» заключается в том, что когда DocumentFragment вставляется в DOM – то он исчезает, а вместо него вставляются его дети. Это свойство является уникальной особенностью DocumentFragment.',
                 email: '1xvx1@mail.ru',
                 send_pass: 1,

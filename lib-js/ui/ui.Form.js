@@ -95,10 +95,11 @@
         _htmlFields: {
 
             widthCaption: null,
+            maxHeightReeadOnly: null,
             formatDate: ui.Config.formatDateUser,
             checkboxText: ui.Config.checkboxText,
 
-            readonly: function(value, name, caption, data, type) {
+            readonly: function(value, name, caption, data, type, dataParams) {
 
                 var dataList = ui.api.existProperty(data, 'list', false);
                 var dataValue = ui.api.setValue(value, name);
@@ -123,6 +124,7 @@
 
                 return new ui.FFReadOnly(value, name, caption)
                     .setWidthCaption(this.widthCaption)
+                    .setMaxHeight(ui.api.existProperty(dataParams, 'height', this.maxHeightReeadOnly))
                     .getElement();
             },
 
@@ -180,14 +182,14 @@
                     .getElement();
             },
 
-            radio: function(value, name, caption, data) {
+            radio: function(value, name, caption, data, type, dataParams) {
 
                 var dataList = ui.api.existProperty(data, 'list', {});
 
                 return  new ui.FFRadio(value, name, dataList)
                     .setRequired(ui.api.existProperty(data, 'required', false))
                     .setCaptionBlock(caption, this.widthCaption)
-                    .setWidthCaptionItem(2)
+                    .setWidthCaptionItem(ui.api.existProperty(dataParams, 'width', 2))
                     .setFieldsHorizontal()
                     .getElement();
             }
@@ -261,15 +263,17 @@
          * @param {string|number} caption
          * @param {{}|[]} listData
          * @param {boolean} required
+         * @param {{}} dataParams
          * @returns {{type: *, caption: *}|{type: *, caption: *, list: {}}}
          * @private
          */
-        _getDataField: function(type, caption, listData, required) {
+        _getDataField: function(type, caption, listData, required, dataParams) {
 
             var data = {
                 type:     type,
                 caption:  caption,
-                required: ui.api.empty(required, false)
+                required: ui.api.empty(required, false),
+                data:     dataParams
             };
 
             if (listData !== null) {
@@ -307,14 +311,12 @@
 
                             var field = '';
 
-                            if (this._readOnly === false) {
+                            if (this._readOnly !== false) {
 
-                                field = this._htmlFields[type](this._values, nameField, caption, dataField, type);
-
-                            } else {
-
-                                field = this._htmlFields.readonly(this._values, nameField, caption, dataField, type);
+                                type = 'readonly';
                             }
+
+                            field = this._htmlFields[type](this._values, nameField, caption, dataField, type, dataField.data);
 
                             elementRow.addChildAfter(
                                 new ui.Element('div')
@@ -496,13 +498,14 @@
         /**
          * @param {string|null} name
          * @param {string|number|null} caption
+         * @param {string|number|null} height
          * @returns {ui.Form}
          */
-        addReadOnlyField: function(name, caption) {
+        addReadOnlyField: function(name, caption, height) {
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_READ_ONLY, caption, null, false);
+            this._settings[countRow][name] = this._getDataField(_TYPE_READ_ONLY, caption, null, false, {height: height});
 
             return this;
         },
@@ -517,7 +520,7 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_TEXT, caption, null, required);
+            this._settings[countRow][name] = this._getDataField(_TYPE_TEXT, caption, null, required, null);
 
             return this;
         },
@@ -532,7 +535,7 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_PASS, caption, null, required);
+            this._settings[countRow][name] = this._getDataField(_TYPE_PASS, caption, null, required, null);
 
             return this;
         },
@@ -547,7 +550,7 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_TEXTAREA, caption, null, required);
+            this._settings[countRow][name] = this._getDataField(_TYPE_TEXTAREA, caption, null, required, null);
 
             return this;
         },
@@ -562,7 +565,7 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_DATE, caption, null, required);
+            this._settings[countRow][name] = this._getDataField(_TYPE_DATE, caption, null, required, null);
 
             return this;
         },
@@ -578,7 +581,7 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_SELECT, caption, data, required);
+            this._settings[countRow][name] = this._getDataField(_TYPE_SELECT, caption, data, required, null);
 
             return this;
         },
@@ -593,7 +596,7 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_CHECKBOX, caption, null, required);
+            this._settings[countRow][name] = this._getDataField(_TYPE_CHECKBOX, caption, null, required, null);
 
             return this;
         },
@@ -603,19 +606,29 @@
          * @param {string|number|null} caption
          * @param {{}|[]} data
          * @param {boolean} required
+         * @param {number|null} width
          * @returns {ui.Form}
          */
-        addRadioField: function(name, caption, data, required) {
+        addRadioField: function(name, caption, data, required, width) {
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = this._getDataField(_TYPE_RADIO, caption, data, required);
+            this._settings[countRow][name] = this._getDataField(_TYPE_RADIO, caption, data, required, {width: width});
 
             return this;
         },
 
         /**
-         *
+         * @param {number|string} height
+         * @returns {ui.Form}
+         */
+        setMaxHeightReadOnly: function(height) {
+
+            this._htmlFields.maxHeightReeadOnly = height;
+            return this;
+        },
+
+        /**
          * @param {{}} data
          * @returns {ui.Form}
          */

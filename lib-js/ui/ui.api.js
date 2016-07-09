@@ -131,7 +131,7 @@
          */
         existProperty: function(object, property, defaultValue) {
 
-            if (object.hasOwnProperty(property)) {
+            if (object !== null && object.hasOwnProperty(property)) {
 
                 return object[property];
             }

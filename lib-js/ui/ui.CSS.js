@@ -7,6 +7,12 @@
          */
         ui.CSS = {
 
+            /**
+             * @public
+             * @type {*}
+             */
+            readOnlyMaxHeight: 'read-only-max-height',
+
             page: {
                 main: 'main',
                 header: 'page-header'

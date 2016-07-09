@@ -271,12 +271,8 @@
                 var iblineBlock = new ui.Element('div')
                     .addClassElement(ui.CSS.radioClass)
                     .addStyleElement('marginTop',  0)
+                    .setWidthElement(Math.round(12 - this._widthCaptionBlock))
                     .addClassElement(ui.CSS.radioInlineClass);
-
-                if (typeof this._widthCaptionBlock === 'number') {
-
-                    iblineBlock.setWidthElement(Math.round(12 - this._widthCaptionBlock))
-                }
 
                 var block = new ui.Element('div')
                     .addClassElement(ui.CSS.radioClass)
