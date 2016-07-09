@@ -92,11 +92,14 @@
 
                         if (element.checked) {
 
-                            this.data[element.name] = ui.Config.checkboxValue.checked;
+
+                            ui.api.buildObject(this.data, ui.api.parseName(element.name), ui.Config.checkboxValue.checked, 0);
+                            //this.data[element.name] = ui.Config.checkboxValue.checked;
 
                         } else {
 
-                            this.data[element.name] = ui.Config.checkboxValue.nochecked;
+                            ui.api.buildObject(this.data, ui.api.parseName(element.name), ui.Config.checkboxValue.nochecked, 0);
+                            //this.data[element.name] = ui.Config.checkboxValue.nochecked;
                         }
 
                     } else if (element.type === 'radio') {
@@ -112,12 +115,14 @@
 
                         if (element.checked) {
 
-                            this.data[element.name] = element.value;
+                            ui.api.buildObject(this.data, ui.api.parseName(element.name), element.value, 0);
+                            //this.data[element.name] = element.value;
                         }
 
                     } else {
 
-                        this.data[element.name] = element.value;
+                        ui.api.buildObject(this.data, ui.api.parseName(element.name), element.value, 0);
+                        //this.data[element.name] = element.value;
                     }
                 }
             }
@@ -175,8 +180,8 @@
             var add  = document.getElementById(ui.Config.FORM_URL_ADD).value;
             var edit = document.getElementById(ui.Config.FORM_URL_EDIT).value;
             var record = document.getElementById(ui.Config.FORM_ID_RECORD).value;
-            console.log(data.error.length);
 
+            console.log(data);
             if (data.error.length === 0) {
 
                 new ui.Ajax()

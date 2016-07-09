@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e625a249-66d9-49c4-82c3-b892a980c4cc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.CSS.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.CSS.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Element.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Element.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Form.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Form.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/actionFormServer.php" afterPath="$PROJECT_DIR$/lib-js/ui/example/actionFormServer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/form.example.js" afterPath="$PROJECT_DIR$/lib-js/ui/example/form.example.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.FormValidation.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.FormValidation.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.api.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.api.js" />
     </list>
@@ -53,8 +52,8 @@
       <file leaf-file-name="ui.Form.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Form.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="167.34483">
-              <caret line="448" column="20" selection-start-line="448" selection-start-column="20" selection-end-line="448" selection-end-column="20" />
+            <state vertical-scroll-proportion="-4.95">
+              <caret line="302" column="81" selection-start-line="302" selection-start-column="67" selection-end-line="302" selection-end-column="81" />
               <folding />
             </state>
           </provider>
@@ -63,8 +62,8 @@
       <file leaf-file-name="ui.api.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-22.758621">
-              <caret line="44" column="45" selection-start-line="44" selection-start-column="45" selection-end-line="44" selection-end-column="45" />
+            <state vertical-scroll-proportion="-24.827587">
+              <caret line="156" column="34" selection-start-line="156" selection-start-column="34" selection-end-line="156" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -83,58 +82,28 @@
       <file leaf-file-name="ui.FormValidation.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FormValidation.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.344828">
-              <caret line="240" column="0" selection-start-line="240" selection-start-column="0" selection-end-line="240" selection-end-column="0" />
+            <state vertical-scroll-proportion="6.4">
+              <caret line="124" column="59" selection-start-line="124" selection-start-column="52" selection-end-line="124" selection-end-column="59" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="form.example.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="actionFormServer.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib-js/ui/example/actionFormServer.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-2.5">
+              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="form.example.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/example/form.example.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="6.4">
-              <caret line="10" column="30" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.FFRadio.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.333333">
-              <caret line="274" column="62" selection-start-line="274" selection-start-column="62" selection-end-line="274" selection-end-column="62" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.FFReadOnly.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFReadOnly.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.95">
-              <caret line="93" column="27" selection-start-line="93" selection-start-column="17" selection-end-line="93" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.11326861">
-              <caret line="7" column="8" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.CSS.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.CSS.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.0">
-              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+            <state vertical-scroll-proportion="-0.29284164">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -186,7 +155,6 @@
         <option value="$PROJECT_DIR$/lib-js/ui/example/ajaxTest.php" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.Ajax.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFHidden.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/example/actionFormServer.php" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFBlockEmpty.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.Config.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFText.js" />
@@ -200,12 +168,13 @@
         <option value="$PROJECT_DIR$/lib-js/ui/example/index.html" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFReadOnly.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.FFRadio.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/example/form.example.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.Form.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.api.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.Element.js" />
-        <option value="$PROJECT_DIR$/lib-js/ui/ui.FormValidation.js" />
         <option value="$PROJECT_DIR$/lib-js/ui/ui.CSS.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/example/actionFormServer.php" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.FormValidation.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/ui.api.js" />
+        <option value="$PROJECT_DIR$/lib-js/ui/example/form.example.js" />
       </list>
     </option>
   </component>
@@ -630,6 +599,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="lib-js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="builder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -737,12 +724,6 @@
       <created>1463857792974</created>
       <option name="number" value="Default" />
       <updated>1463857792974</updated>
-    </task>
-    <task id="LOCAL-00057" summary="Lib-JS: Calendar  (update)">
-      <created>1466527755682</created>
-      <option name="number" value="00057" />
-      <option name="project" value="LOCAL" />
-      <updated>1466527755682</updated>
     </task>
     <task id="LOCAL-00058" summary="Lib-JS: Calendar  (update)">
       <created>1466538394391</created>
@@ -1032,7 +1013,13 @@
       <option name="project" value="LOCAL" />
       <updated>1468085710563</updated>
     </task>
-    <option name="localTasksCounter" value="106" />
+    <task id="LOCAL-00106" summary="Form update">
+      <created>1468089961863</created>
+      <option name="number" value="00106" />
+      <option name="project" value="LOCAL" />
+      <updated>1468089961863</updated>
+    </task>
+    <option name="localTasksCounter" value="107" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1139,13 +1126,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/css/bootstrap.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.9309602">
-          <caret line="299" column="0" selection-start-line="299" selection-start-column="0" selection-end-line="299" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/builder/CssClasses.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-73.44827">
@@ -1339,13 +1319,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/actionFormServer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.375">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFPassword.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.27874187">
@@ -1450,50 +1423,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FormValidation.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.344828">
-          <caret line="240" column="0" selection-start-line="240" selection-start-column="0" selection-end-line="240" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Form.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="167.34483">
-          <caret line="448" column="20" selection-start-line="448" selection-start-column="20" selection-end-line="448" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-22.758621">
-          <caret line="44" column="45" selection-start-line="44" selection-start-column="45" selection-end-line="44" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Element.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.448276">
-          <caret line="41" column="25" selection-start-line="41" selection-start-column="25" selection-end-line="41" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFReadOnly.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.95">
           <caret line="93" column="27" selection-start-line="93" selection-start-column="17" selection-end-line="93" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/form.example.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="6.4">
-          <caret line="10" column="30" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="30" />
           <folding />
         </state>
       </provider>
@@ -1516,8 +1449,64 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/example/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11326861">
+        <state vertical-scroll-proportion="-4.375">
           <caret line="7" column="8" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Element.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.448276">
+          <caret line="41" column="25" selection-start-line="41" selection-start-column="25" selection-end-line="41" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/builder/Form.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/actionFormServer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.5">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FormValidation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="6.4">
+          <caret line="124" column="59" selection-start-line="124" selection-start-column="52" selection-end-line="124" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-24.827587">
+          <caret line="156" column="34" selection-start-line="156" selection-start-column="34" selection-end-line="156" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Form.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.95">
+          <caret line="302" column="81" selection-start-line="302" selection-start-column="67" selection-end-line="302" selection-end-column="81" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/example/form.example.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.29284164">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding />
         </state>
       </provider>

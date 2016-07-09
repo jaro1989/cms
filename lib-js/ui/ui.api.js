@@ -123,6 +123,57 @@
         },
 
         /**
+         *
+         * @param {{}} obj
+         * @param {[]} arr
+         * @param {{}|[]|string|number|null} val
+         * @param {number} i
+         * @returns {*}
+         */
+        buildObject: function(obj, arr, val, i) {
+
+            for (var a = 0; a < i; a++) {
+                delete arr[a];
+            }
+
+            if (arr.hasOwnProperty(i)) {
+
+                var key = arr[i];
+                delete arr[i];
+                i++;
+
+                if (Object.keys(arr).length == 0) {
+
+                    if (!ui.api.empty(key, false)) {
+                        //console.log(key, obj, Object.keys(obj).length);
+                        key = Object.keys(obj).length;
+                    }
+                    obj[key] = val;
+
+                } else {
+
+                    if (!obj.hasOwnProperty(key)) {
+                        //console.log(key);
+                        obj[key] = {};
+                    }
+
+                    return this.buildObject(obj[key], arr, val, i);
+                }
+            }
+        },
+
+        /**
+         * Parse name field
+         * @param {string} name
+         * @returns {[]}
+         */
+        parseName: function(name) {
+
+            name = name.replace(/]/g, '');
+            return name.split('[');
+        },
+
+        /**
          * If "property" exist - return "value" else "defaultValue"
          * @param {{}} object
          * @param {string|number|null} property
