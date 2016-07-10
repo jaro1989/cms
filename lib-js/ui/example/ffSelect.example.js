@@ -4,15 +4,9 @@
 
 
     new ui.FFSelect('2', 'name-1', 'Select list')
-        .setList(
-            [
-                {value: null, text: 'Item - 1'},
-                {value: 2,    text: 'Item - 2'},
-                {value: 3,    text: 'Item - 3'}
-            ]
-        )
-        .addItem(4, 'Item - 4')
-        .addItem(4, 'Item - 5')
+        .setList(['Item - 1', 'Item - 2', 'Item - 3', 'Item - 4'])
+        .addItem(5, 'Item - 5')
+        .addItem(6, 'Item - 6')
         .setWidth(2)
         .appendHTML(APPEND_ELEMENT);
 

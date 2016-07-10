@@ -11,7 +11,7 @@ var APPEND_ELEMENT = '#element_append';
         .setFormReadOnly(false)
         .setWidthCaption(4)
         .newLine()
-        .addTextField('surname[sss][0]', 'Фамилия', true)
+        .addTextField('surname', 'Фамилия', true)
         .addReadOnlyField(null, null, null)
 
         .newLine()
@@ -24,6 +24,23 @@ var APPEND_ELEMENT = '#element_append';
 
         .newLine()
         .addTextField('email', 'E-mail', true)
+        .addReadOnlyField(null, null, null)
+
+       // .newLine()
+        .addRelationship('contacts')
+        .addReadOnlyField(null, null, null)
+        .addTextField('alt', 'альтернативный текст', false)
+        .addTextField('title', 'Заголовок', false)
+        .addTextareaField('description', 'описание', false)
+        .addTextField('url', 'URL', false)
+        .addReadOnlyField(null, null, null)
+
+        .addRelationship('image')
+        .addReadOnlyField(null, null, null)
+        .addTextField('alt', 'альтернативный текст', false)
+        .addTextField('title', 'Заголовок', false)
+        .addTextareaField('description', 'описание', false)
+        .addTextField('url', 'URL', false)
         .addReadOnlyField(null, null, null)
 
         .newLine()
@@ -87,68 +104,30 @@ var APPEND_ELEMENT = '#element_append';
                 type: 2
             }
         )
+        .addRelationDataFields(
+            'image',
+            [
+                {
+                    id: 1,
+                    alt: 'alt text1',
+                    title: 'title image1',
+                    description: 'description image1',
+                    url: 'www.url.img1'
+                },
+                {
+                    id: 2,
+                    alt: 'alt text2',
+                    title: 'title image2',
+                    description: 'description image2',
+                    url: 'www.url.img2'
+                },
+                {
+                    id: 3,
+                    alt: 'alt text3',
+                    title: 'title image3',
+                    description: 'description image3',
+                    url: 'www.url.img3'
+                }
+            ]
+        )
         .appendHTML(APPEND_ELEMENT);
-
-    //var val = '';
-    //var name = 'a[b][][]';
-    //var s = name.replace(/]/g, '');
-    //var arr = s.split('[');
-    //var obj = {};
-//    var res = {
-//        s: {
-//            f: 'f',
-//            c: 'c',
-//            b: {
-//                c: 'value'
-//            }
-//        },
-//        d: {
-//            a: 'a'
-//        }
-//    };
-//
-//
-//    var obj = {
-//        s: {
-//            f: 'f',
-//            c: 'c'
-//        },
-//        d: {
-//            a: 'a'
-//        }
-//    };
-//    var val = 'value';
-//    var arr = ['s', 'b', 'c', 'e', 't', 'h', 'j'];
-//
-//    function buildObject(obj, arr, val, i) {
-//
-//        for (var a = 0; a < i; a++) {
-//            delete arr[a];
-//        }
-//
-//        if (arr.hasOwnProperty(i)) {
-//
-//            var key = arr[i];
-//            delete arr[i];
-//            i++;
-//
-//            console.log(Object.keys(arr).length);
-//
-//            if (Object.keys(arr).length == 0) {
-//
-//                obj[key] = val;
-//
-//            } else {
-//
-//                if (!obj.hasOwnProperty(key)) {
-//
-//                    obj[key] = {};
-//                }
-//
-//                return buildObject(obj[key], arr, val, i);
-//            }
-//        }
-//    }
-//
-//buildObject(obj, arr, val, 0);
-//console.log(obj);

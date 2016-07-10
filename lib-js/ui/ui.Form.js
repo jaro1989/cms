@@ -8,6 +8,7 @@
     var _TYPE_CHECKBOX  = 'checkbox';
     var _TYPE_RADIO     = 'radio';
     var _TYPE_READ_ONLY = 'readonly';
+    var _TYPE_RELATIONSHIP = 'relationship';
 
     var uniqueId = new Date().getTime();
 
@@ -23,34 +24,40 @@
          * @type {{}|string}
          * @private
          */
-        this._values   = {};
+        this._values = {};
 
         /**
-         * @type {array}
+         * @type {{}|string}
+         * @private
+         */
+        this._relationValues = {};
+
+        /**
+         * @type {[]}
          * @private
          */
         this._settings = [];
 
         /**
-         * @type {array}
+         * @type {[]}
          * @private
          */
         this._addBtnBottom  = [];
 
         /**
-         * @type {array}
+         * @type {[]}
          * @private
          */
-        this._addBtnTop     = [];
+        this._addBtnTop = [];
 
         /**
-         * @type {array}
+         * @type {[]}
          * @private
          */
-        this._btnDefaultTop    = [];
+        this._btnDefaultTop = [];
 
         /**
-         * @type {array}
+         * @type {[]}
          * @private
          */
         this._btnDefaultBottom = [];
@@ -318,39 +325,75 @@
          * @returns {*|Element}
          * @private
          */
-        _buildRow: function() {
+        _buildRow: function(settings, values) {
 
             var parentElement = new ui.Element('div');
 
-            for (var index in this._settings) {
+            for (var index in settings) {
 
                 var elementRow = new ui.Element('div')
                     .addClassElement(ui.CSS.newLine);
 
-                if (this._settings.hasOwnProperty(index)) {
+                if (settings.hasOwnProperty(index)) {
 
-                    for (var nameField in this._settings[index]) {
+                    for (var nameField in settings[index]) {
 
-                        var countGroup = Math.round(12 / Object.keys(this._settings[index]).length);
-                        //noinspection JSUnfilteredForInLoop
-                        var params = this._settings[index][nameField];
+                        if (nameField === _TYPE_RELATIONSHIP) {
 
-                        if (this._readOnly !== false) {
+                            //==========================================================================================
 
-                            params.type = _TYPE_READ_ONLY;
+                            var relationName = settings[index][nameField]['name'];
+
+                            if (this._relationValues.hasOwnProperty(relationName)) {
+
+                                if (this._relationValues[relationName].length > 0) {
+
+                                    for (var relationKey in this._relationValues[relationName]) {
+
+                                        elementRow.addChildAfter(
+                                            this._buildRow(
+                                                settings[index],
+                                                this._relationValues[relationName][relationKey]
+                                            )
+                                        );
+                                    }
+                                } else {
+
+                                    elementRow.addChildAfter(this._buildRow(settings[index], {}));
+                                }
+
+                            } else {
+
+                                elementRow.addChildAfter(this._buildRow(settings[index], {}));
+                            }
+                            //==========================================================================================
+
+                        } else {
+                            var countGroup = Math.round(12 / (Object.keys(settings[index]).length - (index === _TYPE_RELATIONSHIP ? 1 : 0)));
+                            var params = settings[index][nameField];
+
+                            if (params.hasOwnProperty('type')) {
+
+                                var type = params.type;
+
+                                if (this._readOnly !== false) {
+
+                                    type = _TYPE_READ_ONLY;
+                                }
+
+                                /**
+                                 * @type Node
+                                 */
+                                var field = this._htmlFields[type](values, nameField, params);
+
+                                elementRow.addChildAfter(
+                                    new ui.Element('div')
+                                        .setWidthElement(countGroup)
+                                        .addChildAfter(field)
+                                        .getElement()
+                                );
+                            }
                         }
-
-                        /**
-                         * @type ui.Element
-                         */
-                        var field = this._htmlFields[params.type](this._values, nameField, params);
-
-                        elementRow.addChildAfter(
-                            new ui.Element('div')
-                                .setWidthElement(countGroup)
-                                .addChildAfter(field)
-                                .getElement()
-                        );
                     }
                 }
 
@@ -401,13 +444,13 @@
          * @returns {*|Element}
          * @private
          */
-        _buildForrm: function() {
+        _buildForm: function() {
 
             var form = new ui.Element('form')
                 .setIdElement(this._idForm, null)
                 .setAttrElement('method', this._method)
                 .addChildBefore(this._buildBlockHidden())
-                .addChildAfter(this._buildRow());
+                .addChildAfter(this._buildRow(this._settings, this._values));
 
             var record = ui.api.existProperty(this._values, this._idRecord, false);
 
@@ -521,6 +564,52 @@
         },
 
         /**
+         * @param {string} relation_name
+         * @returns {ui.Form}
+         */
+        addRelationship: function(relation_name) {
+
+            var obj = {};
+            obj[_TYPE_RELATIONSHIP] = {name: relation_name};
+            this._settings.push(obj);
+
+            //console.log(this._settings, obj);
+            return this;
+        },
+
+        /**
+         *
+         * @param {{}} row
+         * @param {{}} params
+         * @param {string} name
+         * @returns {{}}
+         * @private
+         */
+        _setParametersFields: function(row, params, name) {
+
+            if (row.hasOwnProperty(_TYPE_RELATIONSHIP)) {
+
+                if (ui.api.empty(name, null) === null) {
+
+                    name = _TYPE_READ_ONLY + '_' + Object.keys(row[_TYPE_RELATIONSHIP]).length;
+                }
+
+                row[_TYPE_RELATIONSHIP][name] = params;
+
+            } else {
+
+                if (ui.api.empty(name, null) === null) {
+
+                    name = _TYPE_READ_ONLY + '_' + Object.keys(row).length;
+                }
+
+                row[name] = params;
+            }
+
+            return row;
+        },
+
+        /**
          * @param {string|null} name
          * @param {string|number|null} caption
          * @param {string|number|null} height
@@ -528,13 +617,15 @@
          */
         addReadOnlyField: function(name, caption, height) {
 
-            var countRow = this._settings.length - 1;
+            var countRow  = Object.keys(this._settings).length - 1;
 
-            this._settings[countRow][name] = {
-                type:     _TYPE_READ_ONLY,
-                caption:  caption,
-                height:   height
+            var params = {
+                type: _TYPE_READ_ONLY,
+                caption: caption,
+                height: height
             };
+
+            this._setParametersFields(this._settings[countRow], params, name);
 
             return this;
         },
@@ -549,12 +640,13 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = {
-                type:     _TYPE_TEXT,
-                caption:  caption,
+            var params = {
+                type: _TYPE_TEXT,
+                caption: caption,
                 required: ui.api.empty(required, false)
             };
 
+            this._setParametersFields(this._settings[countRow], params, name);
             return this;
         },
 
@@ -568,11 +660,13 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = {
+            var params = {
                 type:     _TYPE_PASS,
                 caption:  caption,
                 required: ui.api.empty(required, false)
             };
+
+            this._setParametersFields(this._settings[countRow], params, name);
 
             return this;
         },
@@ -587,11 +681,13 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = {
+            var params = {
                 type:     _TYPE_TEXTAREA,
                 caption:  caption,
                 required: ui.api.empty(required, false)
             };
+
+            this._setParametersFields(this._settings[countRow], params, name);
 
             return this;
         },
@@ -606,11 +702,13 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = {
+            var params = {
                 type:     _TYPE_DATE,
                 caption:  caption,
                 required: ui.api.empty(required, false)
             };
+
+            this._setParametersFields(this._settings[countRow], params, name);
 
             return this;
         },
@@ -626,12 +724,14 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = {
+            var params = {
                 type:     _TYPE_SELECT,
                 caption:  caption,
                 required: ui.api.empty(required, false),
                 list:     data
             };
+
+            this._setParametersFields(this._settings[countRow], params, name);
 
             return this;
         },
@@ -646,11 +746,13 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = {
+            var params = {
                 type:     _TYPE_CHECKBOX,
                 caption:  caption,
                 required: ui.api.empty(required, false)
             };
+
+            this._setParametersFields(this._settings[countRow], params, name);
 
             return this;
         },
@@ -667,13 +769,15 @@
 
             var countRow = this._settings.length - 1;
 
-            this._settings[countRow][name] = {
+            var params = {
                 type:     _TYPE_RADIO,
                 caption:  caption,
                 required: ui.api.empty(required, false),
                 list:     data,
                 width:    width
             };
+
+            this._setParametersFields(this._settings[countRow], params, name);
 
             return this;
         },
@@ -696,6 +800,18 @@
 
             this._values = data;
             return this;
+        },
+
+        /**
+         *
+         * @param {string} relationName
+         * @param {[]|{}|null|boolean} data
+         * @returns {ui.Form}
+         */
+        addRelationDataFields: function(relationName, data) {
+
+            this._relationValues[relationName] = ui.api.empty(data, []);
+            return this
         },
 
         /**
@@ -819,7 +935,7 @@
          * @public
          */
         getElement: function() {
-            return this._buildForrm();
+            return this._buildForm();
         },
 
         /**
@@ -828,7 +944,7 @@
          * @public
          */
         toHTML: function() {
-            return this._buildForrm().outerHTML;
+            return this._buildForm().outerHTML;
         },
 
         /**
