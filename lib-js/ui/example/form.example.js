@@ -10,6 +10,7 @@ var APPEND_ELEMENT = '#element_append';
         .setUrlEdit('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setFormReadOnly(false)
         .setWidthCaption(4)
+
         .newLine()
         .addTextField('surname', 'Фамилия', true)
         .addReadOnlyField(null, null, null)
@@ -29,8 +30,8 @@ var APPEND_ELEMENT = '#element_append';
        // .newLine()
         .addRelationship('contacts')
         .addReadOnlyField(null, null, null)
-        .addTextField('alt', 'альтернативный текст', false)
-        .addTextField('title', 'Заголовок', false)
+        .addTextField('alt', 'альтернативный текст', true)
+        .addTextField('title', 'Заголовок', true)
         .addTextareaField('description', 'описание', false)
         .addTextField('url', 'URL', false)
         .addReadOnlyField(null, null, null)

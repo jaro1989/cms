@@ -23,6 +23,15 @@
         };
 
         /**
+         * @param {string} str {name[0][key]| name | name[key][0][name][key][2]}
+         * @returns {string}
+         */
+        var parseName = function(str) {
+
+            return str.replace(/\[/g, '-').replace(/\]/g, '');
+        };
+
+        /**
          * @memberOf ui
          * @namespace ui.Element
          * @constructor
@@ -250,7 +259,7 @@
 
                     if (typeof htmlName === 'string') {
 
-                        this.element.id = htmlName.replace('[', '-').replace(']', '');
+                        this.element.id = parseName(htmlName);
                     }
                 }
 
@@ -275,7 +284,7 @@
 
                         if (typeof htmlName === 'string') {
 
-                            this.element.setAttribute('for', htmlName.replace('[', '-').replace(']', ''));
+                            this.element.setAttribute('for', parseName(htmlName));
                         }
                     }
                 }

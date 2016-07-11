@@ -325,7 +325,7 @@
          * @returns {*|Element}
          * @private
          */
-        _buildRow: function(settings, values) {
+        _buildRow: function(settings, values, relation) {
 
             var parentElement = new ui.Element('div');
 
@@ -348,28 +348,32 @@
 
                                 if (this._relationValues[relationName].length > 0) {
 
+                                    var i = 0;
+
                                     for (var relationKey in this._relationValues[relationName]) {
 
                                         elementRow.addChildAfter(
                                             this._buildRow(
                                                 settings[index],
-                                                this._relationValues[relationName][relationKey]
+                                                this._relationValues[relationName][relationKey],
+                                                relationName + '[' + i + ']'
                                             )
                                         );
+                                        i++;
                                     }
                                 } else {
 
-                                    elementRow.addChildAfter(this._buildRow(settings[index], {}));
+                                    elementRow.addChildAfter(this._buildRow(settings[index], {}, relationName + '[0]'));
                                 }
 
                             } else {
 
-                                elementRow.addChildAfter(this._buildRow(settings[index], {}));
+                                elementRow.addChildAfter(this._buildRow(settings[index], {}, relationName + '[0]'));
                             }
                             //==========================================================================================
 
                         } else {
-                            var countGroup = Math.round(12 / (Object.keys(settings[index]).length - (index === _TYPE_RELATIONSHIP ? 1 : 0)));
+
                             var params = settings[index][nameField];
 
                             if (params.hasOwnProperty('type')) {
@@ -381,10 +385,19 @@
                                     type = _TYPE_READ_ONLY;
                                 }
 
+                                //======================================================================================
+                                if (relation !== null) {
+                                    nameField = relation + '[' + nameField + ']';
+                                    //console.log(relation + '[' + nameField + ']', index, nameField);
+                                }
+                                //======================================================================================
+
+                                //console.log(relation, type, nameField);
                                 /**
                                  * @type Node
                                  */
                                 var field = this._htmlFields[type](values, nameField, params);
+                                var countGroup = Math.round(12 / (Object.keys(settings[index]).length - (index === _TYPE_RELATIONSHIP ? 1 : 0)));
 
                                 elementRow.addChildAfter(
                                     new ui.Element('div')
@@ -450,7 +463,7 @@
                 .setIdElement(this._idForm, null)
                 .setAttrElement('method', this._method)
                 .addChildBefore(this._buildBlockHidden())
-                .addChildAfter(this._buildRow(this._settings, this._values));
+                .addChildAfter(this._buildRow(this._settings, this._values, null));
 
             var record = ui.api.existProperty(this._values, this._idRecord, false);
 
