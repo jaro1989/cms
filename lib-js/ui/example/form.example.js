@@ -44,6 +44,9 @@ var APPEND_ELEMENT = '#element_append';
         .addTextField('url', 'URL', false)
         .addReadOnlyField(null, null, null)
 
+        //.addRelationship('image')
+        //.addTextField('alt2', 'альтернативный текст2', false)
+
         .newLine()
         .addPasswordField('password', 'Пароль', true)
         .addPasswordField('password_repeat', 'Повторите пароль', true)

@@ -385,14 +385,11 @@
                                     type = _TYPE_READ_ONLY;
                                 }
 
-                                //======================================================================================
                                 if (relation !== null) {
-                                    nameField = relation + '[' + nameField + ']';
-                                    //console.log(relation + '[' + nameField + ']', index, nameField);
-                                }
-                                //======================================================================================
 
-                                //console.log(relation, type, nameField);
+                                    nameField = relation + '[' + nameField + ']';
+                                }
+
                                 /**
                                  * @type Node
                                  */
@@ -401,13 +398,35 @@
 
                                 elementRow.addChildAfter(
                                     new ui.Element('div')
-                                        .setWidthElement(countGroup)
-                                        .addChildAfter(field)
+                                        .addChildAfter(
+                                            new ui.Element('div')
+                                                .setWidthElement(countGroup)
+                                                .addChildAfter(field)
+                                                .getElement()
+                                        )
                                         .getElement()
                                 );
                             }
                         }
                     }
+                }
+
+                if (relation !== null) {
+
+                    elementRow.addChildAfter(
+                        new ui.Element('div')
+                            .setWidthElement(1)
+                            .addChildAfter(
+                                new ui.FFButton()
+                                    .setPaddingBlock('xs')
+                                    .setSize('sm')
+                                    .setGroup('toolbar')
+                                    .addButton(null, null, null, 'default', false, 'plus')
+                                    .addButton(null, null, null, 'default', false, 'minus')
+                                    .getElement()
+                            )
+                            .getElement()
+                    );
                 }
 
                 parentElement.addChildAfter(elementRow.getElement());
@@ -586,7 +605,6 @@
             obj[_TYPE_RELATIONSHIP] = {name: relation_name};
             this._settings.push(obj);
 
-            //console.log(this._settings, obj);
             return this;
         },
 
