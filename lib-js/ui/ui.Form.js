@@ -503,10 +503,7 @@
          */
         _buildBlockRows: function (settings) {
 
-            var parent = settings[_PARENT_OBJECT];
             var title  = settings[_PARENT_TITLE];
-            var block  = settings[_BLOCK_ROWS];
-            var row = null;
 
             var panel = new ui.Element('div')
                 .addClassElement(ui.CSS.panelClass.panel)
@@ -530,7 +527,7 @@
             panel.addChildAfter(
                 new ui.Element('div')
                     .addClassElement(ui.CSS.panelClass.panelBody)
-                    .addChildBefore(parentElement.getElement())
+                    .addChildBefore(this._buildRow(settings[_PARENT_OBJECT]), settings[_BLOCK_ROWS])
                     .getElement()
                 )
                 .getElement();
