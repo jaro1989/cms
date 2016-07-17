@@ -10,6 +10,11 @@
     var _TYPE_READ_ONLY = 'readonly';
     var _TYPE_RELATIONSHIP = 'relationship';
 
+    var _PARENT_OBJECT = 'parent';
+    var _PARENT_TITLE = 'parent-title';
+    var _BLOCK_ROWS   = 'block-rows';
+    var _BLOCK_FIELDS = 'block-fields';
+
     var uniqueId = new Date().getTime();
 
     /**
@@ -321,119 +326,140 @@
             }
         },
 
-        /**
-         * @returns {*|Element}
-         * @private
-         */
-        _buildRow: function(settings, values, relation) {
-
-            var parentElement = new ui.Element('div');
-
-            for (var index in settings) {
-
-                var elementRow = new ui.Element('div')
-                    .addClassElement(ui.CSS.newLine);
-
-                if (settings.hasOwnProperty(index)) {
-
-                    for (var nameField in settings[index]) {
-
-                        if (nameField === _TYPE_RELATIONSHIP) {
-
-                            //==========================================================================================
-
-                            var relationName = settings[index][nameField]['name'];
-
-                            if (this._relationValues.hasOwnProperty(relationName)) {
-
-                                if (this._relationValues[relationName].length > 0) {
-
-                                    var i = 0;
-
-                                    for (var relationKey in this._relationValues[relationName]) {
-
-                                        elementRow.addChildAfter(
-                                            this._buildRow(
-                                                settings[index],
-                                                this._relationValues[relationName][relationKey],
-                                                relationName + '[' + i + ']'
-                                            )
-                                        );
-                                        i++;
-                                    }
-                                } else {
-
-                                    elementRow.addChildAfter(this._buildRow(settings[index], {}, relationName + '[0]'));
-                                }
-
-                            } else {
-
-                                elementRow.addChildAfter(this._buildRow(settings[index], {}, relationName + '[0]'));
-                            }
-                            //==========================================================================================
-
-                        } else {
-
-                            var params = settings[index][nameField];
-
-                            if (params.hasOwnProperty('type')) {
-
-                                var type = params.type;
-
-                                if (this._readOnly !== false) {
-
-                                    type = _TYPE_READ_ONLY;
-                                }
-
-                                if (relation !== null) {
-
-                                    nameField = relation + '[' + nameField + ']';
-                                }
-
-                                /**
-                                 * @type Node
-                                 */
-                                var field = this._htmlFields[type](values, nameField, params);
-                                var countGroup = Math.round(12 / (Object.keys(settings[index]).length - (index === _TYPE_RELATIONSHIP ? 1 : 0)));
-
-                                elementRow.addChildAfter(
-                                    new ui.Element('div')
-                                        .addChildAfter(
-                                            new ui.Element('div')
-                                                .setWidthElement(countGroup)
-                                                .addChildAfter(field)
-                                                .getElement()
-                                        )
-                                        .getElement()
-                                );
-                            }
-                        }
-                    }
-                }
-
-                if (relation !== null) {
-
-                    elementRow.addChildAfter(
-                        new ui.Element('div')
-                            .setWidthElement(1)
-                            .addChildAfter(
-                                new ui.FFButton()
-                                    .setPaddingBlock('xs')
-                                    .setSize('sm')
-                                    .setGroup('toolbar')
-                                    .addButton(null, null, null, 'default', false, 'plus')
-                                    .addButton(null, null, null, 'default', false, 'minus')
-                                    .getElement()
-                            )
-                            .getElement()
-                    );
-                }
-
-                parentElement.addChildAfter(elementRow.getElement());
-            }
-
-            return parentElement.getElement();
-        },
+        ///**
+        // * @returns {*|Element}
+        // * @private
+        // */
+        //_buildRow: function(settings, values, relation) {
+        //
+        //    var parentElement = new ui.Element('div');
+        //
+        //    for (var index in settings) {
+        //
+        //        var elementRow = new ui.Element('div')
+        //            .addClassElement(ui.CSS.newLine);
+        //
+        //        if (settings.hasOwnProperty(index)) {
+        //
+        //            for (var nameField in settings[index]) {
+        //
+        //                if (nameField === _TYPE_RELATIONSHIP) {
+        //
+        //                    //==========================================================================================
+        //
+        //                    var relationName = settings[index][nameField]['name'];
+        //
+        //                    if (this._relationValues.hasOwnProperty(relationName)) {
+        //
+        //                        if (this._relationValues[relationName].length > 0) {
+        //
+        //                            var i = 0;
+        //
+        //                            for (var relationKey in this._relationValues[relationName]) {
+        //
+        //                                elementRow.addChildAfter(
+        //                                    this._buildRow(
+        //                                        settings[index],
+        //                                        this._relationValues[relationName][relationKey],
+        //                                        relationName + '[' + i + ']'
+        //                                    )
+        //                                );
+        //
+        //                                i++;
+        //                            }
+        //                        } else {
+        //
+        //                            elementRow.addChildAfter(this._buildRow(settings[index], {}, relationName + '[0]'));
+        //                        }
+        //
+        //                    } else {
+        //
+        //                        elementRow.addChildAfter(this._buildRow(settings[index], {}, relationName + '[0]'));
+        //                    }
+        //                    //==========================================================================================
+        //
+        //                } else {
+        //
+        //                    var params = settings[index][nameField];
+        //
+        //                    if (params.hasOwnProperty('type')) {
+        //
+        //                        var type = params.type;
+        //
+        //                        if (this._readOnly !== false) {
+        //
+        //                            type = _TYPE_READ_ONLY;
+        //                        }
+        //
+        //                        if (relation !== null) {
+        //
+        //                            nameField = relation + '[' + nameField + ']';
+        //                        }
+        //
+        //                        /**
+        //                         * @type Node
+        //                         */
+        //                        var field = this._htmlFields[type](values, nameField, params);
+        //                        var countGroup = Math.round(12 / (Object.keys(settings[index]).length - (index === _TYPE_RELATIONSHIP ? 1 : 0)));
+        //
+        //                        elementRow.addChildAfter(
+        //                            new ui.Element('div')
+        //                                .addChildAfter(
+        //                                    new ui.Element('div')
+        //                                        .setWidthElement(countGroup)
+        //                                        .addChildAfter(field)
+        //                                        .getElement()
+        //                                )
+        //                                .getElement()
+        //                        );
+        //                    }
+        //                }
+        //            }
+        //        }
+        //
+        //        if (relation !== null) {
+        //
+        //            elementRow.addChildAfter(
+        //                new ui.Element('div')
+        //                    .setWidthElement(1)
+        //                    .addChildAfter(
+        //                        new ui.FFButton()
+        //                            .setPaddingBlock('xs')
+        //                            .setSize('sm')
+        //                            .setGroup('toolbar')
+        //                            .addButton(null, null, null, 'default', false, 'plus')
+        //                            .addButton(null, null, null, 'default', false, 'minus')
+        //                            .getElement()
+        //                    )
+        //                    .getElement()
+        //            );
+        //        }
+        //
+        //        parentElement.addChildAfter(elementRow.getElement());
+        //    }
+        //
+        //    return new ui.Element('div')
+        //        .addClassElement(ui.CSS.panelClass.panel)
+        //        .addClassElement(ui.CSS.skinClass.panel.default)
+        //        .addChildBefore(
+        //            new ui.Element('div')
+        //                .addClassElement(ui.CSS.panelClass.panelHead)
+        //                .addChildBefore(
+        //                    new ui.Element('h3')
+        //                        .addClassElement(ui.CSS.panelClass.panelTitle)
+        //                        .setContentElement('Название панели')
+        //                        .getElement()
+        //                )
+        //                .getElement()
+        //        )
+        //        .addChildAfter(
+        //            new ui.Element('div')
+        //                .addClassElement(ui.CSS.panelClass.panelBody)
+        //                .addChildBefore(parentElement.getElement())
+        //                .getElement()
+        //        )
+        //        .getElement();
+        //},
 
         /**
          * @returns {*|Element}
@@ -472,6 +498,58 @@
         },
 
         /**
+         * @param {{}} settings settings block
+         * @private
+         */
+        _buildBlockRows: function (settings) {
+
+            var parent = settings[_PARENT_OBJECT];
+            var title  = settings[_PARENT_TITLE];
+            var block  = settings[_BLOCK_ROWS];
+            var row = null;
+
+            var panel = new ui.Element('div')
+                .addClassElement(ui.CSS.panelClass.panel)
+                .addClassElement(ui.CSS.skinClass.panel.default);
+
+            if (title !== null) {
+
+                panel.addChildBefore(
+                    new ui.Element('div')
+                        .addClassElement(ui.CSS.panelClass.panelHead)
+                        .addChildBefore(
+                            new ui.Element('h3')
+                                .addClassElement(ui.CSS.panelClass.panelTitle)
+                                .setContentElement(title)
+                                .getElement()
+                        )
+                        .getElement()
+                )
+            }
+
+            panel.addChildAfter(
+                new ui.Element('div')
+                    .addClassElement(ui.CSS.panelClass.panelBody)
+                    .addChildBefore(parentElement.getElement())
+                    .getElement()
+                )
+                .getElement();
+
+        },
+
+        /**
+         *
+         * @param {{}} settings settings row
+         * @private
+         */
+        _buildRow: function(settings) {
+
+            for (row in settings) {
+
+            }
+        },
+
+        /**
          * Generate html form
          * @returns {*|Element}
          * @private
@@ -482,7 +560,8 @@
                 .setIdElement(this._idForm, null)
                 .setAttrElement('method', this._method)
                 .addChildBefore(this._buildBlockHidden())
-                .addChildAfter(this._buildRow(this._settings, this._values, null));
+                //.addChildAfter(this._buildRow(this._settings, this._values, null));
+                .addChildAfter(this._buildBlockRows(this._settings));
 
             var record = ui.api.existProperty(this._values, this._idRecord, false);
 
