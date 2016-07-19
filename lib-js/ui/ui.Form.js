@@ -25,6 +25,92 @@
      */
     ui.Form = function (idForm) {
 
+        this._test__ = {};
+        this._test__[_PARENT_OBJECT] = null;
+        this._test__[_BLOCK_ROWS] = {
+            row_0: {
+                'block-fields': {
+                    image: {
+                        type: _TYPE_TEXT,
+                        caption: 'caption',
+                        required: true
+                    },
+                    image2: {
+                        type: _TYPE_TEXT,
+                        caption: 'caption',
+                        required: true
+                    },
+                    image3: {
+                        type: _TYPE_TEXT,
+                        caption: 'caption',
+                        required: true
+                    }
+                }
+            },
+            row_1: {
+                'block-fields': {
+                    image: {
+                        type: _TYPE_TEXT,
+                        caption: 'caption',
+                        required: true
+                    },
+                    image2: {
+                        type: _TYPE_TEXT,
+                        caption: 'caption',
+                        required: true
+                    },
+                    image3: {
+                        type: _TYPE_TEXT,
+                        caption: 'caption',
+                        required: true
+                    }
+                }
+            },
+            row_2: {
+                parent: 'objName',
+                'block-rows': {
+                    row_0: {
+                        'block-fields': {
+                            image: {
+                                type: _TYPE_TEXT,
+                                caption: 'caption',
+                                required: true
+                            },
+                            image2: {
+                                type: _TYPE_TEXT,
+                                caption: 'caption',
+                                required: true
+                            },
+                            image3: {
+                                type: _TYPE_TEXT,
+                                caption: 'caption',
+                                required: true
+                            }
+                        }
+                    },
+                    row_1: {
+                        'block-fields': {
+                            image: {
+                                type: _TYPE_TEXT,
+                                caption: 'caption',
+                                required: true
+                            },
+                            image2: {
+                                type: _TYPE_TEXT,
+                                caption: 'caption',
+                                required: true
+                            },
+                            image3: {
+                                type: _TYPE_TEXT,
+                                caption: 'caption',
+                                required: true
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
         /**
          * @type {{}|string}
          * @private
@@ -524,10 +610,10 @@
                 )
             }
 
-            panel.addChildAfter(
+            return panel.addChildAfter(
                 new ui.Element('div')
                     .addClassElement(ui.CSS.panelClass.panelBody)
-                    .addChildBefore(this._buildRow(settings[_PARENT_OBJECT]), settings[_BLOCK_ROWS])
+                    .addChildBefore(this._buildRow(settings[_PARENT_OBJECT], settings[_BLOCK_ROWS]))
                     .getElement()
                 )
                 .getElement();
@@ -535,15 +621,77 @@
         },
 
         /**
-         *
+         * @param {string} parent_obj
          * @param {{}} settings settings row
          * @private
          */
-        _buildRow: function(settings) {
+        _buildRow: function(parent_obj, settings) {
 
-            for (row in settings) {
 
+            var block_rows = new ui.Element('div');
+
+            for (var row in settings) {
+
+                if (settings[row].hasOwnProperty(_BLOCK_ROWS)) {
+
+                    block_rows.addChildAfter(
+                        this._buildBlockRows(settings[row])
+                    )
+
+                } else {
+
+                    block_rows.addChildAfter(
+                        new ui.Element('div')
+                            .addClassElement(ui.CSS.newLine)
+                            .addChildAfter(this._buildFields(parent_obj, settings[row][_BLOCK_FIELDS]))
+                            .getElement()
+                    )
+                }
             }
+
+            return block_rows.getElement();
+        },
+
+        _buildFields: function(parent_obj, settings) {
+
+            var block_fields = new ui.Element('div');
+
+            for (var nameField in settings) {
+
+                console.log(nameField, settings[nameField]);
+                var params = settings[nameField];
+
+                if (params.hasOwnProperty('type')) {
+
+                    var type = params.type;
+
+                    if (this._readOnly !== false) {
+
+                        type = _TYPE_READ_ONLY;
+                    }
+
+                    //if (relation !== null) {
+                    //
+                    //    nameField = relation + '[' + nameField + ']';
+                    //}
+
+                    /**
+                     * @type Node
+                     */
+                    var field = this._htmlFields[type]('values', nameField, params);
+                    var countGroup = Math.round(12 / (Object.keys(settings).length - (false === _TYPE_RELATIONSHIP ? 1 : 0)));
+
+                    block_fields
+                        .addChildAfter(
+                            new ui.Element('div')
+                                .setWidthElement(countGroup)
+                                .addChildAfter(field)
+                                .getElement()
+                        )
+                }
+            }
+
+            return block_fields.getElement();
         },
 
         /**
@@ -558,7 +706,7 @@
                 .setAttrElement('method', this._method)
                 .addChildBefore(this._buildBlockHidden())
                 //.addChildAfter(this._buildRow(this._settings, this._values, null));
-                .addChildAfter(this._buildBlockRows(this._settings));
+                .addChildAfter(this._buildBlockRows(this._test__));
 
             var record = ui.api.existProperty(this._values, this._idRecord, false);
 
