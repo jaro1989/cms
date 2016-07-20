@@ -224,7 +224,7 @@
 
             /**
              * @public
-             * @type { { default: {disabled: *, active: *, success: *, warning: *, danger: *, info: *, link: *, default: *, error: *, primary: *}, panel: {default: *, primary: *, success: *, warning: *, danger: *, info: *} } }
+             * @type { { default: {disabled: *, active: *, success: *, warning: *, danger: *, info: *, link: *, default: *, error: *, primary: *}, panel: {default: string, primary: *, success: *, warning: *, danger: *, info: *} } }
              */
             skinClass: {
                 default: {

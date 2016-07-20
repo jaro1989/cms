@@ -462,7 +462,7 @@
 
             /**
              * Add HTML Class in element
-             * @param {string} elementClass
+             * @param {string|null} elementClass
              * @returns {ui.Element}
              * @public
              */

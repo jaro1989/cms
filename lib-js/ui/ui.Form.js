@@ -10,10 +10,10 @@
     var _TYPE_READ_ONLY = 'readonly';
     var _TYPE_RELATIONSHIP = 'relationship';
 
-    var _PARENT_OBJECT = 'parent';
-    var _PARENT_TITLE = 'parent-title';
-    var _BLOCK_ROWS   = 'block-rows';
-    var _BLOCK_FIELDS = 'block-fields';
+    var _PARENT_OBJECT = 'parentObjectName';
+    var _PARENT_TITLE = 'parentTitle';
+    var _BLOCK_ROWS   = 'blockRows';
+    var _BLOCK_FIELDS = 'blockFields';
 
     var uniqueId = new Date().getTime();
 
@@ -27,9 +27,10 @@
 
         this._test__ = {};
         this._test__[_PARENT_OBJECT] = null;
+        this._test__[_PARENT_TITLE] = 'Title-1';
         this._test__[_BLOCK_ROWS] = {
             row_0: {
-                'block-fields': {
+                blockFields: {
                     image: {
                         type: _TYPE_TEXT,
                         caption: 'caption',
@@ -48,7 +49,7 @@
                 }
             },
             row_1: {
-                'block-fields': {
+                blockFields: {
                     image: {
                         type: _TYPE_TEXT,
                         caption: 'caption',
@@ -67,10 +68,11 @@
                 }
             },
             row_2: {
-                parent: 'objName',
-                'block-rows': {
+                parentObjectName: 'objName',
+                parentTitle: 'Title-2',
+                blockRows: {
                     row_0: {
-                        'block-fields': {
+                        blockFields: {
                             image: {
                                 type: _TYPE_TEXT,
                                 caption: 'caption',
@@ -89,7 +91,7 @@
                         }
                     },
                     row_1: {
-                        'block-fields': {
+                        blockFields: {
                             image: {
                                 type: _TYPE_TEXT,
                                 caption: 'caption',
@@ -106,6 +108,25 @@
                                 required: true
                             }
                         }
+                    }
+                }
+            },
+            row_3: {
+                blockFields: {
+                    image: {
+                        type: _TYPE_TEXT,
+                        caption: 'caption',
+                        required: true
+                    },
+                    image2: {
+                        type: _TYPE_TEXT,
+                        caption: 'caption',
+                        required: true
+                    },
+                    image3: {
+                        type: _TYPE_TEXT,
+                        caption: 'caption',
+                        required: true
                     }
                 }
             }
@@ -172,6 +193,8 @@
 
         _positionBtnTop:    'left',
         _positionBtnBottom: 'right',
+
+        _paddingRelateBlock: 'sm',
 
         _idRecord:   '',
         _title:      null,
@@ -584,7 +607,40 @@
         },
 
         /**
-         * @param {{}} settings settings block
+         * @param {
+         *          {
+         *              parentObjectName: 'string|null',
+         *              blockRows: {
+         *                  row_0: {
+         *                      blockFields: {
+         *                          nameFields: {
+         *                              type: 'string',
+         *                              caption: 'string|number',
+         *                              required: 'boolean',
+         *                              list: {},
+         *                              height: 'string|number|null'
+         *                          }
+         *                      }
+         *                  },
+         *                  row_1: {
+         *                      parentObjectName: 'string|null',
+         *                      blockRows: {
+         *                          row_0: {
+         *                              blockFields: {
+         *                                  nameFields: {
+         *                                      type: 'string',
+         *                                      caption: 'string|number',
+         *                                      required: 'boolean',
+         *                                      list: {},
+         *                                      height: 'string|number|null'
+         *                                  }
+         *                              }
+         *                          },
+         *                      }
+         *                  }
+         *              }
+         *          }
+         *        } settings
          * @private
          */
         _buildBlockRows: function (settings) {
@@ -621,12 +677,43 @@
         },
 
         /**
-         * @param {string} parent_obj
-         * @param {{}} settings settings row
+         * This method build rows and cells with fields also blocks and rows with cells and fields
+         *
+         * @param {[]} parent_obj
+         * @param {
+         *          {
+         *              row_0: {
+         *                  blockFields: {
+         *                      nameFields: {
+         *                          type: 'string',
+         *                          caption: 'string|number',
+         *                          required: 'boolean',
+         *                          list: {},
+         *                          height: 'string|number|null'
+         *                      }
+         *                  }
+         *              },
+         *              row_1: {
+         *                  parentObjectName: 'string|null',
+         *                  blockRows: {
+         *                      row_0: {
+         *                          blockFields: {
+         *                              nameFields: {
+         *                                  type: 'string',
+         *                                  caption: 'string|number',
+         *                                  required: 'boolean',
+         *                                  list: {},
+         *                                  height: 'string|number|null'
+         *                              }
+         *                          }
+         *                      },
+         *                  }
+         *              }
+         *          }
+         *        } settings
          * @private
          */
         _buildRow: function(parent_obj, settings) {
-
 
             var block_rows = new ui.Element('div');
 
@@ -634,15 +721,20 @@
 
                 if (settings[row].hasOwnProperty(_BLOCK_ROWS)) {
 
-                    block_rows.addChildAfter(
-                        this._buildBlockRows(settings[row])
-                    )
+                    block_rows
+                        .addChildAfter(
+                            new ui.Element('div')
+                                .setPaddingElement(this._paddingRelateBlock)
+                                .addChildBefore(this._buildBlockRows(settings[row]))
+                                .getElement()
+                        )
 
                 } else {
 
                     block_rows.addChildAfter(
                         new ui.Element('div')
                             .addClassElement(ui.CSS.newLine)
+                            .setPaddingElement(this._paddingRelateBlock)
                             .addChildAfter(this._buildFields(parent_obj, settings[row][_BLOCK_FIELDS]))
                             .getElement()
                     )
@@ -652,13 +744,31 @@
             return block_rows.getElement();
         },
 
+        /**
+         * This method build cell with fields
+         *
+         * @param {[]} parent_obj
+         * @param {
+         *          {
+         *              nameFields: {
+         *                  type: 'string',
+         *                  caption: 'string|number',
+         *                  required: 'boolean',
+         *                  list: {},
+         *                  height: 'string|number|null'
+         *              }
+         *          }
+         *        } settings
+         * @returns {*|Element}
+         * @private
+         */
         _buildFields: function(parent_obj, settings) {
 
             var block_fields = new ui.Element('div');
-
+            //console.log(settings);
             for (var nameField in settings) {
 
-                console.log(nameField, settings[nameField]);
+                //console.log(nameField, settings[nameField]);
                 var params = settings[nameField];
 
                 if (params.hasOwnProperty('type')) {
@@ -679,7 +789,7 @@
                      * @type Node
                      */
                     var field = this._htmlFields[type]('values', nameField, params);
-                    var countGroup = Math.round(12 / (Object.keys(settings).length - (false === _TYPE_RELATIONSHIP ? 1 : 0)));
+                    var countGroup = Math.round(12 / (Object.keys(settings).length));
 
                     block_fields
                         .addChildAfter(
@@ -1058,7 +1168,6 @@
         },
 
         /**
-         *
          * @param {string} relationName
          * @param {[]|{}|null|boolean} data
          * @returns {ui.Form}
@@ -1067,6 +1176,16 @@
 
             this._relationValues[relationName] = ui.api.empty(data, []);
             return this
+        },
+
+        /**
+         * @param {string} padding {'sm' | 'lg'}
+         * @returns {ui.Form}
+         */
+        setPaddingRelateBlock: function(padding) {
+
+            this._paddingRelateBlock = padding;
+            return this;
         },
 
         /**
