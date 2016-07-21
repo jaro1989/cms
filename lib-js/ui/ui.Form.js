@@ -8,7 +8,7 @@
     var _TYPE_CHECKBOX  = 'checkbox';
     var _TYPE_RADIO     = 'radio';
     var _TYPE_READ_ONLY = 'readonly';
-    var _TYPE_RELATIONSHIP = 'relationship';
+    //var _TYPE_RELATIONSHIP = 'relationship';
 
     var _PARENT_OBJECT = 'parentObjectName';
     var _PARENT_TITLE = 'parentTitle';
@@ -25,112 +25,112 @@
      */
     ui.Form = function (idForm) {
 
-        this._test__ = {};
-        this._test__[_PARENT_OBJECT] = null;
-        this._test__[_PARENT_TITLE] = 'Title-1';
-        this._test__[_BLOCK_ROWS] = {
-            row_0: {
-                blockFields: {
-                    image: {
-                        type: _TYPE_TEXT,
-                        caption: 'caption',
-                        required: true
-                    },
-                    image2: {
-                        type: _TYPE_TEXT,
-                        caption: 'caption',
-                        required: true
-                    },
-                    image3: {
-                        type: _TYPE_TEXT,
-                        caption: 'caption',
-                        required: true
-                    }
-                }
-            },
-            row_1: {
-                blockFields: {
-                    image: {
-                        type: _TYPE_TEXT,
-                        caption: 'caption',
-                        required: true
-                    },
-                    image2: {
-                        type: _TYPE_TEXT,
-                        caption: 'caption',
-                        required: true
-                    },
-                    image3: {
-                        type: _TYPE_TEXT,
-                        caption: 'caption',
-                        required: true
-                    }
-                }
-            },
-            row_2: {
-                parentObjectName: 'objName',
-                parentTitle: 'Title-2',
-                blockRows: {
-                    row_0: {
-                        blockFields: {
-                            image: {
-                                type: _TYPE_TEXT,
-                                caption: 'caption',
-                                required: true
-                            },
-                            image2: {
-                                type: _TYPE_TEXT,
-                                caption: 'caption',
-                                required: true
-                            },
-                            image3: {
-                                type: _TYPE_TEXT,
-                                caption: 'caption',
-                                required: true
-                            }
-                        }
-                    },
-                    row_1: {
-                        blockFields: {
-                            image: {
-                                type: _TYPE_TEXT,
-                                caption: 'caption',
-                                required: true
-                            },
-                            image2: {
-                                type: _TYPE_TEXT,
-                                caption: 'caption',
-                                required: true
-                            },
-                            image3: {
-                                type: _TYPE_TEXT,
-                                caption: 'caption',
-                                required: true
-                            }
-                        }
-                    }
-                }
-            },
-            row_3: {
-                blockFields: {
-                    image: {
-                        type: _TYPE_TEXT,
-                        caption: 'caption',
-                        required: true
-                    },
-                    image2: {
-                        type: _TYPE_TEXT,
-                        caption: 'caption',
-                        required: true
-                    },
-                    image3: {
-                        type: _TYPE_TEXT,
-                        caption: 'caption',
-                        required: true
-                    }
-                }
-            }
-        };
+        //this._test__ = {};
+        //this._test__[_PARENT_OBJECT] = null;
+        //this._test__[_PARENT_TITLE] = 'Title-1';
+        //this._test__[_BLOCK_ROWS] = {
+        //    row_0: {
+        //        blockFields: {
+        //            image: {
+        //                type: _TYPE_TEXT,
+        //                caption: 'caption',
+        //                required: true
+        //            },
+        //            image2: {
+        //                type: _TYPE_TEXT,
+        //                caption: 'caption',
+        //                required: true
+        //            },
+        //            image3: {
+        //                type: _TYPE_TEXT,
+        //                caption: 'caption',
+        //                required: true
+        //            }
+        //        }
+        //    },
+        //    row_1: {
+        //        blockFields: {
+        //            image: {
+        //                type: _TYPE_TEXT,
+        //                caption: 'caption',
+        //                required: true
+        //            },
+        //            image2: {
+        //                type: _TYPE_TEXT,
+        //                caption: 'caption',
+        //                required: true
+        //            },
+        //            image3: {
+        //                type: _TYPE_TEXT,
+        //                caption: 'caption',
+        //                required: true
+        //            }
+        //        }
+        //    },
+        //    row_2: {
+        //        parentObjectName: 'objName',
+        //        parentTitle: 'Title-2',
+        //        blockRows: {
+        //            row_0: {
+        //                blockFields: {
+        //                    image: {
+        //                        type: _TYPE_TEXT,
+        //                        caption: 'caption',
+        //                        required: true
+        //                    },
+        //                    image2: {
+        //                        type: _TYPE_TEXT,
+        //                        caption: 'caption',
+        //                        required: true
+        //                    },
+        //                    image3: {
+        //                        type: _TYPE_TEXT,
+        //                        caption: 'caption',
+        //                        required: true
+        //                    }
+        //                }
+        //            },
+        //            row_1: {
+        //                blockFields: {
+        //                    image: {
+        //                        type: _TYPE_TEXT,
+        //                        caption: 'caption',
+        //                        required: true
+        //                    },
+        //                    image2: {
+        //                        type: _TYPE_TEXT,
+        //                        caption: 'caption',
+        //                        required: true
+        //                    },
+        //                    image3: {
+        //                        type: _TYPE_TEXT,
+        //                        caption: 'caption',
+        //                        required: true
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    },
+        //    row_3: {
+        //        blockFields: {
+        //            image: {
+        //                type: _TYPE_TEXT,
+        //                caption: 'caption',
+        //                required: true
+        //            },
+        //            image2: {
+        //                type: _TYPE_TEXT,
+        //                caption: 'caption',
+        //                required: true
+        //            },
+        //            image3: {
+        //                type: _TYPE_TEXT,
+        //                caption: 'caption',
+        //                required: true
+        //            }
+        //        }
+        //    }
+        //};
 
         /**
          * @type {{}|string}
@@ -148,7 +148,7 @@
          * @type {[]}
          * @private
          */
-        this._settings = [];
+        this._settings = {};
 
         /**
          * @type {[]}
@@ -641,10 +641,11 @@
          *              }
          *          }
          *        } settings
+         * @returns {*|Element}
          * @private
          */
         _buildBlockRows: function (settings) {
-
+            console.log(settings);
             var title  = settings[_PARENT_TITLE];
 
             var panel = new ui.Element('div')
@@ -711,6 +712,7 @@
          *              }
          *          }
          *        } settings
+         * @returns {*|Element}
          * @private
          */
         _buildRow: function(parent_obj, settings) {
@@ -810,13 +812,13 @@
          * @private
          */
         _buildForm: function() {
-
+            console.log(this._settings);
             var form = new ui.Element('form')
                 .setIdElement(this._idForm, null)
                 .setAttrElement('method', this._method)
                 .addChildBefore(this._buildBlockHidden())
                 //.addChildAfter(this._buildRow(this._settings, this._values, null));
-                .addChildAfter(this._buildBlockRows(this._test__));
+                .addChildAfter(this._buildBlockRows(this._settings));
 
             var record = ui.api.existProperty(this._values, this._idRecord, false);
 
@@ -925,53 +927,68 @@
          */
         newLine: function()  {
 
-            this._settings.push({});
-            return this;
-        },
+            if (!this._settings.hasOwnProperty(_BLOCK_ROWS)) {
 
-        /**
-         * @param {string} relation_name
-         * @returns {ui.Form}
-         */
-        addRelationship: function(relation_name) {
+                this._settings[_BLOCK_ROWS] = [];
+            }
 
-            var obj = {};
-            obj[_TYPE_RELATIONSHIP] = {name: relation_name};
-            this._settings.push(obj);
+            this._settings[_BLOCK_ROWS].push({});
+            //
+            //console.log(this._settings);
 
             return this;
         },
 
         /**
          *
-         * @param {{}} row
+         *
+         * @param object
+         * @param title
+         * @returns {ui.Form}
+         */
+        addBlock: function (object, title) {
+
+            this._settings[_PARENT_TITLE] = title;
+            this._settings[_PARENT_OBJECT] = object;
+            return this;
+        },
+
+        ///**
+        // * @param {string} relation_name
+        // * @returns {ui.Form}
+        // */
+        //addRelationship: function(relation_name) {
+        //
+        //    var obj = {};
+        //    obj[_TYPE_RELATIONSHIP] = {name: relation_name};
+        //    this._settings.push(obj);
+        //
+        //    return this;
+        //},
+
+        /**
          * @param {{}} params
          * @param {string} name
-         * @returns {{}}
+         * @returns {boolean}
          * @private
          */
-        _setParametersFields: function(row, params, name) {
+        _setParametersFields: function(params, name) {
 
-            if (row.hasOwnProperty(_TYPE_RELATIONSHIP)) {
+            var countRow  = Object.keys(this._settings[_BLOCK_ROWS]).length - 1;
+            //this._settings[_BLOCK_ROWS][countRow] = {};
+            if (!this._settings[_BLOCK_ROWS][countRow].hasOwnProperty(_BLOCK_FIELDS)) {
 
-                if (ui.api.empty(name, null) === null) {
-
-                    name = _TYPE_READ_ONLY + '_' + Object.keys(row[_TYPE_RELATIONSHIP]).length;
-                }
-
-                row[_TYPE_RELATIONSHIP][name] = params;
-
-            } else {
-
-                if (ui.api.empty(name, null) === null) {
-
-                    name = _TYPE_READ_ONLY + '_' + Object.keys(row).length;
-                }
-
-                row[name] = params;
+                this._settings[_BLOCK_ROWS][countRow][_BLOCK_FIELDS] = {};
             }
 
-            return row;
+            if (ui.api.empty(name, null) === null) {
+
+                name = _TYPE_READ_ONLY + '_' + countRow;
+            }
+
+            this._settings[_BLOCK_ROWS][countRow][_BLOCK_FIELDS][name] = params;
+
+            return true;
         },
 
         /**
@@ -982,15 +999,13 @@
          */
         addReadOnlyField: function(name, caption, height) {
 
-            var countRow  = Object.keys(this._settings).length - 1;
-
             var params = {
                 type: _TYPE_READ_ONLY,
                 caption: caption,
                 height: height
             };
 
-            this._setParametersFields(this._settings[countRow], params, name);
+            this._setParametersFields(params, name);
 
             return this;
         },
@@ -1003,15 +1018,13 @@
          */
         addTextField: function(name, caption, required) {
 
-            var countRow = this._settings.length - 1;
-
             var params = {
                 type: _TYPE_TEXT,
                 caption: caption,
                 required: ui.api.empty(required, false)
             };
 
-            this._setParametersFields(this._settings[countRow], params, name);
+            this._setParametersFields(params, name);
             return this;
         },
 
@@ -1023,15 +1036,13 @@
          */
         addPasswordField: function(name, caption, required) {
 
-            var countRow = this._settings.length - 1;
-
             var params = {
                 type:     _TYPE_PASS,
                 caption:  caption,
                 required: ui.api.empty(required, false)
             };
 
-            this._setParametersFields(this._settings[countRow], params, name);
+            this._setParametersFields(params, name);
 
             return this;
         },
@@ -1044,15 +1055,13 @@
          */
         addTextareaField: function(name, caption, required) {
 
-            var countRow = this._settings.length - 1;
-
             var params = {
                 type:     _TYPE_TEXTAREA,
                 caption:  caption,
                 required: ui.api.empty(required, false)
             };
 
-            this._setParametersFields(this._settings[countRow], params, name);
+            this._setParametersFields(params, name);
 
             return this;
         },
@@ -1065,15 +1074,13 @@
          */
         addDateField: function(name, caption, required) {
 
-            var countRow = this._settings.length - 1;
-
             var params = {
                 type:     _TYPE_DATE,
                 caption:  caption,
                 required: ui.api.empty(required, false)
             };
 
-            this._setParametersFields(this._settings[countRow], params, name);
+            this._setParametersFields(params, name);
 
             return this;
         },
@@ -1087,8 +1094,6 @@
          */
         addSelectField: function(name, caption, data, required) {
 
-            var countRow = this._settings.length - 1;
-
             var params = {
                 type:     _TYPE_SELECT,
                 caption:  caption,
@@ -1096,7 +1101,7 @@
                 list:     data
             };
 
-            this._setParametersFields(this._settings[countRow], params, name);
+            this._setParametersFields(params, name);
 
             return this;
         },
@@ -1109,15 +1114,13 @@
          */
         addCheckboxField: function(name, caption, required) {
 
-            var countRow = this._settings.length - 1;
-
             var params = {
                 type:     _TYPE_CHECKBOX,
                 caption:  caption,
                 required: ui.api.empty(required, false)
             };
 
-            this._setParametersFields(this._settings[countRow], params, name);
+            this._setParametersFields(params, name);
 
             return this;
         },
@@ -1132,8 +1135,6 @@
          */
         addRadioField: function(name, caption, data, required, width) {
 
-            var countRow = this._settings.length - 1;
-
             var params = {
                 type:     _TYPE_RADIO,
                 caption:  caption,
@@ -1142,7 +1143,7 @@
                 width:    width
             };
 
-            this._setParametersFields(this._settings[countRow], params, name);
+            this._setParametersFields(params, name);
 
             return this;
         },
