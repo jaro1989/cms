@@ -645,7 +645,7 @@
          * @private
          */
         _buildBlockRows: function (settings) {
-            console.log(settings);
+
             var title  = settings[_PARENT_TITLE];
 
             var panel = new ui.Element('div')
@@ -767,10 +767,9 @@
         _buildFields: function(parent_obj, settings) {
 
             var block_fields = new ui.Element('div');
-            //console.log(settings);
+
             for (var nameField in settings) {
 
-                //console.log(nameField, settings[nameField]);
                 var params = settings[nameField];
 
                 if (params.hasOwnProperty('type')) {
@@ -790,7 +789,7 @@
                     /**
                      * @type Node
                      */
-                    var field = this._htmlFields[type]('values', nameField, params);
+                    var field = this._htmlFields[type](this._values, nameField, params);
                     var countGroup = Math.round(12 / (Object.keys(settings).length));
 
                     block_fields
@@ -812,13 +811,13 @@
          * @private
          */
         _buildForm: function() {
-            console.log(this._settings);
+
             var form = new ui.Element('form')
                 .setIdElement(this._idForm, null)
                 .setAttrElement('method', this._method)
                 .addChildBefore(this._buildBlockHidden())
                 //.addChildAfter(this._buildRow(this._settings, this._values, null));
-                .addChildAfter(this._buildBlockRows(this._settings));
+                .addChildAfter(this._buildBlockRows(this._settings, this._values));
 
             var record = ui.api.existProperty(this._values, this._idRecord, false);
 
@@ -953,19 +952,6 @@
             return this;
         },
 
-        ///**
-        // * @param {string} relation_name
-        // * @returns {ui.Form}
-        // */
-        //addRelationship: function(relation_name) {
-        //
-        //    var obj = {};
-        //    obj[_TYPE_RELATIONSHIP] = {name: relation_name};
-        //    this._settings.push(obj);
-        //
-        //    return this;
-        //},
-
         /**
          * @param {{}} params
          * @param {string} name
@@ -975,7 +961,7 @@
         _setParametersFields: function(params, name) {
 
             var countRow  = Object.keys(this._settings[_BLOCK_ROWS]).length - 1;
-            //this._settings[_BLOCK_ROWS][countRow] = {};
+
             if (!this._settings[_BLOCK_ROWS][countRow].hasOwnProperty(_BLOCK_FIELDS)) {
 
                 this._settings[_BLOCK_ROWS][countRow][_BLOCK_FIELDS] = {};
