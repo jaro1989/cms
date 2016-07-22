@@ -145,7 +145,7 @@
         this._relationValues = {};
 
         /**
-         * @type {[]}
+         * @type {{}}
          * @private
          */
         this._settings = {};
@@ -178,7 +178,6 @@
         uniqueId++;
     };
 
-    //noinspection JSUnusedGlobalSymbols
     /** @protected */
     ui.Form.prototype = {
 
@@ -261,8 +260,9 @@
             text: function(value, name, params) {
 
                 var caption = ui.api.existProperty(params, 'caption', null);
+                value = ui.api.setValue(value, name);
 
-                return new ui.FFText(value, name, caption)
+                return new ui.FFText(value, params['name'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .getElement();
@@ -277,8 +277,9 @@
             password: function(value, name, params) {
 
                 var caption = ui.api.existProperty(params, 'caption', null);
+                value = ui.api.setValue(value, name);
 
-                return new ui.FFPassword(value, name, caption)
+                return new ui.FFPassword(value, params['name'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .getElement();
@@ -293,8 +294,9 @@
             textarea: function(value, name, params) {
 
                 var caption = ui.api.existProperty(params, 'caption', null);
+                value = ui.api.setValue(value, name);
 
-                return new ui.FFTextarea(value, name, caption)
+                return new ui.FFTextarea(value, params['name'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .setResize('vertical')
@@ -310,8 +312,9 @@
             date: function(value, name, params) {
 
                 var caption = ui.api.existProperty(params, 'caption', null);
+                value = ui.api.setValue(value, name);
 
-                return new ui.FFDate(value, name, caption)
+                return new ui.FFDate(value, params['name'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .getElement();
@@ -327,8 +330,9 @@
 
                 var caption = ui.api.existProperty(params, 'caption', null);
                 var dataList = ui.api.existProperty(params, 'list', {});
+                value = ui.api.setValue(value, name);
 
-                return  new ui.FFSelect(value, name, caption)
+                return  new ui.FFSelect(value, params['name'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .setList(dataList)
@@ -344,9 +348,10 @@
             checkbox: function(value, name, params) {
 
                 var caption = ui.api.existProperty(params, 'caption', null);
+                value = ui.api.setValue(value, name);
 
                 return new ui.FFCheckbox()
-                    .addCheckbox(value, name, caption)
+                    .addCheckbox(value, params['name'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setCaptionBlock('', this.widthCaption)
                     .setFieldsHorizontal()
@@ -363,8 +368,9 @@
 
                 var caption = ui.api.existProperty(params, 'caption', null);
                 var dataList = ui.api.existProperty(params, 'list', {});
+                value = ui.api.setValue(value, name);
 
-                return  new ui.FFRadio(value, name, dataList)
+                return  new ui.FFRadio(value, params['name'], dataList)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setCaptionBlock(caption, this.widthCaption)
                     .setWidthCaptionItem(ui.api.existProperty(params, 'width', 2))
@@ -816,8 +822,7 @@
                 .setIdElement(this._idForm, null)
                 .setAttrElement('method', this._method)
                 .addChildBefore(this._buildBlockHidden())
-                //.addChildAfter(this._buildRow(this._settings, this._values, null));
-                .addChildAfter(this._buildBlockRows(this._settings, this._values));
+                .addChildAfter(this._buildBlockRows(this._settings));
 
             var record = ui.api.existProperty(this._values, this._idRecord, false);
 
@@ -932,15 +937,10 @@
             }
 
             this._settings[_BLOCK_ROWS].push({});
-            //
-            //console.log(this._settings);
-
             return this;
         },
 
         /**
-         *
-         *
          * @param object
          * @param title
          * @returns {ui.Form}
@@ -967,13 +967,23 @@
                 this._settings[_BLOCK_ROWS][countRow][_BLOCK_FIELDS] = {};
             }
 
-            if (ui.api.empty(name, null) === null) {
+            name = ui.api.empty(name, null);
+
+            if (ui.api.empty(this._settings[_PARENT_OBJECT], null) !== null && name !== null) {
+
+                params['name'] = this._settings[_PARENT_OBJECT] + '[' + name + ']';
+
+            } else {
+
+                params['name'] = name;
+            }
+
+            if (name === null) {
 
                 name = _TYPE_READ_ONLY + '_' + countRow;
             }
 
             this._settings[_BLOCK_ROWS][countRow][_BLOCK_FIELDS][name] = params;
-
             return true;
         },
 
@@ -992,7 +1002,6 @@
             };
 
             this._setParametersFields(params, name);
-
             return this;
         },
 
@@ -1029,7 +1038,6 @@
             };
 
             this._setParametersFields(params, name);
-
             return this;
         },
 
@@ -1048,7 +1056,6 @@
             };
 
             this._setParametersFields(params, name);
-
             return this;
         },
 
@@ -1067,7 +1074,6 @@
             };
 
             this._setParametersFields(params, name);
-
             return this;
         },
 
@@ -1088,7 +1094,6 @@
             };
 
             this._setParametersFields(params, name);
-
             return this;
         },
 
@@ -1107,7 +1112,6 @@
             };
 
             this._setParametersFields(params, name);
-
             return this;
         },
 
@@ -1130,7 +1134,6 @@
             };
 
             this._setParametersFields(params, name);
-
             return this;
         },
 
@@ -1184,12 +1187,10 @@
 
             this._title = ui.api.empty(title, null);
             this._titleSmall = ui.api.empty(titleSmall, null);
-
             return this;
         },
 
         /**
-         *
          * @param {string} method {'GET'|'POST'}
          * @returns {ui.Form}
          */
@@ -1296,6 +1297,7 @@
          * @public
          */
         getElement: function() {
+
             return this._buildForm();
         },
 
@@ -1305,6 +1307,7 @@
          * @public
          */
         toHTML: function() {
+
             return this._buildForm().outerHTML;
         },
 
