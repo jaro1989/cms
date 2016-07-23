@@ -14,7 +14,6 @@ var APPEND_ELEMENT = '#element_append';
 
         .setParentBlock(
             'Title-user',
-            'User',
             'id',
             {
                 id: 2,

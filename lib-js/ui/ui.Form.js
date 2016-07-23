@@ -839,18 +839,16 @@
         },
 
         /**
-         * @param {string} objectName
          * @param {string} title
          * @param {string} recordId
          * @param {{}} data
          * @returns {ui.Form}
          * @public
          */
-        setParentBlock: function (title, objectName, recordId, data) {
+        setParentBlock: function (title, recordId, data) {
 
             var obj = {};
             obj[_PARENT_TITLE] = title;
-            obj[_OBJECT_NAME] = objectName;
 
             this._settings = obj;
             this._idRecord = recordId;
