@@ -143,7 +143,7 @@
 
                     if (i == 0) {
 
-                        element = document.querySelector('input[name=' + name + ']');
+                        element = document.querySelector('input[name="' + name + '"]');
 
                         if (this.validationField(element) === false) {
 
@@ -152,7 +152,7 @@
 
                     } else {
 
-                        element = document.querySelectorAll('input[name=' + name + ']');
+                        element = document.querySelectorAll('input[name="' + name + '"]');
 
                         for (var keyEl in element) {
 

@@ -10,7 +10,7 @@
     var _TYPE_READ_ONLY = 'readonly';
     //var _TYPE_RELATIONSHIP = 'relationship';
 
-    var _PARENT_OBJECT = 'parentObjectName';
+    var _OBJECT_NAME = 'objectName';
     var _PARENT_TITLE = 'parentTitle';
     var _BLOCK_ROWS   = 'blockRows';
     var _BLOCK_FIELDS = 'blockFields';
@@ -25,124 +25,23 @@
      */
     ui.Form = function (idForm) {
 
-        //this._test__ = {};
-        //this._test__[_PARENT_OBJECT] = null;
-        //this._test__[_PARENT_TITLE] = 'Title-1';
-        //this._test__[_BLOCK_ROWS] = {
-        //    row_0: {
-        //        blockFields: {
-        //            image: {
-        //                type: _TYPE_TEXT,
-        //                caption: 'caption',
-        //                required: true
-        //            },
-        //            image2: {
-        //                type: _TYPE_TEXT,
-        //                caption: 'caption',
-        //                required: true
-        //            },
-        //            image3: {
-        //                type: _TYPE_TEXT,
-        //                caption: 'caption',
-        //                required: true
-        //            }
-        //        }
-        //    },
-        //    row_1: {
-        //        blockFields: {
-        //            image: {
-        //                type: _TYPE_TEXT,
-        //                caption: 'caption',
-        //                required: true
-        //            },
-        //            image2: {
-        //                type: _TYPE_TEXT,
-        //                caption: 'caption',
-        //                required: true
-        //            },
-        //            image3: {
-        //                type: _TYPE_TEXT,
-        //                caption: 'caption',
-        //                required: true
-        //            }
-        //        }
-        //    },
-        //    row_2: {
-        //        parentObjectName: 'objName',
-        //        parentTitle: 'Title-2',
-        //        blockRows: {
-        //            row_0: {
-        //                blockFields: {
-        //                    image: {
-        //                        type: _TYPE_TEXT,
-        //                        caption: 'caption',
-        //                        required: true
-        //                    },
-        //                    image2: {
-        //                        type: _TYPE_TEXT,
-        //                        caption: 'caption',
-        //                        required: true
-        //                    },
-        //                    image3: {
-        //                        type: _TYPE_TEXT,
-        //                        caption: 'caption',
-        //                        required: true
-        //                    }
-        //                }
-        //            },
-        //            row_1: {
-        //                blockFields: {
-        //                    image: {
-        //                        type: _TYPE_TEXT,
-        //                        caption: 'caption',
-        //                        required: true
-        //                    },
-        //                    image2: {
-        //                        type: _TYPE_TEXT,
-        //                        caption: 'caption',
-        //                        required: true
-        //                    },
-        //                    image3: {
-        //                        type: _TYPE_TEXT,
-        //                        caption: 'caption',
-        //                        required: true
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    },
-        //    row_3: {
-        //        blockFields: {
-        //            image: {
-        //                type: _TYPE_TEXT,
-        //                caption: 'caption',
-        //                required: true
-        //            },
-        //            image2: {
-        //                type: _TYPE_TEXT,
-        //                caption: 'caption',
-        //                required: true
-        //            },
-        //            image3: {
-        //                type: _TYPE_TEXT,
-        //                caption: 'caption',
-        //                required: true
-        //            }
-        //        }
-        //    }
-        //};
-
         /**
-         * @type {{}|string}
+         * @type {{}}
          * @private
          */
-        this._values = {};
+        this._parentValues = {};
 
         /**
-         * @type {{}|string}
+         * @type {{}}
          * @private
          */
-        this._relationValues = {};
+        this._childrenValues = {};
+
+        /**
+         * @type {{}}
+         * @private
+         */
+        this._childrenRecordId = {};
 
         /**
          * @type {{}}
@@ -193,11 +92,15 @@
         _positionBtnTop:    'left',
         _positionBtnBottom: 'right',
 
-        _paddingRelateBlock: 'sm',
+        _paddingRelateBlock: 'xs',
 
         _idRecord:   '',
         _title:      null,
         _titleSmall: null,
+
+        _skinPanel: ui.CSS.skinClass.panel.primary,
+        _paddingPanels: 'xs',
+        _paddingChildrenPanel: 'sm',
 
         _method: ui.Config.defaultMethodForm,
         _checkboxText: ui.Config.checkboxText,
@@ -262,7 +165,7 @@
                 var caption = ui.api.existProperty(params, 'caption', null);
                 value = ui.api.setValue(value, name);
 
-                return new ui.FFText(value, params['name'], caption)
+                return new ui.FFText(value, params['setname'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .getElement();
@@ -279,7 +182,7 @@
                 var caption = ui.api.existProperty(params, 'caption', null);
                 value = ui.api.setValue(value, name);
 
-                return new ui.FFPassword(value, params['name'], caption)
+                return new ui.FFPassword(value, params['setname'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .getElement();
@@ -296,7 +199,7 @@
                 var caption = ui.api.existProperty(params, 'caption', null);
                 value = ui.api.setValue(value, name);
 
-                return new ui.FFTextarea(value, params['name'], caption)
+                return new ui.FFTextarea(value, params['setname'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .setResize('vertical')
@@ -314,7 +217,7 @@
                 var caption = ui.api.existProperty(params, 'caption', null);
                 value = ui.api.setValue(value, name);
 
-                return new ui.FFDate(value, params['name'], caption)
+                return new ui.FFDate(value, params['setname'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .getElement();
@@ -332,7 +235,7 @@
                 var dataList = ui.api.existProperty(params, 'list', {});
                 value = ui.api.setValue(value, name);
 
-                return  new ui.FFSelect(value, params['name'], caption)
+                return  new ui.FFSelect(value, params['setname'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setWidthCaption(this.widthCaption)
                     .setList(dataList)
@@ -351,7 +254,7 @@
                 value = ui.api.setValue(value, name);
 
                 return new ui.FFCheckbox()
-                    .addCheckbox(value, params['name'], caption)
+                    .addCheckbox(value, params['setname'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setCaptionBlock('', this.widthCaption)
                     .setFieldsHorizontal()
@@ -370,7 +273,7 @@
                 var dataList = ui.api.existProperty(params, 'list', {});
                 value = ui.api.setValue(value, name);
 
-                return  new ui.FFRadio(value, params['name'], dataList)
+                return  new ui.FFRadio(value, params['setname'], dataList)
                     .setRequired(ui.api.existProperty(params, 'required', false))
                     .setCaptionBlock(caption, this.widthCaption)
                     .setWidthCaptionItem(ui.api.existProperty(params, 'width', 2))
@@ -427,7 +330,7 @@
                 );
             }
 
-            if (this._hideBtn._btnRemove === false && this._values.hasOwnProperty(this._idRecord) && this._urlDel !== null) {
+            if (this._hideBtn._btnRemove === false && this._parentValues.hasOwnProperty(this._idRecord) && this._urlDel !== null) {
 
                 this._btnDefaultBottom.push(
                     {
@@ -441,146 +344,11 @@
             }
         },
 
-        ///**
-        // * @returns {*|Element}
-        // * @private
-        // */
-        //_buildRow: function(settings, values, relation) {
-        //
-        //    var parentElement = new ui.Element('div');
-        //
-        //    for (var index in settings) {
-        //
-        //        var elementRow = new ui.Element('div')
-        //            .addClassElement(ui.CSS.newLine);
-        //
-        //        if (settings.hasOwnProperty(index)) {
-        //
-        //            for (var nameField in settings[index]) {
-        //
-        //                if (nameField === _TYPE_RELATIONSHIP) {
-        //
-        //                    //==========================================================================================
-        //
-        //                    var relationName = settings[index][nameField]['name'];
-        //
-        //                    if (this._relationValues.hasOwnProperty(relationName)) {
-        //
-        //                        if (this._relationValues[relationName].length > 0) {
-        //
-        //                            var i = 0;
-        //
-        //                            for (var relationKey in this._relationValues[relationName]) {
-        //
-        //                                elementRow.addChildAfter(
-        //                                    this._buildRow(
-        //                                        settings[index],
-        //                                        this._relationValues[relationName][relationKey],
-        //                                        relationName + '[' + i + ']'
-        //                                    )
-        //                                );
-        //
-        //                                i++;
-        //                            }
-        //                        } else {
-        //
-        //                            elementRow.addChildAfter(this._buildRow(settings[index], {}, relationName + '[0]'));
-        //                        }
-        //
-        //                    } else {
-        //
-        //                        elementRow.addChildAfter(this._buildRow(settings[index], {}, relationName + '[0]'));
-        //                    }
-        //                    //==========================================================================================
-        //
-        //                } else {
-        //
-        //                    var params = settings[index][nameField];
-        //
-        //                    if (params.hasOwnProperty('type')) {
-        //
-        //                        var type = params.type;
-        //
-        //                        if (this._readOnly !== false) {
-        //
-        //                            type = _TYPE_READ_ONLY;
-        //                        }
-        //
-        //                        if (relation !== null) {
-        //
-        //                            nameField = relation + '[' + nameField + ']';
-        //                        }
-        //
-        //                        /**
-        //                         * @type Node
-        //                         */
-        //                        var field = this._htmlFields[type](values, nameField, params);
-        //                        var countGroup = Math.round(12 / (Object.keys(settings[index]).length - (index === _TYPE_RELATIONSHIP ? 1 : 0)));
-        //
-        //                        elementRow.addChildAfter(
-        //                            new ui.Element('div')
-        //                                .addChildAfter(
-        //                                    new ui.Element('div')
-        //                                        .setWidthElement(countGroup)
-        //                                        .addChildAfter(field)
-        //                                        .getElement()
-        //                                )
-        //                                .getElement()
-        //                        );
-        //                    }
-        //                }
-        //            }
-        //        }
-        //
-        //        if (relation !== null) {
-        //
-        //            elementRow.addChildAfter(
-        //                new ui.Element('div')
-        //                    .setWidthElement(1)
-        //                    .addChildAfter(
-        //                        new ui.FFButton()
-        //                            .setPaddingBlock('xs')
-        //                            .setSize('sm')
-        //                            .setGroup('toolbar')
-        //                            .addButton(null, null, null, 'default', false, 'plus')
-        //                            .addButton(null, null, null, 'default', false, 'minus')
-        //                            .getElement()
-        //                    )
-        //                    .getElement()
-        //            );
-        //        }
-        //
-        //        parentElement.addChildAfter(elementRow.getElement());
-        //    }
-        //
-        //    return new ui.Element('div')
-        //        .addClassElement(ui.CSS.panelClass.panel)
-        //        .addClassElement(ui.CSS.skinClass.panel.default)
-        //        .addChildBefore(
-        //            new ui.Element('div')
-        //                .addClassElement(ui.CSS.panelClass.panelHead)
-        //                .addChildBefore(
-        //                    new ui.Element('h3')
-        //                        .addClassElement(ui.CSS.panelClass.panelTitle)
-        //                        .setContentElement('Название панели')
-        //                        .getElement()
-        //                )
-        //                .getElement()
-        //        )
-        //        .addChildAfter(
-        //            new ui.Element('div')
-        //                .addClassElement(ui.CSS.panelClass.panelBody)
-        //                .addChildBefore(parentElement.getElement())
-        //                .getElement()
-        //        )
-        //        .getElement();
-        //},
-
         /**
          * @returns {*|Element}
          * @private
          */
-        _buildBlockHidden: function() {
+        _buildParentBlockHidden: function() {
 
             return new ui.Element('div')
                 .setAttrElement('hidden',  true)
@@ -602,7 +370,7 @@
                         .getElement()
                 )
                 .addChildAfter(
-                    new ui.FFHidden(ui.api.existProperty(this._values, this._idRecord, null), ui.Config.FORM_ID_RECORD)
+                    new ui.FFHidden(ui.api.existProperty(this._parentValues, this._idRecord, null), ui.Config.FORM_ID_RECORD)
                         .getElement()
                 )
                 .addChildAfter(
@@ -612,10 +380,14 @@
                 .getElement();
         },
 
+        _buildChildrenBlockHidden: function() {
+
+        },
+
         /**
          * @param {
          *          {
-         *              parentObjectName: 'string|null',
+         *              objectName: 'string|null',
          *              blockRows: {
          *                  row_0: {
          *                      blockFields: {
@@ -629,7 +401,7 @@
          *                      }
          *                  },
          *                  row_1: {
-         *                      parentObjectName: 'string|null',
+         *                      objectName: 'string|null',
          *                      blockRows: {
          *                          row_0: {
          *                              blockFields: {
@@ -647,16 +419,17 @@
          *              }
          *          }
          *        } settings
+         * @param {boolean} parent If build row for parent object is true else false
          * @returns {*|Element}
          * @private
          */
-        _buildBlockRows: function (settings) {
+        _buildBlockRows: function (settings, parent) {
 
             var title  = settings[_PARENT_TITLE];
 
             var panel = new ui.Element('div')
                 .addClassElement(ui.CSS.panelClass.panel)
-                .addClassElement(ui.CSS.skinClass.panel.default);
+                .addClassElement(this._skinPanel);
 
             if (title !== null) {
 
@@ -673,67 +446,126 @@
                 )
             }
 
-            return panel.addChildAfter(
-                new ui.Element('div')
-                    .addClassElement(ui.CSS.panelClass.panelBody)
-                    .addChildBefore(this._buildRow(settings[_PARENT_OBJECT], settings[_BLOCK_ROWS]))
-                    .getElement()
-                )
-                .getElement();
+            var panel_body = new ui.Element('div')
+                .addClassElement(ui.CSS.panelClass.panelBody);
+
+            var key = null;
+
+            if (parent === true) {
+
+                panel_body.addChildBefore(this._buildRow(this._parentValues, settings, null));
+
+            } else {
+
+
+                var objName = settings[_OBJECT_NAME];
+
+                if (this._childrenValues.hasOwnProperty(objName)) {
+
+                    var values = this._childrenValues[objName];
+
+                    for (key in values) {
+
+                        panel_body
+                            .addChildAfter(this._buildRow(values[key], settings, key))
+                            .addChildAfter(
+                                new ui.Element('hr')
+                                    .getElement()
+                            );
+                    }
+                }
+
+                if (key === null) {
+
+                    panel_body.addChildBefore(this._buildRow({}, settings, 0));
+                }
+            }
+
+            if (key === null && this._readOnly === true && parent === false) {
+
+                return new ui.Element('div').getElement();
+
+            } else {
+
+                return panel
+                    .setPaddingElement(this._paddingPanels)
+                    .addChildAfter(panel_body.getElement())
+                    .getElement();
+            }
 
         },
 
         /**
          * This method build rows and cells with fields also blocks and rows with cells and fields
-         *
-         * @param {[]} parent_obj
+         * @param {{}} values
          * @param {
          *          {
-         *              row_0: {
-         *                  blockFields: {
-         *                      nameFields: {
-         *                          type: 'string',
-         *                          caption: 'string|number',
-         *                          required: 'boolean',
-         *                          list: {},
-         *                          height: 'string|number|null'
+         *              objectName: 'objectName',
+         *              blockRows: {
+         *                  row_0: {
+         *                      blockFields: {
+         *                          nameFields: {
+         *                              type: 'string',
+         *                              caption: 'string|number',
+         *                              required: 'boolean',
+         *                              list: {},
+         *                              height: 'string|number|null'
+         *                          }
          *                      }
-         *                  }
-         *              },
-         *              row_1: {
-         *                  parentObjectName: 'string|null',
-         *                  blockRows: {
-         *                      row_0: {
-         *                          blockFields: {
-         *                              nameFields: {
-         *                                  type: 'string',
-         *                                  caption: 'string|number',
-         *                                  required: 'boolean',
-         *                                  list: {},
-         *                                  height: 'string|number|null'
+         *                  },
+         *                  row_1: {
+         *                      objectName: 'string|null',
+         *                      blockRows: {
+         *                          row_0: {
+         *                              blockFields: {
+         *                                  nameFields: {
+         *                                      type: 'string',
+         *                                      caption: 'string|number',
+         *                                      required: 'boolean',
+         *                                      list: {},
+         *                                      height: 'string|number|null'
+         *                                  }
          *                              }
          *                          }
-         *                      },
+         *                      }
          *                  }
          *              }
          *          }
          *        } settings
+         * @param {number|null} key_record
          * @returns {*|Element}
          * @private
          */
-        _buildRow: function(parent_obj, settings) {
+        _buildRow: function(values, settings, key_record) {
 
+            var params  = settings[_BLOCK_ROWS];
+            var objName = settings[_OBJECT_NAME];
             var block_rows = new ui.Element('div');
 
-            for (var row in settings) {
+            if (this._childrenRecordId.hasOwnProperty(objName)) {
 
-                if (settings[row].hasOwnProperty(_BLOCK_ROWS)) {
+                var name = this._childrenRecordId[objName];
+                var record_params = {object: objName, name: name};
+                var value_id = ui.api.setValue(values, name);
+
+                this._setNameField(key_record, record_params);
+
+                block_rows
+                    .addChildBefore(
+                        new ui.FFHidden(value_id, record_params['setname'])
+                            .getElement()
+                    );
+            }
+
+            for (var row in params) {
+
+                if (params[row].hasOwnProperty(_BLOCK_ROWS)) {
 
                     block_rows
                         .addChildAfter(
                             new ui.Element('div')
-                                .setPaddingElement(this._paddingRelateBlock)
-                                .addChildBefore(this._buildBlockRows(settings[row]))
+                                .setPaddingElement(this._paddingChildrenPanel)
+                                .addChildBefore(this._buildBlockRows(params[row], false))
                                 .getElement()
                         )
 
@@ -743,7 +575,7 @@
                         new ui.Element('div')
                             .addClassElement(ui.CSS.newLine)
                             .setPaddingElement(this._paddingRelateBlock)
-                            .addChildAfter(this._buildFields(parent_obj, settings[row][_BLOCK_FIELDS]))
+                            .addChildAfter(this._buildFields(values, objName, params[row][_BLOCK_FIELDS], key_record))
                             .getElement()
                     )
                 }
@@ -755,7 +587,8 @@
         /**
          * This method build cell with fields
          *
-         * @param {[]} parent_obj
+         * @param {{}} values
+         * @param {[]} objectName
          * @param {
          *          {
          *              nameFields: {
@@ -767,10 +600,11 @@
          *              }
          *          }
          *        } settings
+         * @param {number|null} key_record
          * @returns {*|Element}
          * @private
          */
-        _buildFields: function(parent_obj, settings) {
+        _buildFields: function(values, objectName, settings, key_record) {
 
             var block_fields = new ui.Element('div');
 
@@ -787,15 +621,12 @@
                         type = _TYPE_READ_ONLY;
                     }
 
-                    //if (relation !== null) {
-                    //
-                    //    nameField = relation + '[' + nameField + ']';
-                    //}
+                    this._setNameField(key_record, params);
 
                     /**
                      * @type Node
                      */
-                    var field = this._htmlFields[type](this._values, nameField, params);
+                    var field = this._htmlFields[type](values, nameField, params);
                     var countGroup = Math.round(12 / (Object.keys(settings).length));
 
                     block_fields
@@ -812,6 +643,30 @@
         },
 
         /**
+         * @param {number|null} key_record
+         * @param {{}} params
+         * @private
+         */
+        _setNameField: function(key_record, params) {
+
+            if (key_record !== null) {
+
+                params['setname'] = params['object'] + '[' + key_record + '][' + params['name'] + ']';
+
+            } else {
+
+                if (params['object'] !== null) {
+
+                    params['setname'] = params['object'] + '[' + params['name'] + ']';
+
+                } else {
+
+                    params['setname'] = params['name'];
+                }
+            }
+        },
+
+        /**
          * Generate html form
          * @returns {*|Element}
          * @private
@@ -821,10 +676,10 @@
             var form = new ui.Element('form')
                 .setIdElement(this._idForm, null)
                 .setAttrElement('method', this._method)
-                .addChildBefore(this._buildBlockHidden())
-                .addChildAfter(this._buildBlockRows(this._settings));
+                .addChildBefore(this._buildParentBlockHidden())
+                .addChildAfter(this._buildBlockRows(this._settings, true));
 
-            var record = ui.api.existProperty(this._values, this._idRecord, false);
+            var record = ui.api.existProperty(this._parentValues, this._idRecord, false);
 
             if (this._urlAdd !== null || this._urlEdit !== null) {
 
@@ -928,27 +783,87 @@
         /**
          * Add new row for fields
          * @returns {ui.Form}
+         * @public
          */
-        newLine: function()  {
+        newLineParent: function()  {
+
+            var row = this._settings;
+
+            if (!row.hasOwnProperty(_BLOCK_ROWS)) {
+
+                row[_BLOCK_ROWS] = [];
+            }
+
+            row[_BLOCK_ROWS].push({});
+
+            return this;
+        },
+
+        /**
+         * Add new row for children object
+         * @returns {ui.Form}
+         */
+        newLineChildren: function() {
+
+            var row_parent = this._settings;
+            var len_children = Object.keys(row_parent[_BLOCK_ROWS]).length - 1;
+            var row_children = row_parent[_BLOCK_ROWS][len_children];
+
+            if (!row_children.hasOwnProperty(_BLOCK_ROWS)) {
+
+                row_children[_BLOCK_ROWS] = [];
+            }
+
+            row_children[_BLOCK_ROWS].push({});
+
+            return this;
+        },
+
+        /**
+         * @param {string} objectName
+         * @param {string} title
+         * @param {string} recordId
+         * @param {{}} data
+         * @returns {ui.Form}
+         * @public
+         */
+        setParentBlock: function (title, objectName, recordId, data) {
+
+            var obj = {};
+            obj[_PARENT_TITLE] = title;
+            obj[_OBJECT_NAME] = objectName;
+
+            this._settings = obj;
+            this._idRecord = recordId;
+            this._parentValues = data;
+
+            return this;
+        },
+
+        /**
+         * @param {string} objectName
+         * @param {string} title
+         * @param {string} recordId
+         * @param {{}} data
+         * @returns {ui.Form}
+         * @public
+         */
+        addChildrenBlock: function(title, objectName, recordId, data) {
+
+            var obj = {};
+            obj[_PARENT_TITLE] = title;
+            obj[_OBJECT_NAME] = objectName;
+            obj[_BLOCK_ROWS] = [];
 
             if (!this._settings.hasOwnProperty(_BLOCK_ROWS)) {
 
                 this._settings[_BLOCK_ROWS] = [];
             }
 
-            this._settings[_BLOCK_ROWS].push({});
-            return this;
-        },
+            this._settings[_BLOCK_ROWS].push(obj);
+            this._childrenRecordId[objectName] = recordId;
+            this._childrenValues[objectName] = ui.api.empty(data, []);
 
-        /**
-         * @param object
-         * @param title
-         * @returns {ui.Form}
-         */
-        addBlock: function (object, title) {
-
-            this._settings[_PARENT_TITLE] = title;
-            this._settings[_PARENT_OBJECT] = object;
             return this;
         },
 
@@ -960,30 +875,44 @@
          */
         _setParametersFields: function(params, name) {
 
-            var countRow  = Object.keys(this._settings[_BLOCK_ROWS]).length - 1;
+            var row = this._settings;
+            var blockRows = row[_BLOCK_ROWS];
+            var countRow  = Object.keys(blockRows).length - 1;
 
-            if (!this._settings[_BLOCK_ROWS][countRow].hasOwnProperty(_BLOCK_FIELDS)) {
+            if (blockRows[countRow].hasOwnProperty(_BLOCK_ROWS)) {
+                // Переход к дочерним ключам
+                row = blockRows[countRow];
+                blockRows = blockRows[countRow][_BLOCK_ROWS];
+                countRow  = Object.keys(blockRows).length - 1;
+            }
 
-                this._settings[_BLOCK_ROWS][countRow][_BLOCK_FIELDS] = {};
+            if (!blockRows[countRow].hasOwnProperty(_BLOCK_FIELDS)) {
+
+                blockRows[countRow][_BLOCK_FIELDS] = {};
             }
 
             name = ui.api.empty(name, null);
 
-            if (ui.api.empty(this._settings[_PARENT_OBJECT], null) !== null && name !== null) {
+            if (ui.api.empty(row[_OBJECT_NAME], null) !== null && name !== null) {
 
-                params['name'] = this._settings[_PARENT_OBJECT] + '[' + name + ']';
+                params['object'] = row[_OBJECT_NAME];
 
             } else {
 
-                params['name'] = name;
+                params['object'] = null;
+
             }
+            params['name'] = name;
+
+            var block_fields = blockRows[countRow][_BLOCK_FIELDS];
 
             if (name === null) {
 
-                name = _TYPE_READ_ONLY + '_' + countRow;
+                name = _TYPE_READ_ONLY + '_' + Object.keys(block_fields).length;
             }
 
-            this._settings[_BLOCK_ROWS][countRow][_BLOCK_FIELDS][name] = params;
+            block_fields[name] = params;
+
             return true;
         },
 
@@ -1002,6 +931,7 @@
             };
 
             this._setParametersFields(params, name);
+
             return this;
         },
 
@@ -1020,6 +950,7 @@
             };
 
             this._setParametersFields(params, name);
+
             return this;
         },
 
@@ -1038,6 +969,7 @@
             };
 
             this._setParametersFields(params, name);
+
             return this;
         },
 
@@ -1056,6 +988,7 @@
             };
 
             this._setParametersFields(params, name);
+
             return this;
         },
 
@@ -1074,6 +1007,7 @@
             };
 
             this._setParametersFields(params, name);
+
             return this;
         },
 
@@ -1094,6 +1028,7 @@
             };
 
             this._setParametersFields(params, name);
+
             return this;
         },
 
@@ -1112,6 +1047,7 @@
             };
 
             this._setParametersFields(params, name);
+
             return this;
         },
 
@@ -1134,6 +1070,7 @@
             };
 
             this._setParametersFields(params, name);
+
             return this;
         },
 
@@ -1145,27 +1082,6 @@
 
             this._htmlFields.maxHeightReeadOnly = height;
             return this;
-        },
-
-        /**
-         * @param {{}} data
-         * @returns {ui.Form}
-         */
-        setDataFields: function(data) {
-
-            this._values = data;
-            return this;
-        },
-
-        /**
-         * @param {string} relationName
-         * @param {[]|{}|null|boolean} data
-         * @returns {ui.Form}
-         */
-        addRelationDataFields: function(relationName, data) {
-
-            this._relationValues[relationName] = ui.api.empty(data, []);
-            return this
         },
 
         /**
@@ -1244,12 +1160,10 @@
 
         /**
          * @param {string} url
-         * @param {string} idRecord
          * @returns {ui.Form}
          */
-        setUrtDel: function(idRecord, url) {
+        setUrtDel: function( url) {
 
-            this._idRecord = idRecord;
             this._urlDel = url;
             return this;
         },

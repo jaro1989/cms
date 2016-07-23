@@ -76,7 +76,7 @@
             _buildTitle: function() {
 
                 return new ui.Element('div')
-                    .addClassElement(ui.CSS.page.header)
+                    //.addClassElement(ui.CSS.page.header)
                     .addChildAfter(
                         new ui.Element('h' + this._titleSize)
                             .setContentElement(ui.api.empty(this._title, '') + ' ')
