@@ -9,6 +9,7 @@ var APPEND_ELEMENT = '#element_append';
         .setUrlAdd('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setUrlEdit('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setFormReadOnly(false)
+        .setMaxHeightFields(200)
         .setWidthCaption(4)
 
         .setParentBlock(
@@ -40,8 +41,8 @@ var APPEND_ELEMENT = '#element_append';
         .addTextField('middlename', 'Отчество', false)
 
         .newLineParent()
-        .addTextareaField('description_kr', 'Краткое описание', true)
-        .addTextareaField('description_pl', 'Полное описание', false)
+        .addTextareaField('description_kr', 'Краткое описание', true, 200)
+        .addTextareaField('description_pl', 'Полное описание', false, 100)
 
         .newLineParent()
         .addTextField('email', 'E-mail', true)
@@ -79,12 +80,10 @@ var APPEND_ELEMENT = '#element_append';
             .newLineChildren()
             .addTextField('alt', 'Альтернативный текст', true)
             .addTextField('title', 'Заголовок', true)
-            .addTextField('url', 'URL', true)
 
             .newLineChildren()
-            .addTextareaField('description', 'Описание', true)
-            .addReadOnlyField(null, null, null)
-            .addReadOnlyField(null, null, null)
+            .addTextareaField('description', 'Описание', true, null)
+            .addTextField('url', 'URL', true)
 
 
 
@@ -110,7 +109,6 @@ var APPEND_ELEMENT = '#element_append';
 
             .newLineChildren()
             .addTextField('email', 'Альтернативный текст', true)
-            .addReadOnlyField(null, null, null)
             .addReadOnlyField(null, null, null)
 
         .newLineParent()

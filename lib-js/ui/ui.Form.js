@@ -113,7 +113,8 @@
         _htmlFields: {
 
             widthCaption: null,
-            maxHeightReeadOnly: null,
+            maxHeightFields: null,
+            heightFields: null,
             formatDate: ui.Config.formatDateUser,
             checkboxText: ui.Config.checkboxText,
 
@@ -150,7 +151,7 @@
 
                 return new ui.FFReadOnly(value, name, caption)
                     .setWidthCaption(this.widthCaption)
-                    .setMaxHeight(ui.api.existProperty(params, 'height', this.maxHeightReeadOnly))
+                    .setMaxHeight(ui.api.existProperty(params, 'height', this.maxHeightFields))
                     .getElement();
             },
 
@@ -201,6 +202,7 @@
 
                 return new ui.FFTextarea(value, params['setname'], caption)
                     .setRequired(ui.api.existProperty(params, 'required', false))
+                    .setHeight(ui.api.existProperty(params, 'height', this.maxHeightFields))
                     .setWidthCaption(this.widthCaption)
                     .setResize('vertical')
                     .getElement();
@@ -457,7 +459,6 @@
 
             } else {
 
-
                 var objName = settings[_OBJECT_NAME];
 
                 if (this._childrenValues.hasOwnProperty(objName)) {
@@ -557,15 +558,15 @@
                     );
             }
 
-            for (var row in params) {
+            for (var numRow in params) {
 
-                if (params[row].hasOwnProperty(_BLOCK_ROWS)) {
+                if (params[numRow].hasOwnProperty(_BLOCK_ROWS)) {
 
                     block_rows
                         .addChildAfter(
                             new ui.Element('div')
                                 .setPaddingElement(this._paddingChildrenPanel)
-                                .addChildBefore(this._buildBlockRows(params[row], false))
+                                .addChildBefore(this._buildBlockRows(params[numRow], false))
                                 .getElement()
                         )
 
@@ -575,7 +576,7 @@
                         new ui.Element('div')
                             .addClassElement(ui.CSS.newLine)
                             .setPaddingElement(this._paddingRelateBlock)
-                            .addChildAfter(this._buildFields(values, objName, params[row][_BLOCK_FIELDS], key_record))
+                            .addChildAfter(this._buildFields(values, objName, params[numRow][_BLOCK_FIELDS], key_record, numRow))
                             .getElement()
                     )
                 }
@@ -601,10 +602,11 @@
          *          }
          *        } settings
          * @param {number|null} key_record
+         * @param {number} numRow
          * @returns {*|Element}
          * @private
          */
-        _buildFields: function(values, objectName, settings, key_record) {
+        _buildFields: function(values, objectName, settings, key_record, numRow) {
 
             var block_fields = new ui.Element('div');
 
@@ -627,7 +629,8 @@
                      * @type Node
                      */
                     var field = this._htmlFields[type](values, nameField, params);
-                    var countGroup = Math.round(12 / (Object.keys(settings).length));
+                    var delimiter = (key_record === null) ? 12 : 10;
+                    var countGroup = Math.round(delimiter / (Object.keys(settings).length));
 
                     block_fields
                         .addChildAfter(
@@ -635,8 +638,24 @@
                                 .setWidthElement(countGroup)
                                 .addChildAfter(field)
                                 .getElement()
-                        )
+                        );
                 }
+            }
+
+            if (key_record !== null && numRow == 0) {
+
+                block_fields
+                    .addChildAfter(
+                        new ui.FFButton()
+                            .setGroup('toolbar')
+                            .setOnClick('alert(1);')
+                            .addButton(null, null, null, null, true, 'plus')
+                            .setOnClick('alert(2);')
+                            .addButton(null, null, null, null, true, 'minus')
+                            .setSize('sm')
+                            .setPositionBlock('right')
+                            .getElement()
+                    );
             }
 
             return block_fields.getElement();
@@ -844,7 +863,7 @@
          * @param {string} objectName
          * @param {string} title
          * @param {string} recordId
-         * @param {{}} data
+         * @param {{}|[]} data
          * @returns {ui.Form}
          * @public
          */
@@ -977,14 +996,16 @@
          * @param {string} name
          * @param {string|number} caption
          * @param {boolean} required
+         * @param {string|number|null} height
          * @returns {ui.Form}
          */
-        addTextareaField: function(name, caption, required) {
+        addTextareaField: function(name, caption, required, height) {
 
             var params = {
                 type:     _TYPE_TEXTAREA,
                 caption:  caption,
-                required: ui.api.empty(required, false)
+                required: ui.api.empty(required, false),
+                height: ui.api.empty(height, null)
             };
 
             this._setParametersFields(params, name);
@@ -1078,9 +1099,9 @@
          * @param {number|string} height
          * @returns {ui.Form}
          */
-        setMaxHeightReadOnly: function(height) {
+        setMaxHeightFields: function(height) {
 
-            this._htmlFields.maxHeightReeadOnly = height;
+            this._htmlFields.maxHeightFields = height;
             return this;
         },
 

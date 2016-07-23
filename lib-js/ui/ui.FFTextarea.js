@@ -105,10 +105,11 @@
 
         /**
          *
-         * @param {string|number} height
+         * @param {string|number|null} height
          * @returns {ui.FFTextarea}
          */
         setHeight: function(height) {
+
             this._height = height;
             return this;
         },
@@ -120,6 +121,7 @@
          * @returns {ui.FFTextarea}
          */
         setResize: function(resize) {
+
             this._resize = ui.api.existProperty(ui.CSS.resizeStyle, resize, ui.CSS.resizeStyle.none);
             return this;
         },
@@ -130,6 +132,7 @@
          * @returns {ui.FFTextarea}
          */
         setRequired: function(required) {
+
             this._required = ui.api.empty(required, true);
             return this;
         },
@@ -139,6 +142,7 @@
          * @returns {ui.FFTextarea}
          */
         setDisabled: function() {
+
             this._disabled = true;
             return this;
         },
@@ -150,6 +154,7 @@
          * @public
          */
         setSize: function(sizeField) {
+
             this._size = sizeField;
             return this;
         },
@@ -161,6 +166,7 @@
          * @public
          */
         setSkin: function(skinName) {
+
             this._skin = skinName;
             return this;
         },
@@ -172,6 +178,7 @@
          * @public
          */
         setLeftMarker: function(textMarker) {
+
             this._leftMarker = textMarker;
             return this;
         },
@@ -183,6 +190,7 @@
          * @public
          */
         setRightMarker: function(textMarker) {
+
             this._rightMarker = textMarker;
             return this;
         },
@@ -194,6 +202,7 @@
          * @public
          */
         setLeftIcon: function(iconName) {
+
             this._leftIcon = iconName;
             return this;
         },
@@ -205,6 +214,7 @@
          * @public
          */
         setRightIcon: function(iconName) {
+
             this._rightIcon = iconName;
             return this;
         },
@@ -216,6 +226,7 @@
          * @public
          */
         setWidthCaption: function(widthCaption) {
+
             this._widthCaption = widthCaption;
             return this;
         },
@@ -229,6 +240,7 @@
          * @public
          */
         setWidth: function(width) {
+
             this._width = width;
             return this;
         },
@@ -240,6 +252,7 @@
          * @public
          */
         setId: function(htmlId) {
+
             this._id = htmlId;
             return this;
         },
@@ -251,6 +264,7 @@
          * @public
          */
         setPadding: function(padding) {
+
             this._padding = padding;
             return this;
         },
@@ -420,6 +434,7 @@
          * @public
          */
         getElement: function() {
+
             return this._buildParentBlock();
         },
 
@@ -429,6 +444,7 @@
          * @public
          */
         toHTML: function() {
+
             return this._buildParentBlock().outerHTML;
         },
 
@@ -439,6 +455,7 @@
          * @public
          */
         appendHTML: function(selector) {
+
             new ui.$(selector).append(this.getElement());
             return this;
         }

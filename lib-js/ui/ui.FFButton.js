@@ -82,6 +82,7 @@
          * @returns {ui.FFButton}
          */
         setPositionBlock: function(psition) {
+
             this._position = psition;
             return this;
         },
@@ -92,6 +93,7 @@
          * @returns {ui.FFButton}
          */
         setPaddingBlock: function(padding) {
+
             this._padding = padding;
             return this;
         },
@@ -101,6 +103,7 @@
          * @returns {ui.FFButton}
          */
         setActive: function() {
+
             this._active = true;
             return this;
         },
@@ -112,6 +115,7 @@
          * @public
          */
         setGroup: function(typeGroup) {
+
             this._group = ui.api.existProperty(ui.CSS.btn.btnGroup, typeGroup, null);
             return this;
         },
@@ -122,6 +126,7 @@
          * @public
          */
         setBlock: function() {
+
             this._block = true;
             return this;
         },
@@ -132,6 +137,7 @@
          * @public
          */
         setDisabled: function() {
+
             this._disabled = true;
             return this;
         },
@@ -143,6 +149,7 @@
          * @public
          */
         setDisabledIf: function(name) {
+
             this._disabledIf.push(name);
             return this;
         },
@@ -241,6 +248,7 @@
          * @public
          */
         setWidth: function(width) {
+
             this._width = width;
             return this;
         },
@@ -252,6 +260,7 @@
          * @public
          */
         setSkin: function(skinName) {
+
             this._skin = skinName;
             return this;
         },
@@ -263,6 +272,7 @@
          * @public
          */
         setSize: function(sizeBtn) {
+
             this._size = sizeBtn;
             return this;
         },
@@ -314,12 +324,12 @@
          */
         _buildField: function(params) {
 
-            var defaulSkin = ui.CSS.skinClass.default.default;
-            var skin = ui.api.empty(this._skin, defaulSkin);
+            var defaultSkin = ui.CSS.skinClass.default.default;
+            var skin = ui.api.empty(this._skin, defaultSkin);
 
             if (params.skin !== null) {
 
-                skin = ui.api.empty(params.skin, defaulSkin);
+                skin = ui.api.empty(params.skin, defaultSkin);
             }
 
             var button = new ui.Element('button')
@@ -366,21 +376,21 @@
          */
         _buildInlineBlock: function() {
 
-            var iblineBlock = new ui.Element('div')
+            var inlineBlock = new ui.Element('div')
                 .setPsitionElement(this._position)
                 .setPaddingElement(this._padding);
 
             if (this._block === false && this._group !== null) {
 
-                iblineBlock.addClassElement(this._group);
+                inlineBlock.addClassElement(this._group);
             }
 
             for(var htmlIda in this._buttonList) {
 
-                iblineBlock.addChildAfter(this._buildField(this._buttonList[htmlIda]));
+                inlineBlock.addChildAfter(this._buildField(this._buttonList[htmlIda]));
             }
 
-            return iblineBlock.getElement();
+            return inlineBlock.getElement();
         },
 
         /**
