@@ -648,9 +648,9 @@
                     .addChildAfter(
                         new ui.FFButton()
                             .setGroup('toolbar')
-                            .setOnClick('alert(1);')
+                            .setOnClick('new ui.Form()._addRecord();')
                             .addButton(null, null, null, null, true, 'plus')
-                            .setOnClick('alert(2);')
+                            .setOnClick('new ui.Form()._delRecord();')
                             .addButton(null, null, null, null, true, 'minus')
                             .setSize('sm')
                             .setPositionBlock('right')
@@ -659,6 +659,14 @@
             }
 
             return block_fields.getElement();
+        },
+
+        _addRecord: function() {
+            alert(1);
+        },
+
+        _delRecord: function() {
+            alert(2);
         },
 
         /**

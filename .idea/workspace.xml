@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e625a249-66d9-49c4-82c3-b892a980c4cc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/example/form.example.js" afterPath="$PROJECT_DIR$/lib-js/ui/example/form.example.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib-js/ui/ui.Form.js" afterPath="$PROJECT_DIR$/lib-js/ui/ui.Form.js" />
     </list>
     <ignored path="cms.iws" />
@@ -50,18 +49,8 @@
       <file leaf-file-name="ui.Form.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Form.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.72053874">
-              <caret line="850" column="39" selection-start-line="850" selection-start-column="39" selection-end-line="850" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui.FFButton.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFButton.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.137931">
-              <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.33333334">
+              <caret line="652" column="45" selection-start-line="652" selection-start-column="45" selection-end-line="652" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -70,8 +59,8 @@
       <file leaf-file-name="form.example.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib-js/ui/example/form.example.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.7586207">
-              <caret line="15" column="25" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+            <state vertical-scroll-proportion="-2.586207">
+              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -675,12 +664,6 @@
       <option name="number" value="Default" />
       <updated>1463857792974</updated>
     </task>
-    <task id="LOCAL-00067" summary="Calendar update&#10;">
-      <created>1466804310821</created>
-      <option name="number" value="00067" />
-      <option name="project" value="LOCAL" />
-      <updated>1466804310829</updated>
-    </task>
     <task id="LOCAL-00068" summary="Calendar update&#10;">
       <created>1466804329395</created>
       <option name="number" value="00068" />
@@ -969,7 +952,13 @@
       <option name="project" value="LOCAL" />
       <updated>1469296359633</updated>
     </task>
-    <option name="localTasksCounter" value="116" />
+    <task id="LOCAL-00116" summary="Form update">
+      <created>1469297576522</created>
+      <option name="number" value="00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1469297576522</updated>
+    </task>
+    <option name="localTasksCounter" value="117" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1349,13 +1338,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.862069">
-          <caret line="110" column="21" selection-start-line="110" selection-start-column="21" selection-end-line="110" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.FFText.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.95">
@@ -1427,18 +1409,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.5292841">
+          <caret line="110" column="21" selection-start-line="110" selection-start-column="21" selection-end-line="110" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/example/form.example.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.7586207">
-          <caret line="15" column="25" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+        <state vertical-scroll-proportion="-2.586207">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib-js/ui/ui.Form.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.72053874">
-          <caret line="850" column="39" selection-start-line="850" selection-start-column="39" selection-end-line="850" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="652" column="45" selection-start-line="652" selection-start-column="45" selection-end-line="652" selection-end-column="45" />
           <folding />
         </state>
       </provider>
