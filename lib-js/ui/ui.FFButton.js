@@ -11,6 +11,12 @@
         this._buttonList  = [];
         this._disabledIf  = [];
         this._btnId = [];
+
+        /**
+         * @private
+         * @type {[]}
+         */
+        this._class = [];
     };
 
     /** @protected */
@@ -81,12 +87,6 @@
          * @type {string|null}
          */
         _position: null,
-
-        /**
-         * @private
-         * @type {[]}
-         */
-        _class: [],
 
         /**
          * @param {string} htmlClass

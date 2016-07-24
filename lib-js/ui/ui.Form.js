@@ -459,7 +459,7 @@
                 .addClassElement(ui.CSS.panelClass.panel)
                 .addClassElement(this._skinPanel);
 
-            if (title !== null) {
+            if (ui.api.empty(title, false)) {
 
                 panel.addChildBefore(
                     new ui.Element('div')

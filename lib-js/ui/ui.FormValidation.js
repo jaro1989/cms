@@ -196,7 +196,10 @@
                     .send();
             } else {
 
-                alert('Заполните обязательные поля и повторите!');
+                new ui.Modal()
+                    .setTitle('Ошибка')
+                    .setContent('Заполните обязательные поля и повторите!')
+                    .appendHTML('body');
             }
 
             return true

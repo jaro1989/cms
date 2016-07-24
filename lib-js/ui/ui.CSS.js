@@ -295,6 +295,17 @@
                 none: 'none',
                 vertical: 'vertical',
                 horizontal: 'horizontal'
+            },
+
+            modal: {
+                modal: 'modal',
+                dialog: 'modal-dialog',
+                content: 'modal-content',
+                header: 'modal-header',
+                title: 'modal-title',
+                body: 'modal-body',
+                footer: 'modal-footer',
+                close: 'close'
             }
         };
 

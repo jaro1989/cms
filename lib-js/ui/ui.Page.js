@@ -167,7 +167,7 @@
             /**
              * Add element in document
              * @param {string} selector
-             * @returns {ui.FFDate}
+             * @returns {ui.Page}
              * @public
              */
             appendHTML: function(selector) {
