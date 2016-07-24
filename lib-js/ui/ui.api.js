@@ -252,33 +252,42 @@
         },
 
         /**
-         * @param {Node} element
+         * @param {Element} element
          */
         show: function(element) {
 
-            element.style.visibility = 'visible';
+            if (element !== null) {
+
+                element.style.visibility = 'visible';
+            }
         },
 
         /**
-         * @param {Node} element
+         * @param {Element} element
          */
         hide: function(element) {
 
-            element.style.visibility = 'hidden';
+            if (element !== null) {
+
+                element.style.visibility = 'hidden';
+            }
         },
 
         /**
-         * @param {Node} element
+         * @param {Element} element
          */
         toggle: function(element) {
 
-            if (element.style.visibility === 'hidden') {
+            if (element !== null) {
 
-                element.style.visibility = 'visible';
+                if (element.style.visibility === 'hidden') {
 
-            } else {
+                    element.style.visibility = 'visible';
 
-                element.style.visibility = 'hidden';
+                } else {
+
+                    element.style.visibility = 'hidden';
+                }
             }
         }
     };

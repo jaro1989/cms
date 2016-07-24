@@ -12,6 +12,12 @@
 
         this._value   = ui.api.empty(value, null);
         this._name    = ui.api.empty(name, null);
+
+        /**
+         * @private
+         * @type {[]}
+         */
+        this._class = [];
     };
 
     /** @protected */
@@ -22,12 +28,6 @@
          * @type {string|null}
          */
         _id: null,
-
-        /**
-         * @private
-         * @type {[]}
-         */
-        _class: [],
 
         /**
          * @private

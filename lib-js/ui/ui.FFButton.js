@@ -83,6 +83,34 @@
         _position: null,
 
         /**
+         * @private
+         * @type {[]}
+         */
+        _class: [],
+
+        /**
+         * @param {string} htmlClass
+         * @returns {ui.FFButton}
+         */
+        setClass: function(htmlClass) {
+
+            this._class = [];
+            this._class.push(htmlClass);
+            return this;
+        },
+
+        /**
+         * @param {string} htmlClass
+         * @returns {ui.FFButton}
+         */
+        addClass: function(htmlClass) {
+
+            this._class.push(htmlClass);
+            return this;
+        },
+
+
+        /**
          * Set psition block button
          * @param {string|null} psition { 'legt' | 'right' | 'center' | 'clear' | null }
          * @returns {ui.FFButton}
@@ -192,6 +220,7 @@
                 caption:   ui.api.empty(caption, null),
                 leftIcon:  ui.api.empty(icon,    null),
                 onclick:   this._onClick,
+                class:     this._class,
                 rightIcon: null
             };
 
@@ -220,6 +249,7 @@
                 caption:   ui.api.empty(caption, null),
                 leftIcon:  ui.api.empty(icon,    null),
                 onclick:   this._onClick,
+                class:     this._class,
                 rightIcon: null
             };
 
@@ -380,6 +410,13 @@
                 button = new ui.Element('div')
                     .addClassElement(ui.CSS.btn.btnGroup.group)
                     .addChildAfter(button.getElement());
+            }
+
+            var key = null;
+
+            for (key in params.class) {
+
+                button.addClassElement(params.class[key]);
             }
 
             var btn = button.getElement();
