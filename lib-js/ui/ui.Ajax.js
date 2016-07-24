@@ -96,7 +96,7 @@
                     delimiter = '&';
                 }
 
-                str += (delimiter + key + '=' + this._params[key]);
+                str += (delimiter + key + '=' + encodeURIComponent(this._params[key]));
                 i++;
             }
 

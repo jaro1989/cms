@@ -1,6 +1,22 @@
 
-// ID элемента для вставки полей
-var APPEND_ELEMENT = '#element_append';
+    // ID элемента для вставки полей
+    var APPEND_ELEMENT = '#element_append';
+
+
+    var test_data = [];
+
+    for (var i = 0; i < 5; i++) {
+
+        test_data.push(
+            {
+                id: i,
+                alt: 'alt text - ' + i,
+                title: 'title image - ' + i,
+                description: 'description image - ' + i,
+                url: 'www.url.img - ' + i
+            }
+        );
+    }
 
 
     new ui.Form('form-user')
@@ -47,34 +63,7 @@ var APPEND_ELEMENT = '#element_append';
         .addTextField('email', 'E-mail', true)
         .addReadOnlyField(null, null, null)
 
-            .addChildrenBlock(
-                'Title-images',
-                'Images',
-                'id',
-                [
-                    {
-                        id: 1,
-                        alt: 'alt text1',
-                        title: 'title image1',
-                        description: 'description image1',
-                        url: 'www.url.img1'
-                    },
-                    {
-                        id: 2,
-                        alt: 'alt text2',
-                        title: 'title image2',
-                        description: 'description image2',
-                        url: 'www.url.img2'
-                    },
-                    {
-                        id: 3,
-                        alt: 'alt text3',
-                        title: 'title image3',
-                        description: 'description image3',
-                        url: 'www.url.img3'
-                    }
-                ]
-            )
+            .addChildrenBlock('Title-images', 'Images', 'id', test_data)
 
             .newLineChildren()
             .addTextField('alt', 'Альтернативный текст', true)
