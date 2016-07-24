@@ -21,15 +21,65 @@
             /**
              * @type {string|null}
              */
+            _titleSmall: null,
+
+            /**
+             * @type {string|null}
+             */
             _content: null,
 
             /**
-             * @param {string} title
+             * @type {string|null}
+             */
+            _size: null,
+
+            /**
+             * @type {ui.FFButton}
+             */
+            _buttons: new ui.FFButton(),
+
+            /**
+             * @param {string|null} onclick
+             * @param {string|null} caption
+             * @param {string|null} skin - { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
+             * @param {boolean} active
+             * @param {string|null} icon
+             */
+            addButton: function(onclick, caption, skin, active, icon) {
+
+                this._buttons
+                    .setOnClick(onclick)
+                    .addButton(
+                        null,
+                        null,
+                        ui.api.empty(caption, null),
+                        ui.api.empty(skin, null),
+                        ui.api.empty(active, false),
+                        ui.api.empty(icon, null)
+                    );
+
+                return this;
+            },
+
+            /**
+             * @param {string} size 'ls' | 'sm'
              * @returns {ui.Modal}
              */
-            setTitle: function(title) {
+            setSize: function(size) {
+
+                this._size = ui.api.existProperty(ui.CSS.modal.size, size, null);
+                return this;
+            },
+
+            /**
+             * @param {string} title
+             * @param {string} title_small
+             * @returns {ui.Modal}
+             */
+            setTitle: function(title, title_small) {
 
                 this._title = title;
+                this._titleSmall = title_small;
                 return this;
             },
 
@@ -61,6 +111,11 @@
                         .addChildAfter(
                             new ui.Element('h4')
                                 .setContentElement(this._title)
+                                .addChildAfter(
+                                    new ui.Element('small')
+                                        .setContentElement(this._titleSmall)
+                                        .getElement()
+                                )
                                 .getElement()
                         );
                 }
@@ -70,15 +125,10 @@
 
             _buildBody: function() {
 
-                var body = new ui.Element('div')
+                return new ui.Element('div')
                     .addClassElement(ui.CSS.modal.body)
-                    .addChildAfter(
-                        new ui.Element('p')
-                            .setContentElement(ui.api.empty(this._content, ''))
-                            .getElement()
-                    );
-
-                return body.getElement();
+                    .setContentElement(ui.api.empty(this._content, ''))
+                    .getElement();
             },
 
             _buildFoot: function() {
@@ -86,7 +136,7 @@
                 var foot = new ui.Element('div')
                     .addClassElement(ui.CSS.modal.footer)
                     .addChildAfter(
-                        new ui.FFButton()
+                        this._buttons
                             .setOnClick("new ui.Modal()._removeModal(this);")
                             .addButton(null, null, 'ок', 'default', false, null)
                             .setGroup('toolbar')
@@ -105,6 +155,7 @@
                     .addChildAfter(
                         new ui.Element('div')
                             .addClassElement(ui.CSS.modal.dialog)
+                            .addClassElement(this._size)
                             .addChildAfter(
                                 new ui.Element('div')
                                     .addClassElement(ui.CSS.modal.content)

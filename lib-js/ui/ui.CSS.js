@@ -305,7 +305,11 @@
                 title: 'modal-title',
                 body: 'modal-body',
                 footer: 'modal-footer',
-                close: 'close'
+                close: 'close',
+                size: {
+                    lg: 'modal-lg',
+                    sm: 'modal-sm'
+                }
             }
         };
 

@@ -197,7 +197,7 @@
             } else {
 
                 new ui.Modal()
-                    .setTitle('Ошибка')
+                    .setTitle('Ошибка сохранения', null)
                     .setContent('Заполните обязательные поля и повторите!')
                     .appendHTML('body');
             }
