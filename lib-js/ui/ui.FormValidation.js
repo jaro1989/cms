@@ -196,7 +196,7 @@
                     .send();
             } else {
 
-                new ui.Modal()
+                new ui.Modal(false)
                     .setTitle('Ошибка сохранения', null)
                     .setContent('Заполните обязательные поля и повторите!')
                     .appendHTML('body');
@@ -210,15 +210,19 @@
          */
         remove: function() {
 
-            //this._disableValidator = true;
-            //var data = this.getDataFields();
-
             var obj = {};
             var urlDel = document.getElementById(ui.Config.FORM_URL_DEL).value;
             var idRecord = document.getElementById(ui.Config.FORM_ID_RECORD).value;
             var fieldRecord = document.getElementById(ui.Config.FORM_FIELD_RECORD).value;
 
             if (idRecord != '' &&  urlDel != '' && fieldRecord != '') {
+
+                new ui.Modal(true)
+                    .setTitle('Подтверждение', null)
+                    .addButton('alert(1)', 'Да', null, false, null)
+                    .addButton('alert(2)', 'Нет', null, false, null)
+                    .setContent('Вы уверенны что хотите удалить?')
+                    .appendHTML('body');
 
                 obj[fieldRecord] = idRecord;
 

@@ -4,10 +4,20 @@
         /**
          * @memberOf ui
          * @namespace ui.Modal
+         * @param {boolean} confirm
          * @constructor
          */
-        ui.Modal = function () {
+        ui.Modal = function(confirm) {
 
+            /**
+             * @type {boolean}
+             */
+            this._confirm = ui.api.empty(confirm, false);
+
+            /**
+             * @type {ui.FFButton}
+             */
+            this._buttons = new ui.FFButton();
         };
 
         /** @protected */
@@ -32,11 +42,6 @@
              * @type {string|null}
              */
             _size: null,
-
-            /**
-             * @type {ui.FFButton}
-             */
-            _buttons: new ui.FFButton(),
 
             /**
              * @param {string|null} onclick
@@ -133,18 +138,26 @@
 
             _buildFoot: function() {
 
-                var foot = new ui.Element('div')
+                return new ui.Element('div')
                     .addClassElement(ui.CSS.modal.footer)
-                    .addChildAfter(
-                        this._buttons
-                            .setOnClick("new ui.Modal()._removeModal(this);")
-                            .addButton(null, null, 'ок', 'default', false, null)
-                            .setGroup('toolbar')
-                            .setPositionBlock('right')
-                            .getElement()
-                    );
+                    .addChildAfter(this._buildButtons())
+                    .getElement();
+            },
 
-                return foot.getElement();
+            _buildButtons: function() {
+
+                if (this._confirm === false) {
+
+                    this._buttons
+                        .setOnClick("new ui.Modal()._removeModal(this);")
+                        .addButton(null, null, 'ок', 'default', false, null);
+                }
+
+                this._buttons
+                    .setGroup('toolbar')
+                    .setPositionBlock('right');
+
+                return this._buttons.getElement();
             },
 
             _buildModal: function() {
