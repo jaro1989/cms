@@ -525,14 +525,22 @@
             }
         },
 
+        /**
+         * @param {Node} element
+         * @private
+         */
         _addRecord: function(element) {
 
             var row = ui.api.findParent(element, '.' + _CLASS_ROW);
             var parentBlock = row.parentElement;
+
             var btn = parentBlock.children[0].querySelector('.' + _CLASS_BTN_DEL);
             ui.api.show(btn);
 
             var row_clone = row.cloneNode(true);
+
+            var errorBlock = row_clone.querySelector('.' + ui.CSS.validateErrorClass);
+            errorBlock.innerHTML = '';
 
             var record = row_clone.querySelector('.' + _CLASS_RECORD_ID);
 
@@ -551,6 +559,9 @@
             for (key in fields) {
 
                 if (typeof fields[key] == 'object') {
+
+                    var skinClass = ui.CSS.prefixClass.field + '-' + ui.CSS.skinClass.default.error;
+                    fields[key].parentElement.classList.remove(skinClass);
 
                     var block_field = ui.api.findParent(fields[key], '.' + _BLOCK_FIELD);
 
@@ -572,7 +583,11 @@
             row.parentElement.insertBefore(row_clone, row.nextSibling);
         },
 
-        _delRecord: function(element, form_id) {
+        /**
+         * @param {Node} element
+         * @private
+         */
+        _delRecord: function(element) {
 
             var row = ui.api.findParent(element, '.' + _CLASS_ROW);
             var record = row.querySelector('.' + _CLASS_RECORD_ID);
@@ -786,10 +801,10 @@
 
                 var btn = new ui.FFButton()
                     .setGroup('toolbar')
-                    .setOnClick("new ui.Form()._addRecord(this, '" + this._idForm + "');")
+                    .setOnClick("new ui.Form()._addRecord(this);")
                     .setClass(_CLASS_BTN_ADD)
                     .addButton(null, null, null, null, false, 'plus')
-                    .setOnClick("new ui.Form()._delRecord(this, '" + this._idForm + "');")
+                    .setOnClick("new ui.Form()._delRecord(this);")
                     .setClass(_CLASS_BTN_DEL)
                     .addButton(null, 'del_record', null, null, false, 'minus')
                     .setSize('sm')
