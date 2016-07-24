@@ -48,6 +48,12 @@
 
         /**
          * @private
+         * @type {{}}
+         */
+        _hide: {},
+
+        /**
+         * @private
          * @type {string|number|null}
          */
         _width: null,
@@ -105,6 +111,16 @@
         setActive: function() {
 
             this._active = true;
+            return this;
+        },
+
+        /**
+         * Set active button
+         * @returns {ui.FFButton}
+         */
+        hide: function(name) {
+
+            this._hide[name] = true;
             return this;
         },
 
@@ -366,7 +382,14 @@
                     .addChildAfter(button.getElement());
             }
 
-            return button.getElement();
+            var btn = button.getElement();
+
+            if (ui.api.existProperty(this._hide, params.name, false)) {
+
+                ui.api.hide(btn);
+            }
+
+            return btn;
         },
 
         /**

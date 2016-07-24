@@ -249,6 +249,37 @@
             }
             
             return null;
+        },
+
+        /**
+         * @param {Node} element
+         */
+        show: function(element) {
+
+            element.style.visibility = 'visible';
+        },
+
+        /**
+         * @param {Node} element
+         */
+        hide: function(element) {
+
+            element.style.visibility = 'hidden';
+        },
+
+        /**
+         * @param {Node} element
+         */
+        toggle: function(element) {
+
+            if (element.style.visibility === 'hidden') {
+
+                element.style.visibility = 'visible';
+
+            } else {
+
+                element.style.visibility = 'hidden';
+            }
         }
     };
 

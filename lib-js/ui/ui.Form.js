@@ -15,6 +15,9 @@
     var _BLOCK_ROWS   = 'blockRows';
     var _BLOCK_FIELDS = 'blockFields';
 
+    var _CLASS_RECORD_ID = 'record_id';
+    var _CLASS_ROW = 'row-fields';
+
     var uniqueId = new Date().getTime();
 
     /**
@@ -373,6 +376,7 @@
                 )
                 .addChildAfter(
                     new ui.FFHidden(ui.api.existProperty(this._parentValues, this._idRecord, null), ui.Config.FORM_ID_RECORD)
+                        .addClass(_CLASS_RECORD_ID)
                         .getElement()
                 )
                 .addChildAfter(
@@ -455,7 +459,9 @@
 
             if (parent === true) {
 
-                panel_body.addChildBefore(this._buildRow(this._parentValues, settings, null));
+                panel_body.addChildBefore(
+                    this._buildRow(this._parentValues, settings, null)
+                );
 
             } else {
 
@@ -468,23 +474,24 @@
                     for (key in values) {
 
                         panel_body
-                            .addChildAfter(this._buildRow(values[key], settings, key))
                             .addChildAfter(
-                                new ui.Element('hr')
-                                    .getElement()
+                                this._buildRow(values[key], settings, key)
                             );
                     }
                 }
 
                 if (key === null) {
 
-                    panel_body.addChildBefore(this._buildRow({}, settings, 0));
+                    panel_body.addChildBefore(
+                        this._buildRow({}, settings, 0)
+                    );
                 }
             }
 
             if (key === null && this._readOnly === true && parent === false) {
 
-                return new ui.Element('div').getElement();
+                return new ui.Element('div')
+                    .getElement();
 
             } else {
 
@@ -493,7 +500,56 @@
                     .addChildAfter(panel_body.getElement())
                     .getElement();
             }
+        },
 
+        _addRecord: function(element) {
+
+            var row = ui.api.findParent(element, '.' + _CLASS_ROW);
+
+            var btn = row.parentElement.children[0].querySelectorAll('button')[1];
+            ui.api.show(btn);
+
+            var row_clone = row.cloneNode(true);
+
+            var record = row_clone.querySelector('.' + _CLASS_RECORD_ID);
+
+            if (record !== null) {
+
+                ui.api.findParent(record, '.' + ui.CSS.validateFieldBlockClass).remove();
+            }
+
+            var fields = row_clone.querySelectorAll('input, textarea, select');
+
+            var key = null;
+
+            for (key in fields) {
+
+                fields[key].defaultValue = '';
+                fields[key].value = '';
+                fields[key].innerHTML = '';
+            }
+
+            row.parentElement.insertBefore(row_clone, row.nextSibling);
+        },
+
+        _delRecord: function(element) {
+
+            var row = ui.api.findParent(element, '.' + _CLASS_ROW);
+
+            if (row.parentElement.childElementCount == 2) {
+
+                var key = null;
+                var children = row.parentElement.childNodes;
+
+                for (key in children) {
+
+                    if (typeof children[key] == 'object') {
+
+                        ui.api.hide(children[key].querySelectorAll('button')[1]);
+                    }
+                }
+            }
+            row.remove();
         },
 
         /**
@@ -541,7 +597,9 @@
 
             var params  = settings[_BLOCK_ROWS];
             var objName = settings[_OBJECT_NAME];
-            var block_rows = new ui.Element('div');
+
+            var block_rows = new ui.Element('div')
+                .addClassElement(_CLASS_ROW);
 
             if (this._childrenRecordId.hasOwnProperty(objName)) {
 
@@ -554,6 +612,7 @@
                 block_rows
                     .addChildBefore(
                         new ui.FFHidden(value_id, record_params['setname'])
+                            .addClass(_CLASS_RECORD_ID)
                             .getElement()
                     );
             }
@@ -566,7 +625,9 @@
                         .addChildAfter(
                             new ui.Element('div')
                                 .setPaddingElement(this._paddingChildrenPanel)
-                                .addChildBefore(this._buildBlockRows(params[numRow], false))
+                                .addChildBefore(
+                                    this._buildBlockRows(params[numRow], false)
+                                )
                                 .getElement()
                         )
 
@@ -576,11 +637,19 @@
                         new ui.Element('div')
                             .addClassElement(ui.CSS.newLine)
                             .setPaddingElement(this._paddingRelateBlock)
-                            .addChildAfter(this._buildFields(values, objName, params[numRow][_BLOCK_FIELDS], key_record, numRow))
+                            .addChildAfter(
+                                this._buildFields(values, objName, params[numRow][_BLOCK_FIELDS], key_record, numRow)
+                            )
                             .getElement()
                     )
                 }
             }
+
+            block_rows
+                .addChildAfter(
+                    new ui.Element('hr')
+                        .getElement()
+                );
 
             return block_rows.getElement();
         },
@@ -644,29 +713,27 @@
 
             if (key_record !== null && numRow == 0) {
 
+                var btn = new ui.FFButton()
+                    .setGroup('toolbar')
+                    .setOnClick('new ui.Form()._addRecord(this);')
+                    .addButton(null, null, null, null, false, 'plus')
+                    .setOnClick('new ui.Form()._delRecord(this);')
+                    .addButton(null, 'del_record', null, null, false, 'minus')
+                    .setSize('sm')
+                    .setPositionBlock('right');
+
+                if (Object.keys(values).length == 0) {
+
+                    btn.hide('del_record');
+                }
+
                 block_fields
                     .addChildAfter(
-                        new ui.FFButton()
-                            .setGroup('toolbar')
-                            .setOnClick('new ui.Form()._addRecord();')
-                            .addButton(null, null, null, null, true, 'plus')
-                            .setOnClick('new ui.Form()._delRecord();')
-                            .addButton(null, null, null, null, true, 'minus')
-                            .setSize('sm')
-                            .setPositionBlock('right')
-                            .getElement()
+                        btn.getElement()
                     );
             }
 
             return block_fields.getElement();
-        },
-
-        _addRecord: function() {
-            alert(1);
-        },
-
-        _delRecord: function() {
-            alert(2);
         },
 
         /**

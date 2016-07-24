@@ -25,6 +25,12 @@
 
         /**
          * @private
+         * @type {[]}
+         */
+        _class: [],
+
+        /**
+         * @private
          * @type {boolean}
          */
         _disabled: false,
@@ -65,20 +71,38 @@
         },
 
         /**
+         * @param {string} htmlClass
+         * @returns {ui.FFHidden}
+         */
+        addClass: function(htmlClass) {
+
+            this._class.push(htmlClass);
+            return this;
+        },
+
+        /**
          * Build html field
          * @returns {*|Element}
          * @private
          */
         _buildField: function() {
 
-            return new ui.Element('input')
+            var field = new ui.Element('input')
                 .setTypeElement('hidden')
                 .setNameElement(this._name)
                 .setIdElement(this._id, this._name)
                 .setValueElement(this._value, this._name)
                 .setDisabledElement(this._disabled)
-                .setRequiredElement(this._required)
-                .getElement();
+                .setRequiredElement(this._required);
+
+            var key = null;
+
+            for (key in this._class) {
+
+                field.addClassElement(this._class[key]);
+            }
+
+            return field.getElement();
         },
 
         /**
