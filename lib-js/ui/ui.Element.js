@@ -300,7 +300,7 @@
              */
             setNameElement: function(nameField) {
 
-                if (ui.api.inArray(['input', 'textarea', 'select'], this.tag_name) != -1) {
+                if (ui.api.inArray(['input', 'textarea', 'select'], this.tag_name) != -1 && nameField !== null) {
 
                     this.element.setAttribute('name', nameField);
                 }

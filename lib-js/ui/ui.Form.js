@@ -10,13 +10,20 @@
     var _TYPE_READ_ONLY = 'readonly';
     //var _TYPE_RELATIONSHIP = 'relationship';
 
-    var _OBJECT_NAME = 'objectName';
-    var _PARENT_TITLE = 'parentTitle';
-    var _BLOCK_ROWS   = 'blockRows';
-    var _BLOCK_FIELDS = 'blockFields';
+    var _OBJECT_NAME  = 'object_name';
+    var _PARENT_TITLE = 'parent_title';
+    var _BLOCK_ROWS   = 'block_rows';
+    var _BLOCK_FIELDS = 'block_fields';
 
-    var _CLASS_RECORD_ID = 'record_id';
-    var _CLASS_ROW = 'row-fields';
+    var _DATA_LAST_ROW_CH = 'data-last-row';
+    var _DATA_OBJECT_CH   = 'data-object';
+    var _DATA_NAME_FIELD  = 'data-name-field';
+
+    var _CLASS_BTN_ADD     = 'btn_add';
+    var _CLASS_BTN_DEL     = 'btn_del';
+    var _CLASS_RECORD_ID   = 'record_id';
+    var _CLASS_ROW         = 'row-fields';
+    var _BLOCK_FIELD       = 'block-field';
 
     var uniqueId = new Date().getTime();
 
@@ -353,7 +360,7 @@
          * @returns {*|Element}
          * @private
          */
-        _buildParentBlockHidden: function() {
+        _blockHiddenPr: function() {
 
             return new ui.Element('div')
                 .setAttrElement('hidden',  true)
@@ -386,8 +393,22 @@
                 .getElement();
         },
 
-        _buildChildrenBlockHidden: function() {
+        _blockHiddenCh: function(data) {
 
+            return new ui.Element('div')
+                .setAttrElement('hidden',  true)
+                .addClassElement(ui.CSS.formBlockHiddenClass)
+                .addChildAfter(
+                    new ui.FFHidden(data['record'], data['record_name'])
+                        .addClass(_CLASS_RECORD_ID)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(data['record_field'], null)
+                        .addClass(ui.Config.FORM_FIELD_RECORD)
+                        .getElement()
+                )
+                .getElement();
         },
 
         /**
@@ -431,7 +452,8 @@
          */
         _buildBlockRows: function (settings, parent) {
 
-            var title  = settings[_PARENT_TITLE];
+            var objName = settings[_OBJECT_NAME];
+            var title   = settings[_PARENT_TITLE];
 
             var panel = new ui.Element('div')
                 .addClassElement(ui.CSS.panelClass.panel)
@@ -465,15 +487,16 @@
 
             } else {
 
-                var objName = settings[_OBJECT_NAME];
-
                 if (this._childrenValues.hasOwnProperty(objName)) {
 
                     var values = this._childrenValues[objName];
+                    var count_record = Object.keys(values).length;
 
                     for (key in values) {
 
                         panel_body
+                            .setAttrElement(_DATA_LAST_ROW_CH, count_record)
+                            .setAttrElement(_DATA_OBJECT_CH, objName)
                             .addChildAfter(
                                 this._buildRow(values[key], settings, key)
                             );
@@ -505,8 +528,8 @@
         _addRecord: function(element) {
 
             var row = ui.api.findParent(element, '.' + _CLASS_ROW);
-
-            var btn = row.parentElement.children[0].querySelectorAll('button')[1];
+            var parentBlock = row.parentElement;
+            var btn = parentBlock.children[0].querySelector('.' + _CLASS_BTN_DEL);
             ui.api.show(btn);
 
             var row_clone = row.cloneNode(true);
@@ -522,30 +545,72 @@
 
             var key = null;
 
+            var object_name = parentBlock.getAttribute(_DATA_OBJECT_CH);
+            var last_row = parentBlock.getAttribute(_DATA_LAST_ROW_CH);
+
             for (key in fields) {
 
-                fields[key].defaultValue = '';
-                fields[key].value = '';
-                fields[key].innerHTML = '';
+                if (typeof fields[key] == 'object') {
+
+                    var block_field = ui.api.findParent(fields[key], '.' + _BLOCK_FIELD);
+
+                    if (block_field !== null) {
+
+                        var field_name = block_field.getAttribute(_DATA_NAME_FIELD);
+                        fields[key].setAttribute('name', object_name + '[' + last_row + '][' + field_name + ']');
+                    }
+
+                    fields[key].defaultValue = '';
+                    fields[key].value = '';
+                    fields[key].innerHTML = '';
+                }
             }
+
+            last_row++;
+            parentBlock.setAttribute(_DATA_LAST_ROW_CH, last_row);
 
             row.parentElement.insertBefore(row_clone, row.nextSibling);
         },
 
-        _delRecord: function(element) {
+        _delRecord: function(element, form_id) {
 
             var row = ui.api.findParent(element, '.' + _CLASS_ROW);
+            var record = row.querySelector('.' + _CLASS_RECORD_ID);
+            var parentBlock = row.parentElement;
 
-            if (row.parentElement.childElementCount == 2) {
+
+            if (record !== null) {
+
+                var url_del     = document.getElementById(ui.Config.FORM_URL_DEL).value;
+                var object_name = parentBlock.getAttribute(_DATA_OBJECT_CH);
+                var fieldRecord = parentBlock.querySelector('.' + ui.Config.FORM_FIELD_RECORD).value;
+
+                var data = {};
+                data[fieldRecord] = record.value;
+                data['object'] = object_name;
+
+                new ui.Ajax()
+                    .setUrl(url_del)
+                    .setParams(data)
+                    .addParam('action', 'remove')
+                    .addCallbackFunction(function (e) {
+
+                        console.log(e);
+
+                    })
+                    .send();
+            }
+
+            if (parentBlock.childElementCount == 2) {
 
                 var key = null;
-                var children = row.parentElement.childNodes;
+                var children = parentBlock.childNodes;
 
                 for (key in children) {
 
                     if (typeof children[key] == 'object') {
 
-                        ui.api.hide(children[key].querySelectorAll('button')[1]);
+                        ui.api.hide(children[key].querySelector('.' + _CLASS_BTN_DEL));
                     }
                 }
             }
@@ -604,16 +669,20 @@
             if (this._childrenRecordId.hasOwnProperty(objName)) {
 
                 var name = this._childrenRecordId[objName];
-                var record_params = {object: objName, name: name};
-                var value_id = ui.api.setValue(values, name);
-
+                var record_params   = {object: objName, name: name};
+                var record = ui.api.setValue(values, name);
                 this._setNameField(key_record, record_params);
 
                 block_rows
-                    .addChildBefore(
-                        new ui.FFHidden(value_id, record_params['setname'])
-                            .addClass(_CLASS_RECORD_ID)
-                            .getElement()
+                    .addChildAfter(
+                        this._blockHiddenCh(
+                            {
+                                object: objName,
+                                record: record,
+                                record_name: record_params['setname'],
+                                record_field: name
+                            }
+                        )
                     );
             }
 
@@ -704,6 +773,8 @@
                     block_fields
                         .addChildAfter(
                             new ui.Element('div')
+                                .setAttrElement(_DATA_NAME_FIELD, params['name'])
+                                .addClassElement(_BLOCK_FIELD)
                                 .setWidthElement(countGroup)
                                 .addChildAfter(field)
                                 .getElement()
@@ -715,9 +786,11 @@
 
                 var btn = new ui.FFButton()
                     .setGroup('toolbar')
-                    .setOnClick('new ui.Form()._addRecord(this);')
+                    .setOnClick("new ui.Form()._addRecord(this, '" + this._idForm + "');")
+                    .setClass(_CLASS_BTN_ADD)
                     .addButton(null, null, null, null, false, 'plus')
-                    .setOnClick('new ui.Form()._delRecord(this);')
+                    .setOnClick("new ui.Form()._delRecord(this, '" + this._idForm + "');")
+                    .setClass(_CLASS_BTN_DEL)
                     .addButton(null, 'del_record', null, null, false, 'minus')
                     .setSize('sm')
                     .setPositionBlock('right');
@@ -770,7 +843,7 @@
             var form = new ui.Element('form')
                 .setIdElement(this._idForm, null)
                 .setAttrElement('method', this._method)
-                .addChildBefore(this._buildParentBlockHidden())
+                .addChildBefore(this._blockHiddenPr())
                 .addChildAfter(this._buildBlockRows(this._settings, true));
 
             var record = ui.api.existProperty(this._parentValues, this._idRecord, false);
