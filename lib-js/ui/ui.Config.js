@@ -63,7 +63,28 @@
             FORM_ID_RECORD:    '_record',
             FORM_FIELD_RECORD: '_record_name',
             FORM_CH_OBJECT :   '_ch',
-            FORM_CH_LAST_ROW:  '_last_row'
+            FORM_CH_LAST_ROW:  '_last_row',
+
+            modal: {
+                ru: {
+                    error: {
+                        icon: 'ban-circle',
+                        title: 'Ошибка!',
+                        btnYes: 'Закрыть'
+                    },
+                    alert: {
+                        icon: 'envelope',
+                        title: 'Сообщение!',
+                        btnYes: 'Закрыть'
+                    },
+                    confirm: {
+                        icon: 'question-sign',
+                        title: 'Внимание!',
+                        btnYes: 'Да',
+                        btnNo: 'Нее'
+                    }
+                }
+            }
         };
 
     } (window.ui || {}));

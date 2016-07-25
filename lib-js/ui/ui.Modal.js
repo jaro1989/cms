@@ -4,15 +4,9 @@
         /**
          * @memberOf ui
          * @namespace ui.Modal
-         * @param {boolean} confirm
          * @constructor
          */
-        ui.Modal = function(confirm) {
-
-            /**
-             * @type {boolean}
-             */
-            this._confirm = ui.api.empty(confirm, false);
+        ui.Modal = function() {
 
             /**
              * @type {ui.FFButton}
@@ -36,12 +30,22 @@
             /**
              * @type {string|null}
              */
+            _icon: null,
+
+            /**
+             * @type {string|null}
+             */
             _content: null,
 
             /**
              * @type {string|null}
              */
             _size: null,
+
+            /**
+             * @type {string|null}
+             */
+            _skin: null,
 
             /**
              * @param {string|null} onclick
@@ -115,7 +119,17 @@
                     head
                         .addChildAfter(
                             new ui.Element('h4')
-                                .setContentElement(this._title)
+                                .setSkinElement('text', this._skin)
+                                .addChildAfter(
+                                    new ui.Element('span')
+                                        .setIconElement(this._icon)
+                                        .getElement()
+                                )
+                                .addChildAfter(
+                                    new ui.Element('span')
+                                        .setContentElement(' ' + this._title + ' ')
+                                        .getElement()
+                                )
                                 .addChildAfter(
                                     new ui.Element('small')
                                         .setContentElement(this._titleSmall)
@@ -146,13 +160,6 @@
 
             _buildButtons: function() {
 
-                if (this._confirm === false) {
-
-                    this._buttons
-                        .setOnClick("new ui.Modal()._removeModal(this);")
-                        .addButton(null, null, 'ок', 'default', false, null);
-                }
-
                 this._buttons
                     .setGroup('toolbar')
                     .setPositionBlock('right');
@@ -180,6 +187,68 @@
                             .getElement()
                     )
                     .getElement();
+            },
+
+            /**
+             * @param {string} message
+             * @returns {ui.Modal}
+             */
+            alert: function(message) {
+
+                var alertConfig = ui.Config.modal.ru.alert;
+                this._title = alertConfig.title;
+                this._icon  = alertConfig.icon;
+                this._skin = ui.CSS.skinClass.default.primary;
+                this._content = message;
+
+                this._buttons
+                    .setOnClick("new ui.Modal()._removeModal(this);")
+                    .addButton(null, null, alertConfig.btnYes, 'default', false, null);
+
+                return this;
+            },
+
+            /**
+             *
+             * @param {string} message
+             * @param {string} callbackYes
+             * @param {string} callbackNo
+             * @returns {ui.Modal}
+             */
+            confirm: function(message, callbackYes, callbackNo) {
+
+                var confirmConfig = ui.Config.modal.ru.confirm;
+                this._title = confirmConfig.title;
+                this._icon  = confirmConfig.icon;
+                this._skin = ui.CSS.skinClass.default.primary;
+                this._content = message;
+
+                this._buttons
+                    .setOnClick("new ui.Modal()._removeModal(this);" + callbackYes)
+                    .addButton(null, null, confirmConfig.btnYes, 'default', false, null)
+                    .setOnClick("new ui.Modal()._removeModal(this);" + callbackNo)
+                    .addButton(null, null, confirmConfig.btnNo, 'default', false, null);
+
+                return this;
+            },
+
+            /**
+             * @param {string} message
+             * @returns {ui.Modal}
+             */
+            error: function(message) {
+
+                var errorConfig = ui.Config.modal.ru.error;
+                this._title = errorConfig.title;
+                this._icon  = errorConfig.icon;
+                this._skin = ui.CSS.skinClass.default.danger;
+                this._content = message;
+
+                this._buttons
+                    .setOnClick("new ui.Modal()._removeModal(this);")
+                    .addButton(null, null, errorConfig.btnYes, 'default', false, null);
+
+                return this;
             },
 
             _removeModal: function(element) {

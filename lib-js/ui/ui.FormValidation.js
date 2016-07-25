@@ -191,14 +191,16 @@
                     .addCallbackFunction(function (e) {
 
                         console.log(e);
+                        new ui.Modal()
+                            .alert('Данные успешно сохранены!')
+                            .appendHTML('body');
 
                     })
                     .send();
             } else {
 
-                new ui.Modal(false)
-                    .setTitle('Ошибка сохранения', null)
-                    .setContent('Заполните обязательные поля и повторите!')
+                new ui.Modal()
+                    .error('Заполните обязательные поля и повторите!')
                     .appendHTML('body');
             }
 
