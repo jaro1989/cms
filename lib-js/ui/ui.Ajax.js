@@ -113,6 +113,19 @@
             return this;
         },
 
+        progres: function() {
+
+            // обработчик для закачки
+            this._xhr.upload.onprogress = function(event) {
+
+                var progres = 100 + (event.total - event.total) * 100 / event.total;
+
+                new ui.Modal()
+                    .progress(progres)
+                    .appendHTML('body');
+            };
+        },
+
         /**
          * @returns {ui.Ajax}
          */
@@ -129,6 +142,8 @@
             this._xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             this._xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             this._xhr.timeout = this._timeout;
+
+            this.progres();
 
             if (this._method == 'POST') {
 

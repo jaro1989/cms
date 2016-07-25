@@ -192,7 +192,7 @@
             /**
              * @returns {ui.Modal}
              */
-            progress: function() {
+            progress: function(time) {
 
                 this._content = new ui.Element('div')
                     .addClassElement(ui.CSS.progress.progress)
@@ -201,7 +201,7 @@
                     .addChildAfter(
                         new ui.Element('div')
                             .addClassElement(ui.CSS.progress.bar)
-                            .addStyleElement('width', '50%')
+                            .addStyleElement('width', time + '%')
                             .getElement()
                     )
                     .getElement()
