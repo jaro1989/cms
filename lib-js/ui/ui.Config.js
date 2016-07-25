@@ -82,6 +82,9 @@
                         title: 'Внимание!',
                         btnYes: 'Да',
                         btnNo: 'Нее'
+                    },
+                    progress: {
+                        btnCancel: 'Отмена'
                     }
                 }
             }

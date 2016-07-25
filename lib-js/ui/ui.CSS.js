@@ -310,6 +310,14 @@
                     lg: 'modal-lg',
                     sm: 'modal-sm'
                 }
+            },
+
+            progress: {
+                striped: 'progress-striped',
+                progress: 'progress',
+                bar: 'progress-bar',
+                active: 'active',
+                sr: 'sr-only'
             }
         };
 

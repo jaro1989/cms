@@ -190,6 +190,33 @@
             },
 
             /**
+             * @returns {ui.Modal}
+             */
+            progress: function() {
+
+                this._content = new ui.Element('div')
+                    .addClassElement(ui.CSS.progress.progress)
+                    .addClassElement(ui.CSS.progress.striped)
+                    .addClassElement(ui.CSS.progress.active)
+                    .addChildAfter(
+                        new ui.Element('div')
+                            .addClassElement(ui.CSS.progress.bar)
+                            .addStyleElement('width', '50%')
+                            .getElement()
+                    )
+                    .getElement()
+                    .outerHTML;
+
+                var alertConfig = ui.Config.modal.ru.progress;
+
+                this._buttons
+                    .setOnClick("new ui.Modal()._removeModal(this);")
+                    .addButton(null, null, alertConfig.btnCancel, 'default', false, null);
+
+                return this;
+            },
+
+            /**
              * @param {string} message
              * @returns {ui.Modal}
              */
