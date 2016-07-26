@@ -5,7 +5,7 @@
 
     var test_data = [];
 
-    for (var i = 0; i < 200; i++) {
+    for (var i = 0; i < 10; i++) {
 
         test_data.push(
             {

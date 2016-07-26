@@ -134,6 +134,9 @@
             return this;
         },
 
+        /**
+         * Set progress send data to server
+         */
         progress: function() {
 
             var progress = this._progress
