@@ -10,6 +10,10 @@
         this._xhr = new XMLHttpRequest();
         this._callback = [];
         this._params = {};
+        /**
+         * @type {ui.Modal}
+         */
+        this._modal = new ui.Modal(null).progress();
     };
 
     /** @protected */
@@ -18,6 +22,8 @@
         _method: ui.Config.defaultMethodAjax,
         _async: true,
         _timeout: 30000,
+
+
 
         /**
          * @param {string} url
@@ -115,14 +121,13 @@
 
         progres: function() {
 
-            // обработчик для закачки
+            var modal = this._modal
+                .appendHTML('body');
+
             this._xhr.upload.onprogress = function(event) {
 
-                var progres = 100 + (event.total - event.total) * 100 / event.total;
-
-                new ui.Modal()
-                    .progress(progres)
-                    .appendHTML('body');
+                var time = 100 + (event.total - event.loaded) * 100 / event.total;
+                modal.updateProgress(time);
             };
         },
 
@@ -154,20 +159,28 @@
                 this._xhr.send(params);
             }
 
-            var callback = this._callback;
+            var currentObj = this;
+
+            //currentObj._xhr.onprogress = function(event) {
+            //
+            //    var time = 100 + (event.total - event.loaded) * 100 / event.total;
+            //    currentObj._modal.updateProgress(time);
+            //};
 
             this._xhr.onreadystatechange = function() {
 
                 if (this.readyState === 4 && this.status === 200) {
 
-                    for (var key in callback) {
+                    for (var key in currentObj._callback) {
 
-                        callback[key](this.responseText, this);
+                        currentObj._callback[key](this.responseText, this);
                     }
+
+                    currentObj._modal.removeModal();
 
                 } else if (this.readyState === 4 && this.status !== 200) {
 
-                    alert(this.status + ': ' + this.statusText);
+                    currentObj._modal.error(this.status + ': ' + this.statusText);
                 }
             };
 

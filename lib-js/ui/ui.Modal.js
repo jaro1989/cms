@@ -1,17 +1,22 @@
 
     (function(ui) {
 
+        var uniqueId = new Date().getTime();
+
         /**
          * @memberOf ui
          * @namespace ui.Modal
+         * @param {string|number} id
          * @constructor
          */
-        ui.Modal = function() {
+        ui.Modal = function(id) {
 
             /**
              * @type {ui.FFButton}
              */
             this._buttons = new ui.FFButton();
+            this._id = ui.api.empty(id, uniqueId);
+            uniqueId++;
         };
 
         /** @protected */
@@ -46,6 +51,14 @@
              * @type {string|null}
              */
             _skin: null,
+
+            /**
+             * @returns {string|number}
+             */
+            getId: function() {
+
+                return this._id;
+            },
 
             /**
              * @param {string|null} onclick
@@ -172,6 +185,7 @@
                 return new ui.Element('div')
                     .addStyleElement('display', 'block')
                     .addClassElement(ui.CSS.modal.modal)
+                    .setIdElement(this._id, null)
                     .addChildAfter(
                         new ui.Element('div')
                             .addClassElement(ui.CSS.modal.dialog)
@@ -192,7 +206,7 @@
             /**
              * @returns {ui.Modal}
              */
-            progress: function(time) {
+            progress: function() {
 
                 this._content = new ui.Element('div')
                     .addClassElement(ui.CSS.progress.progress)
@@ -201,7 +215,7 @@
                     .addChildAfter(
                         new ui.Element('div')
                             .addClassElement(ui.CSS.progress.bar)
-                            .addStyleElement('width', time + '%')
+                            .addStyleElement('width', '1%')
                             .getElement()
                     )
                     .getElement()
@@ -217,10 +231,25 @@
             },
 
             /**
+             * @param {number} time
+             * @returns {ui.Modal}
+             */
+            updateProgress: function(time) {
+
+                var modal = document.getElementById(this._id);
+                var progress = modal.querySelector('.' + ui.CSS.progress.bar);
+                progress.style['width'] = time + '%';
+
+                return this;
+            },
+
+            /**
              * @param {string} message
              * @returns {ui.Modal}
              */
             alert: function(message) {
+
+                this.removeModal(null);
 
                 var alertConfig = ui.Config.modal.ru.alert;
                 this._title = alertConfig.title;
@@ -232,6 +261,7 @@
                     .setOnClick("new ui.Modal()._removeModal(this);")
                     .addButton(null, null, alertConfig.btnYes, 'default', false, null);
 
+                this.appendHTML();
                 return this;
             },
 
@@ -243,6 +273,8 @@
              * @returns {ui.Modal}
              */
             confirm: function(message, callbackYes, callbackNo) {
+
+                this.removeModal(null);
 
                 var confirmConfig = ui.Config.modal.ru.confirm;
                 this._title = confirmConfig.title;
@@ -256,6 +288,7 @@
                     .setOnClick("new ui.Modal()._removeModal(this);" + callbackNo)
                     .addButton(null, null, confirmConfig.btnNo, 'default', false, null);
 
+                this.appendHTML();
                 return this;
             },
 
@@ -264,6 +297,8 @@
              * @returns {ui.Modal}
              */
             error: function(message) {
+
+                this.removeModal(null);
 
                 var errorConfig = ui.Config.modal.ru.error;
                 this._title = errorConfig.title;
@@ -275,6 +310,7 @@
                     .setOnClick("new ui.Modal()._removeModal(this);")
                     .addButton(null, null, errorConfig.btnYes, 'default', false, null);
 
+                this.appendHTML();
                 return this;
             },
 
@@ -282,6 +318,22 @@
 
                 var modal = ui.api.findParent(element, '.' + ui.CSS.modal.modal);
                 modal.remove();
+            },
+
+            /**
+             * @param {string|number|null} id_modal
+             * @returns {ui.Modal}
+             */
+            removeModal: function(id_modal) {
+
+                var modal = document.getElementById(ui.api.empty(id_modal, this._id));
+
+                if (modal) {
+
+                    modal.remove();
+                }
+
+                return this;
             },
 
             /**
@@ -306,13 +358,12 @@
 
             /**
              * Add element in document
-             * @param {string} selector
              * @returns {ui.Modal}
              * @public
              */
-            appendHTML: function(selector) {
+            appendHTML: function() {
 
-                new ui.$(selector).append(this.getElement());
+                new ui.$('body').append(this.getElement());
                 return this;
             }
         }
