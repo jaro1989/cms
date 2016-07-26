@@ -28,7 +28,17 @@
         _async: true,
         _timeout: 30000,
 
+        _skinProgress: null,
 
+        /**
+         * @param {string} skin {'success' | 'info' | 'warning' | 'danger'}
+         * @returns {ui.Ajax}
+         */
+        setSkin: function(skin) {
+
+            this._skinProgress = skin;
+            return this;
+        },
 
         /**
          * @param {string} url
@@ -126,7 +136,9 @@
 
         progress: function() {
 
-            var progress = this._progress.setProgress();
+            var progress = this._progress
+                .setSkin(this._skinProgress)
+                .setProgress();
 
             this._xhr.upload.onprogress = function(event) {
 

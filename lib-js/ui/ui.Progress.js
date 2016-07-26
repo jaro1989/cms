@@ -24,7 +24,17 @@
         /**
          * @type {string|null}
          */
-        _skin: null,
+        _skin: ui.api.existProperty(ui.CSS.progress.skin, ui.Config.skinProgress, null),
+
+        /**
+         * @param {string} skin {'success' | 'info' | 'warning' | 'danger'}
+         * @returns {ui.Progress}
+         */
+        setSkin: function(skin) {
+
+            this._skin = ui.api.existProperty(ui.CSS.progress.skin, skin, this._skin);
+            return this;
+        },
 
         /**
          * @returns {string|number}
@@ -40,15 +50,25 @@
         _buildProgress: function() {
 
             return new ui.Element('div')
+                .addStyleElement('display', 'block')
+                .addStyleElement('paddingTop', '50px')
+                .addClassElement(ui.CSS.modal.modal)
                 .setIdElement(this._id, null)
-                .addClassElement(ui.CSS.progress.progress)
-                .addClassElement(ui.CSS.progress.striped)
-                .addClassElement(ui.CSS.progress.active)
                 .addChildAfter(
                     new ui.Element('div')
-                        .addClassElement(ui.CSS.progress.bar)
-                        .addStyleElement('width', '1%')
+                        .addStyleElement('height', '5px')
+                        .addClassElement(ui.CSS.progress.progress)
+                        .addClassElement(ui.CSS.progress.striped)
+                        .addClassElement(ui.CSS.progress.active)
+                        .addChildAfter(
+                            new ui.Element('div')
+                                .addClassElement(ui.CSS.progress.bar)
+                                .addClassElement(this._skin)
+                                .addStyleElement('width', '1%')
+                                .getElement()
+                        )
                         .getElement()
+
                 )
                 .getElement();
         },
@@ -71,7 +91,7 @@
          */
         setProgress: function() {
 
-            this.appendHTML('body');
+            this.beforeHTML('body');
             return this;
         },
 
@@ -119,6 +139,18 @@
         appendHTML: function(selector) {
 
             new ui.$(selector).append(this.getElement());
+            return this;
+        },
+
+        /**
+         * Add element in document
+         * @param {string|number|null} selector
+         * @returns {ui.Progress}
+         * @public
+         */
+        beforeHTML: function(selector) {
+
+            new ui.$(selector).before(this.getElement());
             return this;
         }
     }

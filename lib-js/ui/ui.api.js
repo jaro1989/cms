@@ -15,22 +15,20 @@
     ui.$.prototype = {
 
         /**
-         *
+         * @returns {ui.$}
+         */
+        before: function(contentElement) {
+
+            this.elements.insertBefore(contentElement, this.elements.firstChild);
+            return this;
+        },
+
+        /**
          * @returns {ui.$}
          */
         append: function(contentElement) {
 
             this.elements.appendChild(contentElement);
-            return this;
-        },
-
-        on: function(event, fun, useCapture) {
-
-            if (this.elements !== null) {
-
-                this.elements.addEventListener(event, fun, useCapture);
-            }
-
             return this;
         }
     };

@@ -281,12 +281,12 @@
             },
 
             /**
-             * @param {string|number|null} id_modal
+             * @param {string|number|null} idModal
              * @returns {ui.Modal}
              */
-            removeModal: function(id_modal) {
+            removeModal: function(idModal) {
 
-                var modal = document.getElementById(ui.api.empty(id_modal, this._id));
+                var modal = document.getElementById(ui.api.empty(idModal, this._id));
 
                 if (modal) {
 

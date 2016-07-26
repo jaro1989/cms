@@ -65,6 +65,7 @@
             FORM_CH_OBJECT :   '_ch',
             FORM_CH_LAST_ROW:  '_last_row',
 
+            skinProgress: 'success',
             modal: {
                 ru: {
                     error: {

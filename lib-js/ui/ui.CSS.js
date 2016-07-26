@@ -317,7 +317,13 @@
                 progress: 'progress',
                 bar: 'progress-bar',
                 active: 'active',
-                sr: 'sr-only'
+                sr: 'sr-only',
+                skin: {
+                    success: 'progress-bar-success',
+                    info: 'progress-bar-info',
+                    warning: 'progress-bar-warning',
+                    danger: 'progress-bar-danger'
+                }
             }
         };
 
