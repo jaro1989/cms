@@ -192,17 +192,14 @@
 
                         console.log(e);
                         new ui.Modal()
-                            .alert('Данные успешно сохранены!')
-                            .appendHTML('body');
+                            .alert('Данные успешно сохранены!');
 
                     })
                     .send();
             } else {
 
                 new ui.Modal()
-                    .progress()
-                    //.error('Заполните обязательные поля и повторите!')
-                    .appendHTML('body');
+                    .error('Заполните обязательные поля и повторите!');
             }
 
             return true
@@ -224,8 +221,7 @@
                     .setTitle('Подтверждение', null)
                     .addButton('alert(1)', 'Да', null, false, null)
                     .addButton('alert(2)', 'Нет', null, false, null)
-                    .setContent('Вы уверенны что хотите удалить?')
-                    .appendHTML('body');
+                    .setContent('Вы уверенны что хотите удалить?');
 
                 obj[fieldRecord] = idRecord;
 

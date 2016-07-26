@@ -11,9 +11,14 @@
         this._callback = [];
         this._params = {};
         /**
+         * @type {ui.Progress}
+         */
+        this._progress = new ui.Progress(null);
+
+        /**
          * @type {ui.Modal}
          */
-        this._modal = new ui.Modal(null).progress();
+        this._modal = new ui.Modal(null);
     };
 
     /** @protected */
@@ -119,15 +124,19 @@
             return this;
         },
 
-        progres: function() {
+        progress: function() {
 
-            var modal = this._modal
-                .appendHTML('body');
+            var progress = this._progress.setProgress();
 
             this._xhr.upload.onprogress = function(event) {
 
                 var time = 100 + (event.total - event.loaded) * 100 / event.total;
-                modal.updateProgress(time);
+                progress.updateProgress(time);
+
+                if (event.total == event.loaded) {
+
+                    progress.removeProgress(null);
+                }
             };
         },
 
@@ -148,7 +157,7 @@
             this._xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             this._xhr.timeout = this._timeout;
 
-            this.progres();
+            this.progress();
 
             if (this._method == 'POST') {
 
@@ -175,8 +184,6 @@
 
                         currentObj._callback[key](this.responseText, this);
                     }
-
-                    currentObj._modal.removeModal();
 
                 } else if (this.readyState === 4 && this.status !== 200) {
 
