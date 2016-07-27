@@ -143,14 +143,38 @@
                 .setSkin(this._skinProgress)
                 .setProgress();
 
+            var xhr = this;
+
             this._xhr.upload.onprogress = function(event) {
 
-                var time = 100 + (event.total - event.loaded) * 100 / event.total;
-                progress.updateProgress(time);
+                var time = event.loaded / event.total * 100;
+
+                progress.updateProgress(time / 2);
 
                 if (event.total == event.loaded) {
 
-                    progress.removeProgress(null);
+                    var time_on = time;
+
+                    xhr._xhr.onprogress = function(event) {
+
+                        if (event.lengthComputable) {
+
+                            time_on = time + ((event.loaded / event.total * 100) / 2);
+
+                            progress.updateProgress(time + (time_on / 2));
+
+                        } else {
+
+                            time_on = 100;
+                        }
+
+                        progress.updateProgress(100);
+
+                        if (time_on === 100) {
+
+                            progress.removeProgress(null);
+                        }
+                    };
                 }
             };
         },
