@@ -52,8 +52,7 @@
             },
 
             /**
-             *
-             * @param body
+             * @param {string|number|null} body
              * @returns {ui.Page}
              */
             setBody: function(body) {

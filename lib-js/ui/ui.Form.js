@@ -83,6 +83,13 @@
          */
         this._btnDefaultBottom = [];
 
+        this._hideBtn = {
+            _btnSave:   false,
+                _btnClean:  false,
+                _btnRemove: false,
+                _btnBack:   false
+        };
+
         this._idForm = ui.api.empty(idForm, uniqueId);
         uniqueId++;
     };
@@ -91,13 +98,6 @@
     ui.Form.prototype = {
 
         _validation: true,
-
-        _hideBtn: {
-            _btnSave:   false,
-            _btnClean:  false,
-            _btnRemove: false,
-            _btnBack:   false
-        },
 
         _positionBtnTop:    'left',
         _positionBtnBottom: 'right',
@@ -306,7 +306,7 @@
                     {
                         type:     'button',
                         name:     '_btnBack',
-                        leftIcon: 'retweet',
+                        leftIcon: 'share-alt',
                         skin:     'primary',
                         caption:  'Назад',
                         onclick:  "window.location.href = '" + this._urlBack + "'"
@@ -474,14 +474,14 @@
                 )
             }
 
-            var panel_body = new ui.Element('div')
+            var panelBody = new ui.Element('div')
                 .addClassElement(ui.CSS.panelClass.panelBody);
 
             var key = null;
 
             if (parent === true) {
 
-                panel_body.addChildBefore(
+                panelBody.addChildBefore(
                     this._buildRow(this._parentValues, settings, null)
                 );
 
@@ -490,12 +490,12 @@
                 if (this._childrenValues.hasOwnProperty(objName)) {
 
                     var values = this._childrenValues[objName];
-                    var count_record = Object.keys(values).length;
+                    var countRecord = Object.keys(values).length;
 
                     for (key in values) {
 
-                        panel_body
-                            .setAttrElement(_DATA_LAST_ROW_CH, count_record)
+                        panelBody
+                            .setAttrElement(_DATA_LAST_ROW_CH, countRecord)
                             .setAttrElement(_DATA_OBJECT_CH, objName)
                             .addChildAfter(
                                 this._buildRow(values[key], settings, key)
@@ -505,7 +505,7 @@
 
                 if (key === null) {
 
-                    panel_body.addChildBefore(
+                    panelBody.addChildBefore(
                         this._buildRow({}, settings, 0)
                     );
                 }
@@ -520,7 +520,7 @@
 
                 return panel
                     .setPaddingElement(this._paddingPanels)
-                    .addChildAfter(panel_body.getElement())
+                    .addChildAfter(panelBody.getElement())
                     .getElement();
             }
         },
@@ -537,24 +537,24 @@
             var btn = parentBlock.children[0].querySelector('.' + _CLASS_BTN_DEL);
             ui.api.show(btn);
 
-            var row_clone = row.cloneNode(true);
+            var rowClone = row.cloneNode(true);
 
-            var errorBlock = row_clone.querySelector('.' + ui.CSS.validateErrorClass);
+            var errorBlock = rowClone.querySelector('.' + ui.CSS.validateErrorClass);
             errorBlock.innerHTML = '';
 
-            var record = row_clone.querySelector('.' + _CLASS_RECORD_ID);
+            var record = rowClone.querySelector('.' + _CLASS_RECORD_ID);
 
             if (record !== null) {
 
                 ui.api.findParent(record, '.' + ui.CSS.validateFieldBlockClass).remove();
             }
 
-            var fields = row_clone.querySelectorAll('input, textarea, select');
+            var fields = rowClone.querySelectorAll('input, textarea, select');
 
             var key = null;
 
             var object_name = parentBlock.getAttribute(_DATA_OBJECT_CH);
-            var last_row = parentBlock.getAttribute(_DATA_LAST_ROW_CH);
+            var lastRow = parentBlock.getAttribute(_DATA_LAST_ROW_CH);
 
             for (key in fields) {
 
@@ -568,7 +568,7 @@
                     if (block_field !== null) {
 
                         var field_name = block_field.getAttribute(_DATA_NAME_FIELD);
-                        fields[key].setAttribute('name', object_name + '[' + last_row + '][' + field_name + ']');
+                        fields[key].setAttribute('name', object_name + '[' + lastRow + '][' + field_name + ']');
                     }
 
                     fields[key].defaultValue = '';
@@ -577,10 +577,10 @@
                 }
             }
 
-            last_row++;
-            parentBlock.setAttribute(_DATA_LAST_ROW_CH, last_row);
+            lastRow++;
+            parentBlock.setAttribute(_DATA_LAST_ROW_CH, lastRow);
 
-            row.parentElement.insertBefore(row_clone, row.nextSibling);
+            row.parentElement.insertBefore(rowClone, row.nextSibling);
         },
 
         /**
@@ -678,7 +678,7 @@
             var params  = settings[_BLOCK_ROWS];
             var objName = settings[_OBJECT_NAME];
 
-            var block_rows = new ui.Element('div')
+            var blockRows = new ui.Element('div')
                 .addClassElement(_CLASS_ROW);
 
             if (this._childrenRecordId.hasOwnProperty(objName)) {
@@ -688,7 +688,7 @@
                 var record = ui.api.setValue(values, name);
                 this._setNameField(key_record, record_params);
 
-                block_rows
+                blockRows
                     .addChildAfter(
                         this._blockHiddenCh(
                             {
@@ -705,7 +705,7 @@
 
                 if (params[numRow].hasOwnProperty(_BLOCK_ROWS)) {
 
-                    block_rows
+                    blockRows
                         .addChildAfter(
                             new ui.Element('div')
                                 .setPaddingElement(this._paddingChildrenPanel)
@@ -717,7 +717,7 @@
 
                 } else {
 
-                    block_rows.addChildAfter(
+                    blockRows.addChildAfter(
                         new ui.Element('div')
                             .addClassElement(ui.CSS.newLine)
                             .setPaddingElement(this._paddingRelateBlock)
@@ -729,13 +729,13 @@
                 }
             }
 
-            block_rows
+            blockRows
                 .addChildAfter(
                     new ui.Element('hr')
                         .getElement()
                 );
 
-            return block_rows.getElement();
+            return blockRows.getElement();
         },
 
         /**
@@ -761,7 +761,7 @@
          */
         _buildFields: function(values, objectName, settings, key_record, numRow) {
 
-            var block_fields = new ui.Element('div');
+            var blockFields = new ui.Element('div');
 
             for (var nameField in settings) {
 
@@ -785,7 +785,7 @@
                     var delimiter = (key_record === null) ? 12 : 10;
                     var countGroup = Math.round(delimiter / (Object.keys(settings).length));
 
-                    block_fields
+                    blockFields
                         .addChildAfter(
                             new ui.Element('div')
                                 .setAttrElement(_DATA_NAME_FIELD, params['name'])
@@ -815,13 +815,13 @@
                     btn.hide('del_record');
                 }
 
-                block_fields
+                blockFields
                     .addChildAfter(
                         btn.getElement()
                     );
             }
 
-            return block_fields.getElement();
+            return blockFields.getElement();
         },
 
         /**
@@ -1084,14 +1084,14 @@
             }
             params['name'] = name;
 
-            var block_fields = blockRows[countRow][_BLOCK_FIELDS];
+            var blockFields = blockRows[countRow][_BLOCK_FIELDS];
 
             if (name === null) {
 
-                name = _TYPE_READ_ONLY + '_' + Object.keys(block_fields).length;
+                name = _TYPE_READ_ONLY + '_' + Object.keys(blockFields).length;
             }
 
-            block_fields[name] = params;
+            blockFields[name] = params;
 
             return true;
         },
