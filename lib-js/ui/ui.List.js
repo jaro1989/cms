@@ -2,6 +2,10 @@
     
     var uniqueId = new Date().getTime();
 
+    var BLOCK_HEAD = 'head';
+    var BLOCK_BODY = 'body';
+    var BLOCK_FOOT = 'foot';
+
     /**
      * @memberOf ui
      * @namespace ui.List
@@ -46,7 +50,53 @@
          * @type {{}}
          * @private
          */
-        this._settings = {};
+        this._settings = {
+            head: [
+                [
+                    {
+                        content: 'row - 0 / cell - 0',
+                        rowspan: 1,
+                        colspan: 2
+                    }
+                ],
+                [
+                    {
+                        content: 'row - 1 / cell - 0',
+                        rowspan: 1,
+                        colspan: 1
+                    },
+                    {
+                        content: 'row - 1 / cell - 1',
+                        rowspan: 1,
+                        colspan: 1
+                    }
+                ]
+            ],
+            body: [
+                [
+                    {
+                        content: 'row - 0 / cell - 0',
+                        rowspan: 1,
+                        colspan: 2
+                    }
+                ],
+                [
+                    {
+                        content: 'row - 1 / cell - 0',
+                        rowspan: 1,
+                        colspan: 1
+                    },
+                    {
+                        content: 'row - 1 / cell - 1',
+                        rowspan: 1,
+                        colspan: 1
+                    }
+                ]
+            ],
+            foot: {}
+        };
+
+        this._columnTypeData = {};
 
         /**
          * @type {[]|{}}
@@ -90,26 +140,121 @@
 
         _buildTable: function() {
 
-            var countRecord = Object.keys(this._parentRecords);
+            var table = new ui.Element('table')
+                .addClassElement(ui.CSS.tableClass.table)
+                .addClassElement(ui.CSS.tableClass.type.striped)
+                .addClassElement(ui.CSS.tableClass.type.responsive)
+                .addClassElement(ui.CSS.tableClass.type.hover);
 
-            var table = new ui.Element('table');
+            this._buildRows(table, BLOCK_HEAD);
+            this._buildRows(table, BLOCK_BODY);
+            this._buildRows(table, BLOCK_FOOT);
 
-            for (var i = 0; i < countRecord; i++) {
+            return table.getElement();
+        },
 
-                this._buildBlock('body', this._parentRecords);
+        /**
+         * @param {*} content
+         * @param {number} column
+         * @private
+         */
+        _columnType: function(content, column) {
+
+            var type = ui.api.existProperty(this._columnTypeData, column, false);
+
+            if (type) {
+
+            }
+
+            return content;
+        },
+
+        /**
+         * @param {{}} params
+         * @param {string} blockName {'head' | 'body' | 'foot'}
+         * @param {number} column
+         * @private
+         */
+        _contentCell: function(params, blockName, column) {
+
+            var content = ui.api.existProperty(params, 'content', params);
+
+            if (blockName == BLOCK_BODY) {
+
+                return this._columnType(content, column);
+            }
+
+            return content;
+        },
+
+        /**
+         * @param {ui.Element} table
+         * @param {{}} params
+         * @param {string} blockName {'head' | 'body' | 'foot'}
+         * @private
+         */
+        _buildCell: function(table, params, blockName) {
+
+            var cellName = blockName == BLOCK_HEAD ? 'th' : 'td';
+            var addCellType = (blockName == BLOCK_HEAD) ? 'addCellHead' : 'addCellBody';
+
+            var countCell = Object.keys(params).length;
+
+            for (var i = 0; i < countCell; i++) {
+
+                var paramCell = params[i];
+
+                table[addCellType](this._contentCell(paramCell, blockName, i), i)
+                    .addAttrTable(cellName, 'colspan', ui.api.existProperty(paramCell, 'colspan', 1))
+                    .addAttrTable(cellName, 'rowspan', ui.api.existProperty(paramCell, 'rowspan', 1));
             }
         },
 
-        _buildBlock: function(name) {
+        /**
+         * @param {ui.Element} table
+         * @param {string} blockName {'head' | 'body' | 'foot'}
+         * @private
+         */
+        _buildRows: function(table, blockName) {
 
+            var countRow = Object.keys(this._settings[blockName]).length;
+
+            for (var i = 0; i < countRow; i++) {
+
+                (blockName == BLOCK_HEAD) ? table.addRowHead(i) : table.addRowBody(i);
+
+                this._buildCell(table, this._settings[blockName][i], blockName);
+            }
         },
 
-        _buildRow: function() {
+        _skinPanel: ui.CSS.skinClass.panel.primary,
 
-        },
+        _buildPanel: function() {
 
-        _buildCell: function() {
+            var panel = new ui.Element('div')
+                .addClassElement(ui.CSS.panelClass.panel)
+                .addClassElement(this._skinPanel);
 
+            panel.addChildBefore(
+                new ui.Element('div')
+                    .addClassElement(ui.CSS.panelClass.panelHead)
+                    .addChildBefore(
+                        new ui.Element('h3')
+                            .addClassElement(ui.CSS.panelClass.panelTitle)
+                            .setContentElement('title')
+                            .getElement()
+                    )
+                    .getElement()
+            );
+
+            panel.addChildAfter(
+                new ui.Element('div')
+                    .addClassElement(ui.CSS.panelClass.panelBody)
+                    .addChildAfter(this._buildTable())
+                    .getElement()
+            );
+
+            return panel.getElement();
         },
 
         /**
@@ -142,6 +287,7 @@
             page.setBody(
                 new ui.Element('div')
                     .setIdElement(this._idList, null)
+                    .addChildAfter(this._buildPanel())
                     .toHTML()
             );
 

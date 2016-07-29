@@ -162,11 +162,15 @@
              * @type { { striped: *, bordered: *, borderedNone: *, hover: *, condensed: * } } }
              */
             tableClass: {
-                striped:      'table-striped',
-                bordered:     'table-bordered',
-                borderedNone: 'table-bordered-none',
-                hover:        'table-hover',
-                condensed:    'table-condensed'
+                table:        'table',
+                type: {
+                    striped:      'table-striped',
+                    bordered:     'table-bordered',
+                    none:         'table-bordered-none',
+                    hover:        'table-hover',
+                    condensed:    'table-condensed',
+                    responsive:   'table-responsive'
+                }
             },
 
             /**
