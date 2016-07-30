@@ -163,14 +163,15 @@
              */
             tableClass: {
                 table: 'table',
-                type: {
-                    striped:  'table-striped',
+                skin: {
                     bordered: 'table-bordered',
                     default:  'table-bordered-none'
                 },
+                striped:    'table-striped',
                 condensed:  'table-condensed',
                 hover:      'table-hover',
-                responsive: 'table-responsive'
+                responsive: 'table-responsive',
+                rowNum:     'table-row-number'
             },
 
             /**

@@ -1,13 +1,18 @@
 
 (function(ui) {
 
+    var TYPE_SIMPLE = 'simple';
+    var TYPE_INLINE = 'inline';
+
     /**
      * @memberOf ui
      * @namespace ui.FFCheckbox
+     * @padding {string|null|undefinde} type {'simple'|'inline'}
      * @constructor
      */
-    ui.FFCheckbox = function () {
+    ui.FFCheckbox = function (type) {
 
+        this._type = ui.api.empty(type, TYPE_INLINE);
         this._checkboxList  = [];
         this._disabledIf    = [];
         this._requiredIf    = [];
@@ -76,6 +81,12 @@
          * @type {string|null}
          */
         _padding: ui.Config.padding,
+
+        /**
+         * @private
+         * @type {string|null}
+         */
+        _classField: null,
 
         /**
          * @param {string|number|null} caption
@@ -157,7 +168,7 @@
          * Add checkbox
          * @param {{}|string|number|null} value
          * @param {string} name
-         * @param {string} caption
+         * @param {string|null} caption
          * @returns {ui.FFCheckbox}
          * @public
          */
@@ -192,8 +203,18 @@
         },
 
         /**
+         * @param {string} classField
+         * @returns {ui.FFCheckbox}
+         */
+        setClass: function(classField) {
+
+            this._classField = classField;
+            return this;
+        },
+
+        /**
          * Set html class padding
-         * @param {string} padding { 'lg' | 'sm' | 'xs' }
+         * @param {string|null} padding { 'lg' | 'sm' | 'xs' }
          * @returns {ui.FFCheckbox}
          * @public
          */
@@ -247,9 +268,9 @@
             var checkbox = new ui.Element('input')
                 .setTypeElement('checkbox')
                 .setNameElement(params.name)
-                .addClassElement(params.name)
                 .setDisabledElement(this._disabled)
                 .setRequiredElement(this._required)
+                .addClassElement(this._classField)
                 .setIdElement(null, params.name);
 
             if (ui.api.inArray(this._disabledIf, params.name) != -1) {
@@ -321,7 +342,6 @@
             } else {
 
                 var req = (ui.api.inArray(this._requiredIf, params.name) != -1) ? true : this._required;
-
                 label.setCaptionRadioElement(params.caption, req);
             }
 
@@ -336,7 +356,22 @@
         },
 
         /**
-         * Build html block radio
+         * @returns {*|Element}
+         * @private
+         */
+        _buildSimpleBlock: function() {
+
+            var block = new ui.Element('div');
+
+            for(var htmlIda in this._checkboxList) {
+
+                block.addChildAfter(this._buildCaptionItem(this._checkboxList[htmlIda]));
+            }
+
+            return block.getElement();
+        },
+
+        /**
          * @returns {*|Element}
          * @private
          */
@@ -410,6 +445,12 @@
          * @public
          */
         getElement: function() {
+
+            if (this._type == TYPE_SIMPLE) {
+
+                return this._buildSimpleBlock();
+            }
+
             return this._buildParentBlock();
         },
 
@@ -419,6 +460,12 @@
          * @public
          */
         toHTML: function() {
+
+            if (this._type == TYPE_SIMPLE) {
+
+                return this._buildSimpleBlock().outerHTM;
+            }
+
             return this._buildParentBlock().outerHTML;
         },
 

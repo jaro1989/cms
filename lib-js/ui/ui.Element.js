@@ -28,7 +28,7 @@
          */
         var parseName = function(str) {
 
-            return str.replace(/\[/g, '-').replace(/\]/g, '');
+            return str.replace(/\[/g, '_').replace(/\]/g, '');
         };
 
         /**
@@ -412,7 +412,10 @@
                     this.element.innerHTML += getStar();
                 }
 
-                this.element.innerHTML += caption;
+                if (ui.api.empty(caption, false)) {
+
+                    this.element.innerHTML += caption;
+                }
 
                 if (required) {
 
@@ -424,7 +427,7 @@
 
             /**
              * Set content in element
-             * @param {string|number} contentElement
+             * @param {string|number|null} contentElement
              * @returns {ui.Element}
              * @public
              */
