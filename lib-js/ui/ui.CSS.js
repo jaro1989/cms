@@ -162,15 +162,15 @@
              * @type { { striped: *, bordered: *, borderedNone: *, hover: *, condensed: * } } }
              */
             tableClass: {
-                table:        'table',
+                table: 'table',
                 type: {
-                    striped:      'table-striped',
-                    bordered:     'table-bordered',
-                    none:         'table-bordered-none',
-                    hover:        'table-hover',
-                    condensed:    'table-condensed',
-                    responsive:   'table-responsive'
-                }
+                    striped:  'table-striped',
+                    bordered: 'table-bordered',
+                    default:  'table-bordered-none'
+                },
+                condensed:  'table-condensed',
+                hover:      'table-hover',
+                responsive: 'table-responsive'
             },
 
             /**

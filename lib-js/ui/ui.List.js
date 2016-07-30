@@ -2,9 +2,9 @@
     
     var uniqueId = new Date().getTime();
 
-    var BLOCK_HEAD = 'head';
-    var BLOCK_BODY = 'body';
-    var BLOCK_FOOT = 'foot';
+    var BLOCK_HEAD = 'thead';
+    var BLOCK_BODY = 'tbody';
+    var BLOCK_FOOT = 'tfoot';
 
     /**
      * @memberOf ui
@@ -51,49 +51,67 @@
          * @private
          */
         this._settings = {
-            head: [
-                [
-                    {
-                        content: 'row - 0 / cell - 0',
-                        rowspan: 1,
-                        colspan: 2
-                    }
-                ],
-                [
-                    {
-                        content: 'row - 1 / cell - 0',
-                        rowspan: 1,
-                        colspan: 1
-                    },
-                    {
-                        content: 'row - 1 / cell - 1',
-                        rowspan: 1,
-                        colspan: 1
-                    }
-                ]
+            thead: [
+                //[
+                //    {
+                //        content: 'row - 0 / cell - 0',
+                //        rowspan: 1,
+                //        colspan: 2
+                //    }
+                //],
+                //[
+                //    {
+                //        content: 'row - 1 / cell - 0',
+                //        rowspan: 1,
+                //        colspan: 1
+                //    },
+                //    {
+                //        content: 'row - 1 / cell - 1',
+                //        rowspan: 1,
+                //        colspan: 1
+                //    }
+                //]
             ],
-            body: [
-                [
-                    {
-                        content: 'row - 0 / cell - 0',
-                        rowspan: 1,
-                        colspan: 2
-                    }
-                ],
-                [
-                    {
-                        content: 'row - 1 / cell - 0',
-                        rowspan: 1,
-                        colspan: 1
-                    },
-                    {
-                        content: 'row - 1 / cell - 1',
-                        rowspan: 1,
-                        colspan: 1
-                    }
-                ]
+            tbody: [
+                //[
+                //    {
+                //        content: 'row - 0 / cell - 0',
+                //        rowspan: 1,
+                //        colspan: 2
+                //    }
+                //],
+                //{
+                //        sss: 'row - 1 / cell - 0',
+                //        aaaa: 'row - 1 / cell - 1'
+                //}
             ],
-            foot: {}
+            tfoot: [
+                //[
+                //    {
+                //        content: 'row - 0 / cell - 0',
+                //        rowspan: 1,
+                //        colspan: 2
+                //    }
+                //],
+                //[
+                //    {
+                //        content: 'row - 1 / cell - 0',
+                //        rowspan: 1,
+                //        colspan: 1
+                //    },
+                //    {
+                //        content: 'row - 1 / cell - 1',
+                //        rowspan: 1,
+                //        colspan: 1
+                //    }
+                //]
+            ]
+        };
+
+        this._lastSetting = {
+            block: BLOCK_HEAD,
+            row:   0,
+            cell:  0
         };
 
         this._columnTypeData = {};
@@ -116,6 +134,8 @@
         _urlBack: document.referrer,
         _positionBtnTop:    'left',
         _positionBtnBottom: 'right',
+        _skinPanel: ui.CSS.skinClass.panel.primary,
+        _typeTable: ui.CSS.tableClass.type.striped,
 
         /**
          * @private
@@ -138,17 +158,41 @@
             }
         },
 
+        /**
+         * @param {string} skin {'default'|'primary'|'success'|'warning'|'danger'|'info'}
+         * @returns {ui.List}
+         */
+        setSkinPanel: function(skin) {
+
+            this._skinPanel = ui.api.existProperty(ui.CSS.skinClass.panel, skin, null);
+            return this;
+        },
+
+        /**
+         * @param {string} type {'striped'|'bordered'|'default'}
+         * @returns {ui.List}
+         */
+        setTypeTable: function(type) {
+
+            this._typeTable = ui.api.existProperty(ui.CSS.tableClass.type, type, null);
+            return this;
+        },
+
+        /**
+         * @returns {*|Element}
+         * @private
+         */
         _buildTable: function() {
 
             var table = new ui.Element('table')
                 .addClassElement(ui.CSS.tableClass.table)
-                .addClassElement(ui.CSS.tableClass.type.striped)
-                .addClassElement(ui.CSS.tableClass.type.responsive)
-                .addClassElement(ui.CSS.tableClass.type.hover);
+                .addClassElement(ui.CSS.tableClass.responsive)
+                .addClassElement(ui.CSS.tableClass.hover)
+                .addClassElement(this._typeTable);
 
-            this._buildRows(table, BLOCK_HEAD);
-            this._buildRows(table, BLOCK_BODY);
-            this._buildRows(table, BLOCK_FOOT);
+            table.addChildAfter(this._buildBlock(BLOCK_HEAD));
+            table.addChildAfter(this._buildBlock(BLOCK_BODY));
+            table.addChildAfter(this._buildBlock(BLOCK_FOOT));
 
             return table.getElement();
         },
@@ -156,6 +200,7 @@
         /**
          * @param {*} content
          * @param {number} column
+         * @returns {*}
          * @private
          */
         _columnType: function(content, column) {
@@ -173,6 +218,7 @@
          * @param {{}} params
          * @param {string} blockName {'head' | 'body' | 'foot'}
          * @param {number} column
+         * @returns {*}
          * @private
          */
         _contentCell: function(params, blockName, column) {
@@ -188,47 +234,56 @@
         },
 
         /**
-         * @param {ui.Element} table
          * @param {{}} params
          * @param {string} blockName {'head' | 'body' | 'foot'}
+         * @returns {*|Element}
          * @private
          */
-        _buildCell: function(table, params, blockName) {
+        _buildRows: function(params, blockName) {
+
+            var row = new ui.Element('tr');
 
             var cellName = blockName == BLOCK_HEAD ? 'th' : 'td';
-            var addCellType = (blockName == BLOCK_HEAD) ? 'addCellHead' : 'addCellBody';
 
-            var countCell = Object.keys(params).length;
-
-            for (var i = 0; i < countCell; i++) {
+            for (var i in params) {
 
                 var paramCell = params[i];
 
-                table[addCellType](this._contentCell(paramCell, blockName, i), i)
-                    .addAttrTable(cellName, 'colspan', ui.api.existProperty(paramCell, 'colspan', 1))
-                    .addAttrTable(cellName, 'rowspan', ui.api.existProperty(paramCell, 'rowspan', 1));
+                row.addChildAfter(
+                    new ui.Element(cellName)
+                        .setContentElement(this._contentCell(paramCell, blockName, i))
+                        .setAttrElement('colspan', ui.api.existProperty(paramCell, 'colspan', 1))
+                        .setAttrElement('rowspan', ui.api.existProperty(paramCell, 'rowspan', 1))
+                        .getElement()
+                );
             }
+
+            return row.getElement();
         },
 
         /**
-         * @param {ui.Element} table
          * @param {string} blockName {'head' | 'body' | 'foot'}
+         * @returns {*|Element}
          * @private
          */
-        _buildRows: function(table, blockName) {
+        _buildBlock: function(blockName) {
 
-            var countRow = Object.keys(this._settings[blockName]).length;
+            var block = new ui.Element(blockName);
 
-            for (var i = 0; i < countRow; i++) {
+            for (var i in this._settings[blockName]) {
 
-                (blockName == BLOCK_HEAD) ? table.addRowHead(i) : table.addRowBody(i);
-
-                this._buildCell(table, this._settings[blockName][i], blockName);
+                block.addChildAfter(
+                    this._buildRows(this._settings[blockName][i], blockName)
+                );
             }
+
+            return block.getElement();
         },
 
-        _skinPanel: ui.CSS.skinClass.panel.primary,
-
+        /**
+         * @returns {*|Element}
+         * @private
+         */
         _buildPanel: function() {
 
             var panel = new ui.Element('div')
@@ -330,6 +385,81 @@
 
             this._urlBack = url;
             return this
+        },
+
+        /**
+         * @returns {ui.List}
+         */
+        newRowHead: function() {
+
+            this._settings.thead.push([]);
+
+            this._lastSetting.block = BLOCK_HEAD;
+            this._lastSetting.row   = Object.keys(this._settings.thead).length;
+
+            return this;
+        },
+
+        /**
+         * @returns {ui.List}
+         */
+        newRowBody: function() {
+
+            this._settings.tbody.push([]);
+
+            this._lastSetting.block = BLOCK_BODY;
+            this._lastSetting.row   = Object.keys(this._settings.tbody).length;
+
+            return this;
+        },
+
+        /**
+         * @param {[]|{}} object
+         * @returns {ui.List}
+         */
+        addRowsBody: function(object) {
+
+            for (var i in object) {
+
+                this._settings.tbody.push(object[i]);
+            }
+
+            return this;
+        },
+
+        /**
+         * @returns {ui.List}
+         */
+        newRowFoot: function() {
+
+            this._settings.tfoot.push([]);
+
+            this._lastSetting.block = BLOCK_FOOT;
+            this._lastSetting.row   = Object.keys(this._settings.tfoot).length;
+
+            return this;
+        },
+
+        /**
+         * @param {string|number} content
+         * @param {number} colspan
+         * @param {number} rowspan
+         * @returns {ui.List}
+         */
+        addCell: function(content, colspan, rowspan) {
+
+            var block = this._lastSetting.block;
+            var row   = this._lastSetting.row - 1;
+
+            this._settings[block][row].push(
+                {
+                    content: content,
+                    rowspan: rowspan,
+                    colspan: colspan
+                }
+            );
+
+            return this;
         },
 
         /**

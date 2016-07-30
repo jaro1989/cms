@@ -1,11 +1,11 @@
-
+console.time('test');
     // ID элемента для вставки полей
     var APPEND_ELEMENT = '#element_append';
 
 
     var test_data = [];
 
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 5; i++) {
 
         test_data.push(
             {
@@ -146,3 +146,5 @@
         .addReadOnlyField(null, null, null)
 
         .appendHTML(APPEND_ELEMENT);
+
+    console.timeEnd('test');
