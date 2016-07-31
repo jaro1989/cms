@@ -2,7 +2,7 @@ console.time('test');
     // ID элемента для вставки полей
     var APPEND_ELEMENT = '#element_append';
 var dataTest = [];
-for (var i =0; i < 10; i++) {
+for (var i =0; i <50; i++) {
 
     dataTest.push({
         id: i * 1456,
@@ -15,7 +15,7 @@ for (var i =0; i < 10; i++) {
     new ui.List('list-user')
         .setTitle('List user', 'description user')
         .setTypeTable('bordered')
-        .hideColumnNumber(false)
+        //.hideColumnNumber(true)
         //.hideColumnCheckbox(true)
         .setLinkEdit('id', 'asdasdad')
 
@@ -26,44 +26,21 @@ for (var i =0; i < 10; i++) {
         .addCell('Тестовые данные HEADER', 2, 1)
         .addCell('Тестовые данные HEADER', 2, 1)
 
-        //.newRowHead()
-        //.addCell('Text-1', 1, 1)
-        //.addCell('Text-2', 1, 1)
-        //.addCell('Text-3', 1, 1)
-        //.addCell('Text-4', 1, 1)
-        //
-        //
-        //
+        .addRowsBody(dataTest)
+
         //.newRowBody()
         //.addCell('Text-1', 1, 1)
         //.addCell('Text-2', 1, 1)
         //.addCell('Text-3', 1, 1)
         //.addCell('Text-4', 1, 1)
 
-
-        .addRowsBody(dataTest)
-
-        .newRowBody()
-        .addCell('Text-1', 1, 1)
-        .addCell('Text-2', 1, 1)
-        .addCell('Text-3', 1, 1)
-        .addCell('Text-4', 1, 1)
-
-        .addRowsBody(dataTest)
-
-        .newRowBody()
-        .addCell('Text-1', 1, 1)
-        .addCell('Text-2', 1, 1)
-        .addCell('Text-3', 1, 1)
-        .addCell('Text-4', 1, 1)
-
-
+        //.addRowsBody(dataTest)
         //
-        //
-        //
-        //.newRowFoot()
-        //.addCell('Тестовые данные FOOTER', 2, 1)
-        //.addCell('Тестовые данные FOOTER', 2, 1)
+        //.newRowBody()
+        //.addCell('Text-1', 1, 1)
+        //.addCell('Text-2', 1, 1)
+        //.addCell('Text-3', 1, 1)
+        //.addCell('Text-4', 1, 1)
 
         .appendHTML(APPEND_ELEMENT);
 

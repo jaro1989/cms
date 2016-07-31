@@ -122,6 +122,10 @@
             }
         },
 
+        /**
+         * @private
+         * returns {voild}
+         */
         _addDefaultRightBtn: function() {
 
             if (this._hideColumnCheckbox === false && this._remove != '') {
@@ -136,6 +140,56 @@
                     }
                 );
             }
+        },
+
+        /**
+         * @param {string|null} typeBtn {'button'|'submit'}
+         * @param {string|null} name
+         * @param {string} icon
+         * @param {string|number} caption
+         * @param {string|null} onclick
+         * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
+         * @returns {ui.List}
+         */
+        addButtonTopLeft: function(typeBtn, name, icon, caption, onclick, skin) {
+
+            this._btnDefaultLeftTop.push(
+                {
+                    type:     ui.api.empty(typeBtn, null),
+                    name:     ui.api.empty(name, null),
+                    leftIcon: ui.api.empty(icon, null),
+                    caption:  ui.api.empty(caption, null),
+                    skin:     ui.api.empty(skin, null),
+                    onclick:  ui.api.empty(onclick, null)
+                }
+            );
+
+            return this;
+        },
+
+        /**
+         * @param {string|null} typeBtn {'button'|'submit'}
+         * @param {string|null} name
+         * @param {string} icon
+         * @param {string|number} caption
+         * @param {string|null} onclick
+         * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
+         * @returns {ui.List}
+         */
+        addButtonTopRight: function(typeBtn, name, icon, caption, onclick, skin) {
+
+            this._btnDefaultRightTop.push(
+                {
+                    type:     ui.api.empty(typeBtn, null),
+                    name:     ui.api.empty(name, null),
+                    leftIcon: ui.api.empty(icon, null),
+                    caption:  ui.api.empty(caption, null),
+                    skin:     ui.api.empty(skin, null),
+                    onclick:  ui.api.empty(onclick, null)
+                }
+            );
+
+            return this;
         },
 
         /**
@@ -398,26 +452,35 @@
             var btnLeftTop = ui.api.arrayMerge(this._btnDefaultLeftTop, this._addBtnLeftTop);
             var btnRightTop = ui.api.arrayMerge(this._btnDefaultRightTop, this._addBtnRightTop);
 
-            page
-                .setHead(
-                    new ui.Element('div')
-                        .addChildAfter(
-                            new ui.FFButton()
-                                .addButtonList(btnLeftTop)
-                                .setPositionBlock(this._positionBtnLeftTop)
-                                .setActive()
-                                .setGroup('toolbar')
-                                .getElement()
-                        )
-                        .addChildAfter(
-                            new ui.FFButton()
-                                .addButtonList(btnRightTop)
-                                .setPositionBlock(this._positionBtnRightTop)
-                                .setActive()
-                                .setGroup('toolbar')
-                                .getElement()
-                        )
-                        .toHTML()
+            page.setHead(
+                new ui.Element('div')
+                    .addClassElement(ui.CSS.newLine)
+                    .addChildAfter(
+                        new ui.Element('div')
+                            .setWidthElement(6)
+                            .addChildAfter(
+                                new ui.FFButton()
+                                    .addButtonList(btnLeftTop)
+                                    .setPositionBlock(this._positionBtnLeftTop)
+                                    .setActive()
+                                    .setGroup('toolbar')
+                                    .getElement()
+                            )
+                            .getElement()
+                    )
+                    .addChildAfter(
+                        new ui.Element('div')
+                            .setWidthElement(6)
+                            .addChildAfter(
+                                new ui.FFButton()
+                                    .addButtonList(btnRightTop)
+                                    .setPositionBlock(this._positionBtnRightTop)
+                                    .setActive()
+                                    .setGroup('toolbar')
+                                    .getElement()
+                            )
+                            .getElement()
+                    ).toHTML()
                 );
 
             page.setBody(
@@ -431,8 +494,7 @@
 
             if (btnBottom.length > 0) {
 
-                page
-                    .setFooter(
+                page.setFooter(
                         new ui.FFButton()
                             .addButtonList(btnBottom)
                             .setPositionBlock(this._positionBtnBottom)
