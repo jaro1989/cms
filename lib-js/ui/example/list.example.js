@@ -8,16 +8,18 @@ for (var i =0; i <50; i++) {
         id: i * 1456,
         name2: 'Тестовые данные -' + i,
         name3: 'Тестовые данные -' + i,
-        name4: 'Тестовые данные -' + i
+        name4: 'Тестовые данные -' + i,
+        name5: 'Тестовые данные -' + i,
+        name6: 'Тестовые данные -' + i
     });
 }
 
-    new ui.List('list-user')
+    new ui.List(null, 'list-user')
         .setTitle('List user', 'description user')
         .setTypeTable('bordered')
-        //.hideColumnNumber(true)
-        //.hideColumnCheckbox(true)
-        .setLinkEdit('id', 'asdasdad')
+        .hideColumnNumber(false)
+        .hideColumnCheckbox(false)
+        .setLinkEdit('asdasdad')
 
         .newRowHead()
         .addCell('Тестовые данные HEADER', 4, 1)
@@ -26,21 +28,15 @@ for (var i =0; i <50; i++) {
         .addCell('Тестовые данные HEADER', 2, 1)
         .addCell('Тестовые данные HEADER', 2, 1)
 
+        .addColumn('name2', null)
+        .addColumn('name3', null)
+        .addColumn('name4', null)
+        .addColumn('name5', null)
+
         .addRowsBody(dataTest)
 
-        //.newRowBody()
-        //.addCell('Text-1', 1, 1)
-        //.addCell('Text-2', 1, 1)
-        //.addCell('Text-3', 1, 1)
-        //.addCell('Text-4', 1, 1)
-
-        //.addRowsBody(dataTest)
-        //
-        //.newRowBody()
-        //.addCell('Text-1', 1, 1)
-        //.addCell('Text-2', 1, 1)
-        //.addCell('Text-3', 1, 1)
-        //.addCell('Text-4', 1, 1)
+        .newRowFoot()
+        .addCell('Тестовые данные Foot', 4, 1)
 
         .appendHTML(APPEND_ELEMENT);
 

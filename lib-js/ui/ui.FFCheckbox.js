@@ -7,7 +7,7 @@
     /**
      * @memberOf ui
      * @namespace ui.FFCheckbox
-     * @padding {string|null|undefinde} type {'simple'|'inline'}
+     * @padding {string|null|undefined} type {'simple'|'inline'}
      * @constructor
      */
     ui.FFCheckbox = function (type) {
@@ -16,6 +16,7 @@
         this._checkboxList  = [];
         this._disabledIf    = [];
         this._requiredIf    = [];
+        this._attr = {};
 
     };
 
@@ -87,6 +88,17 @@
          * @type {string|null}
          */
         _classField: null,
+
+        /**
+         * @param {string} name
+         * @param {*} value
+         * @returns {ui.FFCheckbox}
+         */
+        setAttr: function(name, value) {
+
+            this._attr[name] = value;
+            return this;
+        },
 
         /**
          * @param {string|number|null} caption
@@ -272,6 +284,12 @@
                 .setRequiredElement(this._required)
                 .addClassElement(this._classField)
                 .setIdElement(null, params.name);
+
+            for (var attr in this._attr) {
+
+                var value = this._attr[attr];
+                checkbox.setAttrElement(attr, value);
+            }
 
             if (ui.api.inArray(this._disabledIf, params.name) != -1) {
 

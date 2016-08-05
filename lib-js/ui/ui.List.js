@@ -5,16 +5,26 @@
     var BLOCK_HEAD = 'thead';
     var BLOCK_BODY = 'tbody';
     var BLOCK_FOOT = 'tfoot';
-    var CHECKBOX_CHOICE_ALL = '_choice_all_row';
-    var CHECKBOX_CHOICE_ROW = '_choice_row';
+    var CHECKBOX_CHOICE_ALL = '_choice-all-row';
+    var CHECKBOX_CHOICE_ROW = '_choice-row';
+    var RECORD_ID = 'data-record';
+    var CHOOSE_RECORD_ID = 'data-choose-record-id';
+    var CHOOSE_RECORD_ID_REMOVE = 'remove';
 
     /**
      * @memberOf ui
      * @namespace ui.List
      * @param {string} idList
+     * @param {string} nameFieldRecordId
      * @constructor
      */
-    ui.List = function (idList) {
+    ui.List = function (nameFieldRecordId, idList) {
+
+        /**
+         * @type {string}
+         * @private
+         */
+        this._fieldRecordId = ui.api.empty(nameFieldRecordId, 'id');
 
         /**
          * @type {[]}
@@ -74,12 +84,18 @@
 
         this._columnTypeData = {};
 
+        this._column = {};
+
         /**
          * @type {[]|{}}
          * @private
          */
         this._parentRecords = [];
 
+        /**
+         * @type {string}
+         * @private
+         */
         this._idList = ui.api.empty(idList, uniqueId);
         uniqueId++;
     };
@@ -100,6 +116,7 @@
         _hideColumnNumber: false,
         _hideColumnCheckbox: false,
         _linkEdit: null,
+        _btnRemove: false,
 
         /**
          * @private
@@ -128,7 +145,7 @@
          */
         _addDefaultRightBtn: function() {
 
-            if (this._hideColumnCheckbox === false && this._remove != '') {
+            if (this._hideColumnCheckbox === false && this._btnRemove == false && this._fieldRecordId !== null) {
 
                 this._btnDefaultRightTop.push(
                     {
@@ -136,10 +153,15 @@
                         name:     '_remove',
                         leftIcon: 'trash',
                         skin:     'danger',
-                        onclick:  "alert(111);"
+                        onclick:  "new ui.List('" + this._fieldRecordId + "', '" + this._idList + "')._remove(this)"
                     }
                 );
             }
+        },
+
+        _remove: function(element) {
+
+            console.log(this._fieldRecordId, this._idList, element);
         },
 
         /**
@@ -214,13 +236,13 @@
 
         /**
          * @param {*} content
-         * @param {number} column
+         * @param {number} fieldName
          * @returns {*}
          * @private
          */
-        _columnType: function(content, column) {
+        _columnType: function(content, fieldName) {
 
-            var type = ui.api.existProperty(this._columnTypeData, column, false);
+            var type = ui.api.existProperty(this._column, fieldName, false);
 
             if (type) {
 
@@ -232,17 +254,17 @@
         /**
          * @param {{}} params
          * @param {string} blockName {'head' | 'body' | 'foot'}
-         * @param {number} column
+         * @param {number} fieldName
          * @returns {*}
          * @private
          */
-        _contentCell: function(params, blockName, column) {
+        _contentCell: function(params, blockName, fieldName) {
 
             var content = ui.api.existProperty(params, 'content', params);
 
             if (blockName == BLOCK_BODY) {
 
-                return this._columnType(content, column);
+                return this._columnType(content, fieldName);
             }
 
             return content;
@@ -308,7 +330,7 @@
          */
         _columnCheckbox: function(row, blockName, cellName, rowNum) {
 
-            if (!this._hideColumnCheckbox) {
+            if (!this._hideColumnCheckbox && this._fieldRecordId !== null) {
 
                 var cell = new ui.Element(cellName)
                     .addClassElement(ui.CSS.tableClass.rowNum);
@@ -323,6 +345,7 @@
                                 new ui.FFCheckbox('simple')
                                     .setPadding(null)
                                     .addCheckbox(null, CHECKBOX_CHOICE_ALL, null)
+                                    .setAttr(CHOOSE_RECORD_ID, CHOOSE_RECORD_ID_REMOVE)
                                     .getElement()
                             )
                             .setAttrElement('rowspan', countRow)
@@ -339,6 +362,7 @@
                                     .setPadding(null)
                                     .addCheckbox(reordID, CHECKBOX_CHOICE_ROW + '[' + rowNum + ']', null)
                                     .setClass(CHECKBOX_CHOICE_ROW)
+                                    .setAttr(RECORD_ID, reordID)
                                     .getElement()
                             )
                             .getElement()
@@ -367,17 +391,36 @@
 
             this._columnNumber(row, blockName, cellName, rowNum);
 
-            for (var i in params) {
+            var fieldName = null;
 
-                var paramCell = params[i];
+            if (blockName == BLOCK_BODY) {
 
-                row.addChildAfter(
-                    new ui.Element(cellName)
-                        .setContentElement(this._contentCell(paramCell, blockName, i))
-                        .setAttrElement('colspan', ui.api.existProperty(paramCell, 'colspan', 1))
-                        .setAttrElement('rowspan', ui.api.existProperty(paramCell, 'rowspan', 1))
-                        .getElement()
-                );
+                for (fieldName in this._column) {
+
+                    if (params.hasOwnProperty(fieldName)) {
+
+                        row.addChildAfter(
+                            new ui.Element(cellName)
+                                .setContentElement(this._columnType(params[fieldName], fieldName))
+                                .getElement()
+                        );
+                    }
+                }
+
+            } else {
+
+                for (fieldName in params) {
+
+                    var paramCell = params[fieldName];
+
+                    row.addChildAfter(
+                        new ui.Element(cellName)
+                            .setContentElement(this._contentCell(paramCell, blockName, fieldName))
+                            .setAttrElement('colspan', ui.api.existProperty(paramCell, 'colspan', 1))
+                            .setAttrElement('rowspan', ui.api.existProperty(paramCell, 'rowspan', 1))
+                            .getElement()
+                    );
+                }
             }
 
             this._columnCheckbox(row, blockName, cellName, rowNum);
@@ -509,6 +552,17 @@
         },
 
         /**
+         * @param {string} name
+         * @param {string|null} type
+         * @returns {ui.List}
+         */
+        addColumn: function(name, type) {
+
+            this._column[name] = ui.api.empty(type, null);
+            return this;
+        },
+
+        /**
          * @param {string|null} title
          * @param {string|null} titleSmall
          * @returns {ui.List}
@@ -521,13 +575,11 @@
         },
 
         /**
-         * @param {string|number|null} fieldRecordId
          * @param {string} link
          * @returns {ui.List}
          */
-        setLinkEdit: function(fieldRecordId, link) {
+        setLinkEdit: function(link) {
 
-            this._fieldRecordId = fieldRecordId;
             this._linkEdit = link;
             return this;
         },
@@ -634,6 +686,16 @@
                 }
             );
 
+            return this;
+        },
+
+        /**
+         * @param {boolean} hide
+         * @returns {ui.List}
+         */
+        hideBtnRemove: function(hide) {
+
+            this._btnRemove = ui.api.empty(hide, true);
             return this;
         },
 
