@@ -214,20 +214,6 @@
             },
 
             /**
-             * @type { { item: { disabled: *, active: * }, side: { left: *, rirht: * } } }
-             */
-            paginationClass: {
-                item: {
-                    active:   'active',
-                    disabled: 'disabled'
-                },
-                side: {
-                    rirht: 'next',
-                    left:  'previous'
-                }
-            },
-
-            /**
              * @public
              * @type { { default: {disabled: *, active: *, success: *, warning: *, danger: *, info: *, link: *, default: *, error: *, primary: *}, panel: {default: string, primary: *, success: *, warning: *, danger: *, info: *} } }
              */
@@ -252,16 +238,31 @@
                     warning: 'panel-warning',
                     danger:  'panel-danger',
                     info:    'panel-info'
-                },
-                pagination: {
-                    pager:   'pager',
+                }
+            },
+
+            pagination: {
+                skin: {
+                    pager: 'pager',
                     default: 'pagination'
+                },
+                item: {
+                    active:   'active',
+                    disabled: 'disabled'
+                },
+                side: {
+                    rirht: 'next',
+                    left:  'previous'
+                },
+                size: {
+                    lg: 'pagination-lg',
+                    sm: 'pagination-sm'
                 }
             },
 
             /**
              * @public
-             * @type { { input: { lg: *, sm: * }, button: { lg: *, sm: *, xs: * }, pagination: { lg: *, sm: * }, field: {sm: *}} }
+             * @type { { input: { lg: *, sm: * }, button: { lg: *, sm: *, xs: * }, field: {sm: *}} }
              */
             sizeClass: {
                 input: {
@@ -275,10 +276,6 @@
                     lg: 'btn-lg',
                     sm: 'btn-sm',
                     xs: 'btn-xs'
-                },
-                pagination: {
-                    lg: 'pagination-lg',
-                    sm: 'pagination-sm'
                 }
             },
 

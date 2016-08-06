@@ -119,6 +119,7 @@
         _rowNum: 1,
         _maxRow: 50,
         _currentPage: 1,
+        _urlPage: null,
 
         /**
          * @param {number} max
@@ -421,6 +422,7 @@
 
             var urlDel = document.body.querySelector('#' + this._idList + ' #' + ui.Config.FORM_URL_DEL).value;
             var page = document.body.querySelector('#' + this._idList + ' #' + ui.Config.CURRENT_PAGE).value;
+            var max = document.body.querySelector('#' + this._idList + ' #' + ui.Config.MAX_ROW).value;
 
             var curObj = this;
 
@@ -430,6 +432,7 @@
                 .setParams(delObj)
                 .addParam('action', ui.Config.ACTION_LIST_REMOVE)
                 .addParam('page', page)
+                .addParam('max', max)
                 .addCallbackFunction(function (e) {
 
                     var obj = JSON.parse(e);
@@ -458,19 +461,20 @@
             var table = bodyDoc.querySelector('#' + this._idList + ' table');
             var body  = bodyDoc.querySelector('#' + this._idList + ' table>tbody');
 
-            this._hideColumnCheckbox = Boolean(bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.HIDE_COLUMN_CHECKBOX).value);
-            this._hideColumnNumber   = Boolean(bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.HIDE_COLUMN_NUMBER).value);
-            this._fieldRecord        = bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.FIELD_RECORD).value;
-            this._column             = JSON.parse(bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.SHOW_COLUMN).value);
-            this._settings.tbody     = data;
+            this._hideColumnCheckbox = Boolean(bodyDoc.querySelector('#' + ui.Config.HIDE_COLUMN_CHECKBOX).value);
+            this._hideColumnNumber = Boolean(bodyDoc.querySelector('#' + ui.Config.HIDE_COLUMN_NUMBER).value);
+            this._fieldRecord = bodyDoc.querySelector('#' + ui.Config.FIELD_RECORD).value;
+            this._column = JSON.parse(bodyDoc.querySelector('#' + ui.Config.SHOW_COLUMN).value);
+            this._settings.tbody = data;
 
             table.insertBefore(this._buildBlock(BLOCK_BODY), body);
             body ? body.remove() : null;
 
-            document.body.querySelector('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORDS + '"]').click();
+            var ch = document.body.querySelector('input[' + DATA_ACTION + '="' + CHOOSE_RECORDS + '"]');
+            ch.checked ? ch.click() : null;
 
             ui.api.disabledElement(
-                document.body.querySelector('#page-' + this._idList + ' button[name="' + ui.Config.LIST_BTN_REMOVE + '"]'),
+                document.body.querySelector('button[name="' + ui.Config.LIST_BTN_REMOVE + '"]'),
                 true
             );
         },
@@ -662,6 +666,14 @@
                     new ui.FFHidden(JSON.stringify(this._column), ui.Config.SHOW_COLUMN)
                         .getElement()
                 )
+                .addChildAfter(
+                    new ui.FFHidden(this._maxRow, ui.Config.MAX_ROW)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(this._urlPage, ui.Config.URL_PAGINATION)
+                        .getElement()
+                )
                 .getElement();
         },
 
@@ -687,15 +699,49 @@
                     .getElement()
             );
 
+            var onclick = "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._setPage";
+
             panel.addChildAfter(
                 new ui.Element('div')
                     .addClassElement(ui.CSS.panelClass.panelBody)
                     .addChildAfter(this._blockHidden())
                     .addChildAfter(this._buildTable())
+                    .addChildAfter(
+                        new ui.Pagination()
+                            .setCountPages(20)
+                            .setCallbackFunction(onclick)
+                            .setAjax()
+                            .setMaxItem(10)
+                            .setCurrentPage(2)
+                            .getElement()
+                    )
                     .getElement()
             );
 
             return panel.getElement();
+        },
+
+        _setPage: function(element, page) {
+
+            document.body.querySelector('#' + ui.Config.CURRENT_PAGE).value = page;
+            var url = document.body.querySelector('#' + ui.Config.URL_PAGINATION).value;
+
+            var curObj = this;
+
+            new ui.Ajax()
+                .setUrl(url ? url : window.location.href)
+                .addParam('action', ui.Config.ACTION_NEXT_PAGE)
+                .addParam('page', page)
+                .addCallbackFunction(function (e) {
+
+                    var obj = JSON.parse(e);
+
+                    if (obj.hasOwnProperty('data')) {
+
+                        curObj._replaceRows(obj.data);
+                    }
+                })
+                .send();
         },
 
         /**
@@ -757,14 +803,14 @@
             if (btnBottom.length > 0) {
 
                 page.setFooter(
-                        new ui.FFButton()
-                            .addButtonList(btnBottom)
-                            .setPositionBlock(this._positionBtnBottom)
-                            .setPaddingBlock('lg')
-                            .setActive()
-                            .setGroup('toolbar')
-                            .toHTML()
-                    );
+                    new ui.FFButton()
+                        .addButtonList(btnBottom)
+                        .setPositionBlock(this._positionBtnBottom)
+                        .setPaddingBlock('lg')
+                        .setActive()
+                        .setGroup('toolbar')
+                        .toHTML()
+                );
             }
 
             return page.getElement();
@@ -823,6 +869,15 @@
             return this;
         },
 
+        /**
+         * @param {string} link
+         * @returns {ui.List}
+         */
+        setLinkPagination: function(link) {
+
+            this._urlPage = link;
+            return this;
+        },
 
         /**
          * @param {string} skin {'default'|'primary'|'success'|'warning'|'danger'|'info'}

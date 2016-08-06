@@ -69,10 +69,13 @@
             HIDE_COLUMN_CHECKBOX: 'hide_column_checkbox',
             HIDE_COLUMN_NUMBER: 'hide_column_number',
             SHOW_COLUMN: 'show_column',
+            MAX_ROW: 'max_row',
+            URL_PAGINATION: '_next_page',
 
             LIST_BTN_REMOVE: '_remove',
 
             ACTION_LIST_REMOVE: '_remove_list',
+            ACTION_NEXT_PAGE: '_next_page',
 
             skinProgress: 'success',
             modal: {

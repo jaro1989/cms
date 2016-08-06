@@ -18,6 +18,7 @@ for (var i =0; i <500; i++) {
         .setLinkEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
         .setLinkAdd('http://symfony.cms/lib-js/ui/example/index.html?page=form')
         .setLinkDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+        .setLinkPagination('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setTitle('List user', 'description user')
         .setTypeTable('bordered')
         .hideColumnNumber(false)
