@@ -1,13 +1,23 @@
 
 (function(ui) {
 
+    var uniqueId = new Date().getTime();
+    var DATA_JSON_PAGINATION = 'data-json-pagination';
+
     /**
      * @memberOf ui
      * @namespace ui.Pagination
+     * @param {string|null} id
      * @constructor
      */
-    ui.Pagination = function() {
+    ui.Pagination = function(id) {
 
+        /**
+         * @type {string}
+         * @private
+         */
+        this._id = ui.api.empty(id, 'pagination-' + uniqueId);
+        uniqueId++;
     };
 
     /** @protected */
@@ -124,7 +134,7 @@
             }
 
             var href = '#';
-            var onclick = this._callback ? this._callback + '(' + page + ')' : null;
+            var onclick = this._callback + '(' + page + '); new ui.Pagination("' + this._id + '")._rebuild(' + page + ');';
 
             if (this._ajaxUrl == false) {
 
@@ -236,8 +246,27 @@
 
             return new ui.Element('div', true)
                 .addClassElement(ui.CSS.alignClass.block.clear)
+                .setIdElement(this._id, null)
+                .setAttrElement(DATA_JSON_PAGINATION, JSON.stringify(this))
                 .addChildAfter(this._buildPagination())
                 .getElement();
+        },
+
+        _rebuild: function(page) {
+
+            var pag = document.body.querySelector('#' + this._id);
+            var str = pag.getAttribute(DATA_JSON_PAGINATION);
+            var obj = JSON.parse(str);
+
+            for (var property in obj) {
+
+                this[property] = obj[property];
+            }
+
+            this._currentPage = page;
+
+            pag.parentNode.insertBefore(this._buildBlock(), pag);
+            pag.remove();
         },
 
         /**

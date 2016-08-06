@@ -12,6 +12,8 @@
     var CHOOSE_RECORD_ID = 'choose-record-id';
     var CHOOSE_RECORDS = 'choose_records';
 
+    var DATA_JSON_TABLE = 'data-json-table';
+
     /**
      * @memberOf ui
      * @namespace ui.List
@@ -420,19 +422,22 @@
                 }
             }
 
-            var urlDel = document.body.querySelector('#' + this._idList + ' #' + ui.Config.FORM_URL_DEL).value;
-            var page = document.body.querySelector('#' + this._idList + ' #' + ui.Config.CURRENT_PAGE).value;
-            var max = document.body.querySelector('#' + this._idList + ' #' + ui.Config.MAX_ROW).value;
+            var str = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE).getAttribute(DATA_JSON_TABLE);
+            var obj = JSON.parse(str);
+
+            for (var property in obj) {
+
+                this[property] = obj[property];
+            }
 
             var curObj = this;
 
-
             new ui.Ajax()
-                .setUrl(urlDel)
+                .setUrl(this._urlDel)
                 .setParams(delObj)
                 .addParam('action', ui.Config.ACTION_LIST_REMOVE)
-                .addParam('page', page)
-                .addParam('max', max)
+                .addParam('page', this._currentPage)
+                .addParam('max', this._maxRow)
                 .addCallbackFunction(function (e) {
 
                     var obj = JSON.parse(e);
@@ -461,11 +466,14 @@
             var table = bodyDoc.querySelector('#' + this._idList + ' table');
             var body  = bodyDoc.querySelector('#' + this._idList + ' table>tbody');
 
-            this._hideColumnCheckbox = Boolean(bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.HIDE_COLUMN_CHECKBOX).value);
-            this._hideColumnNumber = Boolean(bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.HIDE_COLUMN_NUMBER).value);
-            this._fieldRecord = bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.FIELD_RECORD).value;
-            this._column = JSON.parse(bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.SHOW_COLUMN).value);
-            this._maxRow = document.body.querySelector('#' + this._idList + ' #' + ui.Config.MAX_ROW).value;
+            var str = bodyDoc.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE).getAttribute(DATA_JSON_TABLE);
+            var obj = JSON.parse(str);
+
+            for (var property in obj) {
+
+                this[property] = obj[property];
+            }
+
             this._settings.tbody = data;
 
             table.insertBefore(this._buildBlock(BLOCK_BODY), body);
@@ -632,9 +640,28 @@
          */
         _blockHidden: function() {
 
+            var obj = {
+                _urlDel:  this._urlDel,
+                _column:  this._column,
+                _maxRow:  this._maxRow,
+                _urlAdd:  this._urlAdd,
+                _urlEdit: this._urlEdit,
+                _urlPage: this._urlPage,
+                _currentPage: this._currentPage,
+                _fieldRecord: this._fieldRecord,
+                _hideColumnCheckbox: this._hideColumnCheckbox,
+                _hideColumnNumber:   this._hideColumnNumber
+            };
+
             return new ui.Element('div')
                 .setAttrElement('hidden',  true)
                 .addClassElement(ui.CSS.formBlockHiddenClass)
+                .addChildAfter(
+                    new ui.Element('div')
+                        .setIdElement(DATA_JSON_TABLE, null)
+                        .setAttrElement(DATA_JSON_TABLE, JSON.stringify(obj))
+                        .getElement()
+                )
                 .addChildAfter(
                     new ui.FFHidden(this._urlAdd, ui.Config.FORM_URL_ADD)
                         .getElement()
