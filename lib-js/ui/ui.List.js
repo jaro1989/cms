@@ -739,8 +739,6 @@
                             .setCountPages(20)
                             .setCallbackFunction(onclick)
                             .setAjax()
-                            .setMaxItem(10)
-                            .setCurrentPage(2)
                             .getElement()
                     )
                     .getElement()

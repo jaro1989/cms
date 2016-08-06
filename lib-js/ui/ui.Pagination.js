@@ -54,7 +54,7 @@
                 disabled = true;
             }
 
-            return this._getItem(1, this._nameFirst, disabled, null, type);
+            return this._getItem(1, this._namePreviousTwo, disabled, null, type);
         },
 
         /**
@@ -73,7 +73,7 @@
                 disabled = true;
             }
 
-            return this._getItem(this._countPages, this._nameLast, disabled, null, type);
+            return this._getItem(this._countPages, this._nameNextTwo, disabled, null, type);
         },
 
         /**
@@ -133,7 +133,7 @@
                 side = null;
             }
 
-            var href = '#';
+            var href = null;
             var onclick = this._callback + '(' + page + '); new ui.Pagination("' + this._id + '")._rebuild(' + page + ');';
 
             if (this._ajaxUrl == false) {
