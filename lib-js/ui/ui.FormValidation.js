@@ -92,13 +92,12 @@
 
                         if (element.checked) {
 
-
-                            ui.api.buildObject(this.data, ui.api.parseName(element.name), ui.Config.checkboxValue.checked, 0);
+                            ui.api.buildObject(this.data, element.name, ui.Config.checkboxValue.checked, 0);
                             //this.data[element.name] = ui.Config.checkboxValue.checked;
 
                         } else {
 
-                            ui.api.buildObject(this.data, ui.api.parseName(element.name), ui.Config.checkboxValue.nochecked, 0);
+                            ui.api.buildObject(this.data, element.name, ui.Config.checkboxValue.nochecked, 0);
                             //this.data[element.name] = ui.Config.checkboxValue.nochecked;
                         }
 
@@ -115,13 +114,13 @@
 
                         if (element.checked) {
 
-                            ui.api.buildObject(this.data, ui.api.parseName(element.name), element.value, 0);
+                            ui.api.buildObject(this.data, element.name, element.value, 0);
                             //this.data[element.name] = element.value;
                         }
 
                     } else {
 
-                        ui.api.buildObject(this.data, ui.api.parseName(element.name), element.value, 0);
+                        ui.api.buildObject(this.data, element.name, element.value, 0);
                         //this.data[element.name] = element.value;
                     }
                 }

@@ -14,12 +14,13 @@ for (var i =0; i <50; i++) {
     });
 }
 
-    new ui.List(null, 'list-user')
+    new ui.List('list-user')
+        .setLinkEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
+        .setLinkDel('id', 'http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setTitle('List user', 'description user')
         .setTypeTable('bordered')
         .hideColumnNumber(false)
         .hideColumnCheckbox(false)
-        .setLinkEdit('asdasdad')
 
         .newRowHead()
         .addCell('Тестовые данные HEADER', 4, 1)

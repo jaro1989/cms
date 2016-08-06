@@ -121,14 +121,16 @@
         },
 
         /**
-         *
+         * Build object for save data
          * @param {{}} obj
-         * @param {[]} arr
-         * @param {{}|[]|string|number|null} val
+         * @param {string} nameField - fieldName | fieldName[1] | objectName[fieldName][1] | ...
+         * @param {{}|[]|string|number|null} valueField
          * @param {number} i
          * @returns {*}
          */
-        buildObject: function(obj, arr, val, i) {
+        buildObject: function(obj, nameField, valueField, i) {
+
+            var arr = typeof nameField == 'string' ? ui.api.parseName(nameField) : nameField;
 
             for (var a = 0; a < i; a++) {
                 delete arr[a];
@@ -143,32 +145,32 @@
                 if (Object.keys(arr).length == 0) {
 
                     if (!ui.api.empty(key, false)) {
-                        //console.log(key, obj, Object.keys(obj).length);
+
                         key = Object.keys(obj).length;
                     }
-                    obj[key] = val;
+
+                    obj[key] = valueField;
 
                 } else {
 
                     if (!obj.hasOwnProperty(key)) {
-                        //console.log(key);
                         obj[key] = {};
                     }
 
-                    return this.buildObject(obj[key], arr, val, i);
+                    return this.buildObject(obj[key], arr, valueField, i);
                 }
             }
         },
 
         /**
          * Parse name field
-         * @param {string} name
-         * @returns {[]}
+         * @param {string} string name[key1][key2]
+         * @returns {[]} ['name', 'key1', 'ke21']
          */
-        parseName: function(name) {
+        parseName: function(string) {
 
-            name = name.replace(/]/g, '');
-            return name.split('[');
+            string = string.replace(/]/g, '');
+            return string.split('[');
         },
 
         /**

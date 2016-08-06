@@ -181,15 +181,17 @@
          * @param {{}|string|number|null} value
          * @param {string} name
          * @param {string|null} caption
+         * @param {string|null} onclick
          * @returns {ui.FFCheckbox}
          * @public
          */
-        addCheckbox: function(value, name, caption) {
+        addCheckbox: function(value, name, caption, onclick) {
 
             this._checkboxList[this._checkboxList.length] = {
                 name:    ui.api.empty(name, null),
                 value:   ui.api.empty(value, null),
-                caption: ui.api.empty(caption, null)
+                caption: ui.api.empty(caption, null),
+                onclick: ui.api.empty(onclick, null)
             };
 
             return this;
@@ -197,7 +199,7 @@
 
         /**
          * Add list checkboxes
-         * @param { { 0: { name: '..', value: '..', caption: '..' } } } data
+         * @param { { 0: { name: 'string', value: '{}|string|number|null', caption: 'string|null', onclick: 'string|null' } } } data
          * @returns {ui.FFCheckbox}
          */
         addCheckboxList: function(data) {
@@ -207,7 +209,8 @@
                 this._checkboxList[this._checkboxList.length] = {
                     name:    ui.api.existProperty(data[row], 'name', null),
                     value:   ui.api.existProperty(data[row], 'value', null),
-                    caption: ui.api.existProperty(data[row], 'caption', null)
+                    caption: ui.api.existProperty(data[row], 'caption', null),
+                    onclick: ui.api.existProperty(data[row], 'onclick', null)
                 };
             }
 
@@ -271,7 +274,7 @@
 
         /**
          * Build html field
-         * @param {{}} params {value: '..', name: '..', caption: '..'}
+         * @param {{}} params {value: *, name: *, caption: *, onclick: *}
          * @returns {*|Element}
          * @private
          */
@@ -283,7 +286,8 @@
                 .setDisabledElement(this._disabled)
                 .setRequiredElement(this._required)
                 .addClassElement(this._classField)
-                .setIdElement(null, params.name);
+                .setIdElement(null, params.name)
+                .setAttrElement('onclick', params.onclick);
 
             for (var attr in this._attr) {
 
@@ -341,7 +345,7 @@
 
         /**
          * Build html label item
-         * @param {{}} params {value: *, name: *, caption: *}
+         * @param {{}} params {value: *, name: *, caption: *, onclick: *}
          * @returns {*|Element}
          * @private
          */

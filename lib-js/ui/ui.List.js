@@ -5,26 +5,20 @@
     var BLOCK_HEAD = 'thead';
     var BLOCK_BODY = 'tbody';
     var BLOCK_FOOT = 'tfoot';
-    var CHECKBOX_CHOICE_ALL = '_choice-all-row';
-    var CHECKBOX_CHOICE_ROW = '_choice-row';
-    var RECORD_ID = 'data-record';
-    var CHOOSE_RECORD_ID = 'data-choose-record-id';
-    var CHOOSE_RECORD_ID_REMOVE = 'remove';
+
+    var DATA_RECORD_ID = 'data-record';
+    var DATA_ACTION = 'data-action';
+
+    var CHOOSE_RECORD_ID = 'choose-record-id';
+    var CHOOSE_RECORDS = 'choose_records';
 
     /**
      * @memberOf ui
      * @namespace ui.List
      * @param {string} idList
-     * @param {string} nameFieldRecordId
      * @constructor
      */
-    ui.List = function (nameFieldRecordId, idList) {
-
-        /**
-         * @type {string}
-         * @private
-         */
-        this._fieldRecordId = ui.api.empty(nameFieldRecordId, 'id');
+    ui.List = function (idList) {
 
         /**
          * @type {[]}
@@ -96,7 +90,7 @@
          * @type {string}
          * @private
          */
-        this._idList = ui.api.empty(idList, uniqueId);
+        this._idList = ui.api.empty(idList, 'table-' + uniqueId);
         uniqueId++;
     };
 
@@ -116,6 +110,7 @@
         _hideColumnNumber: false,
         _hideColumnCheckbox: false,
         _linkEdit: null,
+        _linkDel: null,
         _btnRemove: false,
 
         /**
@@ -145,7 +140,7 @@
          */
         _addDefaultRightBtn: function() {
 
-            if (this._hideColumnCheckbox === false && this._btnRemove == false && this._fieldRecordId !== null) {
+            if (this._hideColumnCheckbox === false && this._btnRemove == false && this._linkDel !== null && this._fieldRecordId !== null) {
 
                 this._btnDefaultRightTop.push(
                     {
@@ -153,15 +148,10 @@
                         name:     '_remove',
                         leftIcon: 'trash',
                         skin:     'danger',
-                        onclick:  "new ui.List('" + this._fieldRecordId + "', '" + this._idList + "')._remove(this)"
+                        onclick:  "new ui.List('" + this._idList + "')._remove(this);"
                     }
                 );
             }
-        },
-
-        _remove: function(element) {
-
-            console.log(this._fieldRecordId, this._idList, element);
         },
 
         /**
@@ -330,10 +320,12 @@
          */
         _columnCheckbox: function(row, blockName, cellName, rowNum) {
 
-            if (!this._hideColumnCheckbox && this._fieldRecordId !== null) {
+            if (!this._hideColumnCheckbox) {
 
                 var cell = new ui.Element(cellName)
                     .addClassElement(ui.CSS.tableClass.rowNum);
+
+                var onclick = "new ui.List('" + this._idList + "')._choose(this);";
 
                 if (blockName == BLOCK_HEAD && rowNum == 0) {
 
@@ -343,9 +335,8 @@
                         cell
                             .addChildAfter(
                                 new ui.FFCheckbox('simple')
-                                    .setPadding(null)
-                                    .addCheckbox(null, CHECKBOX_CHOICE_ALL, null)
-                                    .setAttr(CHOOSE_RECORD_ID, CHOOSE_RECORD_ID_REMOVE)
+                                    .setAttr(DATA_ACTION, CHOOSE_RECORDS)
+                                    .addCheckbox(null, CHOOSE_RECORDS, null, onclick)
                                     .getElement()
                             )
                             .setAttrElement('rowspan', countRow)
@@ -359,10 +350,9 @@
                         cell
                             .addChildAfter(
                                 new ui.FFCheckbox('simple')
-                                    .setPadding(null)
-                                    .addCheckbox(reordID, CHECKBOX_CHOICE_ROW + '[' + rowNum + ']', null)
-                                    .setClass(CHECKBOX_CHOICE_ROW)
-                                    .setAttr(RECORD_ID, reordID)
+                                    .setAttr(DATA_RECORD_ID, reordID)
+                                    .setAttr(DATA_ACTION, CHOOSE_RECORD_ID)
+                                    .addCheckbox(reordID, this._fieldRecordId + '[' + rowNum + ']', null, onclick)
                                     .getElement()
                             )
                             .getElement()
@@ -373,6 +363,80 @@
                     row.addChildAfter(
                         cell.setContentElement(null).getElement()
                     );
+                }
+            }
+        },
+
+        _remove: function(element) {
+
+            var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
+
+            var dalObj = {};
+
+            for (var i in checkboxRecord) {
+
+                if (typeof checkboxRecord[i] == 'object') {
+
+                    if (checkboxRecord[i].checked === true) {
+
+                        var value = checkboxRecord[i].getAttribute(DATA_RECORD_ID);
+                        var name = checkboxRecord[i].getAttribute('name');
+                        ui.api.buildObject(dalObj, name, value, 0);
+                    }
+                }
+            }
+            console.log(dalObj);
+        },
+
+        _choose: function(element) {
+
+            var action = element.getAttribute(DATA_ACTION);
+            var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
+            var i = null;
+
+            if (action == CHOOSE_RECORDS) {
+
+                for (i in checkboxRecord) {
+
+                    if (typeof checkboxRecord[i] == 'object') {
+
+                        if (element.checked === false) {
+
+                            checkboxRecord[i].removeAttribute('checked');
+                            checkboxRecord[i].checked = false;
+                        } else {
+
+                            checkboxRecord[i].setAttribute('checked', 'checked');
+                            checkboxRecord[i].checked = true;
+                        }
+                    }
+                }
+            } else if (action == CHOOSE_RECORD_ID) {
+
+                var checkboxChoose = document.body.querySelector('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORDS + '"]');
+
+                if (element.checked === false) {
+
+                    checkboxChoose.removeAttribute('checked');
+                    checkboxChoose.checked = false;
+
+                } else {
+
+                    var checked = 0;
+
+                    for (i in checkboxRecord) {
+
+                        if (typeof checkboxRecord[i] == 'object' && checkboxRecord[i].checked === true) {
+
+                            checked++;
+                        }
+                    }
+
+                    if (checkboxRecord.length == checked) {
+
+                        checkboxChoose.setAttribute('checked', 'checked');
+                        checkboxChoose.checked = true;
+                    }
                 }
             }
         },
@@ -581,6 +645,18 @@
         setLinkEdit: function(link) {
 
             this._linkEdit = link;
+            return this;
+        },
+
+        /**
+         * @param {string} link
+         * @param {string} id
+         * @returns {ui.List}
+         */
+        setLinkDel: function(id, link) {
+
+            this._fieldRecordId = ui.api.empty(id, 'id');
+            this._linkDel = link;
             return this;
         },
 
