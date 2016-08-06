@@ -662,46 +662,46 @@
                         .setAttrElement(DATA_JSON_TABLE, JSON.stringify(obj))
                         .getElement()
                 )
-                .addChildAfter(
-                    new ui.FFHidden(this._urlAdd, ui.Config.FORM_URL_ADD)
-                        .getElement()
-                )
-                .addChildAfter(
-                    new ui.FFHidden(this._urlEdit, ui.Config.FORM_URL_EDIT)
-                        .getElement()
-                )
-                .addChildAfter(
-                    new ui.FFHidden(this._urlDel, ui.Config.FORM_URL_DEL)
-                        .getElement()
-                )
-                .addChildAfter(
-                    new ui.FFHidden(this._currentPage, ui.Config.CURRENT_PAGE)
-                        .getElement()
-                )
-                .addChildAfter(
-                    new ui.FFHidden(this._fieldRecord, ui.Config.FIELD_RECORD)
-                        .getElement()
-                )
-                .addChildAfter(
-                    new ui.FFHidden(this._hideColumnCheckbox, ui.Config.HIDE_COLUMN_CHECKBOX)
-                        .getElement()
-                )
-                .addChildAfter(
-                    new ui.FFHidden(this._hideColumnNumber, ui.Config.HIDE_COLUMN_NUMBER)
-                        .getElement()
-                )
-                .addChildAfter(
-                    new ui.FFHidden(JSON.stringify(this._column), ui.Config.SHOW_COLUMN)
-                        .getElement()
-                )
-                .addChildAfter(
-                    new ui.FFHidden(this._maxRow, ui.Config.MAX_ROW)
-                        .getElement()
-                )
-                .addChildAfter(
-                    new ui.FFHidden(this._urlPage, ui.Config.URL_PAGINATION)
-                        .getElement()
-                )
+                //.addChildAfter(
+                //    new ui.FFHidden(this._urlAdd, ui.Config.FORM_URL_ADD)
+                //        .getElement()
+                //)
+                //.addChildAfter(
+                //    new ui.FFHidden(this._urlEdit, ui.Config.FORM_URL_EDIT)
+                //        .getElement()
+                //)
+                //.addChildAfter(
+                //    new ui.FFHidden(this._urlDel, ui.Config.FORM_URL_DEL)
+                //        .getElement()
+                //)
+                //.addChildAfter(
+                //    new ui.FFHidden(this._currentPage, ui.Config.CURRENT_PAGE)
+                //        .getElement()
+                //)
+                //.addChildAfter(
+                //    new ui.FFHidden(this._fieldRecord, ui.Config.FIELD_RECORD)
+                //        .getElement()
+                //)
+                //.addChildAfter(
+                //    new ui.FFHidden(this._hideColumnCheckbox, ui.Config.HIDE_COLUMN_CHECKBOX)
+                //        .getElement()
+                //)
+                //.addChildAfter(
+                //    new ui.FFHidden(this._hideColumnNumber, ui.Config.HIDE_COLUMN_NUMBER)
+                //        .getElement()
+                //)
+                //.addChildAfter(
+                //    new ui.FFHidden(JSON.stringify(this._column), ui.Config.SHOW_COLUMN)
+                //        .getElement()
+                //)
+                //.addChildAfter(
+                //    new ui.FFHidden(this._maxRow, ui.Config.MAX_ROW)
+                //        .getElement()
+                //)
+                //.addChildAfter(
+                //    new ui.FFHidden(this._urlPage, ui.Config.URL_PAGINATION)
+                //        .getElement()
+                //)
                 .getElement();
         },
 
@@ -751,13 +751,22 @@
 
         _setPage: function(element, page) {
 
-            document.body.querySelector('#' + ui.Config.CURRENT_PAGE).value = page;
-            var url = document.body.querySelector('#' + ui.Config.URL_PAGINATION).value;
+            var dataBlock = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE);
+            var str = dataBlock.getAttribute(DATA_JSON_TABLE);
+            var obj = JSON.parse(str);
+
+            for (var property in obj) {
+
+                this[property] = obj[property];
+            }
+
+            obj._currentPage = page;
+            dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(obj));
 
             var curObj = this;
 
             new ui.Ajax()
-                .setUrl(url ? url : window.location.href)
+                .setUrl(this._urlPage ? this._urlPage : window.location.href)
                 .addParam('action', ui.Config.ACTION_NEXT_PAGE)
                 .addParam('page', page)
                 .addCallbackFunction(function (e) {
