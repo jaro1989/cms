@@ -14,6 +14,7 @@
          * @type {ui.Progress}
          */
         this._progress = new ui.Progress(null);
+        this._progressLine = null;
 
         /**
          * @type {ui.Modal}
@@ -26,9 +27,8 @@
 
         _method: ui.Config.defaultMethodAjax,
         _async: true,
-        _timeout: 30000,
 
-        _skinProgress: null,
+        _skinProgress: 'warning',
 
         /**
          * @param {string} skin {'success' | 'info' | 'warning' | 'danger'}
@@ -125,21 +125,11 @@
         },
 
         /**
-         * @param {number} time
-         * @returns {ui.Ajax}
-         */
-        setTimeOut: function(time) {
-
-            this._timeout = Number(time);
-            return this;
-        },
-
-        /**
          * Set progress send data to server
          */
         progress: function() {
 
-            var progress = this._progress
+            this._progressLine = this._progress
                 .setSkin(this._skinProgress)
                 .setProgress();
 
@@ -147,9 +137,9 @@
 
             this._xhr.upload.onprogress = function(event) {
 
-                var time = event.loaded / event.total * 100;
+                var time = (event.loaded / event.total * 100 / 2);
 
-                progress.updateProgress(time / 2);
+                xhr._progressLine.updateProgress(time);
 
                 if (event.total == event.loaded) {
 
@@ -160,19 +150,7 @@
                         if (event.lengthComputable) {
 
                             time_on = time + ((event.loaded / event.total * 100) / 2);
-
-                            progress.updateProgress(time + (time_on / 2));
-
-                        } else {
-
-                            time_on = 100;
-                        }
-
-                        progress.updateProgress(100);
-
-                        if (time_on === 100) {
-
-                            progress.removeProgress(null);
+                            xhr._progressLine.updateProgress(time + (time_on / 2));
                         }
                     };
                 }
@@ -194,9 +172,6 @@
             this._xhr.open(this._method, this._url, this._async);
             this._xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             this._xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            this._xhr.timeout = this._timeout;
-
-            this.progress();
 
             if (this._method == 'POST') {
 
@@ -207,13 +182,9 @@
                 this._xhr.send(params);
             }
 
-            var currentObj = this;
+            this.progress();
 
-            //currentObj._xhr.onprogress = function(event) {
-            //
-            //    var time = 100 + (event.total - event.loaded) * 100 / event.total;
-            //    currentObj._modal.updateProgress(time);
-            //};
+            var currentObj = this;
 
             this._xhr.onreadystatechange = function() {
 
@@ -224,9 +195,19 @@
                         currentObj._callback[key](this.responseText, this);
                     }
 
+                    if (currentObj._progressLine) {
+
+                        currentObj._progressLine.removeProgress(null);
+                    }
+
                 } else if (this.readyState === 4 && this.status !== 200) {
 
                     currentObj._modal.error(this.status + ': ' + this.statusText);
+
+                    if (currentObj._progressLine) {
+
+                        currentObj._progressLine.removeProgress(null);
+                    }
                 }
             };
 

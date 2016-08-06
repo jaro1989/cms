@@ -6,7 +6,7 @@
         /**
          * @memberOf ui
          * @namespace ui.Modal
-         * @param {string|number} id
+         * @param {string|number|null} id
          * @constructor
          */
         ui.Modal = function(id) {

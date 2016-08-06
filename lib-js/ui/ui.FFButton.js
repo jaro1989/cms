@@ -221,7 +221,8 @@
                 leftIcon:  ui.api.empty(icon,    null),
                 onclick:   this._onClick,
                 class:     this._class,
-                rightIcon: null
+                rightIcon: null,
+                disabled:  false
             };
 
             return this;
@@ -250,7 +251,8 @@
                 leftIcon:  ui.api.empty(icon,    null),
                 onclick:   this._onClick,
                 class:     this._class,
-                rightIcon: null
+                rightIcon: null,
+                disabled:  false
             };
 
             return this;
@@ -277,7 +279,9 @@
                         caption:   ui.api.existProperty(data[row], 'caption',   null),
                         leftIcon:  ui.api.existProperty(data[row], 'leftIcon',  null),
                         rightIcon: ui.api.existProperty(data[row], 'rightIcon', null),
-                        onclick:   ui.api.existProperty(data[row], 'onclick',   null)
+                        onclick:   ui.api.existProperty(data[row], 'onclick',   null),
+                        disabled:  ui.api.existProperty(data[row], 'disabled',  null),
+                        class:     ui.api.existProperty(data[row], 'class',     this._class)
                     };
                 }
             }
@@ -400,7 +404,7 @@
                 button.addClassElement(ui.CSS.btn.btnBlockClass);
             }
 
-            if (ui.api.inArray(this._disabledIf, params.name) != -1) {
+            if (ui.api.inArray(this._disabledIf, params.name) != -1 || params.disabled === true) {
 
                 button.setDisabledElement(true);
             }

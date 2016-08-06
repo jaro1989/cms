@@ -40,6 +40,27 @@
     ui.api = {
 
         /**
+         * @param {Element} element
+         * @param {boolean} status
+         * @returns {boolean}
+         */
+        disabledElement: function(element, status) {
+
+            if (status) {
+
+                element.setAttribute('disabled', 'disabled');
+                element.classList.add(ui.CSS.disabledClass);
+
+            } else {
+
+                element.removeAttribute('disabled');
+                element.classList.remove(ui.CSS.disabledClass);
+            }
+
+            return true;
+        },
+
+        /**
          * Find parent element with attribute
          * @param {*} element
          * @param {string} selector

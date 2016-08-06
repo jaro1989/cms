@@ -1,13 +1,21 @@
 
     (function(ui) {
 
+        var uniqueId = new Date().getTime();
+
         /**
          * @memberOf ui
          * @namespace ui.Page
+         * @param {string} idPage
          * @constructor
          */
-        ui.Page = function () {
+        ui.Page = function (idPage) {
 
+            /**
+             * @type {string}
+             * @private
+             */
+            this._idPage = ui.api.empty(idPage, 'page-' + uniqueId);
         };
 
         /** @protected */
@@ -115,6 +123,7 @@
             _buildMainBlock: function() {
 
                 var page =  new ui.Element('div')
+                    .setIdElement(this._idPage, null)
                     .addClassElement(ui.CSS.alignClass.block.clear)
                     .addClassElement(ui.CSS.page.main);
 

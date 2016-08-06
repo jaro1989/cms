@@ -65,6 +65,10 @@
             FORM_CH_OBJECT :   '_ch',
             FORM_CH_LAST_ROW:  '_last_row',
 
+            LIST_BTN_REMOVE: '_remove',
+
+            ACTION_LIST_REMOVE: '_remove_list',
+
             skinProgress: 'success',
             modal: {
                 ru: {

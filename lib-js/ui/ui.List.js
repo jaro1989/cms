@@ -16,9 +16,12 @@
      * @memberOf ui
      * @namespace ui.List
      * @param {string} idList
+     * @param {string} record
      * @constructor
      */
-    ui.List = function (idList) {
+    ui.List = function (record, idList) {
+
+        this._fieldRecord = ui.api.empty(record, 'id');
 
         /**
          * @type {[]}
@@ -106,12 +109,14 @@
         _skinPanel: ui.CSS.skinClass.panel.primary,
         _skinTable: null,
         _numCellTitle: '№',
-        _fieldRecordId: null,
+        _fieldRecord: null,
         _hideColumnNumber: false,
         _hideColumnCheckbox: false,
-        _linkEdit: null,
-        _linkDel: null,
+        _urlEdit: null,
+        _urlAdd: null,
+        _urlDel: null,
         _btnRemove: false,
+        _rowNum: 1,
 
         /**
          * @private
@@ -140,15 +145,30 @@
          */
         _addDefaultRightBtn: function() {
 
-            if (this._hideColumnCheckbox === false && this._btnRemove == false && this._linkDel !== null && this._fieldRecordId !== null) {
+            if (this._urlAdd !== null) {
 
                 this._btnDefaultRightTop.push(
                     {
                         type:     'button',
-                        name:     '_remove',
+                        name:     '_add',
+                        leftIcon: 'new-window',
+                        skin:     'primary',
+                        caption:  'Добавить',
+                        onclick:  "window.location.href = '" + this._urlAdd + "'"
+                    }
+                );
+            }
+
+            if (this._hideColumnCheckbox === false && this._btnRemove == false && this._urlDel !== null && this._fieldRecord !== null) {
+
+                this._btnDefaultRightTop.push(
+                    {
+                        type:     'button',
+                        name:     ui.Config.LIST_BTN_REMOVE,
                         leftIcon: 'trash',
                         skin:     'danger',
-                        onclick:  "new ui.List('" + this._idList + "')._remove(this);"
+                        onclick:  "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._remove();",
+                        disabled: true
                     }
                 );
             }
@@ -285,13 +305,13 @@
                     );
                 } else if (blockName == BLOCK_BODY) {
 
-                    var reordID = ui.api.existProperty(this._settings.tbody[rowNum], this._fieldRecordId, null);
+                    var reordID = ui.api.existProperty(this._settings.tbody[rowNum], this._fieldRecord, null);
 
                     row.addChildAfter(
                         cell
                             .addChildAfter(
                                 new ui.Element('div')
-                                    .setContentElement(rowNum)
+                                    .setContentElement(this._rowNum)
                                     .setAttrElement('title', reordID)
                                     .getElement()
                             )
@@ -325,7 +345,7 @@
                 var cell = new ui.Element(cellName)
                     .addClassElement(ui.CSS.tableClass.rowNum);
 
-                var onclick = "new ui.List('" + this._idList + "')._choose(this);";
+                var onclick = "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._choose(this);";
 
                 if (blockName == BLOCK_HEAD && rowNum == 0) {
 
@@ -344,7 +364,7 @@
                     );
                 } else if (blockName == BLOCK_BODY) {
 
-                    var reordID = ui.api.existProperty(this._settings.tbody[rowNum], this._fieldRecordId, null);
+                    var reordID = ui.api.existProperty(this._settings.tbody[rowNum], this._fieldRecord, null);
 
                     row.addChildAfter(
                         cell
@@ -352,7 +372,7 @@
                                 new ui.FFCheckbox('simple')
                                     .setAttr(DATA_RECORD_ID, reordID)
                                     .setAttr(DATA_ACTION, CHOOSE_RECORD_ID)
-                                    .addCheckbox(reordID, this._fieldRecordId + '[' + rowNum + ']', null, onclick)
+                                    .addCheckbox(reordID, this._fieldRecord + '[' + rowNum + ']', null, onclick)
                                     .getElement()
                             )
                             .getElement()
@@ -367,11 +387,12 @@
             }
         },
 
-        _remove: function(element) {
+        _remove: function() {
 
             var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
 
-            var dalObj = {};
+            var delObj = {};
+            var rowObj = [];
 
             for (var i in checkboxRecord) {
 
@@ -379,22 +400,69 @@
 
                     if (checkboxRecord[i].checked === true) {
 
+                        rowObj.push(checkboxRecord[i]);
                         var value = checkboxRecord[i].getAttribute(DATA_RECORD_ID);
                         var name = checkboxRecord[i].getAttribute('name');
-                        ui.api.buildObject(dalObj, name, value, 0);
+                        ui.api.buildObject(delObj, name, value, 0);
                     }
                 }
             }
-            console.log(dalObj);
+
+            var urlDel = document.body.querySelector('#' + this._idList + ' #' + ui.Config.FORM_URL_DEL).value;
+            var idList = this._idList;
+
+            new ui.Ajax()
+                .setUrl(urlDel)
+                .setParams(delObj)
+                .addParam('action', ui.Config.ACTION_LIST_REMOVE)
+                .addCallbackFunction(function (e) {
+
+                    var obj = JSON.parse(e);
+
+                    if (obj.response == 1) {
+
+                        for (var i in rowObj) {
+
+                            if (typeof rowObj[i] == 'object') {
+
+                                ui.api.findParent(rowObj[i], 'tr').remove();
+                            }
+                        }
+
+                        var tr = document.body.querySelectorAll('#' + idList + ' table>tbody>tr');
+
+                        if (tr.length == 0) {
+
+                            document.body.querySelector('#' + idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORDS + '"]').click();
+
+                        } else {
+
+                            ui.api.disabledElement(
+                                document.body.querySelector('#page-' + idList + ' button[name="' + ui.Config.LIST_BTN_REMOVE + '"]'),
+                                true
+                            );
+                        }
+                    }
+                })
+                .send();
         },
 
         _choose: function(element) {
 
             var action = element.getAttribute(DATA_ACTION);
             var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
+            var btnRemove = document.body.querySelector('#page-' + this._idList + ' button[name="' + ui.Config.LIST_BTN_REMOVE + '"]');
+
             var i = null;
 
+            var btnDisabled = false;
+
             if (action == CHOOSE_RECORDS) {
+
+                if (checkboxRecord.length == 0) {
+
+                    btnDisabled = true;
+                }
 
                 for (i in checkboxRecord) {
 
@@ -402,8 +470,10 @@
 
                         if (element.checked === false) {
 
+                            btnDisabled = true;
                             checkboxRecord[i].removeAttribute('checked');
                             checkboxRecord[i].checked = false;
+
                         } else {
 
                             checkboxRecord[i].setAttribute('checked', 'checked');
@@ -415,22 +485,23 @@
 
                 var checkboxChoose = document.body.querySelector('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORDS + '"]');
 
+                var checked = 0;
+
+                for (i in checkboxRecord) {
+
+                    if (typeof checkboxRecord[i] == 'object' && checkboxRecord[i].checked === true) {
+
+                        checked++;
+                    }
+                }
+
                 if (element.checked === false) {
 
                     checkboxChoose.removeAttribute('checked');
                     checkboxChoose.checked = false;
+                    btnDisabled = (checked == 0)
 
                 } else {
-
-                    var checked = 0;
-
-                    for (i in checkboxRecord) {
-
-                        if (typeof checkboxRecord[i] == 'object' && checkboxRecord[i].checked === true) {
-
-                            checked++;
-                        }
-                    }
 
                     if (checkboxRecord.length == checked) {
 
@@ -439,6 +510,8 @@
                     }
                 }
             }
+
+            ui.api.disabledElement(btnRemove, btnDisabled);
         },
 
         /**
@@ -454,6 +527,7 @@
             var cellName = blockName == BLOCK_HEAD ? 'th' : 'td';
 
             this._columnNumber(row, blockName, cellName, rowNum);
+            blockName == BLOCK_BODY ? this._rowNum++ : null;
 
             var fieldName = null;
 
@@ -515,6 +589,30 @@
          * @returns {*|Element}
          * @private
          */
+        _blockHidden: function() {
+
+            return new ui.Element('div')
+                .setAttrElement('hidden',  true)
+                .addClassElement(ui.CSS.formBlockHiddenClass)
+                .addChildAfter(
+                    new ui.FFHidden(this._urlAdd, ui.Config.FORM_URL_ADD)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(this._urlEdit, ui.Config.FORM_URL_EDIT)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(this._urlDel, ui.Config.FORM_URL_DEL)
+                        .getElement()
+                )
+                .getElement();
+        },
+
+        /**
+         * @returns {*|Element}
+         * @private
+         */
         _buildPanel: function() {
 
             var panel = new ui.Element('div')
@@ -536,6 +634,7 @@
             panel.addChildAfter(
                 new ui.Element('div')
                     .addClassElement(ui.CSS.panelClass.panelBody)
+                    .addChildAfter(this._blockHidden())
                     .addChildAfter(this._buildTable())
                     .getElement()
             );
@@ -550,7 +649,7 @@
          */
         _buildList: function() {
 
-            var page = new ui.Page()
+            var page = new ui.Page('page-' + this._idList)
                 .setTitle(this._title, this._titleSmall, null);
 
             this._addDefaultLeftBtn();
@@ -644,19 +743,27 @@
          */
         setLinkEdit: function(link) {
 
-            this._linkEdit = link;
+            this._urlEdit = link;
             return this;
         },
 
         /**
          * @param {string} link
-         * @param {string} id
          * @returns {ui.List}
          */
-        setLinkDel: function(id, link) {
+        setLinkAdd: function(link) {
 
-            this._fieldRecordId = ui.api.empty(id, 'id');
-            this._linkDel = link;
+            this._urlAdd = link;
+            return this;
+        },
+
+        /**
+         * @param {string} link
+         * @returns {ui.List}
+         */
+        setLinkDel: function(link) {
+
+            this._urlDel = link;
             return this;
         },
 

@@ -14,9 +14,10 @@ for (var i =0; i <50; i++) {
     });
 }
 
-    new ui.List('list-user')
+    new ui.List('id', 'list-user')
         .setLinkEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
-        .setLinkDel('id', 'http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+        .setLinkAdd('http://symfony.cms/lib-js/ui/example/index.html?page=form')
+        .setLinkDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setTitle('List user', 'description user')
         .setTypeTable('bordered')
         .hideColumnNumber(false)
