@@ -4,14 +4,14 @@
     /**
      * @memberOf ui
      * @namespace ui.FFHidden
-     * @param {string|null} value
+     * @param {string|number|null} value
      * @param {string|null} name
      * @constructor
      */
     ui.FFHidden = function (value, name) {
 
-        this._value   = ui.api.empty(value, null);
-        this._name    = ui.api.empty(name, null);
+        this._value = value;
+        this._name  = name;
 
         /**
          * @private

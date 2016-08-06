@@ -230,6 +230,8 @@
                 return '';
             }
 
+            nameValue = typeof nameValue == 'boolean' ? Number(nameValue) : nameValue;
+
             return ui.api.empty(nameValue, '');
         },
 

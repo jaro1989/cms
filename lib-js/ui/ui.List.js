@@ -117,6 +117,17 @@
         _urlDel: null,
         _btnRemove: false,
         _rowNum: 1,
+        _maxRow: 50,
+        _currentPage: 1,
+
+        /**
+         * @param {number} max
+         * @returns {ui.List}
+         */
+        setMaxRow: function(max) {
+            this._maxRow = max;
+            return this;
+        },
 
         /**
          * @private
@@ -409,17 +420,25 @@
             }
 
             var urlDel = document.body.querySelector('#' + this._idList + ' #' + ui.Config.FORM_URL_DEL).value;
-            var idList = this._idList;
+            var page = document.body.querySelector('#' + this._idList + ' #' + ui.Config.CURRENT_PAGE).value;
+
+            var curObj = this;
+
 
             new ui.Ajax()
                 .setUrl(urlDel)
                 .setParams(delObj)
                 .addParam('action', ui.Config.ACTION_LIST_REMOVE)
+                .addParam('page', page)
                 .addCallbackFunction(function (e) {
 
                     var obj = JSON.parse(e);
 
-                    if (obj.response == 1) {
+                    if (obj.hasOwnProperty('data')) {
+
+                        curObj._replaceRows(obj.data);
+
+                    } else {
 
                         for (var i in rowObj) {
 
@@ -428,23 +447,32 @@
                                 ui.api.findParent(rowObj[i], 'tr').remove();
                             }
                         }
-
-                        var tr = document.body.querySelectorAll('#' + idList + ' table>tbody>tr');
-
-                        if (tr.length == 0) {
-
-                            document.body.querySelector('#' + idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORDS + '"]').click();
-
-                        } else {
-
-                            ui.api.disabledElement(
-                                document.body.querySelector('#page-' + idList + ' button[name="' + ui.Config.LIST_BTN_REMOVE + '"]'),
-                                true
-                            );
-                        }
                     }
                 })
                 .send();
+        },
+
+        _replaceRows: function(data) {
+
+            var bodyDoc = document.body;
+            var table = bodyDoc.querySelector('#' + this._idList + ' table');
+            var body  = bodyDoc.querySelector('#' + this._idList + ' table>tbody');
+
+            this._hideColumnCheckbox = Boolean(bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.HIDE_COLUMN_CHECKBOX).value);
+            this._hideColumnNumber   = Boolean(bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.HIDE_COLUMN_NUMBER).value);
+            this._fieldRecord        = bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.FIELD_RECORD).value;
+            this._column             = JSON.parse(bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.SHOW_COLUMN).value);
+            this._settings.tbody     = data;
+
+            table.insertBefore(this._buildBlock(BLOCK_BODY), body);
+            body ? body.remove() : null;
+
+            document.body.querySelector('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORDS + '"]').click();
+
+            ui.api.disabledElement(
+                document.body.querySelector('#page-' + this._idList + ' button[name="' + ui.Config.LIST_BTN_REMOVE + '"]'),
+                true
+            );
         },
 
         _choose: function(element) {
@@ -575,11 +603,19 @@
 
             var block = new ui.Element(blockName);
 
+            var i = 1;
+
             for (var rowNum in this._settings[blockName]) {
 
                 block.addChildAfter(
                     this._buildRows(this._settings[blockName][rowNum], blockName, rowNum)
                 );
+
+                if (this._maxRow == i) {
+                    break;
+                }
+
+                i++;
             }
 
             return block.getElement();
@@ -604,6 +640,26 @@
                 )
                 .addChildAfter(
                     new ui.FFHidden(this._urlDel, ui.Config.FORM_URL_DEL)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(this._currentPage, ui.Config.CURRENT_PAGE)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(this._fieldRecord, ui.Config.FIELD_RECORD)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(this._hideColumnCheckbox, ui.Config.HIDE_COLUMN_CHECKBOX)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(this._hideColumnNumber, ui.Config.HIDE_COLUMN_NUMBER)
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.FFHidden(JSON.stringify(this._column), ui.Config.SHOW_COLUMN)
                         .getElement()
                 )
                 .getElement();

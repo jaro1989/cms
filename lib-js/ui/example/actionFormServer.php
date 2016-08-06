@@ -17,7 +17,31 @@ if (isset($_POST['action']) && $_POST['action'] == 'remove') {
 
 if (isset($_POST['action']) && $_POST['action'] == '_remove_list') {
 
-    echo json_encode(['response' => 1]);
+    $page = $_POST['page'];
+
+    $data = [];
+
+    $ran = rand(1, 500);
+
+    for ($i = $ran; $i < $ran + 50; $i++) {
+
+        $data[] = [
+            'id' => $i * 1456,
+            'name2' => 'Тестовые данные -' . $i,
+            'name3' => 'Тестовые данные -' . $i . ' - ' . $page,
+            'name4' => 'Тестовые данные -' . $i,
+            'name5' => 'Тестовые данные -' . $i,
+            'name6' => 'Тестовые данные -' . $i . ' - ' . $page
+        ];
+    }
+
+
+
+    echo json_encode(
+        [
+            'data'     => $data
+        ]
+    );
     //echo true;//'response ajax POST ' . $_POST['action'];
 }
 

@@ -2,7 +2,7 @@ console.time('test');
     // ID элемента для вставки полей
     var APPEND_ELEMENT = '#element_append';
 var dataTest = [];
-for (var i =0; i <50; i++) {
+for (var i =0; i <500; i++) {
 
     dataTest.push({
         id: i * 1456,

@@ -64,6 +64,11 @@
             FORM_FIELD_RECORD: '_record_name',
             FORM_CH_OBJECT :   '_ch',
             FORM_CH_LAST_ROW:  '_last_row',
+            CURRENT_PAGE:      '_current_page',
+            FIELD_RECORD: '_field_ecord',
+            HIDE_COLUMN_CHECKBOX: 'hide_column_checkbox',
+            HIDE_COLUMN_NUMBER: 'hide_column_number',
+            SHOW_COLUMN: 'show_column',
 
             LIST_BTN_REMOVE: '_remove',
 
