@@ -461,10 +461,11 @@
             var table = bodyDoc.querySelector('#' + this._idList + ' table');
             var body  = bodyDoc.querySelector('#' + this._idList + ' table>tbody');
 
-            this._hideColumnCheckbox = Boolean(bodyDoc.querySelector('#' + ui.Config.HIDE_COLUMN_CHECKBOX).value);
-            this._hideColumnNumber = Boolean(bodyDoc.querySelector('#' + ui.Config.HIDE_COLUMN_NUMBER).value);
-            this._fieldRecord = bodyDoc.querySelector('#' + ui.Config.FIELD_RECORD).value;
-            this._column = JSON.parse(bodyDoc.querySelector('#' + ui.Config.SHOW_COLUMN).value);
+            this._hideColumnCheckbox = Boolean(bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.HIDE_COLUMN_CHECKBOX).value);
+            this._hideColumnNumber = Boolean(bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.HIDE_COLUMN_NUMBER).value);
+            this._fieldRecord = bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.FIELD_RECORD).value;
+            this._column = JSON.parse(bodyDoc.querySelector('#' + this._idList + ' #' + ui.Config.SHOW_COLUMN).value);
+            this._maxRow = document.body.querySelector('#' + this._idList + ' #' + ui.Config.MAX_ROW).value;
             this._settings.tbody = data;
 
             table.insertBefore(this._buildBlock(BLOCK_BODY), body);
