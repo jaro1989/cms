@@ -27,11 +27,11 @@ if (isset($_POST['action']) && $_POST['action'] == '_remove_list') {
 
         $data[] = [
             'id' => $i * 1456,
-            'name2' => 'Тестовые данные -' . $i,
-            'name3' => 'Тестовые данные -' . $i . ' - ' . $page,
-            'name4' => 'Тестовые данные -' . $i,
-            'name5' => 'Тестовые данные -' . $i,
-            'name6' => 'Тестовые данные -' . $i . ' - ' . $page
+            'name2' => generatePassword() . ' -' . $i,
+            'name3' => generatePassword() . ' -' . $i . ' - ' . $page,
+            'name4' => generatePassword() . ' -' . $i,
+            'name5' => generatePassword() . ' -' . $i,
+            'name6' => generatePassword() . ' -' . $i . ' - ' . $page
         ];
     }
 
@@ -58,11 +58,11 @@ if (isset($_POST['action']) && $_POST['action'] == '_next_page') {
 
         $data[] = [
             'id' => $i * 1456,
-            'name2' => 'Тестовые данные -' . $i,
-            'name3' => 'Тестовые данные -' . $i . ' - ' . $page,
-            'name4' => 'Тестовые данные -' . $i,
-            'name5' => 'Тестовые данные -' . $i,
-            'name6' => 'Тестовые данные -' . $i . ' - ' . $page
+            'name2' => generatePassword() . ' -' . $i,
+            'name3' => generatePassword() . ' -' . $i . ' - ' . $page,
+            'name4' => generatePassword() . ' -' . $i,
+            'name5' => generatePassword() . ' -' . $i,
+            'name6' => generatePassword() . ' -' . $i . ' - ' . $page
         ];
     }
 
@@ -74,4 +74,14 @@ if (isset($_POST['action']) && $_POST['action'] == '_next_page') {
         ]
     );
     //echo true;//'response ajax POST ' . $_POST['action'];
+}
+
+function generatePassword($length = 8){
+    $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ23456789';
+    $numChars = strlen($chars);
+    $string = '';
+    for ($i = 0; $i < $length; $i++) {
+        $string .= substr($chars, rand(1, $numChars) - 1, 1);
+    }
+    return $string;
 }

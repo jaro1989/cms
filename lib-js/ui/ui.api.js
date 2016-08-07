@@ -40,6 +40,29 @@
     ui.api = {
 
         /**
+         * @param {string|number} text
+         * @returns {boolean}
+         */
+        isNumeric: function(text) {
+
+            var validChars = '0123456789.';
+            var isNumber = true;
+            var char, i;
+
+            for (i = 0; i < text.length && isNumber == true; i++) {
+
+                char = text.charAt(i);
+
+                if (validChars.indexOf(char) == -1) {
+
+                    isNumber = false;
+                }
+            }
+
+            return isNumber;
+        },
+
+        /**
          * @param {Element} element
          * @param {boolean} status
          * @returns {boolean}

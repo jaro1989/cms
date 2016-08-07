@@ -6,11 +6,11 @@ for (var i =0; i <500; i++) {
 
     dataTest.push({
         id: i * 1456,
-        name2: 'Тестовые данные -' + i,
-        name3: 'Тестовые данные -' + i,
-        name4: 'Тестовые данные -' + i,
-        name5: 'Тестовые данные -' + i,
-        name6: 'Тестовые данные -' + i
+        name2: 'aasТестовые данные -' + i,
+        name3: 'ssasТестовые данные -' + i,
+        name4: 'dfaaasaТестовые данные -' + i,
+        name5: 'fgfafsdТестовые данные -' + i,
+        name6: 'hhhТестовые данные -' + i
     });
 }
 
@@ -23,6 +23,8 @@ for (var i =0; i <500; i++) {
         .setTypeTable('bordered')
         .hideColumnNumber(false)
         .hideColumnCheckbox(false)
+        .setSkin('success')
+
         .setMaxRow(10)
 
         .newRowHead()
@@ -52,7 +54,7 @@ for (var i =0; i <500; i++) {
         .setLinkDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setLinkPagination('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         //.setTitle('List user', 'description user')
-        .setSkinPanel('default')
+        .setSkin('default')
         .setTypeTable('default')
         .hideBtnBack(true)
         .setMaxRow(10)

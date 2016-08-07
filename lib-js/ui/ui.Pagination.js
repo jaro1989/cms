@@ -31,7 +31,8 @@
         _maxItem: 3,
         _currentPage: 1,
         _size: ui.CSS.pagination.size.sm,
-        _skin: ui.CSS.pagination.skin.default,
+        _skin: null,
+        _type: ui.CSS.pagination.type.default,
         _position: ui.CSS.alignClass.block.right,
         _link: null,
         _callback: null,
@@ -213,7 +214,8 @@
         _buildPagination: function() {
 
             var ul = new ui.Element('ul')
-                .addClassElement(this._skin)
+                .addClassElement(this._type)
+                .setSkinElement('text', this._skin)
                 .addClassElement(this._size)
                 .addClassElement(this._position);
 
@@ -358,12 +360,24 @@
         /**
          * Set type pagination
          *
-         * @param {string|null} skin {'default'|'pager'|null}
+         * @param {string|null} skin {'disabled'|'active'|'success'|'warning'|'danger'|'info'|'link'|'default'|'error'|'primary'|'muted'}
          * @default {string} default
          * @returns {ui.Pagination}
          */
         setSkin: function(skin) {
-            this._skin = ui.api.existProperty(ui.CSS.pagination.skin, skin, ui.CSS.pagination.skin.default);
+            this._skin = skin;
+            return this;
+        },
+
+        /**
+         * Set type pagination
+         *
+         * @param {string|null} type {'default'|'pager'|null}
+         * @default {string} default
+         * @returns {ui.Pagination}
+         */
+        setType: function(type) {
+            this._type = ui.api.existProperty(ui.CSS.pagination.type, null);
             return this;
         },
 
@@ -411,7 +425,7 @@
 
         /**
          * @param {string} callback
-         * @returns {ui.Ajax}
+         * @returns {ui.Pagination}
          */
         setCallbackFunction: function(callback) {
 

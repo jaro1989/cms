@@ -242,7 +242,7 @@
             },
 
             pagination: {
-                skin: {
+                type: {
                     pager: 'pager',
                     default: 'pagination'
                 },
