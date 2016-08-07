@@ -26,11 +26,13 @@ for (var i =0; i <500; i++) {
         .setMaxRow(10)
 
         .newRowHead()
-        .addCell('Тестовые данные HEADER', 4, 1)
+        .addCellHead('Тестовые данные HEADER', 4, 1, false, null, null)
 
         .newRowHead()
-        .addCell('Тестовые данные HEADER', 2, 1)
-        .addCell('Тестовые данные HEADER', 2, 1)
+        .addCellHead('Тестовые данные HEADER', 1, 1, true, 2, null)
+        .addCellHead('Тестовые данные HEADER', 1, 1, true, 2, null)
+        .addCellHead('Тестовые данные HEADER', 1, 1, true, 5, null)
+        .addCellHead('Тестовые данные HEADER', 1, 1, true, 3, null)
 
         .addColumn('name2', null)
         .addColumn('name3', null)
@@ -58,8 +60,10 @@ for (var i =0; i <500; i++) {
         .hideColumnCheckbox(true)
 
         .newRowHead()
-        .addCell('Тестовые данные HEADER', 2, 1)
-        .addCell('Тестовые данные HEADER', 2, 1)
+        .addCellHead('Тестовые данные HEADER', 1, 1, false, 2, null)
+        .addCellHead('Тестовые данные HEADER', 1, 1, false, 3, null)
+        .addCellHead('Тестовые данные HEADER', 1, 1, false, 5, null)
+        .addCellHead('Тестовые данные HEADER', 1, 1, false, 2, null)
 
         .addColumn('name2', null)
         .addColumn('name3', null)

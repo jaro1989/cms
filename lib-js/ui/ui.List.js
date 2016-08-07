@@ -14,6 +14,8 @@
 
     var DATA_JSON_TABLE = 'data-json-table';
 
+    var SORT_CONTENT = 'sort-content';
+
     /**
      * @memberOf ui
      * @namespace ui.List
@@ -314,6 +316,7 @@
 
                     row.addChildAfter(
                         cell.setContentElement(this._numCellTitle)
+                            .setAttrElement('onclick', 'sort(this, 0);')
                             .setAttrElement('rowspan', countRow)
                             .getElement()
                     );
@@ -325,6 +328,7 @@
                         cell
                             .addChildAfter(
                                 new ui.Element('div')
+                                    .addClassElement(SORT_CONTENT)
                                     .setContentElement(this._rowNum)
                                     .setAttrElement('title', reordID)
                                     .getElement()
@@ -588,17 +592,25 @@
 
             } else {
 
+                var i = !this._hideColumnNumber ? 1 : 0;
+
                 for (fieldName in params) {
 
                     var paramCell = params[fieldName];
+
+                    var sort = ui.api.existProperty(paramCell, 'sort', false) ? 'sort(this, ' + i + ');' : null;
 
                     row.addChildAfter(
                         new ui.Element(cellName)
                             .setContentElement(this._contentCell(paramCell, blockName, fieldName))
                             .setAttrElement('colspan', ui.api.existProperty(paramCell, 'colspan', 1))
                             .setAttrElement('rowspan', ui.api.existProperty(paramCell, 'rowspan', 1))
+                            .setAttrElement('style', ui.api.existProperty(paramCell, 'style', null))
+                            .setWidthElement(ui.api.existProperty(paramCell, 'width', null))
+                            .setAttrElement('onclick', sort)
                             .getElement()
                     );
+                    i++;
                 }
             }
 
@@ -662,46 +674,6 @@
                         .setAttrElement(DATA_JSON_TABLE, JSON.stringify(obj))
                         .getElement()
                 )
-                //.addChildAfter(
-                //    new ui.FFHidden(this._urlAdd, ui.Config.FORM_URL_ADD)
-                //        .getElement()
-                //)
-                //.addChildAfter(
-                //    new ui.FFHidden(this._urlEdit, ui.Config.FORM_URL_EDIT)
-                //        .getElement()
-                //)
-                //.addChildAfter(
-                //    new ui.FFHidden(this._urlDel, ui.Config.FORM_URL_DEL)
-                //        .getElement()
-                //)
-                //.addChildAfter(
-                //    new ui.FFHidden(this._currentPage, ui.Config.CURRENT_PAGE)
-                //        .getElement()
-                //)
-                //.addChildAfter(
-                //    new ui.FFHidden(this._fieldRecord, ui.Config.FIELD_RECORD)
-                //        .getElement()
-                //)
-                //.addChildAfter(
-                //    new ui.FFHidden(this._hideColumnCheckbox, ui.Config.HIDE_COLUMN_CHECKBOX)
-                //        .getElement()
-                //)
-                //.addChildAfter(
-                //    new ui.FFHidden(this._hideColumnNumber, ui.Config.HIDE_COLUMN_NUMBER)
-                //        .getElement()
-                //)
-                //.addChildAfter(
-                //    new ui.FFHidden(JSON.stringify(this._column), ui.Config.SHOW_COLUMN)
-                //        .getElement()
-                //)
-                //.addChildAfter(
-                //    new ui.FFHidden(this._maxRow, ui.Config.MAX_ROW)
-                //        .getElement()
-                //)
-                //.addChildAfter(
-                //    new ui.FFHidden(this._urlPage, ui.Config.URL_PAGINATION)
-                //        .getElement()
-                //)
                 .getElement();
         },
 
@@ -1000,6 +972,34 @@
          * @param {string|number} content
          * @param {number} colspan
          * @param {number} rowspan
+         * @param {boolean} sort
+         * @param {string|number|null} width
+         * @param {string|null} style
+         * @returns {ui.List}
+         */
+        addCellHead: function(content, colspan, rowspan, sort, width, style) {
+
+            var block = this._lastSetting.block;
+            var row   = this._lastSetting.row - 1;
+
+            this._settings[block][row].push(
+                {
+                    sort:    sort,
+                    width:   width,
+                    style:   style,
+                    content: content,
+                    rowspan: rowspan,
+                    colspan: colspan
+                }
+            );
+
+            return this;
+        },
+
+        /**
+         * @param {string|number} content
+         * @param {number} colspan
+         * @param {number} rowspan
          * @returns {ui.List}
          */
         addCell: function(content, colspan, rowspan) {
@@ -1091,3 +1091,107 @@
         }
     };
 } (window.ui || {}));
+
+
+function sort(element, numberColumn) {
+
+    var trHead = element.parentNode;
+    var thead = trHead.parentNode;
+    var table = thead.parentNode;
+
+    var tbody = table.querySelector('tbody');
+    var tr = tbody.querySelectorAll('tr');
+
+    var a = [];
+
+
+    for (var i = 0; i < tbody.rows.length; i++) {
+
+        var item = tbody.rows[i].getElementsByTagName('td').item(numberColumn);
+        var sort_content = item.querySelector('.sort-content');
+        var content = sort_content ? sort_content.innerHTML : item.innerHTML;
+
+        a[i] = [];
+        a[i][0] = content;
+        a[i][1] = tbody.rows[i];
+
+    }
+
+    var SORT_ASC = 'ASC';
+    var SORT_DESC = 'DESC';
+
+    var dataSort = element.hasAttribute('data-sort');
+    var type = SORT_ASC;
+
+    if (dataSort) {
+
+        type = element.getAttribute('data-sort');
+
+        if (type == SORT_ASC) {
+
+            element.setAttribute('data-sort', SORT_DESC);
+
+        } else {
+
+            element.setAttribute('data-sort', SORT_ASC);
+        }
+
+    } else {
+
+        element.setAttribute('data-sort', SORT_DESC);
+    }
+
+    if (isNumeric(a[0][0])) {
+
+        if (type == SORT_ASC) {
+
+            a.sort(sortitasc);
+
+        } else {
+
+            a.sort(sortitdesc);
+        }
+
+    } else {
+
+        a.sort();
+
+        if (type == SORT_ASC) {
+
+            a.reverse();
+        }
+    }
+
+    for(i = 0; i < a.length; i++) {
+
+        tbody.appendChild(a[i][1]);
+    }
+}
+
+function sortitasc(a,b) {
+
+    return(a[0]-b[0]);
+}
+
+function sortitdesc(a,b) {
+
+    return(b[0]-a[0]);
+}
+
+function isNumeric(text) {
+
+    var validChars = '0123456789.';
+    var isNumber = true;
+    var char, i;
+
+    for (i = 0; i < text.length && isNumber == true; i++) {
+
+        char = text.charAt(i);
+
+        if (validChars.indexOf(char) == -1) {
+
+            isNumber = false;
+        }
+    }
+    return isNumber;
+}
