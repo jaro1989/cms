@@ -23,7 +23,6 @@ for (var i =0; i <500; i++) {
         .setTypeTable('bordered')
         .hideColumnNumber(false)
         .hideColumnCheckbox(false)
-        .setSkin('success')
 
         .setMaxRow(10)
 

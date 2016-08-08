@@ -605,7 +605,7 @@
             /**
              * Set html class - skin element
              * @param {string|null} type {'button'|'default'|'text'|'field'|'panel'|'pagination'}
-             * @param {string} skin {'disabled'|'active'|'success'|'warning'|'danger'|'info'|'link'|'default'|'error'|'primary'|'muted'}
+             * @param {string|null} skin {'disabled'|'active'|'success'|'warning'|'danger'|'info'|'link'|'default'|'error'|'primary'|'muted'}
              * @returns {ui.Element}
              * @public
              */

@@ -449,6 +449,7 @@
                     if (obj.hasOwnProperty('data')) {
 
                         curObj._replaceRows(obj.data);
+                        new ui.SortTable(null).updateSort('#' + curObj._idList);
 
                     } else {
 
@@ -699,7 +700,7 @@
                     .getElement()
             );
 
-            var onclick = "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._setPage";
+            var onclick = "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._rebuild";
 
             panel.addChildAfter(
                 new ui.Element('div')
@@ -720,7 +721,7 @@
             return panel.getElement();
         },
 
-        _setPage: function(element, page) {
+        _rebuild: function(element, page) {
 
             var dataBlock = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE);
             var str = dataBlock.getAttribute(DATA_JSON_TABLE);
@@ -747,6 +748,7 @@
                     if (obj.hasOwnProperty('data')) {
 
                         curObj._replaceRows(obj.data);
+                        new ui.SortTable(null).updateSort('#' + curObj._idList);
                     }
                 })
                 .send();

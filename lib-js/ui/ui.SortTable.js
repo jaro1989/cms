@@ -20,6 +20,7 @@
 
         _contentClass: 'sort-content',
         _dataSort: 'data-sort',
+        _activeColumn: 'data-sort-active',
         _skinIcon: 'muted',
         _up: 'chevron-up',
         _down: 'chevron-down',
@@ -51,6 +52,20 @@
         setClassContent(classContent) {
             this._classContent = classContent;
             return this;
+        },
+
+        /**
+         * @param {string} selectorTable ID table or ID parent element table
+         */
+        updateSort: function(selectorTable) {
+
+            var sort_active = document.body.querySelector(selectorTable + ' th[' + this._activeColumn + '="true"]');
+
+            if (sort_active) {
+
+                sort_active.click();
+                sort_active.click();
+            }
         },
 
         /**
@@ -133,9 +148,23 @@
          */
         _setIcon: function(icon) {
 
-            var span = this.element.parentNode.parentNode.querySelectorAll('.' + ui.CSS.iconClass);
+            var thead = this.element.parentNode.parentNode;
+            var cellHead = thead.querySelectorAll('th, td');
+            var i, a;
 
-            for (var i in span) {
+            for (a in cellHead) {
+
+                if (typeof cellHead[a] == 'object') {
+
+                    cellHead[a].setAttribute(this._activeColumn, 'false');
+                }
+            }
+
+            this.element.setAttribute(this._activeColumn, 'true');
+
+            var span = thead.querySelectorAll('.' + ui.CSS.iconClass);
+
+            for (i in span) {
 
                 if (typeof span[i] == 'object') {
 

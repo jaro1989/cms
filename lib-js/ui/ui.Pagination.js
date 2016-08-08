@@ -135,7 +135,7 @@
             }
 
             var href = null;
-            var onclick = this._callback + '(' + page + '); new ui.Pagination("' + this._id + '")._rebuild(' + page + ');';
+            var onclick = this._callback + '(this, ' + page + '); new ui.Pagination("' + this._id + '")._rebuild(' + page + ');';
 
             if (this._ajaxUrl == false) {
 
