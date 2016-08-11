@@ -29,7 +29,6 @@
 
     /**
      * @memberOf ui
-     * @namespace ui.Form
      * @param {string} idForm
      * @constructor
      */
@@ -94,7 +93,7 @@
         uniqueId++;
     };
 
-    /** @protected */
+    /** @public */
     ui.Form.prototype = {
 
         _validation: true,

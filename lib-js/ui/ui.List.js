@@ -98,6 +98,7 @@
          * @private
          */
         this._idList = ui.api.empty(idList, 'table-' + uniqueId);
+        this._form = new ui.Form('search-' + this._idList);
         uniqueId++;
     };
 
@@ -704,6 +705,32 @@
 
             panel.addChildAfter(
                 new ui.Element('div')
+
+                    .addClassElement(ui.CSS.panelClass.panelBody)
+                    .addChildAfter(
+                        this._form
+                            .setTitle('search', 'search')
+                            .hideBtnBack(true)
+                            .hideBtnClean(true)
+                            .hideBtnRemove(true)
+                            .hideBtnSave(true)
+                            .setWidthCaption(2)
+                            //.setParentBlock('asdasd', 'id', {})
+                            .newLineParent()
+                            .addTextField('surname', 'Фамилия', true)
+                            .addTextField('user', 'Имя', true)
+                            .addTextField('login', 'Логин', true)
+                            .newLineParent()
+                            .addTextField('surname', 'Фамилия', true)
+                            .addDateField('user', 'Имя', true)
+                            .addSelectField('login', 'Логин', [1, 2, 3], true)
+                            .getElement()
+                    )
+                    .getElement()
+            );
+
+            panel.addChildAfter(
+                new ui.Element('div')
                     .addClassElement(ui.CSS.panelClass.panelBody)
                     .addChildAfter(this._blockHidden())
                     .addChildAfter(this._buildTable())
@@ -1089,6 +1116,9 @@
          */
         appendHTML: function(selector) {
 
+            //, ui.Form().prototype.getElement().apply()
+            //console.log(ui.Form.apply(this, arguments));
+            //console.log(instanceof ui.Form);
             new ui.$(selector).append(this.getElement());
             return this;
         }
