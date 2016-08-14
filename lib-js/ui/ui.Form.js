@@ -91,33 +91,28 @@
 
         this._idForm = ui.api.empty(idForm, uniqueId);
         uniqueId++;
+
+        this._validation = true;
+        this._positionBtnTop =    'left';
+        this._positionBtnBottom = 'right';
+        this._paddingRelateBlock = 'xs';
+        this._idRecord =   '';
+        this._title =      null;
+        this._titleSmall = null;
+        this._skinPanel = ui.CSS.skinClass.panel.primary;
+        this._paddingPanels = 'xs';
+        this._paddingChildrenPanel = 'sm';
+        this._method = ui.Config.defaultMethodForm;
+        this._checkboxText = ui.Config.checkboxText;
+        this._urlBack = document.referrer;
+        this._urlAdd =  null;
+        this._urlEdit = null;
+        this._urlDel =  null;
+        this._readOnly = false;
     };
 
     /** @public */
     ui.Form.prototype = {
-
-        _validation: true,
-
-        _positionBtnTop:    'left',
-        _positionBtnBottom: 'right',
-
-        _paddingRelateBlock: 'xs',
-
-        _idRecord:   '',
-        _title:      null,
-        _titleSmall: null,
-
-        _skinPanel: ui.CSS.skinClass.panel.primary,
-        _paddingPanels: 'xs',
-        _paddingChildrenPanel: 'sm',
-
-        _method: ui.Config.defaultMethodForm,
-        _checkboxText: ui.Config.checkboxText,
-        _urlBack: document.referrer,
-        _urlAdd:  null,
-        _urlEdit: null,
-        _urlDel:  null,
-        _readOnly: false,
 
         _htmlFields: {
 

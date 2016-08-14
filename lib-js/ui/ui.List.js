@@ -25,52 +25,18 @@
      */
     ui.List = function (record, idList) {
 
+        //ui.Form.call(this, 'search-' + idList);
+
         this._fieldRecord = ui.api.empty(record, 'id');
-
-        /**
-         * @type {[]}
-         * @private
-         */
         this._addBtnLeftTop = [];
-
         this._addBtnRightTop = [];
-
-        /**
-         * @type {[]}
-         * @private
-         */
         this._addBtnBottom  = [];
-
-        /**
-         * @type {[]}
-         * @private
-         */
         this._btnDefaultLeftTop = [];
-
-        /**
-         * @type {[]}
-         * @private
-         */
         this._btnDefaultRightTop = [];
-
-        /**
-         * @type {[]}
-         * @private
-         */
         this._btnDefaultBottom = [];
-
-        /**
-         * @type {{}}
-         * @private
-         */
         this._hideBtn = {
             _btnBack:   false
         };
-
-        /**
-         * @type {{}}
-         * @private
-         */
         this._settings = {
             thead: [],
             tbody: [],
@@ -82,21 +48,30 @@
             row:   0,
             cell:  0
         };
-
         this._columnTypeData = {};
-
         this._column = {};
-
-        /**
-         * @type {[]|{}}
-         * @private
-         */
         this._parentRecords = [];
+        this._title = null;
+        this._titleSmall = null;
+        this._urlBack = document.referrer;
+        this._positionBtnLeftTop ='left';
+        this._positionBtnRightTop = 'right';
+        this._positionBtnBottom = 'right';
+        this._skin = null;
+        this._typeTable = null;
+        this._numCellTitle = '№';
+        this._fieldRecord = null;
+        this._hideColumnNumber = false;
+        this._hideColumnCheckbox = false;
+        this._urlEdit = null;
+        this._urlAdd = null;
+        this._urlDel = null;
+        this._btnRemove = false;
+        this._rowNum = 1;
+        this._maxRow = 50;
+        this._currentPage = 1;
+        this._urlPage = null;
 
-        /**
-         * @type {string}
-         * @private
-         */
         this._idList = ui.api.empty(idList, 'table-' + uniqueId);
         this._form = new ui.Form('search-' + this._idList);
         uniqueId++;
@@ -105,26 +80,96 @@
     /** @protected */
     ui.List.prototype = {
 
-        _title:      null,
-        _titleSmall: null,
-        _urlBack: document.referrer,
-        _positionBtnLeftTop:    'left',
-        _positionBtnRightTop:   'right',
-        _positionBtnBottom: 'right',
-        _skin: null,
-        _typeTable: null,
-        _numCellTitle: '№',
-        _fieldRecord: null,
-        _hideColumnNumber: false,
-        _hideColumnCheckbox: false,
-        _urlEdit: null,
-        _urlAdd: null,
-        _urlDel: null,
-        _btnRemove: false,
-        _rowNum: 1,
-        _maxRow: 50,
-        _currentPage: 1,
-        _urlPage: null,
+        /**
+         * Add new row for search fields
+         * @returns {ui.List}
+         * @public
+         */
+        newLineSearch: function() {
+            this._form.newLineParent();
+            return this;
+        },
+
+        /**
+         * @param {string} name
+         * @param {string|number} caption
+         * @param {boolean} required
+         * @param {string|number|null} height
+         * @returns {ui.List}
+         */
+        addTextareaSearch: function(name, caption, required, height) {
+            this._form.addTextareaField(name, caption, required, height);
+            return this;
+        },
+
+        /**
+         * @param {string|null} name
+         * @param {string|number|null} caption
+         * @param {string|number|null} height
+         * @returns {ui.List}
+         */
+        addReadOnlySearch: function(name, caption, height) {
+            this._form.addReadOnlyField(name, caption, height);
+            return this;
+        },
+
+        /**
+         * @param {string} name
+         * @param {string|number} caption
+         * @param {boolean} required
+         * @returns {ui.List}
+         */
+        addTextSearch: function(name, caption, required) {
+            this._form.addTextField(name, caption, required);
+            return this;
+        },
+
+        /**
+         * @param {string} name
+         * @param {string|number} caption
+         * @param {boolean} required
+         * @returns {ui.List}
+         */
+        addDateSearch: function(name, caption, required) {
+            this._form.addDateField(name, caption, required);
+            return this;
+        },
+
+        /**
+         * @param {string} name
+         * @param {string|number} caption
+         * @param {{}|[]} data
+         * @param {boolean} required
+         * @returns {ui.List}
+         */
+        addSelectSearch: function(name, caption, data, required) {
+            this._form.addSelectField(name, caption, data, required);
+            return this;
+        },
+
+        /**
+         * @param {string} name
+         * @param {string|number} caption
+         * @param {boolean} required
+         * @returns {ui.List}
+         */
+        addCheckboxSearch: function(name, caption, required) {
+            this._form.addSelectField(name, caption, required);
+            return this;
+        },
+
+        /**
+         * @param {string} name
+         * @param {string|number|null} caption
+         * @param {{}|[]} data
+         * @param {boolean} required
+         * @param {number|null} width
+         * @returns {ui.List}
+         */
+        addRadioSearch: function(name, caption, data, required, width) {
+            this._form.addSelectField(name, caption, data, required, width);
+            return this;
+        },
 
         /**
          * @param {number} max
