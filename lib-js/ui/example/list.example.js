@@ -15,8 +15,10 @@ for (var i =0; i <500; i++) {
 }
 
     new ui.List('id', 'list-user')
+
         .newLineParent()
         .addTextareaField('description_kr', 'Краткое описание', true, 200)
+
         .setLinkEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
         .setLinkAdd('http://symfony.cms/lib-js/ui/example/index.html?page=form')
         .setLinkDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')

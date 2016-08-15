@@ -657,7 +657,7 @@
 
         var onclick = "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._rebuild";
 
-        ui.Form.prototype.setTitle('search', 'search');
+        ui.Form.prototype.setTitle.apply(this, ['search', 'search']);
 
         this
             .hideBtnBack(true)
@@ -679,7 +679,7 @@
             .addSelectField('login', 'Логин', [1, 2, 3], true);
 
         console.log(
-            this._buildForm()
+            //this._buildForm()
             //this.getElement.apply(this, arguments)
         );
 

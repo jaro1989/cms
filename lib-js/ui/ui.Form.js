@@ -549,10 +549,8 @@
         this._readOnly = false;
     };
 
-    // Унаследовать
     ui.Form.prototype = Object.create(ui.HtmlFields.prototype);
 
-    // Желательно и constructor сохранить
     ui.Form.prototype.constructor = ui.Form;
 
     /**
