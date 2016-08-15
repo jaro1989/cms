@@ -25,7 +25,7 @@
      */
     ui.List = function (record, idList) {
 
-        //ui.Form.call(this, 'search-' + idList);
+        ui.Form.call(this, 'search-' + idList);
 
         this._fieldRecord = ui.api.empty(record, 'id');
         this._addBtnLeftTop = [];
@@ -73,1099 +73,1035 @@
         this._urlPage = null;
 
         this._idList = ui.api.empty(idList, 'table-' + uniqueId);
-        this._form = new ui.Form('search-' + this._idList);
         uniqueId++;
     };
 
-    /** @protected */
-    ui.List.prototype = {
+    ui.List.prototype = Object.create(ui.Form.prototype);
 
-        /**
-         * Add new row for search fields
-         * @returns {ui.List}
-         * @public
-         */
-        newLineSearch: function() {
-            this._form.newLineParent();
-            return this;
-        },
+    ui.List.prototype.constructor = ui.List;
 
-        /**
-         * @param {string} name
-         * @param {string|number} caption
-         * @param {boolean} required
-         * @param {string|number|null} height
-         * @returns {ui.List}
-         */
-        addTextareaSearch: function(name, caption, required, height) {
-            this._form.addTextareaField(name, caption, required, height);
-            return this;
-        },
+    /**
+     * @param {number} max
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setMaxRow = function(max) {
+        this._maxRow = max;
+        return this;
+    };
 
-        /**
-         * @param {string|null} name
-         * @param {string|number|null} caption
-         * @param {string|number|null} height
-         * @returns {ui.List}
-         */
-        addReadOnlySearch: function(name, caption, height) {
-            this._form.addReadOnlyField(name, caption, height);
-            return this;
-        },
+    /**
+     * @private
+     * returns {voild}
+     */
+    ui.List.prototype._addDefaultLeftBtn = function() {
 
-        /**
-         * @param {string} name
-         * @param {string|number} caption
-         * @param {boolean} required
-         * @returns {ui.List}
-         */
-        addTextSearch: function(name, caption, required) {
-            this._form.addTextField(name, caption, required);
-            return this;
-        },
-
-        /**
-         * @param {string} name
-         * @param {string|number} caption
-         * @param {boolean} required
-         * @returns {ui.List}
-         */
-        addDateSearch: function(name, caption, required) {
-            this._form.addDateField(name, caption, required);
-            return this;
-        },
-
-        /**
-         * @param {string} name
-         * @param {string|number} caption
-         * @param {{}|[]} data
-         * @param {boolean} required
-         * @returns {ui.List}
-         */
-        addSelectSearch: function(name, caption, data, required) {
-            this._form.addSelectField(name, caption, data, required);
-            return this;
-        },
-
-        /**
-         * @param {string} name
-         * @param {string|number} caption
-         * @param {boolean} required
-         * @returns {ui.List}
-         */
-        addCheckboxSearch: function(name, caption, required) {
-            this._form.addSelectField(name, caption, required);
-            return this;
-        },
-
-        /**
-         * @param {string} name
-         * @param {string|number|null} caption
-         * @param {{}|[]} data
-         * @param {boolean} required
-         * @param {number|null} width
-         * @returns {ui.List}
-         */
-        addRadioSearch: function(name, caption, data, required, width) {
-            this._form.addSelectField(name, caption, data, required, width);
-            return this;
-        },
-
-        /**
-         * @param {number} max
-         * @returns {ui.List}
-         */
-        setMaxRow: function(max) {
-            this._maxRow = max;
-            return this;
-        },
-
-        /**
-         * @private
-         * returns {voild}
-         */
-        _addDefaultLeftBtn: function() {
-
-            if (this._hideBtn._btnBack === false && this._urlBack != '') {
-
-                this._btnDefaultLeftTop.push(
-                    {
-                        type:     'button',
-                        name:     '_btnBack',
-                        leftIcon: 'share-alt',
-                        skin:     'primary',
-                        caption:  'Назад',
-                        onclick:  "window.location.href = '" + this._urlBack + "'"
-                    }
-                );
-            }
-        },
-
-        /**
-         * @private
-         * returns {voild}
-         */
-        _addDefaultRightBtn: function() {
-
-            if (this._urlAdd !== null) {
-
-                this._btnDefaultRightTop.push(
-                    {
-                        type:     'button',
-                        name:     '_add',
-                        leftIcon: 'new-window',
-                        skin:     'primary',
-                        caption:  'Добавить',
-                        onclick:  "window.location.href = '" + this._urlAdd + "'"
-                    }
-                );
-            }
-
-            if (this._hideColumnCheckbox === false && this._btnRemove == false && this._urlDel !== null && this._fieldRecord !== null) {
-
-                this._btnDefaultRightTop.push(
-                    {
-                        type:     'button',
-                        name:     ui.Config.LIST_BTN_REMOVE,
-                        leftIcon: 'trash',
-                        skin:     'danger',
-                        onclick:  "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._remove();",
-                        disabled: true
-                    }
-                );
-            }
-        },
-
-        /**
-         * @param {string|null} typeBtn {'button'|'submit'}
-         * @param {string|null} name
-         * @param {string} icon
-         * @param {string|number} caption
-         * @param {string|null} onclick
-         * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
-         * @returns {ui.List}
-         */
-        addButtonTopLeft: function(typeBtn, name, icon, caption, onclick, skin) {
+        if (this._hideBtn._btnBack === false && this._urlBack != '') {
 
             this._btnDefaultLeftTop.push(
                 {
-                    type:     ui.api.empty(typeBtn, null),
-                    name:     ui.api.empty(name, null),
-                    leftIcon: ui.api.empty(icon, null),
-                    caption:  ui.api.empty(caption, null),
-                    skin:     ui.api.empty(skin, null),
-                    onclick:  ui.api.empty(onclick, null)
+                    type:     'button',
+                    name:     '_btnBack',
+                    leftIcon: 'share-alt',
+                    skin:     'primary',
+                    caption:  'Назад',
+                    onclick:  "window.location.href = '" + this._urlBack + "'"
                 }
             );
+        }
+    };
 
-            return this;
-        },
+    /**
+     * @private
+     * returns {voild}
+     */
+    ui.List.prototype._addDefaultRightBtn = function() {
 
-        /**
-         * @param {string|null} typeBtn {'button'|'submit'}
-         * @param {string|null} name
-         * @param {string} icon
-         * @param {string|number} caption
-         * @param {string|null} onclick
-         * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
-         * @returns {ui.List}
-         */
-        addButtonTopRight: function(typeBtn, name, icon, caption, onclick, skin) {
+        if (this._urlAdd !== null) {
 
             this._btnDefaultRightTop.push(
                 {
-                    type:     ui.api.empty(typeBtn, null),
-                    name:     ui.api.empty(name, null),
-                    leftIcon: ui.api.empty(icon, null),
-                    caption:  ui.api.empty(caption, null),
-                    skin:     ui.api.empty(skin, null),
-                    onclick:  ui.api.empty(onclick, null)
+                    type:     'button',
+                    name:     '_add',
+                    leftIcon: 'new-window',
+                    skin:     'primary',
+                    caption:  'Добавить',
+                    onclick:  "window.location.href = '" + this._urlAdd + "'"
                 }
             );
+        }
 
-            return this;
-        },
+        if (this._hideColumnCheckbox === false && this._btnRemove == false && this._urlDel !== null && this._fieldRecord !== null) {
 
-        /**
-         * @returns {*|Element}
-         * @private
-         */
-        _buildTable: function() {
-
-            var table = new ui.Element('table')
-                .addClassElement(ui.CSS.tableClass.table)
-                .addClassElement(ui.CSS.tableClass.responsive)
-                .addClassElement(ui.CSS.tableClass.hover)
-                .addClassElement(ui.CSS.tableClass.striped)
-                .addClassElement(this._typeTable);
-
-            table.addChildAfter(this._buildBlock(BLOCK_HEAD));
-            table.addChildAfter(this._buildBlock(BLOCK_BODY));
-            table.addChildAfter(this._buildBlock(BLOCK_FOOT));
-
-            return table.getElement();
-        },
-
-        /**
-         * @param {*} content
-         * @param {number} fieldName
-         * @returns {*}
-         * @private
-         */
-        _columnType: function(content, fieldName) {
-
-            var type = ui.api.existProperty(this._column, fieldName, false);
-
-            if (type) {
-
-            }
-
-            return content;
-        },
-
-        /**
-         * @param {{}} params
-         * @param {string} blockName {'head' | 'body' | 'foot'}
-         * @param {number} fieldName
-         * @returns {*}
-         * @private
-         */
-        _contentCell: function(params, blockName, fieldName) {
-
-            var content = ui.api.existProperty(params, 'content', params);
-
-            if (blockName == BLOCK_BODY) {
-
-                return this._columnType(content, fieldName);
-            }
-
-            return content;
-        },
-
-        /**
-         * @param {ui.Element} row
-         * @param {string} blockName
-         * @param {string} cellName
-         * @param {number} rowNum
-         * @returns {void}
-         */
-        _columnNumber: function(row, blockName, cellName, rowNum) {
-
-            if (!this._hideColumnNumber) {
-
-                var cell = new ui.Element(cellName)
-                    .addClassElement(ui.CSS.tableClass.rowNum);
-
-                if (blockName == BLOCK_HEAD && rowNum == 0) {
-
-                    var countRow = Object.keys(this._settings.thead).length;
-
-                    row.addChildAfter(
-                        cell.setContentElement(this._numCellTitle)
-                            .setAttrElement('onclick', 'new ui.SortTable(this).setSkinIcon("' + this._skin + '").sort(0);')
-                            .setAttrElement('rowspan', countRow)
-                            .getElement()
-                    );
-                } else if (blockName == BLOCK_BODY) {
-
-                    var reordID = ui.api.existProperty(this._settings.tbody[rowNum], this._fieldRecord, null);
-
-                    row.addChildAfter(
-                        cell
-                            .addChildAfter(
-                                new ui.Element('div')
-                                    .addClassElement(SORT_CONTENT)
-                                    .setContentElement(this._rowNum)
-                                    .setAttrElement('title', reordID)
-                                    .getElement()
-                            )
-                            .addChildAfter(
-                                new ui.Element('div')
-                                    .getElement()
-                            )
-                            .getElement()
-                    );
-
-                } else if (blockName == BLOCK_FOOT) {
-
-                    row.addChildAfter(
-                        cell.setContentElement(null).getElement()
-                    );
+            this._btnDefaultRightTop.push(
+                {
+                    type:     'button',
+                    name:     ui.Config.LIST_BTN_REMOVE,
+                    leftIcon: 'trash',
+                    skin:     'danger',
+                    onclick:  "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._remove();",
+                    disabled: true
                 }
-            }
-        },
-
-        /**
-         * @param {ui.Element} row
-         * @param {string} blockName
-         * @param {string} cellName
-         * @param {number} rowNum
-         * @returns {void}
-         */
-        _columnCheckbox: function(row, blockName, cellName, rowNum) {
-
-            if (!this._hideColumnCheckbox) {
-
-                var cell = new ui.Element(cellName)
-                    .addClassElement(ui.CSS.tableClass.rowNum);
-
-                var onclick = "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._choose(this);";
-
-                if (blockName == BLOCK_HEAD && rowNum == 0) {
-
-                    var countRow = Object.keys(this._settings.thead).length;
-
-                    row.addChildAfter(
-                        cell
-                            .addChildAfter(
-                                new ui.FFCheckbox('simple')
-                                    .setAttr(DATA_ACTION, CHOOSE_RECORDS)
-                                    .addCheckbox(null, CHOOSE_RECORDS, null, onclick)
-                                    .getElement()
-                            )
-                            .setAttrElement('rowspan', countRow)
-                            .getElement()
-                    );
-                } else if (blockName == BLOCK_BODY) {
-
-                    var reordID = ui.api.existProperty(this._settings.tbody[rowNum], this._fieldRecord, null);
-
-                    row.addChildAfter(
-                        cell
-                            .addChildAfter(
-                                new ui.FFCheckbox('simple')
-                                    .setAttr(DATA_RECORD_ID, reordID)
-                                    .setAttr(DATA_ACTION, CHOOSE_RECORD_ID)
-                                    .addCheckbox(reordID, this._fieldRecord + '[' + rowNum + ']', null, onclick)
-                                    .getElement()
-                            )
-                            .getElement()
-                    );
-
-                } else if (blockName == BLOCK_FOOT) {
-
-                    row.addChildAfter(
-                        cell.setContentElement(null).getElement()
-                    );
-                }
-            }
-        },
-
-        _remove: function() {
-
-            var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
-
-            var delObj = {};
-            var rowObj = [];
-
-            for (var i in checkboxRecord) {
-
-                if (typeof checkboxRecord[i] == 'object') {
-
-                    if (checkboxRecord[i].checked === true) {
-
-                        rowObj.push(checkboxRecord[i]);
-                        var value = checkboxRecord[i].getAttribute(DATA_RECORD_ID);
-                        var name = checkboxRecord[i].getAttribute('name');
-                        ui.api.buildObject(delObj, name, value, 0);
-                    }
-                }
-            }
-
-            var str = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE).getAttribute(DATA_JSON_TABLE);
-            var obj = JSON.parse(str);
-
-            for (var property in obj) {
-
-                this[property] = obj[property];
-            }
-
-            var curObj = this;
-
-            new ui.Ajax()
-                .setUrl(this._urlDel)
-                .setParams(delObj)
-                .addParam('action', ui.Config.ACTION_LIST_REMOVE)
-                .addParam('page', this._currentPage)
-                .addParam('max', this._maxRow)
-                .addCallbackFunction(function (e) {
-
-                    var obj = JSON.parse(e);
-
-                    if (obj.hasOwnProperty('data')) {
-
-                        curObj._replaceRows(obj.data);
-                        new ui.SortTable(null).updateSort('#' + curObj._idList);
-
-                    } else {
-
-                        for (var i in rowObj) {
-
-                            if (typeof rowObj[i] == 'object') {
-
-                                ui.api.findParent(rowObj[i], 'tr').remove();
-                            }
-                        }
-                    }
-                })
-                .send();
-        },
-
-        _replaceRows: function(data) {
-
-            var bodyDoc = document.body;
-            var table = bodyDoc.querySelector('#' + this._idList + ' table');
-            var body  = bodyDoc.querySelector('#' + this._idList + ' table>tbody');
-
-            var str = bodyDoc.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE).getAttribute(DATA_JSON_TABLE);
-            var obj = JSON.parse(str);
-
-            for (var property in obj) {
-
-                this[property] = obj[property];
-            }
-
-            this._settings.tbody = data;
-
-            table.insertBefore(this._buildBlock(BLOCK_BODY), body);
-            body ? body.remove() : null;
-
-            var ch = document.body.querySelector('input[' + DATA_ACTION + '="' + CHOOSE_RECORDS + '"]');
-            ch.checked ? ch.click() : null;
-
-            ui.api.disabledElement(
-                document.body.querySelector('button[name="' + ui.Config.LIST_BTN_REMOVE + '"]'),
-                true
             );
-        },
+        }
+    };
 
-        _choose: function(element) {
+    /**
+     * @param {string|null} typeBtn {'button'|'submit'}
+     * @param {string|null} name
+     * @param {string} icon
+     * @param {string|number} caption
+     * @param {string|null} onclick
+     * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
+     * @returns {ui.List}
+     */
+    ui.List.prototype.addButtonTopLeft = function(typeBtn, name, icon, caption, onclick, skin) {
 
-            var action = element.getAttribute(DATA_ACTION);
-            var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
-            var btnRemove = document.body.querySelector('#page-' + this._idList + ' button[name="' + ui.Config.LIST_BTN_REMOVE + '"]');
+        this._btnDefaultLeftTop.push(
+            {
+                type:     ui.api.empty(typeBtn, null),
+                name:     ui.api.empty(name, null),
+                leftIcon: ui.api.empty(icon, null),
+                caption:  ui.api.empty(caption, null),
+                skin:     ui.api.empty(skin, null),
+                onclick:  ui.api.empty(onclick, null)
+            }
+        );
 
-            var i = null;
+        return this;
+    };
 
-            var btnDisabled = false;
+    /**
+     * @param {string|null} typeBtn {'button'|'submit'}
+     * @param {string|null} name
+     * @param {string} icon
+     * @param {string|number} caption
+     * @param {string|null} onclick
+     * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
+     * @returns {ui.List}
+     */
+    ui.List.prototype.addButtonTopRight = function(typeBtn, name, icon, caption, onclick, skin) {
 
-            if (action == CHOOSE_RECORDS) {
+        this._btnDefaultRightTop.push(
+            {
+                type:     ui.api.empty(typeBtn, null),
+                name:     ui.api.empty(name, null),
+                leftIcon: ui.api.empty(icon, null),
+                caption:  ui.api.empty(caption, null),
+                skin:     ui.api.empty(skin, null),
+                onclick:  ui.api.empty(onclick, null)
+            }
+        );
 
-                if (checkboxRecord.length == 0) {
+        return this;
+    };
 
-                    btnDisabled = true;
+    /**
+     * @returns {*|Element}
+     * @private
+     */
+    ui.List.prototype._buildTable = function() {
+
+        var table = new ui.Element('table')
+            .addClassElement(ui.CSS.tableClass.table)
+            .addClassElement(ui.CSS.tableClass.responsive)
+            .addClassElement(ui.CSS.tableClass.hover)
+            .addClassElement(ui.CSS.tableClass.striped)
+            .addClassElement(this._typeTable);
+
+        table.addChildAfter(this._buildBlock(BLOCK_HEAD));
+        table.addChildAfter(this._buildBlock(BLOCK_BODY));
+        table.addChildAfter(this._buildBlock(BLOCK_FOOT));
+
+        return table.getElement();
+    };
+
+    /**
+     * @param {*} content
+     * @param {number} fieldName
+     * @returns {*}
+     * @private
+     */
+    ui.List.prototype._columnType = function(content, fieldName) {
+
+        var type = ui.api.existProperty(this._column, fieldName, false);
+
+        if (type) {
+
+        }
+
+        return content;
+    };
+
+    /**
+     * @param {{}} params
+     * @param {string} blockName {'head' | 'body' | 'foot'}
+     * @param {number} fieldName
+     * @returns {*}
+     * @private
+     */
+    ui.List.prototype._contentCell = function(params, blockName, fieldName) {
+
+        var content = ui.api.existProperty(params, 'content', params);
+
+        if (blockName == BLOCK_BODY) {
+
+            return this._columnType(content, fieldName);
+        }
+
+        return content;
+    };
+
+    /**
+     * @param {ui.Element} row
+     * @param {string} blockName
+     * @param {string} cellName
+     * @param {number} rowNum
+     * @returns {void}
+     */
+    ui.List.prototype._columnNumber = function(row, blockName, cellName, rowNum) {
+
+        if (!this._hideColumnNumber) {
+
+            var cell = new ui.Element(cellName)
+                .addClassElement(ui.CSS.tableClass.rowNum);
+
+            if (blockName == BLOCK_HEAD && rowNum == 0) {
+
+                var countRow = Object.keys(this._settings.thead).length;
+
+                row.addChildAfter(
+                    cell.setContentElement(this._numCellTitle)
+                        .setAttrElement('onclick', 'new ui.SortTable(this).setSkinIcon("' + this._skin + '").sort(0);')
+                        .setAttrElement('rowspan', countRow)
+                        .getElement()
+                );
+            } else if (blockName == BLOCK_BODY) {
+
+                var reordID = ui.api.existProperty(this._settings.tbody[rowNum], this._fieldRecord, null);
+
+                row.addChildAfter(
+                    cell
+                        .addChildAfter(
+                            new ui.Element('div')
+                                .addClassElement(SORT_CONTENT)
+                                .setContentElement(this._rowNum)
+                                .setAttrElement('title', reordID)
+                                .getElement()
+                        )
+                        .addChildAfter(
+                            new ui.Element('div')
+                                .getElement()
+                        )
+                        .getElement()
+                );
+
+            } else if (blockName == BLOCK_FOOT) {
+
+                row.addChildAfter(
+                    cell.setContentElement(null).getElement()
+                );
+            }
+        }
+    };
+
+    /**
+     * @param {ui.Element} row
+     * @param {string} blockName
+     * @param {string} cellName
+     * @param {number} rowNum
+     * @returns {void}
+     */
+    ui.List.prototype._columnCheckbox = function(row, blockName, cellName, rowNum) {
+
+        if (!this._hideColumnCheckbox) {
+
+            var cell = new ui.Element(cellName)
+                .addClassElement(ui.CSS.tableClass.rowNum);
+
+            var onclick = "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._choose(this);";
+
+            if (blockName == BLOCK_HEAD && rowNum == 0) {
+
+                var countRow = Object.keys(this._settings.thead).length;
+
+                row.addChildAfter(
+                    cell
+                        .addChildAfter(
+                            new ui.FFCheckbox('simple')
+                                .setAttr(DATA_ACTION, CHOOSE_RECORDS)
+                                .addCheckbox(null, CHOOSE_RECORDS, null, onclick)
+                                .getElement()
+                        )
+                        .setAttrElement('rowspan', countRow)
+                        .getElement()
+                );
+            } else if (blockName == BLOCK_BODY) {
+
+                var reordID = ui.api.existProperty(this._settings.tbody[rowNum], this._fieldRecord, null);
+
+                row.addChildAfter(
+                    cell
+                        .addChildAfter(
+                            new ui.FFCheckbox('simple')
+                                .setAttr(DATA_RECORD_ID, reordID)
+                                .setAttr(DATA_ACTION, CHOOSE_RECORD_ID)
+                                .addCheckbox(reordID, this._fieldRecord + '[' + rowNum + ']', null, onclick)
+                                .getElement()
+                        )
+                        .getElement()
+                );
+
+            } else if (blockName == BLOCK_FOOT) {
+
+                row.addChildAfter(
+                    cell.setContentElement(null).getElement()
+                );
+            }
+        }
+    };
+
+    ui.List.prototype._remove = function() {
+
+        var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
+
+        var delObj = {};
+        var rowObj = [];
+
+        for (var i in checkboxRecord) {
+
+            if (typeof checkboxRecord[i] == 'object') {
+
+                if (checkboxRecord[i].checked === true) {
+
+                    rowObj.push(checkboxRecord[i]);
+                    var value = checkboxRecord[i].getAttribute(DATA_RECORD_ID);
+                    var name = checkboxRecord[i].getAttribute('name');
+                    ui.api.buildObject(delObj, name, value, 0);
                 }
+            }
+        }
 
-                for (i in checkboxRecord) {
+        var str = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE).getAttribute(DATA_JSON_TABLE);
+        var obj = JSON.parse(str);
 
-                    if (typeof checkboxRecord[i] == 'object') {
+        for (var property in obj) {
 
-                        if (element.checked === false) {
+            this[property] = obj[property];
+        }
 
-                            btnDisabled = true;
-                            checkboxRecord[i].removeAttribute('checked');
-                            checkboxRecord[i].checked = false;
+        var curObj = this;
 
-                        } else {
+        new ui.Ajax()
+            .setUrl(this._urlDel)
+            .setParams(delObj)
+            .addParam('action', ui.Config.ACTION_LIST_REMOVE)
+            .addParam('page', this._currentPage)
+            .addParam('max', this._maxRow)
+            .addCallbackFunction(function (e) {
 
-                            checkboxRecord[i].setAttribute('checked', 'checked');
-                            checkboxRecord[i].checked = true;
-                        }
-                    }
-                }
-            } else if (action == CHOOSE_RECORD_ID) {
+                var obj = JSON.parse(e);
 
-                var checkboxChoose = document.body.querySelector('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORDS + '"]');
+                if (obj.hasOwnProperty('data')) {
 
-                var checked = 0;
-
-                for (i in checkboxRecord) {
-
-                    if (typeof checkboxRecord[i] == 'object' && checkboxRecord[i].checked === true) {
-
-                        checked++;
-                    }
-                }
-
-                if (element.checked === false) {
-
-                    checkboxChoose.removeAttribute('checked');
-                    checkboxChoose.checked = false;
-                    btnDisabled = (checked == 0)
+                    curObj._replaceRows(obj.data);
+                    new ui.SortTable(null).updateSort('#' + curObj._idList);
 
                 } else {
 
-                    if (checkboxRecord.length == checked) {
+                    for (var i in rowObj) {
 
-                        checkboxChoose.setAttribute('checked', 'checked');
-                        checkboxChoose.checked = true;
+                        if (typeof rowObj[i] == 'object') {
+
+                            ui.api.findParent(rowObj[i], 'tr').remove();
+                        }
+                    }
+                }
+            })
+            .send();
+    };
+
+    ui.List.prototype._replaceRows = function(data) {
+
+        var bodyDoc = document.body;
+        var table = bodyDoc.querySelector('#' + this._idList + ' table');
+        var body  = bodyDoc.querySelector('#' + this._idList + ' table>tbody');
+
+        var str = bodyDoc.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE).getAttribute(DATA_JSON_TABLE);
+        var obj = JSON.parse(str);
+
+        for (var property in obj) {
+
+            this[property] = obj[property];
+        }
+
+        this._settings.tbody = data;
+
+        table.insertBefore(this._buildBlock(BLOCK_BODY), body);
+        body ? body.remove() : null;
+
+        var ch = document.body.querySelector('input[' + DATA_ACTION + '="' + CHOOSE_RECORDS + '"]');
+        ch.checked ? ch.click() : null;
+
+        ui.api.disabledElement(
+            document.body.querySelector('button[name="' + ui.Config.LIST_BTN_REMOVE + '"]'),
+            true
+        );
+    };
+
+    ui.List.prototype._choose = function(element) {
+
+        var action = element.getAttribute(DATA_ACTION);
+        var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
+        var btnRemove = document.body.querySelector('#page-' + this._idList + ' button[name="' + ui.Config.LIST_BTN_REMOVE + '"]');
+
+        var i = null;
+
+        var btnDisabled = false;
+
+        if (action == CHOOSE_RECORDS) {
+
+            if (checkboxRecord.length == 0) {
+
+                btnDisabled = true;
+            }
+
+            for (i in checkboxRecord) {
+
+                if (typeof checkboxRecord[i] == 'object') {
+
+                    if (element.checked === false) {
+
+                        btnDisabled = true;
+                        checkboxRecord[i].removeAttribute('checked');
+                        checkboxRecord[i].checked = false;
+
+                    } else {
+
+                        checkboxRecord[i].setAttribute('checked', 'checked');
+                        checkboxRecord[i].checked = true;
                     }
                 }
             }
+        } else if (action == CHOOSE_RECORD_ID) {
 
-            ui.api.disabledElement(btnRemove, btnDisabled);
-        },
+            var checkboxChoose = document.body.querySelector('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORDS + '"]');
 
-        /**
-         * @param {{}} params
-         * @param {string} blockName {'head' | 'body' | 'foot'}
-         * @param {number} rowNum
-         * @returns {*|Element}
-         * @private
-         */
-        _buildRows: function(params, blockName, rowNum) {
+            var checked = 0;
 
-            var row = new ui.Element('tr');
-            var cellName = blockName == BLOCK_HEAD ? 'th' : 'td';
+            for (i in checkboxRecord) {
 
-            this._columnNumber(row, blockName, cellName, rowNum);
-            blockName == BLOCK_BODY ? this._rowNum++ : null;
+                if (typeof checkboxRecord[i] == 'object' && checkboxRecord[i].checked === true) {
 
-            var fieldName = null;
-
-            if (blockName == BLOCK_BODY) {
-
-                for (fieldName in this._column) {
-
-                    if (params.hasOwnProperty(fieldName)) {
-
-                        row.addChildAfter(
-                            new ui.Element(cellName)
-                                .setContentElement(this._columnType(params[fieldName], fieldName))
-                                .getElement()
-                        );
-                    }
+                    checked++;
                 }
+            }
+
+            if (element.checked === false) {
+
+                checkboxChoose.removeAttribute('checked');
+                checkboxChoose.checked = false;
+                btnDisabled = (checked == 0)
 
             } else {
 
-                var i = !this._hideColumnNumber ? 1 : 0;
+                if (checkboxRecord.length == checked) {
 
-                for (fieldName in params) {
+                    checkboxChoose.setAttribute('checked', 'checked');
+                    checkboxChoose.checked = true;
+                }
+            }
+        }
 
-                    var paramCell = params[fieldName];
+        ui.api.disabledElement(btnRemove, btnDisabled);
+    };
 
-                    var sort = ui.api.existProperty(paramCell, 'sort', false) ? 'new ui.SortTable(this).setSkinIcon("' + this._skin + '").sort(' + i + ');' : null;
+    /**
+     * @param {{}} params
+     * @param {string} blockName {'head' | 'body' | 'foot'}
+     * @param {number} rowNum
+     * @returns {*|Element}
+     * @private
+     */
+    ui.List.prototype._buildRows = function(params, blockName, rowNum) {
+
+        var row = new ui.Element('tr');
+        var cellName = blockName == BLOCK_HEAD ? 'th' : 'td';
+
+        this._columnNumber(row, blockName, cellName, rowNum);
+        blockName == BLOCK_BODY ? this._rowNum++ : null;
+
+        var fieldName = null;
+
+        if (blockName == BLOCK_BODY) {
+
+            for (fieldName in this._column) {
+
+                if (params.hasOwnProperty(fieldName)) {
 
                     row.addChildAfter(
                         new ui.Element(cellName)
-                            .setContentElement(this._contentCell(paramCell, blockName, fieldName))
-                            .setAttrElement('colspan', ui.api.existProperty(paramCell, 'colspan', 1))
-                            .setAttrElement('rowspan', ui.api.existProperty(paramCell, 'rowspan', 1))
-                            .setAttrElement('style', ui.api.existProperty(paramCell, 'style', null))
-                            .setWidthElement(ui.api.existProperty(paramCell, 'width', null))
-                            .setAttrElement('onclick', sort)
+                            .setContentElement(this._columnType(params[fieldName], fieldName))
                             .getElement()
                     );
-                    i++;
                 }
             }
 
-            this._columnCheckbox(row, blockName, cellName, rowNum);
+        } else {
 
-            return row.getElement();
-        },
+            var i = !this._hideColumnNumber ? 1 : 0;
 
-        /**
-         * @param {string} blockName {'head' | 'body' | 'foot'}
-         * @returns {*|Element}
-         * @private
-         */
-        _buildBlock: function(blockName) {
+            for (fieldName in params) {
 
-            var block = new ui.Element(blockName);
+                var paramCell = params[fieldName];
 
-            var i = 1;
+                var sort = ui.api.existProperty(paramCell, 'sort', false) ? 'new ui.SortTable(this).setSkinIcon("' + this._skin + '").sort(' + i + ');' : null;
 
-            for (var rowNum in this._settings[blockName]) {
-
-                block.addChildAfter(
-                    this._buildRows(this._settings[blockName][rowNum], blockName, rowNum)
+                row.addChildAfter(
+                    new ui.Element(cellName)
+                        .setContentElement(this._contentCell(paramCell, blockName, fieldName))
+                        .setAttrElement('colspan', ui.api.existProperty(paramCell, 'colspan', 1))
+                        .setAttrElement('rowspan', ui.api.existProperty(paramCell, 'rowspan', 1))
+                        .setAttrElement('style', ui.api.existProperty(paramCell, 'style', null))
+                        .setWidthElement(ui.api.existProperty(paramCell, 'width', null))
+                        .setAttrElement('onclick', sort)
+                        .getElement()
                 );
-
-                if (this._maxRow == i) {
-                    break;
-                }
-
                 i++;
             }
+        }
 
-            return block.getElement();
-        },
+        this._columnCheckbox(row, blockName, cellName, rowNum);
 
-        /**
-         * @returns {*|Element}
-         * @private
-         */
-        _blockHidden: function() {
+        return row.getElement();
+    };
 
-            var obj = {
-                _urlDel:  this._urlDel,
-                _column:  this._column,
-                _maxRow:  this._maxRow,
-                _urlAdd:  this._urlAdd,
-                _urlEdit: this._urlEdit,
-                _urlPage: this._urlPage,
-                _currentPage: this._currentPage,
-                _fieldRecord: this._fieldRecord,
-                _hideColumnCheckbox: this._hideColumnCheckbox,
-                _hideColumnNumber:   this._hideColumnNumber
-            };
+    /**
+     * @param {string} blockName {'head' | 'body' | 'foot'}
+     * @returns {*|Element}
+     * @private
+     */
+    ui.List.prototype._buildBlock = function(blockName) {
 
-            return new ui.Element('div')
-                .setAttrElement('hidden',  true)
-                .addClassElement(ui.CSS.formBlockHiddenClass)
-                .addChildAfter(
-                    new ui.Element('div')
-                        .setIdElement(DATA_JSON_TABLE, null)
-                        .setAttrElement(DATA_JSON_TABLE, JSON.stringify(obj))
+        var block = new ui.Element(blockName);
+
+        var i = 1;
+
+        for (var rowNum in this._settings[blockName]) {
+
+            block.addChildAfter(
+                this._buildRows(this._settings[blockName][rowNum], blockName, rowNum)
+            );
+
+            if (this._maxRow == i) {
+                break;
+            }
+
+            i++;
+        }
+
+        return block.getElement();
+    };
+
+    /**
+     * @returns {*|Element}
+     * @private
+     */
+    ui.List.prototype._blockHidden = function() {
+
+        var obj = {
+            _urlDel:  this._urlDel,
+            _column:  this._column,
+            _maxRow:  this._maxRow,
+            _urlAdd:  this._urlAdd,
+            _urlEdit: this._urlEdit,
+            _urlPage: this._urlPage,
+            _currentPage: this._currentPage,
+            _fieldRecord: this._fieldRecord,
+            _hideColumnCheckbox: this._hideColumnCheckbox,
+            _hideColumnNumber:   this._hideColumnNumber
+        };
+
+        return new ui.Element('div')
+            .setAttrElement('hidden',  true)
+            .addClassElement(ui.CSS.formBlockHiddenClass)
+            .addChildAfter(
+                new ui.Element('div')
+                    .setIdElement(DATA_JSON_TABLE, null)
+                    .setAttrElement(DATA_JSON_TABLE, JSON.stringify(obj))
+                    .getElement()
+            )
+            .getElement();
+    };
+
+    /**
+     * @returns {*|Element}
+     * @private
+     */
+    ui.List.prototype._buildPanel = function() {
+
+        var panel = new ui.Element('div')
+            .addClassElement(ui.CSS.panelClass.panel)
+            .addClassElement(ui.api.existProperty(ui.CSS.skinClass.panel, this._skin, ui.CSS.skinClass.panel.primary));
+
+        panel.addChildBefore(
+            new ui.Element('div')
+                .addClassElement(ui.CSS.panelClass.panelHead)
+                .addChildBefore(
+                    new ui.Element('h3')
+                        .addClassElement(ui.CSS.panelClass.panelTitle)
+                        .setContentElement('title')
                         .getElement()
                 )
-                .getElement();
-        },
+                .getElement()
+        );
 
-        /**
-         * @returns {*|Element}
-         * @private
-         */
-        _buildPanel: function() {
+        var onclick = "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._rebuild";
 
-            var panel = new ui.Element('div')
-                .addClassElement(ui.CSS.panelClass.panel)
-                .addClassElement(ui.api.existProperty(ui.CSS.skinClass.panel, this._skin, ui.CSS.skinClass.panel.primary));
+        ui.Form.prototype.setTitle('search', 'search');
 
-            panel.addChildBefore(
-                new ui.Element('div')
-                    .addClassElement(ui.CSS.panelClass.panelHead)
-                    .addChildBefore(
-                        new ui.Element('h3')
-                            .addClassElement(ui.CSS.panelClass.panelTitle)
-                            .setContentElement('title')
-                            .getElement()
-                    )
-                    .getElement()
+        this
+            .hideBtnBack(true)
+            .hideBtnClean(true)
+            .hideBtnRemove(true)
+            .hideBtnSave(true)
+            .setWidthCaption(2);
+
+        ui.Form.prototype
+            .setParentBlock('asdasd', 'id', {});
+
+        this.newLineParent()
+            .addTextField('surname', 'Фамилия', true)
+            .addTextField('user', 'Имя', true)
+            .addTextField('login', 'Логин', true)
+            .newLineParent()
+            .addTextField('surname', 'Фамилия', true)
+            .addDateField('user', 'Имя', true)
+            .addSelectField('login', 'Логин', [1, 2, 3], true);
+
+        console.log(
+            this._buildForm()
+            //this.getElement.apply(this, arguments)
+        );
+
+        //Animal.prototype.run.apply(this, arguments);
+        panel.addChildAfter(
+            new ui.Element('div')
+
+                .addClassElement(ui.CSS.panelClass.panelBody)
+                .addChildAfter(this._buildForm())
+                //.addChildAfter(
+                //    this._form
+                //        .setTitle('search', 'search')
+                //        .hideBtnBack(true)
+                //        .hideBtnClean(true)
+                //        .hideBtnRemove(true)
+                //        .hideBtnSave(true)
+                //        .setWidthCaption(2)
+                //        //.setParentBlock('asdasd', 'id', {})
+                //        .newLineParent()
+                //        .addTextField('surname', 'Фамилия', true)
+                //        .addTextField('user', 'Имя', true)
+                //        .addTextField('login', 'Логин', true)
+                //        .newLineParent()
+                //        .addTextField('surname', 'Фамилия', true)
+                //        .addDateField('user', 'Имя', true)
+                //        .addSelectField('login', 'Логин', [1, 2, 3], true)
+                //        .getElement()
+                //)
+                .getElement()
+        );
+
+        panel.addChildAfter(
+            new ui.Element('div')
+                .addClassElement(ui.CSS.panelClass.panelBody)
+                .addChildAfter(this._blockHidden())
+                .addChildAfter(this._buildTable())
+                .addChildAfter(
+                    new ui.Pagination()
+                        .setCountPages(20)
+                        .setCallbackFunction(onclick)
+                        .setSkin(this._skin)
+                        .setAjax()
+                        .getElement()
+                )
+                .getElement()
+        );
+
+        return panel.getElement();
+    };
+
+    ui.List.prototype._rebuild = function(element, page) {
+
+        var dataBlock = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE);
+        var str = dataBlock.getAttribute(DATA_JSON_TABLE);
+        var obj = JSON.parse(str);
+
+        for (var property in obj) {
+
+            this[property] = obj[property];
+        }
+
+        obj._currentPage = page;
+        dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(obj));
+
+        var curObj = this;
+
+        new ui.Ajax()
+            .setUrl(this._urlPage ? this._urlPage : window.location.href)
+            .addParam('action', ui.Config.ACTION_NEXT_PAGE)
+            .addParam('page', page)
+            .addCallbackFunction(function (e) {
+
+                var obj = JSON.parse(e);
+
+                if (obj.hasOwnProperty('data')) {
+
+                    curObj._replaceRows(obj.data);
+                    new ui.SortTable(null).updateSort('#' + curObj._idList);
+                }
+            })
+            .send();
+    };
+
+    /**
+     * Generate html List
+     * @returns {*|Element}
+     * @private
+     */
+    ui.List.prototype._buildList = function() {
+
+        var page = new ui.Page('page-' + this._idList)
+            .setTitle(this._title, this._titleSmall, null);
+
+        this._addDefaultLeftBtn();
+        this._addDefaultRightBtn();
+
+        var btnLeftTop = ui.api.arrayMerge(this._btnDefaultLeftTop, this._addBtnLeftTop);
+        var btnRightTop = ui.api.arrayMerge(this._btnDefaultRightTop, this._addBtnRightTop);
+
+        page.setHead(
+            new ui.Element('div')
+                .addClassElement(ui.CSS.newLine)
+                .addChildAfter(
+                    new ui.Element('div')
+                        .setWidthElement(6)
+                        .addChildAfter(
+                            new ui.FFButton()
+                                .addButtonList(btnLeftTop)
+                                .setPositionBlock(this._positionBtnLeftTop)
+                                .setActive()
+                                .setGroup('toolbar')
+                                .getElement()
+                        )
+                        .getElement()
+                )
+                .addChildAfter(
+                    new ui.Element('div')
+                        .setWidthElement(6)
+                        .addChildAfter(
+                            new ui.FFButton()
+                                .addButtonList(btnRightTop)
+                                .setPositionBlock(this._positionBtnRightTop)
+                                .setActive()
+                                .setGroup('toolbar')
+                                .getElement()
+                        )
+                        .getElement()
+                ).toHTML()
             );
 
-            var onclick = "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._rebuild";
+        page.setBody(
+            new ui.Element('div')
+                .setIdElement(this._idList, null)
+                .addChildAfter(this._buildPanel())
+                .toHTML()
+        );
 
-            panel.addChildAfter(
-                new ui.Element('div')
+        var btnBottom = ui.api.arrayMerge(this._btnDefaultBottom, this._addBtnBottom);
 
-                    .addClassElement(ui.CSS.panelClass.panelBody)
-                    .addChildAfter(
-                        this._form
-                            .setTitle('search', 'search')
-                            .hideBtnBack(true)
-                            .hideBtnClean(true)
-                            .hideBtnRemove(true)
-                            .hideBtnSave(true)
-                            .setWidthCaption(2)
-                            //.setParentBlock('asdasd', 'id', {})
-                            .newLineParent()
-                            .addTextField('surname', 'Фамилия', true)
-                            .addTextField('user', 'Имя', true)
-                            .addTextField('login', 'Логин', true)
-                            .newLineParent()
-                            .addTextField('surname', 'Фамилия', true)
-                            .addDateField('user', 'Имя', true)
-                            .addSelectField('login', 'Логин', [1, 2, 3], true)
-                            .getElement()
-                    )
-                    .getElement()
-            );
+        if (btnBottom.length > 0) {
 
-            panel.addChildAfter(
-                new ui.Element('div')
-                    .addClassElement(ui.CSS.panelClass.panelBody)
-                    .addChildAfter(this._blockHidden())
-                    .addChildAfter(this._buildTable())
-                    .addChildAfter(
-                        new ui.Pagination()
-                            .setCountPages(20)
-                            .setCallbackFunction(onclick)
-                            .setSkin(this._skin)
-                            .setAjax()
-                            .getElement()
-                    )
-                    .getElement()
-            );
-
-            return panel.getElement();
-        },
-
-        _rebuild: function(element, page) {
-
-            var dataBlock = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE);
-            var str = dataBlock.getAttribute(DATA_JSON_TABLE);
-            var obj = JSON.parse(str);
-
-            for (var property in obj) {
-
-                this[property] = obj[property];
-            }
-
-            obj._currentPage = page;
-            dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(obj));
-
-            var curObj = this;
-
-            new ui.Ajax()
-                .setUrl(this._urlPage ? this._urlPage : window.location.href)
-                .addParam('action', ui.Config.ACTION_NEXT_PAGE)
-                .addParam('page', page)
-                .addCallbackFunction(function (e) {
-
-                    var obj = JSON.parse(e);
-
-                    if (obj.hasOwnProperty('data')) {
-
-                        curObj._replaceRows(obj.data);
-                        new ui.SortTable(null).updateSort('#' + curObj._idList);
-                    }
-                })
-                .send();
-        },
-
-        /**
-         * Generate html List
-         * @returns {*|Element}
-         * @private
-         */
-        _buildList: function() {
-
-            var page = new ui.Page('page-' + this._idList)
-                .setTitle(this._title, this._titleSmall, null);
-
-            this._addDefaultLeftBtn();
-            this._addDefaultRightBtn();
-
-            var btnLeftTop = ui.api.arrayMerge(this._btnDefaultLeftTop, this._addBtnLeftTop);
-            var btnRightTop = ui.api.arrayMerge(this._btnDefaultRightTop, this._addBtnRightTop);
-
-            page.setHead(
-                new ui.Element('div')
-                    .addClassElement(ui.CSS.newLine)
-                    .addChildAfter(
-                        new ui.Element('div')
-                            .setWidthElement(6)
-                            .addChildAfter(
-                                new ui.FFButton()
-                                    .addButtonList(btnLeftTop)
-                                    .setPositionBlock(this._positionBtnLeftTop)
-                                    .setActive()
-                                    .setGroup('toolbar')
-                                    .getElement()
-                            )
-                            .getElement()
-                    )
-                    .addChildAfter(
-                        new ui.Element('div')
-                            .setWidthElement(6)
-                            .addChildAfter(
-                                new ui.FFButton()
-                                    .addButtonList(btnRightTop)
-                                    .setPositionBlock(this._positionBtnRightTop)
-                                    .setActive()
-                                    .setGroup('toolbar')
-                                    .getElement()
-                            )
-                            .getElement()
-                    ).toHTML()
-                );
-
-            page.setBody(
-                new ui.Element('div')
-                    .setIdElement(this._idList, null)
-                    .addChildAfter(this._buildPanel())
+            page.setFooter(
+                new ui.FFButton()
+                    .addButtonList(btnBottom)
+                    .setPositionBlock(this._positionBtnBottom)
+                    .setPaddingBlock('lg')
+                    .setActive()
+                    .setGroup('toolbar')
                     .toHTML()
             );
-
-            var btnBottom = ui.api.arrayMerge(this._btnDefaultBottom, this._addBtnBottom);
-
-            if (btnBottom.length > 0) {
-
-                page.setFooter(
-                    new ui.FFButton()
-                        .addButtonList(btnBottom)
-                        .setPositionBlock(this._positionBtnBottom)
-                        .setPaddingBlock('lg')
-                        .setActive()
-                        .setGroup('toolbar')
-                        .toHTML()
-                );
-            }
-
-            return page.getElement();
-        },
-
-        /**
-         * @param {string} name
-         * @param {string|null} type
-         * @returns {ui.List}
-         */
-        addColumn: function(name, type) {
-
-            this._column[name] = ui.api.empty(type, null);
-            return this;
-        },
-
-        /**
-         * @param {string|null} title
-         * @param {string|null} titleSmall
-         * @returns {ui.List}
-         */
-        setTitle: function(title, titleSmall) {
-
-            this._title = ui.api.empty(title, null);
-            this._titleSmall = ui.api.empty(titleSmall, null);
-            return this;
-        },
-
-        /**
-         * @param {string} link
-         * @returns {ui.List}
-         */
-        setLinkEdit: function(link) {
-
-            this._urlEdit = link;
-            return this;
-        },
-
-        /**
-         * @param {string} link
-         * @returns {ui.List}
-         */
-        setLinkAdd: function(link) {
-
-            this._urlAdd = link;
-            return this;
-        },
-
-        /**
-         * @param {string} link
-         * @returns {ui.List}
-         */
-        setLinkDel: function(link) {
-
-            this._urlDel = link;
-            return this;
-        },
-
-        /**
-         * @param {string} link
-         * @returns {ui.List}
-         */
-        setLinkPagination: function(link) {
-
-            this._urlPage = link;
-            return this;
-        },
-
-        /**
-         * @param {string} skin {'default'|'primary'|'success'|'warning'|'danger'|'info'|'muted'}
-         * @returns {ui.List}
-         */
-        setSkin: function(skin) {
-
-            this._skin = skin;
-            return this;
-        },
-
-        /**
-         * @param {string} skin {'striped'|'bordered'|'default'}
-         * @returns {ui.List}
-         */
-        setTypeTable: function(skin) {
-
-            this._typeTable = ui.api.existProperty(ui.CSS.tableClass.skin, skin, null);
-            return this;
-        },
-
-        /**
-         * @param {string} url
-         * @returns {ui.List}
-         */
-        setUrlBack: function(url) {
-
-            this._urlBack = url;
-            return this
-        },
-
-        /**
-         * @returns {ui.List}
-         */
-        newRowHead: function() {
-
-            this._settings.thead.push([]);
-
-            this._lastSetting.block = BLOCK_HEAD;
-            this._lastSetting.row   = Object.keys(this._settings.thead).length;
-
-            return this;
-        },
-
-        /**
-         * @returns {ui.List}
-         */
-        newRowBody: function() {
-
-            this._settings.tbody.push([]);
-            this._lastSetting.block = BLOCK_BODY;
-            this._lastSetting.row   = Object.keys(this._settings.tbody).length;
-
-            return this;
-        },
-
-        /**
-         * @param {[]|{}} object
-         * @returns {ui.List}
-         */
-        addRowsBody: function(object) {
-
-            for (var i in object) {
-
-                this._settings.tbody.push(object[i]);
-            }
-
-            return this;
-        },
-
-        /**
-         * @returns {ui.List}
-         */
-        newRowFoot: function() {
-
-            this._settings.tfoot.push([]);
-
-            this._lastSetting.block = BLOCK_FOOT;
-            this._lastSetting.row   = Object.keys(this._settings.tfoot).length;
-
-            return this;
-        },
-
-        /**
-         * @param {string|number} content
-         * @param {number} colspan
-         * @param {number} rowspan
-         * @param {boolean} sort
-         * @param {string|number|null} width
-         * @param {string|null} style
-         * @returns {ui.List}
-         */
-        addCellHead: function(content, colspan, rowspan, sort, width, style) {
-
-            var block = this._lastSetting.block;
-            var row   = this._lastSetting.row - 1;
-
-            this._settings[block][row].push(
-                {
-                    sort:    sort,
-                    width:   width,
-                    style:   style,
-                    content: content,
-                    rowspan: rowspan,
-                    colspan: colspan
-                }
-            );
-
-            return this;
-        },
-
-        /**
-         * @param {string|number} content
-         * @param {number} colspan
-         * @param {number} rowspan
-         * @returns {ui.List}
-         */
-        addCell: function(content, colspan, rowspan) {
-
-            var block = this._lastSetting.block;
-            var row   = this._lastSetting.row - 1;
-
-            this._settings[block][row].push(
-                {
-                    content: content,
-                    rowspan: rowspan,
-                    colspan: colspan
-                }
-            );
-
-            return this;
-        },
-
-        /**
-         * @param {boolean} hide
-         * @returns {ui.List}
-         */
-        hideBtnRemove: function(hide) {
-
-            this._btnRemove = ui.api.empty(hide, true);
-            return this;
-        },
-
-        /**
-         * @param {boolean} hide
-         * @returns {ui.List}
-         */
-        hideBtnBack: function(hide) {
-
-            this._hideBtn._btnBack = ui.api.empty(hide, true);
-            return this;
-        },
-
-        /**
-         * @param {boolean} hide
-         * @returns {ui.List}
-         */
-        hideColumnNumber: function(hide) {
-
-            this._hideColumnNumber = ui.api.empty(hide, true);
-            return this;
-        },
-
-        /**
-         * @param {boolean} hide
-         * @returns {ui.List}
-         */
-        hideColumnCheckbox: function(hide) {
-
-            this._hideColumnCheckbox = ui.api.empty(hide, true);
-            return this;
-        },
-
-        /**
-         * Get object current element
-         * @returns {*|Element}
-         * @public
-         */
-        getElement: function() {
-
-            return this._buildList();
-        },
-
-        /**
-         * Get html current element
-         * @returns {string}
-         * @public
-         */
-        toHTML: function() {
-
-            return this._buildList().outerHTML;
-        },
-
-        /**
-         * Add element in document
-         * @param {string} selector
-         * @returns {ui.List}
-         * @public
-         */
-        appendHTML: function(selector) {
-
-            //, ui.Form().prototype.getElement().apply()
-            //console.log(ui.Form.apply(this, arguments));
-            //console.log(instanceof ui.Form);
-            new ui.$(selector).append(this.getElement());
-            return this;
         }
+
+        return page.getElement();
+    };
+
+    /**
+     * @param {string} name
+     * @param {string|null} type
+     * @returns {ui.List}
+     */
+    ui.List.prototype.addColumn = function(name, type) {
+
+        this._column[name] = ui.api.empty(type, null);
+        return this;
+    };
+
+    /**
+     * @param {string|null} title
+     * @param {string|null} titleSmall
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setTitle = function(title, titleSmall) {
+
+        this._title = ui.api.empty(title, null);
+        this._titleSmall = ui.api.empty(titleSmall, null);
+        return this;
+    };
+
+    /**
+     * @param {string} link
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setLinkEdit = function(link) {
+
+        this._urlEdit = link;
+        return this;
+    };
+
+    /**
+     * @param {string} link
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setLinkAdd = function(link) {
+
+        this._urlAdd = link;
+        return this;
+    };
+
+    /**
+     * @param {string} link
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setLinkDel = function(link) {
+
+        this._urlDel = link;
+        return this;
+    };
+
+    /**
+     * @param {string} link
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setLinkPagination = function(link) {
+
+        this._urlPage = link;
+        return this;
+    };
+
+    /**
+     * @param {string} skin {'default'|'primary'|'success'|'warning'|'danger'|'info'|'muted'}
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setSkin = function(skin) {
+
+        this._skin = skin;
+        return this;
+    };
+
+    /**
+     * @param {string} skin {'striped'|'bordered'|'default'}
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setTypeTable = function(skin) {
+
+        this._typeTable = ui.api.existProperty(ui.CSS.tableClass.skin, skin, null);
+        return this;
+    };
+
+    /**
+     * @param {string} url
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setUrlBack = function(url) {
+
+        this._urlBack = url;
+        return this
+    };
+
+    /**
+     * @returns {ui.List}
+     */
+    ui.List.prototype.newRowHead = function() {
+
+        this._settings.thead.push([]);
+
+        this._lastSetting.block = BLOCK_HEAD;
+        this._lastSetting.row   = Object.keys(this._settings.thead).length;
+
+        return this;
+    };
+
+    /**
+     * @returns {ui.List}
+     */
+    ui.List.prototype.newRowBody = function() {
+
+        this._settings.tbody.push([]);
+        this._lastSetting.block = BLOCK_BODY;
+        this._lastSetting.row   = Object.keys(this._settings.tbody).length;
+
+        return this;
+    };
+
+    /**
+     * @param {[]|{}} object
+     * @returns {ui.List}
+     */
+    ui.List.prototype.addRowsBody = function(object) {
+
+        for (var i in object) {
+
+            this._settings.tbody.push(object[i]);
+        }
+
+        return this;
+    };
+
+    /**
+     * @returns {ui.List}
+     */
+    ui.List.prototype.newRowFoot = function() {
+
+        this._settings.tfoot.push([]);
+
+        this._lastSetting.block = BLOCK_FOOT;
+        this._lastSetting.row   = Object.keys(this._settings.tfoot).length;
+
+        return this;
+    };
+
+    /**
+     * @param {string|number} content
+     * @param {number} colspan
+     * @param {number} rowspan
+     * @param {boolean} sort
+     * @param {string|number|null} width
+     * @param {string|null} style
+     * @returns {ui.List}
+     */
+    ui.List.prototype.addCellHead = function(content, colspan, rowspan, sort, width, style) {
+
+        var block = this._lastSetting.block;
+        var row   = this._lastSetting.row - 1;
+
+        this._settings[block][row].push(
+            {
+                sort:    sort,
+                width:   width,
+                style:   style,
+                content: content,
+                rowspan: rowspan,
+                colspan: colspan
+            }
+        );
+
+        return this;
+    };
+
+    /**
+     * @param {string|number} content
+     * @param {number} colspan
+     * @param {number} rowspan
+     * @returns {ui.List}
+     */
+    ui.List.prototype.addCell = function(content, colspan, rowspan) {
+
+        var block = this._lastSetting.block;
+        var row   = this._lastSetting.row - 1;
+
+        this._settings[block][row].push(
+            {
+                content: content,
+                rowspan: rowspan,
+                colspan: colspan
+            }
+        );
+
+        return this;
+    };
+
+    /**
+     * @param {boolean} hide
+     * @returns {ui.List}
+     */
+    ui.List.prototype.hideBtnRemove = function(hide) {
+
+        this._btnRemove = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
+     * @param {boolean} hide
+     * @returns {ui.List}
+     */
+    ui.List.prototype.hideBtnBack = function(hide) {
+
+        this._hideBtn._btnBack = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
+     * @param {boolean} hide
+     * @returns {ui.List}
+     */
+    ui.List.prototype.hideColumnNumber = function(hide) {
+
+        this._hideColumnNumber = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
+     * @param {boolean} hide
+     * @returns {ui.List}
+     */
+    ui.List.prototype.hideColumnCheckbox = function(hide) {
+
+        this._hideColumnCheckbox = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
+     * Get object current element
+     * @returns {*|Element}
+     * @public
+     */
+    ui.List.prototype.getElement = function() {
+
+        return this._buildList();
+    };
+
+    /**
+     * Get html current element
+     * @returns {string}
+     * @public
+     */
+    ui.List.prototype.toHTML = function() {
+
+        return this._buildList().outerHTML;
+    };
+
+    /**
+     * Add element in document
+     * @param {string} selector
+     * @returns {ui.List}
+     * @public
+     */
+    ui.List.prototype.appendHTML = function(selector) {
+
+        //, ui.Form().prototype.getElement().apply()
+        //console.log(ui.Form.apply(this, arguments));
+        //console.log(instanceof ui.Form);
+        new ui.$(selector).append(this.getElement());
+        return this;
     };
 } (window.ui || {}));
