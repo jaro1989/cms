@@ -476,7 +476,7 @@
      */
     ui.Form = function (idForm) {
 
-        //ui.HtmlFields.apply(this, arguments);
+        ui.HtmlFields.apply(this, arguments);
 
         /**
          * @type {{}}
@@ -535,9 +535,9 @@
         this._positionBtnBottom = 'right';
         this._paddingRelateBlock = 'xs';
         this._idRecord =   '';
-        this._title =      null;
-        this._titleSmall = null;
-        this._skinPanel = ui.CSS.skinClass.panel.primary;
+        this._titleForm =      null;
+        this._titleFormSmall = null;
+        this._skinPanel = 'primary';
         this._paddingPanels = 'xs';
         this._paddingChildrenPanel = 'sm';
         this._method = ui.Config.defaultMethodForm;
@@ -552,6 +552,15 @@
     ui.Form.prototype = Object.create(ui.HtmlFields.prototype);
 
     ui.Form.prototype.constructor = ui.Form;
+
+    /**
+     * @param {string} skin {'default'|'primary'|'success'|'warning'|'danger'|'info'|'muted'}
+     * @returns {ui.Form}
+     */
+    ui.Form.prototype.setSkin = function(skin) {
+        this._skinPanel = skin;
+        return this;
+    };
 
     /**
      * @private
@@ -716,7 +725,7 @@
 
         var panel = new ui.Element('div')
             .addClassElement(ui.CSS.panelClass.panel)
-            .addClassElement(this._skinPanel);
+            .setSkinElement('panel', this._skinPanel);
 
         if (ui.api.empty(title, false)) {
 
@@ -811,7 +820,6 @@
         var fields = rowClone.querySelectorAll('input, textarea, select');
 
         var key = null;
-
         var object_name = parentBlock.getAttribute(_DATA_OBJECT_CH);
         var lastRow = parentBlock.getAttribute(_DATA_LAST_ROW_CH);
 
@@ -987,11 +995,14 @@
             }
         }
 
-        blockRows
-            .addChildAfter(
-                new ui.Element('hr')
-                    .getElement()
-            );
+        if (key_record) {
+
+            blockRows
+                .addChildAfter(
+                    new ui.Element('hr')
+                        .getElement()
+                );
+        }
 
         return blockRows.getElement();
     };
@@ -1131,8 +1142,8 @@
 
         this._addDefaultBtn();
 
-        var page = new ui.Page()
-            .setTitle(this._title, this._titleSmall, null);
+        var page = new ui.Page(null)
+            .setTitle(this._titleForm, this._titleFormSmall, null);
 
         var btnTop = ui.api.arrayMerge(this._btnDefaultTop, this._addBtnTop);
 
@@ -1322,8 +1333,8 @@
      */
     ui.Form.prototype.setTitle = function(title, titleSmall) {
 
-        this._title = ui.api.empty(title, null);
-        this._titleSmall = ui.api.empty(titleSmall, null);
+        this._titleForm = ui.api.empty(title, null);
+        this._titleFormSmall = ui.api.empty(titleSmall, null);
         return this;
     };
 

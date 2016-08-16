@@ -6,7 +6,7 @@
         /**
          * @memberOf ui
          * @namespace ui.Page
-         * @param {string} idPage
+         * @param {string|null} idPage
          * @constructor
          */
         ui.Page = function (idPage) {

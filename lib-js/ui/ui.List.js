@@ -37,7 +37,7 @@
         this._hideBtn = {
             _btnBack:   false
         };
-        this._settings = {
+        this._settingsList = {
             thead: [],
             tbody: [],
             tfoot: []
@@ -51,8 +51,8 @@
         this._columnTypeData = {};
         this._column = {};
         this._parentRecords = [];
-        this._title = null;
-        this._titleSmall = null;
+        this._titleList = null;
+        this._titleListSmall = null;
         this._urlBack = document.referrer;
         this._positionBtnLeftTop ='left';
         this._positionBtnRightTop = 'right';
@@ -79,6 +79,15 @@
     ui.List.prototype = Object.create(ui.Form.prototype);
 
     ui.List.prototype.constructor = ui.List;
+
+    /**
+     * @returns {ui.List}
+     */
+    ui.List.prototype.newLineSearchFields = function() {
+
+        ui.Form.prototype.newLineParent.apply(this, arguments);
+        return this;
+    };
 
     /**
      * @param {number} max
@@ -267,7 +276,7 @@
 
             if (blockName == BLOCK_HEAD && rowNum == 0) {
 
-                var countRow = Object.keys(this._settings.thead).length;
+                var countRow = Object.keys(this._settingsList.thead).length;
 
                 row.addChildAfter(
                     cell.setContentElement(this._numCellTitle)
@@ -277,7 +286,7 @@
                 );
             } else if (blockName == BLOCK_BODY) {
 
-                var reordID = ui.api.existProperty(this._settings.tbody[rowNum], this._fieldRecord, null);
+                var reordID = ui.api.existProperty(this._settingsList.tbody[rowNum], this._fieldRecord, null);
 
                 row.addChildAfter(
                     cell
@@ -322,7 +331,7 @@
 
             if (blockName == BLOCK_HEAD && rowNum == 0) {
 
-                var countRow = Object.keys(this._settings.thead).length;
+                var countRow = Object.keys(this._settingsList.thead).length;
 
                 row.addChildAfter(
                     cell
@@ -337,7 +346,7 @@
                 );
             } else if (blockName == BLOCK_BODY) {
 
-                var reordID = ui.api.existProperty(this._settings.tbody[rowNum], this._fieldRecord, null);
+                var reordID = ui.api.existProperty(this._settingsList.tbody[rowNum], this._fieldRecord, null);
 
                 row.addChildAfter(
                     cell
@@ -434,7 +443,7 @@
             this[property] = obj[property];
         }
 
-        this._settings.tbody = data;
+        this._settingsList.tbody = data;
 
         table.insertBefore(this._buildBlock(BLOCK_BODY), body);
         body ? body.remove() : null;
@@ -586,10 +595,10 @@
 
         var i = 1;
 
-        for (var rowNum in this._settings[blockName]) {
+        for (var rowNum in this._settingsList[blockName]) {
 
             block.addChildAfter(
-                this._buildRows(this._settings[blockName][rowNum], blockName, rowNum)
+                this._buildRows(this._settingsList[blockName][rowNum], blockName, rowNum)
             );
 
             if (this._maxRow == i) {
@@ -657,59 +666,7 @@
 
         var onclick = "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._rebuild";
 
-        ui.Form.prototype.setTitle.apply(this, ['search', 'search']);
-
-        this
-            .hideBtnBack(true)
-            .hideBtnClean(true)
-            .hideBtnRemove(true)
-            .hideBtnSave(true)
-            .setWidthCaption(2);
-
-        ui.Form.prototype
-            .setParentBlock('asdasd', 'id', {});
-
-        this.newLineParent()
-            .addTextField('surname', 'Фамилия', true)
-            .addTextField('user', 'Имя', true)
-            .addTextField('login', 'Логин', true)
-            .newLineParent()
-            .addTextField('surname', 'Фамилия', true)
-            .addDateField('user', 'Имя', true)
-            .addSelectField('login', 'Логин', [1, 2, 3], true);
-
-        console.log(
-            //this._buildForm()
-            //this.getElement.apply(this, arguments)
-        );
-
-        //Animal.prototype.run.apply(this, arguments);
-        panel.addChildAfter(
-            new ui.Element('div')
-
-                .addClassElement(ui.CSS.panelClass.panelBody)
-                .addChildAfter(this._buildForm())
-                //.addChildAfter(
-                //    this._form
-                //        .setTitle('search', 'search')
-                //        .hideBtnBack(true)
-                //        .hideBtnClean(true)
-                //        .hideBtnRemove(true)
-                //        .hideBtnSave(true)
-                //        .setWidthCaption(2)
-                //        //.setParentBlock('asdasd', 'id', {})
-                //        .newLineParent()
-                //        .addTextField('surname', 'Фамилия', true)
-                //        .addTextField('user', 'Имя', true)
-                //        .addTextField('login', 'Логин', true)
-                //        .newLineParent()
-                //        .addTextField('surname', 'Фамилия', true)
-                //        .addDateField('user', 'Имя', true)
-                //        .addSelectField('login', 'Логин', [1, 2, 3], true)
-                //        .getElement()
-                //)
-                .getElement()
-        );
+        this._buildSearchForm(panel);
 
         panel.addChildAfter(
             new ui.Element('div')
@@ -728,6 +685,30 @@
         );
 
         return panel.getElement();
+    };
+
+    /**
+     * @param {ui.Element} panel
+     * @private
+     */
+    ui.List.prototype._buildSearchForm = function(panel) {
+
+        if ('block_rows' in this._settings) {
+
+            panel.addChildAfter(
+                new ui.Element('div')
+                    .addClassElement(ui.CSS.panelClass.panelBody)
+                    .addChildAfter(
+                        this
+                            .hideBtnBack(true)
+                            .hideBtnClean(false)
+                            .hideBtnRemove(true)
+                            .hideBtnSave(false)
+                            ._buildForm()
+                    )
+                    .getElement()
+            );
+        }
     };
 
     ui.List.prototype._rebuild = function(element, page) {
@@ -771,7 +752,7 @@
     ui.List.prototype._buildList = function() {
 
         var page = new ui.Page('page-' + this._idList)
-            .setTitle(this._title, this._titleSmall, null);
+            .setTitle(this._titleList, this._titleListSmall, null);
 
         this._addDefaultLeftBtn();
         this._addDefaultRightBtn();
@@ -841,7 +822,6 @@
      * @returns {ui.List}
      */
     ui.List.prototype.addColumn = function(name, type) {
-
         this._column[name] = ui.api.empty(type, null);
         return this;
     };
@@ -852,9 +832,18 @@
      * @returns {ui.List}
      */
     ui.List.prototype.setTitle = function(title, titleSmall) {
+        this._titleList = ui.api.empty(title, null);
+        this._titleListSmall = ui.api.empty(titleSmall, null);
+        return this;
+    };
 
-        this._title = ui.api.empty(title, null);
-        this._titleSmall = ui.api.empty(titleSmall, null);
+    /**
+     * @param {string|null} title
+     * @param {string|null} titleSmall
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setTitleSearch = function(title, titleSmall) {
+        ui.Form.prototype.setTitle.apply(this, arguments);
         return this;
     };
 
@@ -863,7 +852,6 @@
      * @returns {ui.List}
      */
     ui.List.prototype.setLinkEdit = function(link) {
-
         this._urlEdit = link;
         return this;
     };
@@ -873,7 +861,6 @@
      * @returns {ui.List}
      */
     ui.List.prototype.setLinkAdd = function(link) {
-
         this._urlAdd = link;
         return this;
     };
@@ -883,7 +870,6 @@
      * @returns {ui.List}
      */
     ui.List.prototype.setLinkDel = function(link) {
-
         this._urlDel = link;
         return this;
     };
@@ -893,7 +879,6 @@
      * @returns {ui.List}
      */
     ui.List.prototype.setLinkPagination = function(link) {
-
         this._urlPage = link;
         return this;
     };
@@ -903,8 +888,16 @@
      * @returns {ui.List}
      */
     ui.List.prototype.setSkin = function(skin) {
-
         this._skin = skin;
+        return this;
+    };
+
+    /**
+     * @param {string} skin {'default'|'primary'|'success'|'warning'|'danger'|'info'|'muted'}
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setSkinBlockSearch = function(skin) {
+        ui.Form.prototype.setSkin.apply(this, arguments);
         return this;
     };
 
@@ -913,7 +906,6 @@
      * @returns {ui.List}
      */
     ui.List.prototype.setTypeTable = function(skin) {
-
         this._typeTable = ui.api.existProperty(ui.CSS.tableClass.skin, skin, null);
         return this;
     };
@@ -923,7 +915,6 @@
      * @returns {ui.List}
      */
     ui.List.prototype.setUrlBack = function(url) {
-
         this._urlBack = url;
         return this
     };
@@ -932,12 +923,9 @@
      * @returns {ui.List}
      */
     ui.List.prototype.newRowHead = function() {
-
-        this._settings.thead.push([]);
-
+        this._settingsList.thead.push([]);
         this._lastSetting.block = BLOCK_HEAD;
-        this._lastSetting.row   = Object.keys(this._settings.thead).length;
-
+        this._lastSetting.row   = Object.keys(this._settingsList.thead).length;
         return this;
     };
 
@@ -945,11 +933,9 @@
      * @returns {ui.List}
      */
     ui.List.prototype.newRowBody = function() {
-
-        this._settings.tbody.push([]);
+        this._settingsList.tbody.push([]);
         this._lastSetting.block = BLOCK_BODY;
-        this._lastSetting.row   = Object.keys(this._settings.tbody).length;
-
+        this._lastSetting.row   = Object.keys(this._settingsList.tbody).length;
         return this;
     };
 
@@ -961,7 +947,7 @@
 
         for (var i in object) {
 
-            this._settings.tbody.push(object[i]);
+            this._settingsList.tbody.push(object[i]);
         }
 
         return this;
@@ -971,12 +957,9 @@
      * @returns {ui.List}
      */
     ui.List.prototype.newRowFoot = function() {
-
-        this._settings.tfoot.push([]);
-
+        this._settingsList.tfoot.push([]);
         this._lastSetting.block = BLOCK_FOOT;
-        this._lastSetting.row   = Object.keys(this._settings.tfoot).length;
-
+        this._lastSetting.row   = Object.keys(this._settingsList.tfoot).length;
         return this;
     };
 
@@ -994,7 +977,7 @@
         var block = this._lastSetting.block;
         var row   = this._lastSetting.row - 1;
 
-        this._settings[block][row].push(
+        this._settingsList[block][row].push(
             {
                 sort:    sort,
                 width:   width,
@@ -1019,7 +1002,7 @@
         var block = this._lastSetting.block;
         var row   = this._lastSetting.row - 1;
 
-        this._settings[block][row].push(
+        this._settingsList[block][row].push(
             {
                 content: content,
                 rowspan: rowspan,

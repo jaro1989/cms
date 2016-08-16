@@ -15,15 +15,36 @@ for (var i =0; i <500; i++) {
 }
 
     new ui.List('id', 'list-user')
-
-        .newLineParent()
-        .addTextareaField('description_kr', 'Краткое описание', true, 200)
+        .setSkinBlockSearch('default')
+        .setTitleSearch('Search user', 'search')
+        .setParentBlock(
+            'Search user',
+            null,
+            {
+                description_kr1: 'Киселев',
+                description_kr2: 'Валерий',
+                description_kr3: 'Александрович',
+                description_kr4: 'Оптимизация, о которой здесь идёт речь, важна в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.Оптимизация, о которой здесь идёт речь, важна в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.Оптимизация, о которой здесь идёт речь, важна в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.Оптимизация, о которой здесь идёт речь, важна в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.',
+                description_kr5: 'Его «Фишка» заключается в том, что когда DocumentFragment вставляется в DOM – то он исчезает, а вместо него вставляются его дети. Это свойство является уникальной особенностью DocumentFragment.',
+                description_kr6: '1xvx1@mail.ru'
+            }
+        )
+        .newLineSearchFields()
+        .addTextareaField('description_kr1', 'Краткое описание1', true, 50)
+        .addTextareaField('description_kr2', 'Краткое описание2', true, 50)
+        .addTextareaField('description_kr3', 'Краткое описание3', true, 50)
+        .newLineSearchFields()
+        .addTextareaField('description_kr4', 'Краткое описание1', true, 50)
+        .addTextareaField('description_kr5', 'Краткое описание2', true, 50)
+        .addTextareaField('description_kr6', 'Краткое описание3', true, 50)
 
         .setLinkEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
         .setLinkAdd('http://symfony.cms/lib-js/ui/example/index.html?page=form')
         .setLinkDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setLinkPagination('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setTitle('List user', 'description user')
+
+
         .setTypeTable('bordered')
         .hideColumnNumber(false)
         .hideColumnCheckbox(false)
@@ -51,35 +72,35 @@ for (var i =0; i <500; i++) {
 
         .appendHTML(APPEND_ELEMENT);
 
-    new ui.List('id', 'list-users')
-        .setLinkEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
-        .setLinkAdd('http://symfony.cms/lib-js/ui/example/index.html?page=form')
-        .setLinkDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
-        .setLinkPagination('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
-        //.setTitle('List user', 'description user')
-        .setSkin('default')
-        .setTypeTable('default')
-        .hideBtnBack(true)
-        .setMaxRow(10)
-        .hideColumnNumber(true)
-        .hideColumnCheckbox(true)
-
-        .newRowHead()
-        .addCellHead('Тестовые данные HEADER', 1, 1, false, 2, null)
-        .addCellHead('Тестовые данные HEADER', 1, 1, false, 3, null)
-        .addCellHead('Тестовые данные HEADER', 1, 1, false, 5, null)
-        .addCellHead('Тестовые данные HEADER', 1, 1, false, 2, null)
-
-        .addColumn('name2', null)
-        .addColumn('name3', null)
-        .addColumn('name4', null)
-        .addColumn('name5', null)
-
-        .addRowsBody(dataTest)
-
-        .newRowFoot()
-        .addCell('Тестовые данные Foot', 4, 1)
-
-        .appendHTML(APPEND_ELEMENT);
+    //new ui.List('id', 'list-users')
+    //    .setLinkEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
+    //    .setLinkAdd('http://symfony.cms/lib-js/ui/example/index.html?page=form')
+    //    .setLinkDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+    //    .setLinkPagination('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+    //    //.setTitle('List user', 'description user')
+    //    .setSkin('default')
+    //    .setTypeTable('default')
+    //    .hideBtnBack(true)
+    //    .setMaxRow(10)
+    //    .hideColumnNumber(true)
+    //    .hideColumnCheckbox(true)
+    //
+    //    .newRowHead()
+    //    .addCellHead('Тестовые данные HEADER', 1, 1, false, 2, null)
+    //    .addCellHead('Тестовые данные HEADER', 1, 1, false, 3, null)
+    //    .addCellHead('Тестовые данные HEADER', 1, 1, false, 5, null)
+    //    .addCellHead('Тестовые данные HEADER', 1, 1, false, 2, null)
+    //
+    //    .addColumn('name2', null)
+    //    .addColumn('name3', null)
+    //    .addColumn('name4', null)
+    //    .addColumn('name5', null)
+    //
+    //    .addRowsBody(dataTest)
+    //
+    //    .newRowFoot()
+    //    .addCell('Тестовые данные Foot', 4, 1)
+    //
+    //    .appendHTML(APPEND_ELEMENT);
 
 console.timeEnd('test');
