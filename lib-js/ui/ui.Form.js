@@ -590,6 +590,7 @@
                     name: '_btnSave',
                     leftIcon: 'save',
                     skin: 'primary',
+                    active: true,
                     caption: 'Сохранить',
                     onclick: "new ui.FormValidation('" + this._idForm + "').save();"
                 }
@@ -623,6 +624,34 @@
             );
         }
     };
+
+    ///**
+    // * @param {number} position 0 - 'top/left'| 1 - top/right
+    // * @param {string|null} typeBtn {'button'|'submit'}
+    // * @param {string|null} name
+    // * @param {string} icon
+    // * @param {string|number} caption
+    // * @param {string|null} onclick
+    // * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
+    // * @returns {ui.Form}
+    // */
+    //ui.Form.prototype.addButton = function(position, typeBtn, name, icon, caption, onclick, skin) {
+    //
+    //    var arr = ['_btnLeftTop', '_btnRightTop'];
+    //
+    //    this[arr[position]].push(
+    //        {
+    //            type:     ui.api.empty(typeBtn, null),
+    //            name:     ui.api.empty(name, null),
+    //            leftIcon: ui.api.empty(icon, null),
+    //            caption:  ui.api.empty(caption, null),
+    //            skin:     ui.api.empty(skin, null),
+    //            onclick:  ui.api.empty(onclick, null)
+    //        }
+    //    );
+    //
+    //    return this;
+    //};
 
     /**
      * @returns {*|Element}

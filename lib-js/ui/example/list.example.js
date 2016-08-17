@@ -30,13 +30,14 @@ for (var i =0; i <500; i++) {
             }
         )
         .newLineSearchFields()
-        .addTextareaField('description_kr1', 'Краткое описание1', true, 50)
-        .addTextareaField('description_kr2', 'Краткое описание2', true, 50)
-        .addTextareaField('description_kr3', 'Краткое описание3', true, 50)
+        .addTextField('description_kr1', 'Краткое описание1', false)
+        .addTextField('description_kr2', 'Краткое описание2', false)
+        .addTextField('description_kr3', 'Краткое описание3', false)
+        .addTextField('description_kr6', 'Краткое описание3', false)
         .newLineSearchFields()
-        .addTextareaField('description_kr4', 'Краткое описание1', true, 50)
-        .addTextareaField('description_kr5', 'Краткое описание2', true, 50)
-        .addTextareaField('description_kr6', 'Краткое описание3', true, 50)
+        .addTextareaField('description_kr4', 'Краткое описание1', false, 50)
+        .addTextareaField('description_kr5', 'Краткое описание2', false, 50)
+
 
         .setLinkEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
         .setLinkAdd('http://symfony.cms/lib-js/ui/example/index.html?page=form')

@@ -28,12 +28,12 @@
         ui.Form.call(this, 'search-' + idList);
 
         this._fieldRecord = ui.api.empty(record, 'id');
-        this._addBtnLeftTop = [];
-        this._addBtnRightTop = [];
-        this._addBtnBottomList  = [];
-        this._btnDefaultLeftTop = [];
-        this._btnDefaultRightTop = [];
-        this._btnBottomList = [];
+
+        //this._btnBottomList = [];
+
+        this._btnLeftTop = [];
+        this._btnRightTop = [];
+
         this._hideBtnList = {
             _btnBack:   false
         };
@@ -105,7 +105,7 @@
 
         if (this._hideBtnList._btnBack === false && this._urlBack != '') {
 
-            this._btnDefaultLeftTop.push(
+            this._btnLeftTop.push(
                 {
                     type:     'button',
                     name:     '_btnBack',
@@ -126,7 +126,7 @@
 
         if (this._urlAdd !== null) {
 
-            this._btnDefaultRightTop.push(
+            this._btnRightTop.push(
                 {
                     type:     'button',
                     name:     '_add',
@@ -140,7 +140,7 @@
 
         if (this._hideColumnCheckbox === false && this._btnRemove == false && this._urlDel !== null && this._fieldRecord !== null) {
 
-            this._btnDefaultRightTop.push(
+            this._btnRightTop.push(
                 {
                     type:     'button',
                     name:     ui.Config.LIST_BTN_REMOVE,
@@ -154,6 +154,7 @@
     };
 
     /**
+     * @param {number} position 0 - 'top/left'| 1 - top/right
      * @param {string|null} typeBtn {'button'|'submit'}
      * @param {string|null} name
      * @param {string} icon
@@ -162,34 +163,11 @@
      * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
      * @returns {ui.List}
      */
-    ui.List.prototype.addButtonTopLeft = function(typeBtn, name, icon, caption, onclick, skin) {
+    ui.List.prototype.addButton = function(position, typeBtn, name, icon, caption, onclick, skin) {
 
-        this._btnDefaultLeftTop.push(
-            {
-                type:     ui.api.empty(typeBtn, null),
-                name:     ui.api.empty(name, null),
-                leftIcon: ui.api.empty(icon, null),
-                caption:  ui.api.empty(caption, null),
-                skin:     ui.api.empty(skin, null),
-                onclick:  ui.api.empty(onclick, null)
-            }
-        );
+        var arr = ['_btnLeftTop', '_btnRightTop'];
 
-        return this;
-    };
-
-    /**
-     * @param {string|null} typeBtn {'button'|'submit'}
-     * @param {string|null} name
-     * @param {string} icon
-     * @param {string|number} caption
-     * @param {string|null} onclick
-     * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
-     * @returns {ui.List}
-     */
-    ui.List.prototype.addButtonTopRight = function(typeBtn, name, icon, caption, onclick, skin) {
-
-        this._btnDefaultRightTop.push(
+        this[arr[position]].push(
             {
                 type:     ui.api.empty(typeBtn, null),
                 name:     ui.api.empty(name, null),
@@ -754,9 +732,6 @@
         this._addDefaultLeftBtn();
         this._addDefaultRightBtn();
 
-        var btnLeftTop = ui.api.arrayMerge(this._btnDefaultLeftTop, this._addBtnLeftTop);
-        var btnRightTop = ui.api.arrayMerge(this._btnDefaultRightTop, this._addBtnRightTop);
-        console.log(btnRightTop);
         page.setHead(
             new ui.Element('div')
                 .addClassElement(ui.CSS.newLine)
@@ -765,7 +740,7 @@
                         .setWidthElement(6)
                         .addChildAfter(
                             new ui.FFButton()
-                                .addButtonList(btnLeftTop)
+                                .addButtonList(this._btnLeftTop)
                                 .setPositionBlock(this._positionBtnLeftTop)
                                 .setActive()
                                 .setGroup('toolbar')
@@ -778,7 +753,7 @@
                         .setWidthElement(6)
                         .addChildAfter(
                             new ui.FFButton()
-                                .addButtonList(btnRightTop)
+                                .addButtonList(this._btnRightTop)
                                 .setPositionBlock(this._positionBtnRightTop)
                                 .setActive()
                                 .setGroup('toolbar')
@@ -795,20 +770,18 @@
                 .toHTML()
         );
 
-        var btnBottom = ui.api.arrayMerge(this._btnBottomList, this._addBtnBottomList);
-
-        if (btnBottom.length > 0) {
-
-            page.setFooter(
-                new ui.FFButton()
-                    .addButtonList(btnBottom)
-                    .setPositionBlock(this._positionBtnBottom)
-                    .setPaddingBlock('lg')
-                    .setActive()
-                    .setGroup('toolbar')
-                    .toHTML()
-            );
-        }
+        //if (this._btnBottomList.length > 0) {
+        //
+        //    page.setFooter(
+        //        new ui.FFButton()
+        //            .addButtonList(this._btnBottomList)
+        //            .setPositionBlock(this._positionBtnBottom)
+        //            .setPaddingBlock('lg')
+        //            .setActive()
+        //            .setGroup('toolbar')
+        //            .toHTML()
+        //    );
+        //}
 
         return page.getElement();
     };
