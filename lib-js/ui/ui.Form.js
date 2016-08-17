@@ -500,27 +500,27 @@
          * @type {[]}
          * @private
          */
-        this._addBtnBottom  = [];
+        this._addBtnBottomForm  = [];
 
         /**
          * @type {[]}
          * @private
          */
-        this._addBtnTop = [];
+        this._addBtnTopForm = [];
 
         /**
          * @type {[]}
          * @private
          */
-        this._btnDefaultTop = [];
+        this._btnTopForm = [];
 
         /**
          * @type {[]}
          * @private
          */
-        this._btnDefaultBottom = [];
+        this._btnBottomForm = [];
 
-        this._hideBtn = {
+        this._hideBtnForm = {
             _btnSave:   false,
             _btnClean:  false,
             _btnRemove: false,
@@ -568,9 +568,9 @@
      */
     ui.Form.prototype._addDefaultBtn = function() {
 
-        if (this._hideBtn._btnBack === false && this._urlBack != '') {
+        if (this._hideBtnForm._btnBack === false && this._urlBack != '') {
 
-            this._btnDefaultTop.push(
+            this._btnTopForm.push(
                 {
                     type:     'button',
                     name:     '_btnBack',
@@ -582,9 +582,9 @@
             );
         }
 
-        if (this._hideBtn._btnSave === false && this._readOnly === false) {
+        if (this._hideBtnForm._btnSave === false && this._readOnly === false) {
 
-            this._btnDefaultBottom.push(
+            this._btnBottomForm.push(
                 {
                     type: 'button',
                     name: '_btnSave',
@@ -596,9 +596,9 @@
             );
         }
 
-        if (this._hideBtn._btnClean === false && this._readOnly === false) {
+        if (this._hideBtnForm._btnClean === false && this._readOnly === false) {
 
-            this._btnDefaultBottom.push(
+            this._btnBottomForm.push(
                 {
                     type:     'button',
                     name:     '_btnClean',
@@ -610,9 +610,9 @@
             );
         }
 
-        if (this._hideBtn._btnRemove === false && this._parentValues.hasOwnProperty(this._idRecord) && this._urlDel !== null) {
+        if (this._hideBtnForm._btnRemove === false && this._parentValues.hasOwnProperty(this._idRecord) && this._urlDel !== null) {
 
-            this._btnDefaultBottom.push(
+            this._btnBottomForm.push(
                 {
                     type:     'button',
                     name:     '_btnRemove',
@@ -1145,7 +1145,7 @@
         var page = new ui.Page(null)
             .setTitle(this._titleForm, this._titleFormSmall, null);
 
-        var btnTop = ui.api.arrayMerge(this._btnDefaultTop, this._addBtnTop);
+        var btnTop = ui.api.arrayMerge(this._btnTopForm, this._addBtnTopForm);
 
         if (btnTop.length > 0) {
 
@@ -1162,7 +1162,7 @@
 
         page.setBody(form.toHTML());
 
-        var btnBottom = ui.api.arrayMerge(this._btnDefaultBottom, this._addBtnBottom);
+        var btnBottom = ui.api.arrayMerge(this._btnBottomForm, this._addBtnBottomForm);
 
         if (btnBottom.length > 0) {
 
@@ -1171,7 +1171,7 @@
                     new ui.FFButton()
                         .addButtonList(btnBottom)
                         .setPositionBlock(this._positionBtnBottom)
-                        .setPaddingBlock('lg')
+                        .setPaddingBlock(null)
                         .setActive()
                         .setGroup('toolbar')
                         .toHTML()
@@ -1197,7 +1197,7 @@
      */
     ui.Form.prototype.hideBtnSave = function(hide) {
 
-        this._hideBtn._btnSave = ui.api.empty(hide, true);
+        this._hideBtnForm._btnSave = ui.api.empty(hide, true);
         return this;
     };
 
@@ -1207,7 +1207,7 @@
      */
     ui.Form.prototype.hideBtnClean = function(hide) {
 
-        this._hideBtn._btnClean = ui.api.empty(hide, true);
+        this._hideBtnForm._btnClean = ui.api.empty(hide, true);
         return this;
     };
 
@@ -1217,7 +1217,7 @@
      */
     ui.Form.prototype.hideBtnRemove = function(hide) {
 
-        this._hideBtn._btnRemove = ui.api.empty(hide, true);
+        this._hideBtnForm._btnRemove = ui.api.empty(hide, true);
         return this;
     };
 
@@ -1227,7 +1227,7 @@
      */
     ui.Form.prototype.hideBtnBack = function(hide) {
 
-        this._hideBtn._btnBack = ui.api.empty(hide, true);
+        this._hideBtnForm._btnBack = ui.api.empty(hide, true);
         return this;
     };
 

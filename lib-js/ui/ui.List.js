@@ -30,11 +30,11 @@
         this._fieldRecord = ui.api.empty(record, 'id');
         this._addBtnLeftTop = [];
         this._addBtnRightTop = [];
-        this._addBtnBottom  = [];
+        this._addBtnBottomList  = [];
         this._btnDefaultLeftTop = [];
         this._btnDefaultRightTop = [];
-        this._btnDefaultBottom = [];
-        this._hideBtn = {
+        this._btnBottomList = [];
+        this._hideBtnList = {
             _btnBack:   false
         };
         this._settingsList = {
@@ -60,7 +60,6 @@
         this._skin = null;
         this._typeTable = null;
         this._numCellTitle = '№';
-        this._fieldRecord = null;
         this._hideColumnNumber = false;
         this._hideColumnCheckbox = false;
         this._urlEdit = null;
@@ -104,7 +103,7 @@
      */
     ui.List.prototype._addDefaultLeftBtn = function() {
 
-        if (this._hideBtn._btnBack === false && this._urlBack != '') {
+        if (this._hideBtnList._btnBack === false && this._urlBack != '') {
 
             this._btnDefaultLeftTop.push(
                 {
@@ -462,7 +461,7 @@
         var action = element.getAttribute(DATA_ACTION);
         var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
         var btnRemove = document.body.querySelector('#page-' + this._idList + ' button[name="' + ui.Config.LIST_BTN_REMOVE + '"]');
-
+        console.log(checkboxRecord, btnRemove);
         var i = null;
 
         var btnDisabled = false;
@@ -695,16 +694,14 @@
 
         if ('block_rows' in this._settings) {
 
+            ui.Form.prototype.hideBtnBack.call(this, true);
+            ui.Form.prototype.hideBtnRemove.call(this, true);
+
             panel.addChildAfter(
                 new ui.Element('div')
                     .addClassElement(ui.CSS.panelClass.panelBody)
                     .addChildAfter(
-                        this
-                            .hideBtnBack(true)
-                            .hideBtnClean(false)
-                            .hideBtnRemove(true)
-                            .hideBtnSave(false)
-                            ._buildForm()
+                        this._buildForm()
                     )
                     .getElement()
             );
@@ -759,7 +756,7 @@
 
         var btnLeftTop = ui.api.arrayMerge(this._btnDefaultLeftTop, this._addBtnLeftTop);
         var btnRightTop = ui.api.arrayMerge(this._btnDefaultRightTop, this._addBtnRightTop);
-
+        console.log(btnRightTop);
         page.setHead(
             new ui.Element('div')
                 .addClassElement(ui.CSS.newLine)
@@ -798,7 +795,7 @@
                 .toHTML()
         );
 
-        var btnBottom = ui.api.arrayMerge(this._btnDefaultBottom, this._addBtnBottom);
+        var btnBottom = ui.api.arrayMerge(this._btnBottomList, this._addBtnBottomList);
 
         if (btnBottom.length > 0) {
 
@@ -1029,7 +1026,7 @@
      */
     ui.List.prototype.hideBtnBack = function(hide) {
 
-        this._hideBtn._btnBack = ui.api.empty(hide, true);
+        this._hideBtnList._btnBack = ui.api.empty(hide, true);
         return this;
     };
 
