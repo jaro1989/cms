@@ -14,7 +14,7 @@ for (var i =0; i <500; i++) {
     });
 }
 
-    new ui.List('id', 'list-user')
+    new ui.List('id', 'list-user', null)
         .setSkinBlockSearch('default')
         .setTitleSearch('Search user', 'search')
         .setParentBlock(
@@ -43,6 +43,7 @@ for (var i =0; i <500; i++) {
         .setLinkAdd('http://symfony.cms/lib-js/ui/example/index.html?page=form')
         .setLinkDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setLinkPagination('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+        .setLinkSearch('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setTitle('List user', 'description user')
 
 
@@ -60,37 +61,6 @@ for (var i =0; i <500; i++) {
         .addCellHead('Тестовые данные HEADER', 1, 1, true, 2, null)
         .addCellHead('Тестовые данные HEADER', 1, 1, true, 5, null)
         .addCellHead('Тестовые данные HEADER', 1, 1, true, 3, null)
-
-        .addColumn('name2', null)
-        .addColumn('name3', null)
-        .addColumn('name4', null)
-        .addColumn('name5', null)
-
-        .addRowsBody(dataTest)
-
-        .newRowFoot()
-        .addCell('Тестовые данные Foot', 4, 1)
-
-        .appendHTML(APPEND_ELEMENT);
-
-    new ui.List('id', 'list-users', null)
-        .setLinkEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
-        .setLinkAdd('http://symfony.cms/lib-js/ui/example/index.html?page=form')
-        .setLinkDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
-        .setLinkPagination('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
-        //.setTitle('List user', 'description user')
-        .setSkin('default')
-        .setTypeTable('default')
-        .hideBtnBack(true)
-        .setMaxRow(10)
-        .hideColumnNumber(true)
-        .hideColumnCheckbox(true)
-
-        .newRowHead()
-        .addCellHead('Тестовые данные HEADER', 1, 1, false, 2, null)
-        .addCellHead('Тестовые данные HEADER', 1, 1, false, 3, null)
-        .addCellHead('Тестовые данные HEADER', 1, 1, false, 5, null)
-        .addCellHead('Тестовые данные HEADER', 1, 1, false, 2, null)
 
         .addColumn('name2', null)
         .addColumn('name3', null)

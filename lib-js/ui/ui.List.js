@@ -610,6 +610,7 @@
             _urlAdd:  this._urlAdd,
             _urlEdit: this._urlEdit,
             _urlPage: this._urlPage,
+            _urlSearch: this._urlSearch,
             _currentPage: this._currentPage,
             _fieldRecord: this._fieldRecord,
             _hideColumnCheckbox: this._hideColumnCheckbox,
@@ -888,6 +889,15 @@
      */
     ui.List.prototype.setLinkPagination = function(link) {
         this._urlPage = link;
+        return this;
+    };
+
+    /**
+     * @param {string} link
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setLinkSearch = function(link) {
+        this._urlSearch = link;
         return this;
     };
 

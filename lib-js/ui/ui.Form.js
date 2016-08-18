@@ -1294,7 +1294,7 @@
 
     /**
      * @param {string} title
-     * @param {string} recordId
+     * @param {string|null} recordId
      * @param {{}} data
      * @returns {ui.Form}
      * @public
