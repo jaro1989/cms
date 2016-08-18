@@ -472,9 +472,10 @@
     /**
      * @memberOf ui
      * @param {string} idForm
+     * @param {string|null} locale
      * @constructor
      */
-    ui.Form = function (idForm) {
+    ui.Form = function (idForm, locale) {
 
         ui.HtmlFields.apply(this, arguments);
 
@@ -490,7 +491,7 @@
 
         this._hideBtnForm = {
             _btnSave:   false,
-            _btnClean:  false,
+            _btnClear:  false,
             _btnRemove: false,
             _btnBack:   false
         };
@@ -513,6 +514,7 @@
         this._urlEdit = null;
         this._urlDel =  null;
         this._readOnly = false;
+        this._lbl = ui.api.existProperty(ui.Config.lbl, locale, ui.Config.lbl[ui.Config.locale]);
     };
 
     ui.Form.prototype = Object.create(ui.HtmlFields.prototype);
@@ -542,7 +544,7 @@
                     name:     '_btnBack',
                     leftIcon: 'share-alt',
                     skin:     'primary',
-                    caption:  'Назад',
+                    caption:  this._lbl.btn_back,
                     active: true,
                     onclick:  "window.location.href = '" + this._urlBack + "'"
                 }
@@ -558,21 +560,21 @@
                     leftIcon: 'save',
                     skin: 'primary',
                     active: true,
-                    caption: 'Сохранить',
+                    caption: this._lbl.btn_save,
                     onclick: "new ui.FormValidation('" + this._idForm + "').save();"
                 }
             );
         }
 
-        if (this._hideBtnForm._btnClean === false && this._readOnly === false) {
+        if (this._hideBtnForm._btnClear === false && this._readOnly === false) {
 
             this._btnRightBottomForm.push(
                 {
                     type:     'button',
-                    name:     '_btnClean',
+                    name:     '_btnClear',
                     leftIcon: 'refresh',
                     skin:     'primary',
-                    caption:  'Очистить',
+                    caption:  this._lbl.btn_clear,
                     active: true,
                     onclick:  "new ui.FormValidation('" + this._idForm + "').reset();"
                 }
@@ -588,6 +590,7 @@
                     leftIcon: 'trash',
                     skin:     'danger',
                     active: true,
+                    caption:  this._lbl.btn_remove,
                     onclick:  "new ui.FormValidation('" + this._idForm + "').remove();"
                 }
             );
@@ -1224,9 +1227,9 @@
      * @param {boolean} hide
      * @returns {ui.Form}
      */
-    ui.Form.prototype.hideBtnClean = function(hide) {
+    ui.Form.prototype.hideBtnClear = function(hide) {
 
-        this._hideBtnForm._btnClean = ui.api.empty(hide, true);
+        this._hideBtnForm._btnClear = ui.api.empty(hide, true);
         return this;
     };
 

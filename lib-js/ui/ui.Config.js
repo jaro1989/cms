@@ -93,6 +93,41 @@
                         btnCancel: 'Отмена'
                     }
                 }
+            },
+
+            locale: 'ru',
+
+            lbl: {
+                ru: {
+                    btn_save: 'Сохранить',
+                    btn_remove: 'Удалить',
+                    btn_clear: 'Очистить',
+                    btn_back: 'Назад',
+                    btn_add: 'Добавить',
+                    btn_trash: 'Карзина',
+                    btn_search: 'Найти',
+                    btn_close: 'Закрыть',
+                    btn_cancel: 'Отмена',
+                    btn_yes: 'Да',
+                    btn_no: 'Нет',
+                    error: 'Ошибка',
+                    message: 'Сообщение'
+                },
+                eu: {
+                    btn_save: 'Save',
+                    btn_remove: 'Delete',
+                    btn_clear: 'Clear',
+                    btn_back: 'Back',
+                    btn_add: 'Add',
+                    btn_trash: 'Trash',
+                    btn_search: 'Find',
+                    btn_close: 'Close',
+                    btn_cancel: 'Cancel',
+                    btn_yes: 'Yes',
+                    btn_no: 'No',
+                    error: 'Error',
+                    message: 'Message'
+                }
             }
         };
 

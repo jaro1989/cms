@@ -21,11 +21,12 @@
      * @namespace ui.List
      * @param {string} idList
      * @param {string} record
+     * @param {string} locale
      * @constructor
      */
-    ui.List = function (record, idList) {
+    ui.List = function (record, idList, locale) {
 
-        ui.Form.call(this, 'search-' + idList);
+        ui.Form.apply(this, ['search-' + idList, locale]);
 
         this._fieldRecord = ui.api.empty(record, 'id');
 
@@ -71,6 +72,7 @@
         this._urlPage = null;
 
         this._idList = ui.api.empty(idList, 'table-' + uniqueId);
+        this._lbl = ui.api.existProperty(ui.Config.lbl, locale, ui.Config.lbl[ui.Config.locale]);
         uniqueId++;
     };
 
@@ -110,7 +112,7 @@
                     name:     '_btnBack',
                     leftIcon: 'share-alt',
                     skin:     'primary',
-                    caption:  'Назад',
+                    caption:  this._lbl.btn_back,
                     active: true,
                     onclick:  "window.location.href = '" + this._urlBack + "'"
                 }
@@ -132,7 +134,7 @@
                     name:     '_add',
                     leftIcon: 'new-window',
                     skin:     'primary',
-                    caption:  'Добавить',
+                    caption:  this._lbl.btn_add,
                     active: true,
                     onclick:  "window.location.href = '" + this._urlAdd + "'"
                 }
@@ -148,6 +150,7 @@
                     leftIcon: 'trash',
                     skin:     'danger',
                     active: true,
+                    caption:  this._lbl.btn_remove,
                     onclick:  "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._remove();",
                     disabled: true
                 }
@@ -681,7 +684,7 @@
             ui.Form.prototype.hideBtnBack.call(this, true);
             ui.Form.prototype.hideBtnRemove.call(this, true);
             ui.Form.prototype.hideBtnSave.call(this, true);
-            ui.Form.prototype.hideBtnClean.call(this, true);
+            ui.Form.prototype.hideBtnClear.call(this, true);
 
             this._btnRightBottomForm.push(
                 {
@@ -690,7 +693,7 @@
                     leftIcon: 'search',
                     skin: null,
                     active: false,
-                    caption: 'Найти',
+                    caption: this._lbl.btn_search,
                     onclick: "new ui.FormValidation('" + this._idForm + "').save();"
                 }
             );
@@ -699,10 +702,10 @@
             this._btnRightBottomForm.push(
                 {
                     type:     'button',
-                    name:     '_btnClean',
+                    name:     '_btnClear',
                     leftIcon: 'refresh',
                     skin:     null,
-                    caption:  null,
+                    caption:  this._lbl.btn_clear,
                     active: false,
                     onclick:  "new ui.FormValidation('" + this._idForm + "').reset();"
                 }
