@@ -21,7 +21,7 @@
      * @namespace ui.List
      * @param {string} idList
      * @param {string} record
-     * @param {string} locale
+     * @param {string|null} locale
      * @constructor
      */
     ui.List = function (record, idList, locale) {
