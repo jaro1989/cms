@@ -680,10 +680,33 @@
 
             ui.Form.prototype.hideBtnBack.call(this, true);
             ui.Form.prototype.hideBtnRemove.call(this, true);
-            //ui.Form.prototype.hideBtnSave.call(this, true);
-            //ui.Form.prototype.hideBtnClean.call(this, true);
-            //ui.Form.prototype.addButton.apply(this, [4, '213', '132', 'star', 'Найти']);
+            ui.Form.prototype.hideBtnSave.call(this, true);
+            ui.Form.prototype.hideBtnClean.call(this, true);
 
+            this._btnRightBottomForm.push(
+                {
+                    type: 'button',
+                    name: '_btnSave',
+                    leftIcon: 'search',
+                    skin: null,
+                    active: false,
+                    caption: 'Найти',
+                    onclick: "new ui.FormValidation('" + this._idForm + "').save();"
+                }
+            );
+
+
+            this._btnRightBottomForm.push(
+                {
+                    type:     'button',
+                    name:     '_btnClean',
+                    leftIcon: 'refresh',
+                    skin:     null,
+                    caption:  null,
+                    active: false,
+                    onclick:  "new ui.FormValidation('" + this._idForm + "').reset();"
+                }
+            );
 
             panel.addChildAfter(
                 new ui.Element('div')

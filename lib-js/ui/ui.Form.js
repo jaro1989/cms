@@ -536,7 +536,7 @@
 
         if (this._hideBtnForm._btnBack === false && this._urlBack != '') {
 
-            this._btnRightTopForm.push(
+            this._btnLeftTopForm.push(
                 {
                     type:     'button',
                     name:     '_btnBack',
