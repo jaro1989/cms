@@ -260,7 +260,7 @@
 
         /**
          * Add list buttons
-         * @param { { 0: { type: string, value: string, name: string, caption: string, skin: string, active: boolean, leftIcon: string, rightIcon: string } } } data
+         * @param { { 0: { type: string, value: string, name: string, caption: string, skin: string, active: boolean, leftIcon: string, rightIcon: string } } | []} data
          * @returns {ui.FFButton}
          * @public
          */

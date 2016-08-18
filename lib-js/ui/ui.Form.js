@@ -478,47 +478,15 @@
 
         ui.HtmlFields.apply(this, arguments);
 
-        /**
-         * @type {{}}
-         * @private
-         */
         this._parentValues = {};
-
-        /**
-         * @type {{}}
-         * @private
-         */
         this._childrenValues = {};
-
-        /**
-         * @type {{}}
-         * @private
-         */
         this._childrenRecordId = {};
 
-        /**
-         * @type {[]}
-         * @private
-         */
-        this._addBtnBottomForm  = [];
+        this._btnLeftTopForm = [];
+        this._btnRightTopForm = [];
 
-        /**
-         * @type {[]}
-         * @private
-         */
-        this._addBtnTopForm = [];
-
-        /**
-         * @type {[]}
-         * @private
-         */
-        this._btnTopForm = [];
-
-        /**
-         * @type {[]}
-         * @private
-         */
-        this._btnBottomForm = [];
+        this._btnLeftBottomForm = [];
+        this._btnRightBottomForm = [];
 
         this._hideBtnForm = {
             _btnSave:   false,
@@ -531,8 +499,6 @@
         uniqueId++;
 
         this._validation = true;
-        this._positionBtnTop =    'left';
-        this._positionBtnBottom = 'right';
         this._paddingRelateBlock = 'xs';
         this._idRecord =   '';
         this._titleForm =      null;
@@ -570,13 +536,14 @@
 
         if (this._hideBtnForm._btnBack === false && this._urlBack != '') {
 
-            this._btnTopForm.push(
+            this._btnRightTopForm.push(
                 {
                     type:     'button',
                     name:     '_btnBack',
                     leftIcon: 'share-alt',
                     skin:     'primary',
                     caption:  'Назад',
+                    active: true,
                     onclick:  "window.location.href = '" + this._urlBack + "'"
                 }
             );
@@ -584,7 +551,7 @@
 
         if (this._hideBtnForm._btnSave === false && this._readOnly === false) {
 
-            this._btnBottomForm.push(
+            this._btnRightBottomForm.push(
                 {
                     type: 'button',
                     name: '_btnSave',
@@ -599,13 +566,14 @@
 
         if (this._hideBtnForm._btnClean === false && this._readOnly === false) {
 
-            this._btnBottomForm.push(
+            this._btnRightBottomForm.push(
                 {
                     type:     'button',
                     name:     '_btnClean',
                     leftIcon: 'refresh',
                     skin:     'primary',
                     caption:  'Очистить',
+                    active: true,
                     onclick:  "new ui.FormValidation('" + this._idForm + "').reset();"
                 }
             );
@@ -613,45 +581,51 @@
 
         if (this._hideBtnForm._btnRemove === false && this._parentValues.hasOwnProperty(this._idRecord) && this._urlDel !== null) {
 
-            this._btnBottomForm.push(
+            this._btnRightBottomForm.push(
                 {
                     type:     'button',
                     name:     '_btnRemove',
                     leftIcon: 'trash',
                     skin:     'danger',
+                    active: true,
                     onclick:  "new ui.FormValidation('" + this._idForm + "').remove();"
                 }
             );
         }
     };
 
-    ///**
-    // * @param {number} position 0 - 'top/left'| 1 - top/right
-    // * @param {string|null} typeBtn {'button'|'submit'}
-    // * @param {string|null} name
-    // * @param {string} icon
-    // * @param {string|number} caption
-    // * @param {string|null} onclick
-    // * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
-    // * @returns {ui.Form}
-    // */
-    //ui.Form.prototype.addButton = function(position, typeBtn, name, icon, caption, onclick, skin) {
-    //
-    //    var arr = ['_btnLeftTop', '_btnRightTop'];
-    //
-    //    this[arr[position]].push(
-    //        {
-    //            type:     ui.api.empty(typeBtn, null),
-    //            name:     ui.api.empty(name, null),
-    //            leftIcon: ui.api.empty(icon, null),
-    //            caption:  ui.api.empty(caption, null),
-    //            skin:     ui.api.empty(skin, null),
-    //            onclick:  ui.api.empty(onclick, null)
-    //        }
-    //    );
-    //
-    //    return this;
-    //};
+    /**
+     * @param {number} position 1 - 'top/left'| 2 - top/right | 3 - bottom/left | 4 - bottom/right
+     * @param {string|null} typeBtn {'button'|'submit'}
+     * @param {string|null} name
+     * @param {string} icon
+     * @param {string|number} caption
+     * @param {string|null} onclick
+     * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
+     * @param {boolean} active
+     * @returns {ui.Form}
+     */
+    ui.Form.prototype.addButton = function(position, typeBtn, name, icon, caption, onclick, skin, active) {
+
+        var obj = {1: '_btnLeftTopForm', 2: '_btnRightTopForm', 3: '_btnLeftBottomForm', 4: '_btnRightBottomForm'};
+
+        if (ui.api.existProperty(obj, position, false)) {
+
+            this[obj[position]].push(
+                {
+                    type: ui.api.empty(typeBtn, null),
+                    name: ui.api.empty(name, null),
+                    leftIcon: ui.api.empty(icon, null),
+                    caption: ui.api.empty(caption, null),
+                    skin: ui.api.empty(skin, null),
+                    onclick: ui.api.empty(onclick, null),
+                    active: active
+                }
+            );
+        }
+
+        return this;
+    };
 
     /**
      * @returns {*|Element}
@@ -1174,41 +1148,57 @@
         var page = new ui.Page(null)
             .setTitle(this._titleForm, this._titleFormSmall, null);
 
-        var btnTop = ui.api.arrayMerge(this._btnTopForm, this._addBtnTopForm);
+        if (this._btnLeftTopForm.length > 0 || this._btnRightTopForm.length > 0) {
 
-        if (btnTop.length > 0) {
-
-            page
-                .setHead(
-                    new ui.FFButton()
-                        .addButtonList(btnTop)
-                        .setPositionBlock(this._positionBtnTop)
-                        .setActive()
-                        .setGroup('toolbar')
-                        .toHTML()
-                );
+            page.setHead(this._buildRowButtons(this._btnLeftTopForm, this._btnRightTopForm));
         }
 
         page.setBody(form.toHTML());
 
-        var btnBottom = ui.api.arrayMerge(this._btnBottomForm, this._addBtnBottomForm);
+        if (this._btnLeftBottomForm.length > 0 || this._btnRightBottomForm.length > 0) {
 
-        if (btnBottom.length > 0) {
-
-            page
-                .setFooter(
-                    new ui.FFButton()
-                        .addButtonList(btnBottom)
-                        .setPositionBlock(this._positionBtnBottom)
-                        .setPaddingBlock(null)
-                        .setActive()
-                        .setGroup('toolbar')
-                        .toHTML()
-                );
+            page.setFooter(this._buildRowButtons(this._btnLeftBottomForm, this._btnRightBottomForm));
         }
 
         return page.getElement();
     };
+
+    /**
+     * @param {[]} leftBtn
+     * @param {[]} rightBtn
+     * @returns {string}
+     * @private
+     */
+    ui.Form.prototype._buildRowButtons = function (leftBtn, rightBtn) {
+
+        return new ui.Element('div')
+            .addClassElement(ui.CSS.newLine)
+            .addChildAfter(
+                new ui.Element('div')
+                    .setWidthElement(6)
+                    .addChildAfter(
+                        new ui.FFButton()
+                            .addButtonList(leftBtn)
+                            .setPositionBlock('left')
+                            .setGroup('toolbar')
+                            .getElement()
+                    )
+                    .getElement()
+            )
+            .addChildAfter(
+                new ui.Element('div')
+                    .setWidthElement(6)
+                    .addChildAfter(
+                        new ui.FFButton()
+                            .addButtonList(rightBtn)
+                            .setPositionBlock('right')
+                            .setGroup('toolbar')
+                            .getElement()
+                    )
+                    .getElement()
+            ).toHTML();
+    };
+
 
     /**
      * Shut off validator

@@ -29,10 +29,12 @@
 
         this._fieldRecord = ui.api.empty(record, 'id');
 
-        //this._btnBottomList = [];
 
-        this._btnLeftTop = [];
-        this._btnRightTop = [];
+        this._btnRightBottomList = [];
+        this._btnLeftBottomList = [];
+
+        this._btnLeftTopList = [];
+        this._btnRightTopList = [];
 
         this._hideBtnList = {
             _btnBack:   false
@@ -54,9 +56,6 @@
         this._titleList = null;
         this._titleListSmall = null;
         this._urlBack = document.referrer;
-        this._positionBtnLeftTop ='left';
-        this._positionBtnRightTop = 'right';
-        this._positionBtnBottom = 'right';
         this._skin = null;
         this._typeTable = null;
         this._numCellTitle = '№';
@@ -105,13 +104,14 @@
 
         if (this._hideBtnList._btnBack === false && this._urlBack != '') {
 
-            this._btnLeftTop.push(
+            this._btnLeftTopList.push(
                 {
                     type:     'button',
                     name:     '_btnBack',
                     leftIcon: 'share-alt',
                     skin:     'primary',
                     caption:  'Назад',
+                    active: true,
                     onclick:  "window.location.href = '" + this._urlBack + "'"
                 }
             );
@@ -126,13 +126,14 @@
 
         if (this._urlAdd !== null) {
 
-            this._btnRightTop.push(
+            this._btnRightTopList.push(
                 {
                     type:     'button',
                     name:     '_add',
                     leftIcon: 'new-window',
                     skin:     'primary',
                     caption:  'Добавить',
+                    active: true,
                     onclick:  "window.location.href = '" + this._urlAdd + "'"
                 }
             );
@@ -140,12 +141,13 @@
 
         if (this._hideColumnCheckbox === false && this._btnRemove == false && this._urlDel !== null && this._fieldRecord !== null) {
 
-            this._btnRightTop.push(
+            this._btnRightTopList.push(
                 {
                     type:     'button',
                     name:     ui.Config.LIST_BTN_REMOVE,
                     leftIcon: 'trash',
                     skin:     'danger',
+                    active: true,
                     onclick:  "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._remove();",
                     disabled: true
                 }
@@ -154,29 +156,34 @@
     };
 
     /**
-     * @param {number} position 0 - 'top/left'| 1 - top/right
+     * @param {number} position 1 - 'top/left'| 2 - top/right | 3 - bottom/left | 4 - bottom/right
      * @param {string|null} typeBtn {'button'|'submit'}
      * @param {string|null} name
      * @param {string} icon
      * @param {string|number} caption
      * @param {string|null} onclick
      * @param {string} skin { 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'info' | 'link'}
+     * @param {boolean} active
      * @returns {ui.List}
      */
-    ui.List.prototype.addButton = function(position, typeBtn, name, icon, caption, onclick, skin) {
+    ui.List.prototype.addButton = function(position, typeBtn, name, icon, caption, onclick, skin, active) {
 
-        var arr = ['_btnLeftTop', '_btnRightTop'];
+        var obj = {1: '_btnLeftTopList', 2: '_btnRightTopList', 3: '_btnLeftBottomList', 4: '_btnRightBottomList'};
 
-        this[arr[position]].push(
-            {
-                type:     ui.api.empty(typeBtn, null),
-                name:     ui.api.empty(name, null),
-                leftIcon: ui.api.empty(icon, null),
-                caption:  ui.api.empty(caption, null),
-                skin:     ui.api.empty(skin, null),
-                onclick:  ui.api.empty(onclick, null)
-            }
-        );
+        if (ui.api.existProperty(obj, position, false)) {
+
+            this[obj[position]].push(
+                {
+                    type: ui.api.empty(typeBtn, null),
+                    name: ui.api.empty(name, null),
+                    leftIcon: ui.api.empty(icon, null),
+                    caption: ui.api.empty(caption, null),
+                    skin: ui.api.empty(skin, null),
+                    onclick: ui.api.empty(onclick, null),
+                    active: active
+                }
+            );
+        }
 
         return this;
     };
@@ -439,7 +446,6 @@
         var action = element.getAttribute(DATA_ACTION);
         var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
         var btnRemove = document.body.querySelector('#page-' + this._idList + ' button[name="' + ui.Config.LIST_BTN_REMOVE + '"]');
-        console.log(checkboxRecord, btnRemove);
         var i = null;
 
         var btnDisabled = false;
@@ -674,6 +680,10 @@
 
             ui.Form.prototype.hideBtnBack.call(this, true);
             ui.Form.prototype.hideBtnRemove.call(this, true);
+            //ui.Form.prototype.hideBtnSave.call(this, true);
+            //ui.Form.prototype.hideBtnClean.call(this, true);
+            //ui.Form.prototype.addButton.apply(this, [4, '213', '132', 'star', 'Найти']);
+
 
             panel.addChildAfter(
                 new ui.Element('div')
@@ -732,36 +742,10 @@
         this._addDefaultLeftBtn();
         this._addDefaultRightBtn();
 
-        page.setHead(
-            new ui.Element('div')
-                .addClassElement(ui.CSS.newLine)
-                .addChildAfter(
-                    new ui.Element('div')
-                        .setWidthElement(6)
-                        .addChildAfter(
-                            new ui.FFButton()
-                                .addButtonList(this._btnLeftTop)
-                                .setPositionBlock(this._positionBtnLeftTop)
-                                .setActive()
-                                .setGroup('toolbar')
-                                .getElement()
-                        )
-                        .getElement()
-                )
-                .addChildAfter(
-                    new ui.Element('div')
-                        .setWidthElement(6)
-                        .addChildAfter(
-                            new ui.FFButton()
-                                .addButtonList(this._btnRightTop)
-                                .setPositionBlock(this._positionBtnRightTop)
-                                .setActive()
-                                .setGroup('toolbar')
-                                .getElement()
-                        )
-                        .getElement()
-                ).toHTML()
-            );
+        if (this._btnLeftTopList.length > 0 || this._btnRightTopList.length > 0) {
+
+            page.setHead(this._buildRowButtons(this._btnLeftTopList, this._btnRightTopList));
+        }
 
         page.setBody(
             new ui.Element('div')
@@ -770,20 +754,48 @@
                 .toHTML()
         );
 
-        //if (this._btnBottomList.length > 0) {
-        //
-        //    page.setFooter(
-        //        new ui.FFButton()
-        //            .addButtonList(this._btnBottomList)
-        //            .setPositionBlock(this._positionBtnBottom)
-        //            .setPaddingBlock('lg')
-        //            .setActive()
-        //            .setGroup('toolbar')
-        //            .toHTML()
-        //    );
-        //}
+        if (this._btnLeftBottomList.length > 0 || this._btnRightBottomList.length > 0) {
+
+            page.setFooter(this._buildRowButtons(this._btnLeftBottomList, this._btnRightBottomList));
+        }
 
         return page.getElement();
+    };
+
+    /**
+     * @param {[]} leftBtn
+     * @param {[]} rightBtn
+     * @returns {string}
+     * @private
+     */
+    ui.List.prototype._buildRowButtons = function (leftBtn, rightBtn) {
+
+        return new ui.Element('div')
+            .addClassElement(ui.CSS.newLine)
+            .addChildAfter(
+                new ui.Element('div')
+                    .setWidthElement(6)
+                    .addChildAfter(
+                        new ui.FFButton()
+                            .addButtonList(leftBtn)
+                            .setPositionBlock('left')
+                            .setGroup('toolbar')
+                            .getElement()
+                    )
+                    .getElement()
+            )
+            .addChildAfter(
+                new ui.Element('div')
+                    .setWidthElement(6)
+                    .addChildAfter(
+                        new ui.FFButton()
+                            .addButtonList(rightBtn)
+                            .setPositionBlock('right')
+                            .setGroup('toolbar')
+                            .getElement()
+                    )
+                    .getElement()
+            ).toHTML();
     };
 
     /**
@@ -1051,9 +1063,6 @@
      */
     ui.List.prototype.appendHTML = function(selector) {
 
-        //, ui.Form().prototype.getElement().apply()
-        //console.log(ui.Form.apply(this, arguments));
-        //console.log(instanceof ui.Form);
         new ui.$(selector).append(this.getElement());
         return this;
     };
