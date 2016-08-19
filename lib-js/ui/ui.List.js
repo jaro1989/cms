@@ -110,20 +110,29 @@
      */
     ui.List.prototype._addDefaultLeftBtn = function() {
 
-        if (this._hideBtnList._btnBack === false && this._urlBack != '') {
+        if (this._hideBtnList._btnBack === false && this._urlBack != '' && this._urlBack !== window.location.href) {
 
             this._btnLeftTopList.push(
                 {
                     type:     'button',
                     name:     '_btnBack',
                     leftIcon: 'share-alt',
-                    skin:     'primary',
                     caption:  this._lbl.btn_back,
-                    active: true,
-                    onclick:  "window.location.href = '" + this._urlBack + "'"
+                    active: false,
+                    onclick:  "ui.api.reload('" + this._urlBack + "');"
                 }
             );
         }
+
+        this._btnLeftTopList.push(
+            {
+                type:     'button',
+                name:     '_reloadPage',
+                leftIcon: 'repeat',
+                active: false,
+                onclick:  "ui.api.reload();"
+            }
+        );
     };
 
     /**
@@ -143,22 +152,6 @@
                     caption:  this._lbl.btn_add,
                     active: true,
                     onclick:  "window.location.href = '" + this._urlAddAndEdit + "'"
-                }
-            );
-        }
-
-        if (this._hideColumnCheckbox === false && this._btnRemove == false && this._fieldRecord !== null) {
-
-            this._btnRightTopList.push(
-                {
-                    type:     'button',
-                    name:     ui.Config.LIST_BTN_REMOVE,
-                    leftIcon: 'trash',
-                    skin:     'danger',
-                    active: true,
-                    caption:  this._lbl.btn_remove,
-                    onclick:  "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._remove();",
-                    disabled: true
                 }
             );
         }
@@ -667,6 +660,7 @@
             new ui.Element('div')
                 .addClassElement(ui.CSS.panelClass.panelBody)
                 .addChildAfter(this._blockHidden())
+                .addChildAfter(this._blockButtons())
                 .addChildAfter(this._buildTable())
                 .addChildAfter(
                     new ui.Pagination(this._actions.pagination + '-' + this._idList)
@@ -682,6 +676,54 @@
         return panel.getElement();
     };
 
+    ui.List.prototype._blockButtons = function() {
+
+        var objLeft = [];
+        var objRigth = [];
+
+        objRigth.push(
+            {
+                type: 'button',
+                name: '_btnSave',
+                leftIcon: 'search',
+                skin: null,
+                active: false,
+                caption: this._lbl.btn_search,
+                onclick: "new ui.List('" + this._fieldRecord + "', '" + this._idList + "', null)._search('" + this._idForm + "');"
+            }
+        );
+
+        objRigth.push(
+            {
+                type:     'button',
+                name:     '_btnClear',
+                leftIcon: 'refresh',
+                skin:     null,
+                caption:  this._lbl.btn_clear,
+                active: false,
+                onclick:  "new ui.Form('" + this._idForm + "', null)._reset();"
+            }
+        );
+
+        if (this._hideColumnCheckbox === false && this._btnRemove == false && this._fieldRecord !== null) {
+
+            objRigth.push(
+                {
+                    type:     'button',
+                    name:     ui.Config.LIST_BTN_REMOVE,
+                    leftIcon: 'trash',
+                    skin:     'danger',
+                    active: true,
+                    caption:  this._lbl.btn_remove,
+                    onclick:  "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._remove();",
+                    disabled: true
+                }
+            );
+        }
+
+        return this._buildRowButtons(objLeft, objRigth).getElement();
+    };
+
     /**
      * @param {ui.Element} panel
      * @private
@@ -694,30 +736,6 @@
             ui.Form.prototype.hideBtnRemove.call(this, true);
             ui.Form.prototype.hideBtnSave.call(this, true);
             ui.Form.prototype.hideBtnClear.call(this, true);
-
-            this._btnRightBottomForm.push(
-                {
-                    type: 'button',
-                    name: '_btnSave',
-                    leftIcon: 'search',
-                    skin: null,
-                    active: false,
-                    caption: this._lbl.btn_search,
-                    onclick: "new ui.List('" + this._fieldRecord + "', '" + this._idList + "', null)._search('" + this._idForm + "');"
-                }
-            );
-
-            this._btnRightBottomForm.push(
-                {
-                    type:     'button',
-                    name:     '_btnClear',
-                    leftIcon: 'refresh',
-                    skin:     null,
-                    caption:  this._lbl.btn_clear,
-                    active: false,
-                    onclick:  "new ui.Form('" + this._idForm + "', null)._reset();"
-                }
-            );
 
             panel.addChildAfter(
                 new ui.Element('div')
@@ -824,7 +842,7 @@
 
         if (this._btnLeftTopList.length > 0 || this._btnRightTopList.length > 0) {
 
-            page.setHead(this._buildRowButtons(this._btnLeftTopList, this._btnRightTopList));
+            page.setHead(this._buildRowButtons(this._btnLeftTopList, this._btnRightTopList).toHTML());
         }
 
         page.setBody(
@@ -836,7 +854,7 @@
 
         if (this._btnLeftBottomList.length > 0 || this._btnRightBottomList.length > 0) {
 
-            page.setFooter(this._buildRowButtons(this._btnLeftBottomList, this._btnRightBottomList));
+            page.setFooter(this._buildRowButtons(this._btnLeftBottomList, this._btnRightBottomList).toHTML());
         }
 
         return page.getElement();
@@ -875,7 +893,7 @@
                             .getElement()
                     )
                     .getElement()
-            ).toHTML();
+            );
     };
 
     /**

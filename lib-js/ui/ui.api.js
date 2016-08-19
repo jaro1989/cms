@@ -40,6 +40,19 @@
     ui.api = {
 
         /**
+         * @param {string|null} link
+         */
+        reload: function(link) {
+
+            window.location.href = this.empty(link, window.location.href);
+        },
+
+        reloadBack: function() {
+
+            window.location.href = document.referrer;
+        },
+
+        /**
          * @param {string|number} text
          * @returns {boolean}
          */
