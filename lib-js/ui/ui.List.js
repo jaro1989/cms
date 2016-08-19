@@ -30,22 +30,21 @@
 
         this._fieldRecord = ui.api.empty(record, 'id');
 
-
+        //Buttons
         this._btnRightBottomList = [];
         this._btnLeftBottomList = [];
-
         this._btnLeftTopList = [];
         this._btnRightTopList = [];
 
         this._hideBtnList = {
             _btnBack:   false
         };
+        //List
         this._settingsList = {
             thead: [],
             tbody: [],
             tfoot: []
         };
-
         this._lastSetting = {
             block: BLOCK_HEAD,
             row:   0,
@@ -54,22 +53,29 @@
         this._columnTypeData = {};
         this._column = {};
         this._parentRecords = [];
+        //Page
         this._titleList = null;
         this._titleListSmall = null;
-        this._urlBack = document.referrer;
         this._skin = null;
         this._typeTable = null;
         this._numCellTitle = '№';
         this._hideColumnNumber = false;
         this._hideColumnCheckbox = false;
-        this._urlEdit = null;
-        this._urlAdd = null;
-        this._urlDel = null;
+
         this._btnRemove = false;
         this._rowNum = 1;
         this._maxRow = 50;
         this._currentPage = 1;
-        this._urlPage = null;
+        //Link
+        this._urlAction = null;
+        this._urlAddAndEdit = null;
+        this._urlBack = document.referrer;
+        //Actions
+        this._actions = {
+            search: 'search',
+            pagination: 'pagination',
+            remove: 'remove'
+        };
 
         this._idList = ui.api.empty(idList, 'table-' + uniqueId);
         this._lbl = ui.api.existProperty(ui.Config.lbl, locale, ui.Config.lbl[ui.Config.locale]);
@@ -126,7 +132,7 @@
      */
     ui.List.prototype._addDefaultRightBtn = function() {
 
-        if (this._urlAdd !== null) {
+        if (this._urlAddAndEdit !== null) {
 
             this._btnRightTopList.push(
                 {
@@ -136,12 +142,12 @@
                     skin:     'primary',
                     caption:  this._lbl.btn_add,
                     active: true,
-                    onclick:  "window.location.href = '" + this._urlAdd + "'"
+                    onclick:  "window.location.href = '" + this._urlAddAndEdit + "'"
                 }
             );
         }
 
-        if (this._hideColumnCheckbox === false && this._btnRemove == false && this._urlDel !== null && this._fieldRecord !== null) {
+        if (this._hideColumnCheckbox === false && this._btnRemove == false && this._fieldRecord !== null) {
 
             this._btnRightTopList.push(
                 {
@@ -388,9 +394,9 @@
         var curObj = this;
 
         new ui.Ajax()
-            .setUrl(this._urlDel)
+            .setUrl(this._urlAction)
             .setParams(delObj)
-            .addParam('action', ui.Config.ACTION_LIST_REMOVE)
+            .addParam('action', this._actions.remove)
             .addParam('page', this._currentPage)
             .addParam('max', this._maxRow)
             .addCallbackFunction(function (e) {
@@ -604,14 +610,16 @@
     ui.List.prototype._blockHidden = function() {
 
         var obj = {
-            _urlDel:  this._urlDel,
             _column:  this._column,
             _maxRow:  this._maxRow,
-            _urlAdd:  this._urlAdd,
-            _urlEdit: this._urlEdit,
-            _urlPage: this._urlPage,
-            _urlSearch: this._urlSearch,
+            _urlAddAndEdit:  this._urlAddAndEdit,
+            _urlAction: this._urlAction,
             _currentPage: this._currentPage,
+            _actions: {
+                search: this._actions.search,
+                pagination: this._actions.pagination,
+                remove: this._actions.remove
+            },
             _fieldRecord: this._fieldRecord,
             _hideColumnCheckbox: this._hideColumnCheckbox,
             _hideColumnNumber:   this._hideColumnNumber
@@ -661,7 +669,7 @@
                 .addChildAfter(this._blockHidden())
                 .addChildAfter(this._buildTable())
                 .addChildAfter(
-                    new ui.Pagination()
+                    new ui.Pagination(this._actions.pagination + '-' + this._idList)
                         .setCountPages(20)
                         .setCallbackFunction(onclick)
                         .setSkin(this._skin)
@@ -695,10 +703,9 @@
                     skin: null,
                     active: false,
                     caption: this._lbl.btn_search,
-                    onclick: "new ui.FormValidation('" + this._idForm + "').save();"
+                    onclick: "new ui.List('" + this._fieldRecord + "', '" + this._idList + "', null)._search('" + this._idForm + "');"
                 }
             );
-
 
             this._btnRightBottomForm.push(
                 {
@@ -708,7 +715,7 @@
                     skin:     null,
                     caption:  this._lbl.btn_clear,
                     active: false,
-                    onclick:  "new ui.FormValidation('" + this._idForm + "').reset();"
+                    onclick:  "new ui.Form('" + this._idForm + "', null)._reset();"
                 }
             );
 
@@ -740,20 +747,66 @@
         var curObj = this;
 
         new ui.Ajax()
-            .setUrl(this._urlPage ? this._urlPage : window.location.href)
-            .addParam('action', ui.Config.ACTION_NEXT_PAGE)
+            .setUrl(this._urlAction ? this._urlAction : window.location.href)
+            .addParam('action', obj._actions.pagination)
             .addParam('page', page)
             .addCallbackFunction(function (e) {
 
-                var obj = JSON.parse(e);
+                try {
 
-                if (obj.hasOwnProperty('data')) {
-
-                    curObj._replaceRows(obj.data);
+                    var obj = typeof e == 'object' ? e : JSON.parse(e);
+                    curObj._replaceRows(obj);
                     new ui.SortTable(null).updateSort('#' + curObj._idList);
+
+                } catch (e) {
+
+                    new ui.Modal(null).error(e.name + ':' + e.message);
                 }
             })
             .send();
+    };
+
+    ui.List.prototype._search = function(idForm) {
+
+        var data = new ui.FormData(idForm).getData();
+        var dataBlock = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE);
+        var str = dataBlock.getAttribute(DATA_JSON_TABLE);
+        var obj = JSON.parse(str);
+
+        for (var property in obj) {
+
+            this[property] = obj[property];
+        }
+
+        obj._currentPage = 1;
+        dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(obj));
+
+        var curObj = this;
+
+        if (data.error.length === 0) {
+
+            new ui.Ajax()
+                .setUrl(this._urlAction ? this._urlAction : window.location.href)
+                .setParams(data['data'])
+                .addParam('action', obj._actions.search)
+                .addCallbackFunction(function (e) {
+
+                    try {
+
+                        var obj = typeof e == 'object' ? e : JSON.parse(e);
+                        curObj._replaceRows(obj);
+                        new ui.SortTable(null).updateSort('#' + curObj._idList);
+                        new ui.Pagination(curObj._actions.pagination + '-' + curObj._idList)._rebuild(1);
+
+                    } catch (e) {
+
+                        new ui.Modal(null).error(e.name + ':' + e.message);
+                    }
+                })
+                .send();
+        }
+
+        return true
     };
 
     /**
@@ -860,8 +913,8 @@
      * @param {string} link
      * @returns {ui.List}
      */
-    ui.List.prototype.setLinkEdit = function(link) {
-        this._urlEdit = link;
+    ui.List.prototype.setLinkAddEndEdit = function(link) {
+        this._urlAddAndEdit = link;
         return this;
     };
 
@@ -869,35 +922,8 @@
      * @param {string} link
      * @returns {ui.List}
      */
-    ui.List.prototype.setLinkAdd = function(link) {
-        this._urlAdd = link;
-        return this;
-    };
-
-    /**
-     * @param {string} link
-     * @returns {ui.List}
-     */
-    ui.List.prototype.setLinkDel = function(link) {
-        this._urlDel = link;
-        return this;
-    };
-
-    /**
-     * @param {string} link
-     * @returns {ui.List}
-     */
-    ui.List.prototype.setLinkPagination = function(link) {
-        this._urlPage = link;
-        return this;
-    };
-
-    /**
-     * @param {string} link
-     * @returns {ui.List}
-     */
-    ui.List.prototype.setLinkSearch = function(link) {
-        this._urlSearch = link;
+    ui.List.prototype.setAction = function(link) {
+        this._urlAction = link;
         return this;
     };
 

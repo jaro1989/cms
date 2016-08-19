@@ -67,8 +67,8 @@
 
             LIST_BTN_REMOVE: '_remove',
 
-            ACTION_LIST_REMOVE: '_remove_list',
-            ACTION_NEXT_PAGE: '_next_page',
+            //ACTION_LIST_REMOVE: '_remove_list',
+            //ACTION_NEXT_PAGE: '_next_page',
 
             skinProgress: 'success',
             modal: {

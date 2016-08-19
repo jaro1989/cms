@@ -38,12 +38,8 @@ for (var i =0; i <500; i++) {
         .addTextareaField('description_kr4', 'Краткое описание1', false, 50)
         .addTextareaField('description_kr5', 'Краткое описание2', false, 50)
 
-
-        .setLinkEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
-        .setLinkAdd('http://symfony.cms/lib-js/ui/example/index.html?page=form')
-        .setLinkDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
-        .setLinkPagination('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
-        .setLinkSearch('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+        .setLinkAddEndEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
+        .setAction('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setTitle('List user', 'description user')
 
 

@@ -561,7 +561,7 @@
                     skin: 'primary',
                     active: true,
                     caption: this._lbl.btn_save,
-                    onclick: "new ui.FormValidation('" + this._idForm + "').save();"
+                    onclick: "new ui.Form('" + this._idForm + "', null)._save();"
                 }
             );
         }
@@ -576,7 +576,7 @@
                     skin:     'primary',
                     caption:  this._lbl.btn_clear,
                     active: true,
-                    onclick:  "new ui.FormValidation('" + this._idForm + "').reset();"
+                    onclick:  "new ui.Form('" + this._idForm + "', null)._reset();"
                 }
             );
         }
@@ -591,7 +591,7 @@
                     skin:     'danger',
                     active: true,
                     caption:  this._lbl.btn_remove,
-                    onclick:  "new ui.FormValidation('" + this._idForm + "').remove();"
+                    onclick:  "new ui.Form('" + this._idForm + "', null)._remove();"
                 }
             );
         }
@@ -1202,6 +1202,114 @@
             ).toHTML();
     };
 
+    /**
+     * @returns {boolean}
+     */
+    ui.Form.prototype._save = function() {
+
+        var data = new ui.FormData(this._idForm).getData();
+        var add  = document.getElementById(ui.Config.FORM_URL_ADD).value;
+        var edit = document.getElementById(ui.Config.FORM_URL_EDIT).value;
+        var record = document.getElementById(ui.Config.FORM_ID_RECORD).value;
+
+        if (data.error.length === 0) {
+
+            new ui.Ajax()
+                .setUrl((record == '') ? add : edit)
+                .setParams(data['data'])
+                .addParam('action', (record == '') ? 'save' : 'edit')
+                .addCallbackFunction(function (e) {
+
+                    if (e) {
+
+                        new ui.Modal(null).alert('Данные успешно сохранены!');
+
+                    } else {
+
+                        new ui.Modal(null).error('Сохранение невозможно!');
+                    }
+                })
+                .send();
+        } else {
+
+            new ui.Modal(null).error('Заполните обязательные поля и повторите!');
+        }
+
+        return true;
+    };
+
+    /**
+     * @returns {boolean}
+     */
+    ui.Form.prototype._remove = function() {
+
+        var urlDel = document.getElementById(ui.Config.FORM_URL_DEL).value;
+        var idRecord = document.getElementById(ui.Config.FORM_ID_RECORD).value;
+        var fieldRecord = document.getElementById(ui.Config.FORM_FIELD_RECORD).value;
+
+        if (idRecord != '' &&  urlDel != '' && fieldRecord != '') {
+
+            new ui.Modal(true)
+                .setTitle('Подтверждение', null)
+                .addButton('alert(1)', 'Да', null, false, null)
+                .addButton('alert(2)', 'Нет', null, false, null)
+                .setContent('Вы уверенны что хотите удалить?');
+
+            var obj = {};
+            obj[fieldRecord] = idRecord;
+
+            new ui.Ajax()
+                .setUrl(urlDel)
+                .setParams(obj)
+                .addParam('action', 'remove')
+                .addCallbackFunction(function (e) {
+
+                    if (e) {
+
+                        new ui.Modal(null).alert('Данные успешно удалены!');
+
+                    } else {
+
+                        new ui.Modal(null).error('Удаление невозможно!');
+                    }
+
+                })
+                .send();
+        }
+
+        return true
+    };
+
+    /**
+     * @returns {boolean}
+     */
+    ui.Form.prototype._reset = function() {
+
+        document.getElementById(this._idForm).reset();
+
+        var elements = new ui.FormData(this._idForm).getFormElements();
+
+        for (var key in elements) {
+
+            var element = elements.item(key);
+            element.removeAttribute('value');
+
+            if (element.name != '' && !isNaN(Number(key))) {
+
+                if (element.required || element.classList.contains(ui.CSS.requiredClass)) {
+
+                    var parentBlock = ui.api.findParent(element, '.' + ui.CSS.validateFieldBlockClass);
+                    var errorBlock = parentBlock.querySelector('.' + ui.CSS.validateErrorClass);
+                    var skinClass = ui.CSS.prefixClass.field + '-' + ui.CSS.skinClass.default['error'];
+
+                    element.parentNode.classList.remove(skinClass);
+                    errorBlock.innerHTML = '';
+                }
+            }
+        }
+
+        return true;
+    };
 
     /**
      * Shut off validator
