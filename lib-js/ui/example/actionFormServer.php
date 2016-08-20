@@ -86,6 +86,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'pagination') {
     echo json_encode($data);
 }
 
+if (isset($_POST['action']) && ($_POST['action'] == 'removeParent' || $_POST['action'] == 'removeChildren')) {
+
+    echo 1;
+}
+
 function generatePassword($length = 8){
     $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ23456789';
     $numChars = strlen($chars);

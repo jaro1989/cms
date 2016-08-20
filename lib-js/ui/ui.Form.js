@@ -504,7 +504,7 @@
 
         this._validation = true;
         this._paddingRelateBlock = 'xs';
-        this.fieldRecordForm =   '';
+        this._fieldRecordForm =   '';
         this._titleForm =      null;
         this._titleFormSmall = null;
         this._skinPanel = 'primary';
@@ -515,6 +515,10 @@
         this._urlBack = document.referrer;
         this._urlDel =  null;
         this._urlActionForm = null;
+        this._actions = {
+            removeParent: 'removeParent',
+            removeChildren: 'removeChildren'
+        };
         this._readOnly = false;
         this._locale = ui.api.empty(locale, ui.Config.lbl[ui.Config.locale]);
         this._lbl = ui.api.existProperty(ui.Config.lbl, this._locale, ui.Config.lbl[ui.Config.locale]);
@@ -596,7 +600,7 @@
             );
         }
 
-        if (this._hideBtnForm._btnRemove === false && this._parentValues.hasOwnProperty(this.fieldRecordForm) && this._urlDel !== null) {
+        if (this._hideBtnForm._btnRemove === false && this._parentValues.hasOwnProperty(this._fieldRecordForm) && this._urlDel !== null) {
 
             this._btnRightBottomForm.push(
                 {
@@ -654,8 +658,11 @@
         var obj = {
             _urlActionForm: this._urlActionForm,
             _urlDel: this._urlDel,
-            fieldRecordForm: this.fieldRecordForm,
-            _idRecord: ui.api.existProperty(this._parentValues, this.fieldRecordForm, null)
+            _fieldRecordForm: this._fieldRecordForm,
+            _idRecord: ui.api.existProperty(this._parentValues, this._fieldRecordForm, null),
+            _actions: {
+                removeParent: this._actions.removeParent
+            }
         };
 
         return new ui.Element('div')
@@ -675,9 +682,12 @@
         var obj = {
             _objectName:  data['object'],
             _fieldName:   data['record_name'],
-            fieldRecordForm: data['record_field'],
+            _fieldRecordForm: data['record_field'],
             _idRecord:    data['record'],
-            _idForm: this._idForm
+            _idForm: this._idForm,
+            _actions: {
+                removeChildren: this._actions.removeChildren
+            }
         };
 
         return new ui.Element('div')
@@ -1134,20 +1144,22 @@
         var str = dataBlock.getAttribute(DATA_JSON_FORM_PR);
         var listParams = JSON.parse(str);
 
-        if (listParams._idRecord != '' &&  listParams._urlDel != '' && listParams.fieldRecordForm != '') {
+        if (listParams._idRecord != '' &&  listParams._urlDel != '' && listParams._fieldRecordForm != '') {
 
             var obj = {};
-            obj[listParams.fieldRecordForm] = listParams._idRecord;
+            obj[listParams._fieldRecordForm] = listParams._idRecord;
             var curObj = this;
 
             new ui.Ajax()
                 .setUrl(listParams._urlDel)
                 .setParams(obj)
-                .addParam('action', 'remove')
-                .addCallbackFunction(function (e) {
+                .addParam('action', listParams._actions.removeParent)
+                .addCallbackFunction(
+                    function (e) {
 
-                    e == 0 ? new ui.Modal(null, curObj._locale).error('Удаление невозможно!') : ui.api.reload(null);
-                })
+                        e == 0 ? new ui.Modal(null, curObj._locale).error('Удаление невозможно!') : ui.api.reload(null);
+                    }
+                )
                 .send();
         }
 
@@ -1172,13 +1184,13 @@
             var listParamsParent = JSON.parse(dataParentBlock.getAttribute(DATA_JSON_FORM_PR));
 
             var data = {};
-            data[listParams.fieldRecordForm] = listParams._idRecord;
+            data[listParams._fieldRecordForm] = listParams._idRecord;
             data['object'] = listParams._objectName;
 
             new ui.Ajax()
                 .setUrl(listParamsParent._urlDel)
                 .setParams(data)
-                .addParam('action', 'remove')
+                .addParam('action', listParams._actions.removeChildren)
                 .addCallbackFunction(function (e) {
 
                     console.log(e);
@@ -1418,7 +1430,7 @@
         obj[_PARENT_TITLE] = title;
 
         this._settings = obj;
-        this.fieldRecordForm = ui.api.empty(record, 'id');
+        this._fieldRecordForm = ui.api.empty(record, 'id');
         this._parentValues = data;
 
         return this;
