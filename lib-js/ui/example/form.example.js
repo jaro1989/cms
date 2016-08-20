@@ -19,11 +19,10 @@ console.time('test');
     }
 
 
-    new ui.Form('form-user')
+    new ui.Form('form-user', null)
         .setTitle('Title form', 'mini title form')
         .setUrtDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
-        .setUrlAdd('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
-        .setUrlEdit('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+        .setUrlActionForm('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setFormReadOnly(false)
         .setMaxHeightFields(200)
         .setWidthCaption(4)

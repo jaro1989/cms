@@ -110,7 +110,7 @@
          *
          * @param {number|string|null} page
          * @param {number|string} nameItem
-         * @param {boolean|null} disabled {true|null}
+         * @param {string|null} disabled {true|null}
          * @param {boolean|null} active {true|null}
          * @param {string|null} side {'l'|'r'|null}
          * @returns {string}
@@ -135,12 +135,16 @@
             }
 
             var href = null;
-            var onclick = this._callback + '(this, ' + page + '); new ui.Pagination("' + this._id + '")._rebuild(' + page + ', ' + this._countPages + ');';
+            var onclick = null;
+
+            if (active == null && disabled == null) {
+
+                onclick = this._callback + '(this, ' + page + '); new ui.Pagination("' + this._id + '")._rebuild(' + page + ', ' + this._countPages + ');';
+            }
 
             if (this._ajaxUrl == false) {
 
                 href = ui.api.empty(this._link, '') + ui.api.empty(this._linkParam, '') + page;
-                onclick = null;
             }
 
             return new ui.Element('li')

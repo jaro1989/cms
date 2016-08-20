@@ -39,6 +39,14 @@
      */
     ui.api = {
 
+        clear: function(element) {
+
+            element.removeAttribute('value');
+            element.defaultValue = '';
+
+            return element;
+        },
+
         /**
          * @param {string|null} link
          */
@@ -82,18 +90,24 @@
          */
         disabledElement: function(element, status) {
 
-            if (status) {
+            if (element !== null) {
 
-                element.setAttribute('disabled', 'disabled');
-                element.classList.add(ui.CSS.disabledClass);
+                if (status) {
 
+                    element.setAttribute('disabled', 'disabled');
+                    element.classList.add(ui.CSS.disabledClass);
+
+                } else {
+
+                    element.removeAttribute('disabled');
+                    element.classList.remove(ui.CSS.disabledClass);
+                }
+
+                return true;
             } else {
 
-                element.removeAttribute('disabled');
-                element.classList.remove(ui.CSS.disabledClass);
+                return false;
             }
-
-            return true;
         },
 
         /**

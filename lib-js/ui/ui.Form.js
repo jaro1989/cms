@@ -25,6 +25,9 @@
     var _CLASS_ROW         = 'row-fields';
     var _BLOCK_FIELD       = 'block-field';
 
+    var DATA_JSON_FORM_PR = 'data-json-form-pr';
+    var DATA_JSON_FORM_CH = 'data-json-form-ch';
+
     var uniqueId = new Date().getTime();
 
     /**
@@ -493,7 +496,8 @@
             _btnSave:   false,
             _btnClear:  false,
             _btnRemove: false,
-            _btnBack:   false
+            _btnBack:   false,
+            _btnReload: false
         };
 
         this._idForm = ui.api.empty(idForm, uniqueId);
@@ -501,7 +505,7 @@
 
         this._validation = true;
         this._paddingRelateBlock = 'xs';
-        this._idRecord =   '';
+        this.fieldRecordForm =   '';
         this._titleForm =      null;
         this._titleFormSmall = null;
         this._skinPanel = 'primary';
@@ -510,9 +514,8 @@
         this._method = ui.Config.defaultMethodForm;
         this._checkboxText = ui.Config.checkboxText;
         this._urlBack = document.referrer;
-        this._urlAdd =  null;
-        this._urlEdit = null;
         this._urlDel =  null;
+        this._urlActionForm = null;
         this._readOnly = false;
         this._lbl = ui.api.existProperty(ui.Config.lbl, locale, ui.Config.lbl[ui.Config.locale]);
     };
@@ -536,17 +539,29 @@
      */
     ui.Form.prototype._addDefaultBtn = function() {
 
-        if (this._hideBtnForm._btnBack === false && this._urlBack != '') {
+        if (this._hideBtnForm._btnBack === false && this._urlBack != '' && this._urlBack !== window.location.href) {
 
             this._btnLeftTopForm.push(
                 {
                     type:     'button',
                     name:     '_btnBack',
                     leftIcon: 'share-alt',
-                    skin:     'primary',
                     caption:  this._lbl.btn_back,
-                    active: true,
+                    active: false,
                     onclick:  "window.location.href = '" + this._urlBack + "'"
+                }
+            );
+        }
+
+        if (this._hideBtnForm._btnReload === false) {
+
+            this._btnLeftTopForm.push(
+                {
+                    type: 'button',
+                    name: '_reloadPage',
+                    leftIcon: 'repeat',
+                    active: false,
+                    onclick: "ui.api.reload();"
                 }
             );
         }
@@ -581,7 +596,7 @@
             );
         }
 
-        if (this._hideBtnForm._btnRemove === false && this._parentValues.hasOwnProperty(this._idRecord) && this._urlDel !== null) {
+        if (this._hideBtnForm._btnRemove === false && this._parentValues.hasOwnProperty(this.fieldRecordForm) && this._urlDel !== null) {
 
             this._btnRightBottomForm.push(
                 {
@@ -591,7 +606,7 @@
                     skin:     'danger',
                     active: true,
                     caption:  this._lbl.btn_remove,
-                    onclick:  "new ui.Form('" + this._idForm + "', null)._remove();"
+                    onclick:  "new ui.Form('" + this._idForm + "', null)._removeParent();"
                 }
             );
         }
@@ -636,32 +651,20 @@
      */
     ui.Form.prototype._blockHiddenPr = function() {
 
+        var obj = {
+            _urlActionForm: this._urlActionForm,
+            _urlDel: this._urlDel,
+            fieldRecordForm: this.fieldRecordForm,
+            _idRecord: ui.api.existProperty(this._parentValues, this.fieldRecordForm, null)
+        };
+
         return new ui.Element('div')
             .setAttrElement('hidden',  true)
             .addClassElement(ui.CSS.formBlockHiddenClass)
             .addChildAfter(
-                new ui.FFHidden(this._urlAdd, ui.Config.FORM_URL_ADD)
-                    .getElement()
-            )
-            .addChildAfter(
-                new ui.FFHidden(this._urlEdit, ui.Config.FORM_URL_EDIT)
-                    .getElement()
-            )
-            .addChildAfter(
-                new ui.FFHidden(this._urlDel, ui.Config.FORM_URL_DEL)
-                    .getElement()
-            )
-            .addChildAfter(
-                new ui.FFHidden(this._urlBack, ui.Config.FORM_URL_BACK)
-                    .getElement()
-            )
-            .addChildAfter(
-                new ui.FFHidden(ui.api.existProperty(this._parentValues, this._idRecord, null), ui.Config.FORM_ID_RECORD)
-                    .addClass(_CLASS_RECORD_ID)
-                    .getElement()
-            )
-            .addChildAfter(
-                new ui.FFHidden(this._idRecord, ui.Config.FORM_FIELD_RECORD)
+                new ui.Element('div')
+                    .setIdElement(DATA_JSON_FORM_PR, null)
+                    .setAttrElement(DATA_JSON_FORM_PR, JSON.stringify(obj))
                     .getElement()
             )
             .getElement();
@@ -669,17 +672,21 @@
 
     ui.Form.prototype._blockHiddenCh = function(data) {
 
+        var obj = {
+            _objectName:  data['object'],
+            _fieldName:   data['record_name'],
+            fieldRecordForm: data['record_field'],
+            _idRecord:    data['record'],
+            _idForm: this._idForm
+        };
+
         return new ui.Element('div')
             .setAttrElement('hidden',  true)
             .addClassElement(ui.CSS.formBlockHiddenClass)
             .addChildAfter(
-                new ui.FFHidden(data['record'], data['record_name'])
-                    .addClass(_CLASS_RECORD_ID)
-                    .getElement()
-            )
-            .addChildAfter(
-                new ui.FFHidden(data['record_field'], null)
-                    .addClass(ui.Config.FORM_FIELD_RECORD)
+                new ui.Element('div')
+                    .addClassElement(DATA_JSON_FORM_CH)
+                    .setAttrElement(DATA_JSON_FORM_CH, JSON.stringify(obj))
                     .getElement()
             )
             .getElement();
@@ -771,9 +778,7 @@
                     panelBody
                         .setAttrElement(_DATA_LAST_ROW_CH, countRecord)
                         .setAttrElement(_DATA_OBJECT_CH, objName)
-                        .addChildAfter(
-                            this._buildRow(values[key], settings, key)
-                        );
+                        .addChildAfter(this._buildRow(values[key], settings, key));
                 }
             }
 
@@ -797,111 +802,6 @@
                 .addChildAfter(panelBody.getElement())
                 .getElement();
         }
-    };
-
-    /**
-     * @param {Node} element
-     * @private
-     */
-    ui.Form.prototype._addRecord = function(element) {
-
-        var row = ui.api.findParent(element, '.' + _CLASS_ROW);
-        var parentBlock = row.parentElement;
-
-        var btn = parentBlock.children[0].querySelector('.' + _CLASS_BTN_DEL);
-        ui.api.show(btn);
-
-        var rowClone = row.cloneNode(true);
-
-        var errorBlock = rowClone.querySelector('.' + ui.CSS.validateErrorClass);
-        errorBlock.innerHTML = '';
-
-        var record = rowClone.querySelector('.' + _CLASS_RECORD_ID);
-
-        if (record !== null) {
-
-            ui.api.findParent(record, '.' + ui.CSS.validateFieldBlockClass).remove();
-        }
-
-        var fields = rowClone.querySelectorAll('input, textarea, select');
-
-        var key = null;
-        var object_name = parentBlock.getAttribute(_DATA_OBJECT_CH);
-        var lastRow = parentBlock.getAttribute(_DATA_LAST_ROW_CH);
-
-        for (key in fields) {
-
-            if (typeof fields[key] == 'object') {
-
-                var skinClass = ui.CSS.prefixClass.field + '-' + ui.CSS.skinClass.default.error;
-                fields[key].parentElement.classList.remove(skinClass);
-
-                var block_field = ui.api.findParent(fields[key], '.' + _BLOCK_FIELD);
-
-                if (block_field !== null) {
-
-                    var field_name = block_field.getAttribute(_DATA_NAME_FIELD);
-                    fields[key].setAttribute('name', object_name + '[' + lastRow + '][' + field_name + ']');
-                }
-
-                fields[key].defaultValue = '';
-                fields[key].value = '';
-                fields[key].innerHTML = '';
-            }
-        }
-
-        lastRow++;
-        parentBlock.setAttribute(_DATA_LAST_ROW_CH, lastRow);
-
-        row.parentElement.insertBefore(rowClone, row.nextSibling);
-    };
-
-    /**
-     * @param {Node} element
-     * @private
-     */
-    ui.Form.prototype._delRecord = function(element) {
-
-        var row = ui.api.findParent(element, '.' + _CLASS_ROW);
-        var record = row.querySelector('.' + _CLASS_RECORD_ID);
-        var parentBlock = row.parentElement;
-
-
-        if (record !== null) {
-
-            var url_del     = document.getElementById(ui.Config.FORM_URL_DEL).value;
-            var object_name = parentBlock.getAttribute(_DATA_OBJECT_CH);
-            var fieldRecord = parentBlock.querySelector('.' + ui.Config.FORM_FIELD_RECORD).value;
-
-            var data = {};
-            data[fieldRecord] = record.value;
-            data['object'] = object_name;
-
-            new ui.Ajax()
-                .setUrl(url_del)
-                .setParams(data)
-                .addParam('action', 'remove')
-                .addCallbackFunction(function (e) {
-
-                    console.log(e);
-
-                })
-                .send();
-        }
-
-        if (parentBlock.childElementCount == 2) {
-
-            var children = parentBlock.childNodes, key;
-
-            for (key in children) {
-
-                if (typeof children[key] == 'object') {
-
-                    ui.api.hide(children[key].querySelector('.' + _CLASS_BTN_DEL));
-                }
-            }
-        }
-        row.remove();
     };
 
     /**
@@ -1076,10 +976,10 @@
 
             var btn = new ui.FFButton()
                 .setGroup('toolbar')
-                .setOnClick("new ui.Form()._addRecord(this);")
+                .setOnClick("new ui.Form()._addChildren(this);")
                 .setClass(_CLASS_BTN_ADD)
                 .addButton(null, null, null, null, false, 'plus')
-                .setOnClick("new ui.Form()._delRecord(this);")
+                .setOnClick("new ui.Form()._removeChildren(this);")
                 .setClass(_CLASS_BTN_DEL)
                 .addButton(null, 'del_record', null, null, false, 'minus')
                 .setSize('sm')
@@ -1134,17 +1034,8 @@
             .setIdElement(this._idForm, null)
             .setAttrElement('method', this._method)
             .addChildBefore(this._blockHiddenPr())
-            .addChildAfter(this._buildBlockRows(this._settings, true));
-
-        var record = ui.api.existProperty(this._parentValues, this._idRecord, false);
-
-        if (this._urlAdd !== null || this._urlEdit !== null) {
-
-            (this._urlAdd == null)  ? this._urlAdd  = this._urlEdit : '';
-            (this._urlEdit == null) ? this._urlEdit = this._urlAdd  : '';
-
-            form.setAttrElement('action', (record === false) ? this._urlEdit : this._urlAdd)
-        }
+            .addChildAfter(this._buildBlockRows(this._settings, true))
+            .setAttrElement('action', this._urlActionForm);
 
         this._addDefaultBtn();
 
@@ -1207,27 +1098,21 @@
      */
     ui.Form.prototype._save = function() {
 
+        var dataBlock = document.body.querySelector('#' + this._idForm + ' #' + DATA_JSON_FORM_PR);
+        var str = dataBlock.getAttribute(DATA_JSON_FORM_PR);
+        var listParams = JSON.parse(str);
+
         var data = new ui.FormData(this._idForm).getData();
-        var add  = document.getElementById(ui.Config.FORM_URL_ADD).value;
-        var edit = document.getElementById(ui.Config.FORM_URL_EDIT).value;
-        var record = document.getElementById(ui.Config.FORM_ID_RECORD).value;
 
         if (data.error.length === 0) {
 
             new ui.Ajax()
-                .setUrl((record == '') ? add : edit)
+                .setUrl(listParams._urlActionForm)
                 .setParams(data['data'])
-                .addParam('action', (record == '') ? 'save' : 'edit')
+                .addParam('action', (listParams._idRecord > 0) ? 'save' : 'edit')
                 .addCallbackFunction(function (e) {
 
-                    if (e) {
-
-                        new ui.Modal(null).alert('Данные успешно сохранены!');
-
-                    } else {
-
-                        new ui.Modal(null).error('Сохранение невозможно!');
-                    }
+                    e == 0 ? new ui.Modal(null).error('Сохранение невозможно!') : new ui.Modal(null).alert('Данные успешно сохранены!');
                 })
                 .send();
         } else {
@@ -1241,43 +1126,137 @@
     /**
      * @returns {boolean}
      */
-    ui.Form.prototype._remove = function() {
+    ui.Form.prototype._removeParent = function() {
 
-        var urlDel = document.getElementById(ui.Config.FORM_URL_DEL).value;
-        var idRecord = document.getElementById(ui.Config.FORM_ID_RECORD).value;
-        var fieldRecord = document.getElementById(ui.Config.FORM_FIELD_RECORD).value;
+        var dataBlock = document.body.querySelector('#' + this._idForm + ' #' + DATA_JSON_FORM_PR);
+        var str = dataBlock.getAttribute(DATA_JSON_FORM_PR);
+        var listParams = JSON.parse(str);
 
-        if (idRecord != '' &&  urlDel != '' && fieldRecord != '') {
-
-            new ui.Modal(true)
-                .setTitle('Подтверждение', null)
-                .addButton('alert(1)', 'Да', null, false, null)
-                .addButton('alert(2)', 'Нет', null, false, null)
-                .setContent('Вы уверенны что хотите удалить?');
+        if (listParams._idRecord != '' &&  listParams._urlDel != '' && listParams.fieldRecordForm != '') {
 
             var obj = {};
-            obj[fieldRecord] = idRecord;
+            obj[listParams.fieldRecordForm] = listParams._idRecord;
 
             new ui.Ajax()
-                .setUrl(urlDel)
+                .setUrl(listParams._urlDel)
                 .setParams(obj)
                 .addParam('action', 'remove')
                 .addCallbackFunction(function (e) {
 
-                    if (e) {
-
-                        new ui.Modal(null).alert('Данные успешно удалены!');
-
-                    } else {
-
-                        new ui.Modal(null).error('Удаление невозможно!');
-                    }
-
+                    e == 0 ? new ui.Modal(null).error('Удаление невозможно!') : ui.api.reload(null);
                 })
                 .send();
         }
 
         return true
+    };
+
+    /**
+     * @param {Node} element
+     * @private
+     */
+    ui.Form.prototype._removeChildren = function(element) {
+
+        var block = ui.api.findParent(element, '.' + _CLASS_ROW);
+        var dataBlock = block.querySelector('.' + DATA_JSON_FORM_CH);
+        var str = dataBlock.getAttribute(DATA_JSON_FORM_CH);
+        var listParams = JSON.parse(str);
+
+        var parentBlock = block.parentElement;
+
+        if (listParams._idRecord != '') {
+
+            var dataParentBlock = document.body.querySelector('#' + listParams._idForm + ' #' + DATA_JSON_FORM_PR);
+            var listParamsParent = JSON.parse(dataParentBlock.getAttribute(DATA_JSON_FORM_PR));
+
+            var data = {};
+            data[listParams.fieldRecordForm] = listParams._idRecord;
+            data['object'] = listParams._objectName;
+
+            new ui.Ajax()
+                .setUrl(listParamsParent._urlDel)
+                .setParams(data)
+                .addParam('action', 'remove')
+                .addCallbackFunction(function (e) {
+
+                    console.log(e);
+                })
+                .send();
+        }
+
+        if (parentBlock.childElementCount == 2) {
+
+            var children = parentBlock.childNodes, key;
+
+            for (key in children) {
+
+                if (typeof children[key] == 'object') {
+
+                    ui.api.hide(children[key].querySelector('.' + _CLASS_BTN_DEL));
+                }
+            }
+        }
+
+        block.remove();
+    };
+
+    /**
+     * @param {Node} element
+     * @private
+     */
+    ui.Form.prototype._addChildren = function(element) {
+
+        var row = ui.api.findParent(element, '.' + _CLASS_ROW);
+        var parentBlock = row.parentElement;
+
+        var btn = parentBlock.children[0].querySelector('.' + _CLASS_BTN_DEL);
+        ui.api.show(btn);
+
+        var rowClone = row.cloneNode(true);
+
+        var errorBlock = rowClone.querySelector('.' + ui.CSS.validateErrorClass);
+        errorBlock.innerHTML = '';
+
+        var record = rowClone.querySelector('.' + _CLASS_RECORD_ID);
+
+        if (record !== null) {
+
+            ui.api.findParent(record, '.' + ui.CSS.validateFieldBlockClass).remove();
+        }
+
+        var fields = rowClone.querySelectorAll('input, textarea, select');
+        console.log(fields);
+
+        var key = null;
+        var object_name = parentBlock.getAttribute(_DATA_OBJECT_CH);
+        var lastRow = parentBlock.getAttribute(_DATA_LAST_ROW_CH);
+
+        for (key in fields) {
+
+            if (typeof fields[key] == 'object') {
+
+                var skinClass = ui.CSS.prefixClass.field + '-' + ui.CSS.skinClass.default.error;
+                fields[key].parentElement.classList.remove(skinClass);
+
+                var block_field = ui.api.findParent(fields[key], '.' + _BLOCK_FIELD);
+
+                if (block_field !== null) {
+
+                    var field_name = block_field.getAttribute(_DATA_NAME_FIELD);
+                    fields[key].setAttribute('name', object_name + '[' + lastRow + '][' + field_name + ']');
+                    block_field.querySelector('.' + ui.CSS.validateErrorClass).innerHTML = '';
+                }
+
+                fields[key].defaultValue = '';
+                fields[key].value = '';
+                fields[key].innerHTML = '';
+            }
+        }
+
+        lastRow++;
+        parentBlock.setAttribute(_DATA_LAST_ROW_CH, lastRow);
+
+        row.parentElement.insertBefore(rowClone, row.nextSibling);
     };
 
     /**
@@ -1292,7 +1271,7 @@
         for (var key in elements) {
 
             var element = elements.item(key);
-            element.removeAttribute('value');
+            ui.api.clear(element);
 
             if (element.name != '' && !isNaN(Number(key))) {
 
@@ -1362,6 +1341,16 @@
     };
 
     /**
+     * @param {boolean} hide
+     * @returns {ui.Form}
+     */
+    ui.Form.prototype.hideBtnReload = function(hide) {
+
+        this._hideBtnForm._btnReload = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
      * Add new row for fields
      * @returns {ui.Form}
      * @public
@@ -1402,18 +1391,18 @@
 
     /**
      * @param {string} title
-     * @param {string|null} recordId
+     * @param {string|null} record
      * @param {{}} data
      * @returns {ui.Form}
      * @public
      */
-    ui.Form.prototype.setParentBlock = function (title, recordId, data) {
+    ui.Form.prototype.setParentBlock = function (title, record, data) {
 
         var obj = {};
         obj[_PARENT_TITLE] = title;
 
         this._settings = obj;
-        this._idRecord = recordId;
+        this.fieldRecordForm = ui.api.empty(record, 'id');
         this._parentValues = data;
 
         return this;
@@ -1492,19 +1481,9 @@
      * @param {string} url
      * @returns {ui.Form}
      */
-    ui.Form.prototype.setUrlAdd = function(url) {
+    ui.Form.prototype.setUrlActionForm = function(url) {
 
-        this._urlAdd = url;
-        return this;
-    };
-
-    /**
-     * @param {string} url
-     * @returns {ui.Form}
-     */
-    ui.Form.prototype.setUrlEdit = function(url) {
-
-        this._urlEdit = url;
+        this._urlActionForm = url;
         return this;
     };
 

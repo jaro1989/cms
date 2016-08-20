@@ -48,7 +48,9 @@ for (var i =0; i <500; i++) {
         .hideColumnNumber(false)
         .hideColumnCheckbox(false)
 
-        .setMaxRow(50)
+        .setMaxRow(10)
+        .setCountPages(22)
+        .setCurrentPage(6)
 
         .newRowHead()
         .addCellHead('Тестовые данные HEADER', 4, 1, false, null, null)

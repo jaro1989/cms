@@ -28,7 +28,7 @@
 
         ui.Form.apply(this, ['search-' + idList, locale]);
 
-        this._fieldRecord = ui.api.empty(record, 'id');
+        this._fieldRecordList = ui.api.empty(record, 'id');
         //Buttons
         this._btnRightBottomList = [];
         this._btnLeftBottomList = [];
@@ -72,7 +72,7 @@
         this._rowNum = 1;
         this._maxRow = 50;
         this._currentPage = 1;
-        this._countPages = 2;
+        this._countPages = 1;
         //Link
         this._urlAction = null;
         this._urlAddAndEdit = null;
@@ -184,7 +184,7 @@
                     skin: null,
                     active: false,
                     caption: this._lbl.btn_search,
-                    onclick: "new ui.List('" + this._fieldRecord + "', '" + this._idList + "', null)._search('" + this._idForm + "');"
+                    onclick: "new ui.List('" + this._fieldRecordList + "', '" + this._idList + "', null)._search('" + this._idForm + "');"
                 }
             );
         }
@@ -204,7 +204,9 @@
             );
         }
 
-        if (this._hideColumnCheckbox === false && this._hideBtnList._btnRemove == false && this._fieldRecord !== null) {
+        console.log(this._hideColumnCheckbox, this._hideBtnList._btnRemove, this._fieldRecordList);
+
+        if (this._hideColumnCheckbox === false && this._hideBtnList._btnRemove === false) {
 
             this._btnRightTopTable.push(
                 {
@@ -214,7 +216,7 @@
                     skin:     'danger',
                     active: true,
                     caption:  this._lbl.btn_remove,
-                    onclick:  "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._remove();",
+                    onclick:  "new ui.List('" + this._fieldRecordList + "', '" + this._idList + "')._remove();",
                     disabled: true
                 }
             );
@@ -352,7 +354,7 @@
                 );
             } else if (blockName == BLOCK_BODY) {
 
-                var reordID = ui.api.existProperty(this._settingsList.tbody[rowNum], this._fieldRecord, null);
+                var reordID = ui.api.existProperty(this._settingsList.tbody[rowNum], this._fieldRecordList, null);
 
                 row.addChildAfter(
                     cell
@@ -393,7 +395,7 @@
             var cell = new ui.Element(cellName)
                 .addClassElement(ui.CSS.tableClass.rowNum);
 
-            var onclick = "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._choose(this);";
+            var onclick = "new ui.List('" + this._fieldRecordList + "', '" + this._idList + "')._choose(this);";
 
             if (blockName == BLOCK_HEAD && rowNum == 0) {
 
@@ -412,7 +414,7 @@
                 );
             } else if (blockName == BLOCK_BODY) {
 
-                var reordID = ui.api.existProperty(this._settingsList.tbody[rowNum], this._fieldRecord, null);
+                var reordID = ui.api.existProperty(this._settingsList.tbody[rowNum], this._fieldRecordList, null);
 
                 row.addChildAfter(
                     cell
@@ -420,7 +422,7 @@
                             new ui.FFCheckbox('simple')
                                 .setAttr(DATA_RECORD_ID, reordID)
                                 .setAttr(DATA_ACTION, CHOOSE_RECORD_ID)
-                                .addCheckbox(reordID, this._fieldRecord + '[' + rowNum + ']', null, onclick)
+                                .addCheckbox(reordID, this._fieldRecordList + '[' + rowNum + ']', null, onclick)
                                 .getElement()
                         )
                         .getElement()
@@ -634,7 +636,7 @@
                 pagination: this._actions.pagination,
                 remove: this._actions.remove
             },
-            _fieldRecord: this._fieldRecord,
+            _fieldRecordList: this._fieldRecordList,
             _hideColumnCheckbox: this._hideColumnCheckbox,
             _hideColumnNumber:   this._hideColumnNumber
         };
@@ -673,7 +675,7 @@
                 .getElement()
         );
 
-        var onclick = "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._rebuild";
+        var onclick = "new ui.List('" + this._fieldRecordList + "', '" + this._idList + "')._rebuild";
 
         this._buildSearchForm(panel);
 
@@ -685,6 +687,7 @@
                 .addChildAfter(
                     new ui.Pagination(this._actions.pagination + '-' + this._idList)
                         .setCountPages(this._countPages)
+                        .setCurrentPage(this._currentPage)
                         .setCallbackFunction(onclick)
                         .setSkin(this._skin)
                         .setAjax()
