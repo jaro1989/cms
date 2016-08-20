@@ -53,7 +53,7 @@
             row:   0,
             cell:  0
         };
-        this._columnTypeData = {};
+        //this._columnType = {};
         this._column = {};
         this._parentRecords = [];
         //Page
@@ -84,6 +84,57 @@
         this._idList = ui.api.empty(idList, 'table-' + uniqueId);
         this._lbl = ui.api.existProperty(ui.Config.lbl, locale, ui.Config.lbl[ui.Config.locale]);
         uniqueId++;
+
+        this._columnType = {
+
+            number: function(params) {
+
+                return new ui.Element('div')
+                    .addClassElement('sort-content')
+                    .setPsitionElement('right')
+                    .setContentElement(params.value)
+                    .toHTML()
+            },
+
+            text: function(params) {
+
+                return new ui.Element('div')
+                    .addClassElement('sort-content')
+                    .setContentElement(params.value)
+                    .toHTML()
+            },
+
+            link: function(params) {
+
+                return new ui.Element('div')
+                    .addChildAfter(
+                        new ui.Element('a')
+                            .addClassElement('sort-content')
+                            .setUrlElement(params.href)
+                            .setContentElement(params.value)
+                            .getElement()
+                    )
+                    .toHTML()
+            },
+
+            image: function(params) {
+
+                return new ui.Element('div')
+                    .addChildAfter(
+                        new ui.Element('a')
+                            .addClassElement('thumbnail')
+                            .setUrlElement(params.href)
+                            .addChildAfter(
+                                new ui.Element('img')
+                                    .addClassElement('sort-content')
+                                    .setUrlElement(params.value)
+                                    .getElement()
+                            )
+                            .getElement()
+                    )
+                    .toHTML()
+            }
+        };
     };
 
     ui.List.prototype = Object.create(ui.Form.prototype);
@@ -200,8 +251,6 @@
             );
         }
 
-        console.log(this._hideColumnCheckbox, this._hideBtnList._btnRemove, this._fieldRecordList);
-
         if (this._hideColumnCheckbox === false && this._hideBtnList._btnRemove === false) {
 
             this._btnRightTopTable.push(
@@ -294,12 +343,18 @@
      * @returns {*}
      * @private
      */
-    ui.List.prototype._columnType = function(content, fieldName) {
+    ui.List.prototype._getColumnType = function(content, fieldName) {
 
         var type = ui.api.existProperty(this._column, fieldName, false);
 
-        if (type) {
-            //Тип значения
+        if (type in this._columnType) {
+
+            var params = {
+                value: content,
+                href: this._urlAddAndEdit
+            };
+
+            content = this._columnType[type].call(this, params);
         }
 
         return content;
@@ -318,7 +373,7 @@
 
         if (blockName == BLOCK_BODY) {
 
-            return this._columnType(content, fieldName);
+            return this._getColumnType(content, fieldName);
         }
 
         return content;
@@ -552,7 +607,7 @@
 
                     row.addChildAfter(
                         new ui.Element(cellName)
-                            .setContentElement(this._columnType(params[fieldName], fieldName))
+                            .setContentElement(this._getColumnType(params[fieldName], fieldName))
                             .getElement()
                     );
                 }

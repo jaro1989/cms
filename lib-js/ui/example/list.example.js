@@ -6,10 +6,10 @@ for (var i =0; i <500; i++) {
 
     dataTest.push({
         id: i * 1456,
-        name2: 'aasТестовые данные -' + i,
+        name2: (i + 1) * 423,
         name3: 'ssasТестовые данные -' + i,
-        name4: 'dfaaasaТестовые данные -' + i,
-        name5: 'fgfafsdТестовые данные -' + i,
+        name4: 'Оптимизация, о которой здесь <span style="color: #f00;">идёт речь, важна</span> в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.Оптимизация, о которой здесь идёт речь, важна в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.Оптимизация, о которой здесь идёт речь, важна в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.Оптимизация, о которой здесь идёт речь, важна в первую очередь для старых браузеров, включая IE9-. В современных браузерах эффект от нее, как правило, небольшой, а иногда может быть и отрицательным.',
+        name5: '/web/apple-touch-icon.png',
         name6: 'hhhТестовые данные -' + i
     });
 }
@@ -52,18 +52,18 @@ for (var i =0; i <500; i++) {
         .setCurrentPage(6)
 
         .newRowHead()
-        .addCellHead('Тестовые данные HEADER', 4, 1, false, null, null)
+        .addCellHead('Тестовые данные', 4, 1, false, null, 'text-align: center;')
 
         .newRowHead()
-        .addCellHead('Тестовые данные HEADER', 1, 1, true, 2, null)
-        .addCellHead('Тестовые данные HEADER', 1, 1, true, 2, null)
-        .addCellHead('Тестовые данные HEADER', 1, 1, true, 5, null)
-        .addCellHead('Тестовые данные HEADER', 1, 1, true, 3, null)
+        .addCellHead('Числа', 1, 1, true, 1, null)
+        .addCellHead('Малый текст ссылка', 1, 1, true, 3, null)
+        .addCellHead('Большой текст с тэгами', 1, 1, true, 7, null)
+        .addCellHead('Картинка', 1, 1, true, 1, null)
 
-        .addColumn('name2', null)
-        .addColumn('name3', null)
-        .addColumn('name4', null)
-        .addColumn('name5', null)
+        .addColumn('name2', 'number')
+        .addColumn('name3', 'link')
+        .addColumn('name4', 'text')
+        .addColumn('name5', 'image')
 
         .addRowsBody(dataTest)
 
