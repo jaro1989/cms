@@ -10,11 +10,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit') {
     echo 'response ajax POST - ' . $_POST['action'];
 }
 
-//if (isset($_POST['action']) && $_POST['action'] == 'remove') {
-//
-//    echo 'response ajax POST ' . $_POST['action'];
-//}
-
 if (isset($_POST['action']) && $_POST['action'] == 'remove') {
 
     $page = $_POST['page'];
@@ -30,7 +25,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'remove') {
             'name2' => generatePassword() . ' -' . $i,
             'name3' => generatePassword() . ' -' . $i . ' - ' . $page,
             'name4' => generatePassword() . ' -' . $i,
-            'name5' => generatePassword() . ' -' . $i,
+            'name5' => '/web/apple-touch-icon.png',
             'name6' => generatePassword() . ' -' . $i . ' - ' . $page
         ];
     }
@@ -58,7 +53,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'search') {
             'name2' => generatePassword() . ' -' . $i,
             'name3' => generatePassword() . ' -' . $i . ' - ' . $page,
             'name4' => generatePassword() . ' -' . $i,
-            'name5' => generatePassword() . ' -' . $i,
+            'name5' => null,
             'name6' => generatePassword() . ' -' . $i . ' - ' . $page
         ];
     }
@@ -83,7 +78,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'pagination') {
             'name2' => generatePassword() . ' -' . $i,
             'name3' => generatePassword() . ' -' . $i . ' - ' . $page,
             'name4' => generatePassword() . ' -' . $i,
-            'name5' => generatePassword() . ' -' . $i,
+            'name5' => null,
             'name6' => generatePassword() . ' -' . $i . ' - ' . $page
         ];
     }

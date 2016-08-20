@@ -95,6 +95,7 @@
                 }
             },
 
+            noimg: '../no-image.png',
             locale: 'ru',
 
             lbl: {
@@ -111,7 +112,8 @@
                     btn_yes: 'Да',
                     btn_no: 'Нет',
                     error: 'Ошибка',
-                    message: 'Сообщение'
+                    message: 'Сообщение',
+                    noimg: 'Картинка не найдена'
                 },
                 eu: {
                     btn_save: 'Save',
@@ -126,7 +128,8 @@
                     btn_yes: 'Yes',
                     btn_no: 'No',
                     error: 'Error',
-                    message: 'Message'
+                    message: 'Message',
+                    noimg: 'Picture not found'
                 }
             }
         };

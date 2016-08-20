@@ -81,6 +81,8 @@
             remove: 'remove'
         };
 
+        this.urlNoImg = ui.Config.noimg;
+
         this._idList = ui.api.empty(idList, 'table-' + uniqueId);
         this._lbl = ui.api.existProperty(ui.Config.lbl, locale, ui.Config.lbl[ui.Config.locale]);
         uniqueId++;
@@ -127,7 +129,8 @@
                             .addChildAfter(
                                 new ui.Element('img')
                                     .addClassElement('sort-content')
-                                    .setUrlElement(params.value)
+                                    .setAttrElement('alt', params.alt)
+                                    .setUrlElement(ui.api.empty(params.value, params.hrefNoImg))
                                     .getElement()
                             )
                             .getElement()
@@ -351,7 +354,9 @@
 
             var params = {
                 value: content,
-                href: this._urlAddAndEdit
+                href: this._urlAddAndEdit,
+                alt: this._lbl.noimg,
+                hrefNoImg: this.urlNoImg
             };
 
             content = this._columnType[type].call(this, params);
