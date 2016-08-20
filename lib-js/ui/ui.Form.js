@@ -8,7 +8,6 @@
     var _TYPE_CHECKBOX  = '_ffCheckbox';
     var _TYPE_RADIO     = '_ffRadio';
     var _TYPE_READ_ONLY = '_ffReadonly';
-    //var _TYPE_RELATIONSHIP = 'relationship';
 
     var _OBJECT_NAME  = 'object_name';
     var _PARENT_TITLE = 'parent_title';
@@ -189,7 +188,7 @@
             value = ui.api.setValue(value, name);
 
             return new ui.FFCheckbox()
-                .addCheckbox(value, params['setname'], caption)
+                .addCheckbox(value, params['setname'], caption, null)
                 .setRequired(ui.api.existProperty(params, 'required', false))
                 .setCaptionBlock('', this.widthCaption)
                 .setFieldsHorizontal()
@@ -1225,7 +1224,6 @@
         }
 
         var fields = rowClone.querySelectorAll('input, textarea, select');
-        console.log(fields);
 
         var key = null;
         var object_name = parentBlock.getAttribute(_DATA_OBJECT_CH);
@@ -1390,7 +1388,7 @@
     };
 
     /**
-     * @param {string} title
+     * @param {string|null} title
      * @param {string|null} record
      * @param {{}} data
      * @returns {ui.Form}

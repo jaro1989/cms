@@ -16,9 +16,9 @@ for (var i =0; i <500; i++) {
 
     new ui.List('id', 'list-user', null)
         .setSkinBlockSearch('default')
-        .setTitleSearch('Search user', 'search')
+        .setTitleSearch('search', 'search')
         .setParentBlock(
-            'Search user',
+            null,
             null,
             {
                 description_kr1: 'Киселев',
@@ -42,7 +42,6 @@ for (var i =0; i <500; i++) {
         .setLinkTrash('http://symfony.cms/lib-js/ui/example/index.html?page=form')
         .setAction('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setTitle('List user', 'description user')
-
 
         .setTypeTable('bordered')
         .hideColumnNumber(false)

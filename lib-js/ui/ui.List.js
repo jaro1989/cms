@@ -5,16 +5,12 @@
     var BLOCK_HEAD = 'thead';
     var BLOCK_BODY = 'tbody';
     var BLOCK_FOOT = 'tfoot';
-
-    var DATA_RECORD_ID = 'data-record';
-    var DATA_ACTION = 'data-action';
-
+    var DATA_RECORD_ID   = 'data-record';
+    var DATA_ACTION      = 'data-action';
     var CHOOSE_RECORD_ID = 'choose-record-id';
-    var CHOOSE_RECORDS = 'choose_records';
-
-    var DATA_JSON_TABLE = 'data-json-table';
-
-    var SORT_CONTENT = 'sort-content';
+    var CHOOSE_RECORDS   = 'choose_records';
+    var DATA_JSON_TABLE  = 'data-json-table';
+    var SORT_CONTENT     = 'sort-content';
 
     /**
      * @memberOf ui
@@ -711,6 +707,7 @@
             ui.Form.prototype.hideBtnRemove.call(this, true);
             ui.Form.prototype.hideBtnSave.call(this, true);
             ui.Form.prototype.hideBtnClear.call(this, true);
+            ui.Form.prototype.hideBtnReload.call(this, true);
 
             panel.addChildAfter(
                 new ui.Element('div')
