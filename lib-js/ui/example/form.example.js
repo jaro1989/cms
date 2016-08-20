@@ -22,6 +22,7 @@ console.time('test');
     new ui.Form('form-user', null)
         .setTitle('Title form', 'mini title form')
         .setUrtDel('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+        .setUrtList('http://symfony.cms/lib-js/ui/example/index.html?page=list')
         .setUrlActionForm('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setFormReadOnly(false)
         .setMaxHeightFields(200)

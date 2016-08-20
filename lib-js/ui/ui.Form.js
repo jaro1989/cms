@@ -496,7 +496,8 @@
             _btnClear:  false,
             _btnRemove: false,
             _btnBack:   false,
-            _btnReload: false
+            _btnReload: false,
+            _btnList:   false
         };
 
         this._idForm = ui.api.empty(idForm, uniqueId);
@@ -515,6 +516,7 @@
         this._urlBack = document.referrer;
         this._urlDel =  null;
         this._urlActionForm = null;
+        this._urlList = null;
         this._actions = {
             removeParent: 'removeParent',
             removeChildren: 'removeChildren'
@@ -542,6 +544,21 @@
      * returns {voild}
      */
     ui.Form.prototype._addDefaultBtn = function() {
+
+        if (this._urlList !== null && this._hideBtnForm._btnList === false) {
+
+            this._btnRightTopForm.push(
+                {
+                    type:     'button',
+                    name:     '_list',
+                    leftIcon: 'list',
+                    skin:     'primary',
+                    caption:  this._lbl.btn_list,
+                    active: true,
+                    onclick:  "ui.api.reload('" + this._urlList + "');"
+                }
+            );
+        }
 
         if (this._hideBtnForm._btnBack === false && this._urlBack != '' && this._urlBack !== window.location.href) {
 
@@ -1379,6 +1396,16 @@
     };
 
     /**
+     * @param {boolean} hide
+     * @returns {ui.Form}
+     */
+    ui.Form.prototype.hideBtnList = function(hide) {
+
+        this._hideBtnForm._btnList = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
      * Add new row for fields
      * @returns {ui.Form}
      * @public
@@ -1522,6 +1549,16 @@
     ui.Form.prototype.setUrtDel = function( url) {
 
         this._urlDel = url;
+        return this;
+    };
+
+    /**
+     * @param {string} url
+     * @returns {ui.Form}
+     */
+    ui.Form.prototype.setUrtList = function( url) {
+
+        this._urlList = url;
         return this;
     };
 

@@ -137,6 +137,22 @@
                             .getElement()
                     )
                     .toHTML()
+            },
+
+            code: function(params) {
+
+                return new ui.Element('code')
+                    .addClassElement('sort-content')
+                    .setContentElement(ui.api.escapeHtml(params.value))
+                    .toHTML()
+            },
+
+            html: function(params) {
+
+                return new ui.Element('div')
+                    .addClassElement('sort-content')
+                    .setContentElement(ui.api.escapeHtml(params.value))
+                    .toHTML()
             }
         };
     };
@@ -216,7 +232,7 @@
             this._btnRightTopList.push(
                 {
                     type:     'button',
-                    name:     '_add',
+                    name:     '_trash',
                     leftIcon: 'trash',
                     caption:  this._lbl.btn_trash,
                     active: false,
