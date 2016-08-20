@@ -999,7 +999,7 @@
             }
         }
 
-        if (key_record !== null && numRow == 0) {
+        if (key_record !== null && numRow == 0 && this._readOnly === false) {
 
             var btn = new ui.FFButton()
                 .setGroup('toolbar')
@@ -1458,7 +1458,7 @@
 
         this._settings = obj;
         this._fieldRecordForm = ui.api.empty(record, 'id');
-        this._parentValues = data;
+        this._parentValues = ui.api.empty(data, {});
 
         return this;
     };
