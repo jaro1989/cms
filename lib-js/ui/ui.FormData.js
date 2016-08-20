@@ -4,14 +4,16 @@
      * @memberOf ui
      * @namespace ui.FormData
      * @param {string|number} idForm
+     * @param {string|null} locale
      * @constructor
      */
-    ui.FormData = function (idForm) {
+    ui.FormData = function (idForm, locale) {
 
         this._idForm = idForm;
         this._elements = document.getElementById(idForm).elements;
         this.data = {};
         this.errorField = [];
+        this._lbl = ui.api.existProperty(ui.Config.lbl, locale, ui.Config.lbl[ui.Config.locale]);
     };
 
     /** @protected */
@@ -48,7 +50,7 @@
                 if ((element.type === 'checkbox' || element.type === 'radio') && !element.checked) {
 
                     res = false;
-                    errorBlock.innerHTML = '<br/>' + ui.Config.errorTextRequred;
+                    errorBlock.innerHTML = '<br/>' + this._lbl.required;
                     element.parentNode.classList.add(skinClass);
 
                 } else {
@@ -56,7 +58,7 @@
                     if (element.value == '') {
 
                         res = false;
-                        errorBlock.innerHTML = '<br/>' + ui.Config.errorTextRequred;
+                        errorBlock.innerHTML = '<br/>' + this._lbl.required;
                         element.parentNode.classList.add(skinClass);
                     }
                 }

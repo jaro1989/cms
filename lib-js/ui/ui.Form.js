@@ -516,6 +516,7 @@
         this._urlDel =  null;
         this._urlActionForm = null;
         this._readOnly = false;
+        this._locale = locale;
         this._lbl = ui.api.existProperty(ui.Config.lbl, locale, ui.Config.lbl[ui.Config.locale]);
     };
 
@@ -575,7 +576,7 @@
                     skin: 'primary',
                     active: true,
                     caption: this._lbl.btn_save,
-                    onclick: "new ui.Form('" + this._idForm + "', null)._save();"
+                    onclick: "new ui.Form('" + this._idForm + "', '" + this._locale + "')._save();"
                 }
             );
         }
@@ -590,7 +591,7 @@
                     skin:     'primary',
                     caption:  this._lbl.btn_clear,
                     active: true,
-                    onclick:  "new ui.Form('" + this._idForm + "', null)._reset();"
+                    onclick:  "new ui.Form('" + this._idForm + "', '" + this._locale + "')._reset();"
                 }
             );
         }
@@ -605,7 +606,7 @@
                     skin:     'danger',
                     active: true,
                     caption:  this._lbl.btn_remove,
-                    onclick:  "new ui.Form('" + this._idForm + "', null)._removeParent();"
+                    onclick:  "new ui.Form('" + this._idForm + "', '" + this._locale + "')._removeParent();"
                 }
             );
         }
@@ -975,10 +976,10 @@
 
             var btn = new ui.FFButton()
                 .setGroup('toolbar')
-                .setOnClick("new ui.Form()._addChildren(this);")
+                .setOnClick("new ui.Form(null, '" + this._locale + "')._addChildren(this);")
                 .setClass(_CLASS_BTN_ADD)
                 .addButton(null, null, null, null, false, 'plus')
-                .setOnClick("new ui.Form()._removeChildren(this);")
+                .setOnClick("new ui.Form(null, '" + this._locale + "')._removeChildren(this);")
                 .setClass(_CLASS_BTN_DEL)
                 .addButton(null, 'del_record', null, null, false, 'minus')
                 .setSize('sm')
@@ -1101,7 +1102,7 @@
         var str = dataBlock.getAttribute(DATA_JSON_FORM_PR);
         var listParams = JSON.parse(str);
 
-        var data = new ui.FormData(this._idForm).getData();
+        var data = new ui.FormData(this._idForm, this._locale).getData();
 
         if (data.error.length === 0) {
 
@@ -1159,12 +1160,11 @@
         var block = ui.api.findParent(element, '.' + _CLASS_ROW);
         var dataBlock = block.querySelector('.' + DATA_JSON_FORM_CH);
         var str = dataBlock.getAttribute(DATA_JSON_FORM_CH);
-        var listParams = JSON.parse(str);
-
         var parentBlock = block.parentElement;
 
-        if (listParams._idRecord != '') {
+        try {
 
+            var listParams = JSON.parse(str);
             var dataParentBlock = document.body.querySelector('#' + listParams._idForm + ' #' + DATA_JSON_FORM_PR);
             var listParamsParent = JSON.parse(dataParentBlock.getAttribute(DATA_JSON_FORM_PR));
 
@@ -1181,6 +1181,8 @@
                     console.log(e);
                 })
                 .send();
+        } catch (e) {
+
         }
 
         if (parentBlock.childElementCount == 2) {
@@ -1205,14 +1207,26 @@
      */
     ui.Form.prototype._addChildren = function(element) {
 
-        var row = ui.api.findParent(element, '.' + _CLASS_ROW);
-        var parentBlock = row.parentElement;
+        var block = ui.api.findParent(element, '.' + _CLASS_ROW);
+        var parentBlock = block.parentElement;
 
         var btn = parentBlock.children[0].querySelector('.' + _CLASS_BTN_DEL);
         ui.api.show(btn);
 
-        var rowClone = row.cloneNode(true);
+        var rowClone = block.cloneNode(true);
+        //Reset data clone
+        var dataBlock = rowClone.querySelector('.' + DATA_JSON_FORM_CH);
 
+        var str = dataBlock.getAttribute(DATA_JSON_FORM_CH);
+        var listParams = JSON.parse(str);
+
+        for (var property in listParams) {
+
+            listParams[property] = null;
+        }
+        dataBlock.setAttribute(DATA_JSON_FORM_CH, JSON.stringify(listParams));
+
+        //Find tag with text error in clone
         var errorBlock = rowClone.querySelector('.' + ui.CSS.validateErrorClass);
         errorBlock.innerHTML = '';
 
@@ -1223,6 +1237,7 @@
             ui.api.findParent(record, '.' + ui.CSS.validateFieldBlockClass).remove();
         }
 
+        //Find fields in clone
         var fields = rowClone.querySelectorAll('input, textarea, select');
 
         var key = null;
@@ -1232,7 +1247,7 @@
         for (key in fields) {
 
             if (typeof fields[key] == 'object') {
-
+                //Reset style error
                 var skinClass = ui.CSS.prefixClass.field + '-' + ui.CSS.skinClass.default.error;
                 fields[key].parentElement.classList.remove(skinClass);
 
@@ -1254,7 +1269,7 @@
         lastRow++;
         parentBlock.setAttribute(_DATA_LAST_ROW_CH, lastRow);
 
-        row.parentElement.insertBefore(rowClone, row.nextSibling);
+        block.parentElement.insertBefore(rowClone, block.nextSibling);
     };
 
     /**
@@ -1264,7 +1279,7 @@
 
         document.getElementById(this._idForm).reset();
 
-        var elements = new ui.FormData(this._idForm).getFormElements();
+        var elements = new ui.FormData(this._idForm, this._locale).getFormElements();
 
         for (var key in elements) {
 

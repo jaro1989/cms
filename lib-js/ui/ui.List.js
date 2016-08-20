@@ -84,6 +84,7 @@
         this.urlNoImg = ui.Config.noimg;
 
         this._idList = ui.api.empty(idList, 'table-' + uniqueId);
+        this._locale = locale;
         this._lbl = ui.api.existProperty(ui.Config.lbl, locale, ui.Config.lbl[ui.Config.locale]);
         uniqueId++;
 
@@ -234,7 +235,7 @@
                     skin: null,
                     active: false,
                     caption: this._lbl.btn_search,
-                    onclick: "new ui.List('" + this._fieldRecordList + "', '" + this._idList + "', null)._search('" + this._idForm + "');"
+                    onclick: "new ui.List('" + this._fieldRecordList + "', '" + this._idList + "', '" + this._locale + "')._search('" + this._idForm + "');"
                 }
             );
         }
@@ -249,7 +250,7 @@
                     skin: null,
                     caption: this._lbl.btn_clear,
                     active: false,
-                    onclick: "new ui.Form('" + this._idForm + "', null)._reset();"
+                    onclick: "new ui.Form('" + this._idForm + "', '" + this._locale + "')._reset();"
                 }
             );
         }
@@ -259,12 +260,12 @@
             this._btnRightTopTable.push(
                 {
                     type:     'button',
-                    name:     ui.Config.LIST_BTN_REMOVE,
+                    name:     '_btnRemove',
                     leftIcon: 'remove',
                     skin:     'danger',
                     active: true,
                     caption:  this._lbl.btn_remove,
-                    onclick:  "new ui.List('" + this._fieldRecordList + "', '" + this._idList + "')._remove();",
+                    onclick:  "new ui.List('" + this._fieldRecordList + "', '" + this._idList + "', '" + this._locale + "')._remove();",
                     disabled: true
                 }
             );
@@ -451,7 +452,7 @@
             var cell = new ui.Element(cellName)
                 .addClassElement(ui.CSS.tableClass.rowNum);
 
-            var onclick = "new ui.List('" + this._fieldRecordList + "', '" + this._idList + "')._choose(this);";
+            var onclick = "new ui.List('" + this._fieldRecordList + "', '" + this._idList + "', '" + this._locale + "')._choose(this);";
 
             if (blockName == BLOCK_HEAD && rowNum == 0) {
 
@@ -515,17 +516,14 @@
         var ch = document.body.querySelector('input[' + DATA_ACTION + '="' + CHOOSE_RECORDS + '"]');
         ch.checked ? ch.click() : null;
 
-        ui.api.disabledElement(
-            document.body.querySelector('button[name="' + ui.Config.LIST_BTN_REMOVE + '"]'),
-            true
-        );
+        ui.api.disabledElement(document.body.querySelector('button[name="_btnRemove"]'), true);
     };
 
     ui.List.prototype._choose = function(element) {
 
         var action = element.getAttribute(DATA_ACTION);
         var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
-        var btnRemove = document.body.querySelector('#page-' + this._idList + ' button[name="' + ui.Config.LIST_BTN_REMOVE + '"]');
+        var btnRemove = document.body.querySelector('#page-' + this._idList + ' button[name="_btnRemove"]');
         var i = null;
 
         var btnDisabled = false;
@@ -731,7 +729,7 @@
                 .getElement()
         );
 
-        var onclick = "new ui.List('" + this._fieldRecordList + "', '" + this._idList + "')._rebuild";
+        var onclick = "new ui.List('" + this._fieldRecordList + "', '" + this._idList + "', '" + this._locale + "')._rebuild";
 
         this._buildSearchForm(panel);
 
@@ -820,7 +818,7 @@
 
     ui.List.prototype._search = function(idForm) {
 
-        var data = new ui.FormData(idForm).getData();
+        var data = new ui.FormData(idForm, this._locale).getData();
         var dataBlock = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE);
         var str = dataBlock.getAttribute(DATA_JSON_TABLE);
         var listParams = JSON.parse(str);

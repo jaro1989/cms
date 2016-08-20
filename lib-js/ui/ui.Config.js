@@ -54,21 +54,6 @@
 
             defaultMethodForm: 'POST',
             defaultMethodAjax: 'POST',
-            errorTextRequred: ' Обязательное поле для заполнения ',
-
-            FORM_URL_DEL:      '_del',
-            FORM_URL_ADD:      '_add',
-            FORM_URL_BACK:     '_back',
-            FORM_URL_EDIT:     '_edit',
-            FORM_ID_RECORD:    '_record',
-            FORM_FIELD_RECORD: '_record_name',
-            FORM_CH_OBJECT :   '_ch',
-            FORM_CH_LAST_ROW:  '_last_row',
-
-            LIST_BTN_REMOVE: '_remove',
-
-            //ACTION_LIST_REMOVE: '_remove_list',
-            //ACTION_NEXT_PAGE: '_next_page',
 
             skinProgress: 'success',
             modal: {
@@ -95,7 +80,7 @@
                 }
             },
 
-            noimg: '../no-image.png',
+            noimg: 'images/no-image.png',
             locale: 'ru',
 
             lbl: {
@@ -113,7 +98,8 @@
                     btn_no: 'Нет',
                     error: 'Ошибка',
                     message: 'Сообщение',
-                    noimg: 'Картинка не найдена'
+                    noimg: 'Картинка не найдена',
+                    required: 'Обязательное поле'
                 },
                 eu: {
                     btn_save: 'Save',
@@ -129,7 +115,8 @@
                     btn_no: 'No',
                     error: 'Error',
                     message: 'Message',
-                    noimg: 'Picture not found'
+                    noimg: 'Picture not found',
+                    required: 'Required field'
                 }
             }
         };
