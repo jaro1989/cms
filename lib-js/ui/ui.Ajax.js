@@ -15,11 +15,6 @@
          */
         this._progress = new ui.Progress(null);
         this._progressLine = null;
-
-        /**
-         * @type {ui.Modal}
-         */
-        this._modal = new ui.Modal(null);
     };
 
     /** @protected */
@@ -202,7 +197,7 @@
 
                 } else if (this.readyState === 4 && this.status !== 200) {
 
-                    currentObj._modal.error(this.status + ': ' + this.statusText);
+                    console.info(this.status + ': ' + this.statusText);
 
                     if (currentObj._progressLine) {
 

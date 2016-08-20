@@ -13,7 +13,8 @@
         this._elements = document.getElementById(idForm).elements;
         this.data = {};
         this.errorField = [];
-        this._lbl = ui.api.existProperty(ui.Config.lbl, locale, ui.Config.lbl[ui.Config.locale]);
+        this._locale = ui.api.empty(locale, ui.Config.lbl[ui.Config.locale]);
+        this._lbl = ui.api.existProperty(ui.Config.lbl, this._locale, ui.Config.lbl[ui.Config.locale]);
     };
 
     /** @protected */

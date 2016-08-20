@@ -84,8 +84,8 @@
         this.urlNoImg = ui.Config.noimg;
 
         this._idList = ui.api.empty(idList, 'table-' + uniqueId);
-        this._locale = locale;
-        this._lbl = ui.api.existProperty(ui.Config.lbl, locale, ui.Config.lbl[ui.Config.locale]);
+        this._locale = ui.api.empty(locale, ui.Config.lbl[ui.Config.locale]);
+        this._lbl = ui.api.existProperty(ui.Config.lbl, this._locale, ui.Config.lbl[ui.Config.locale]);
         uniqueId++;
 
         this._columnType = {
@@ -809,7 +809,7 @@
 
                     } catch (e) {
 
-                        new ui.Modal(null).error(e.name + ':' + e.message);
+                        new ui.Modal(null, curObj._locale).error(e.name + ':' + e.message);
                     }
                 }
             )
@@ -856,7 +856,7 @@
 
                         } catch (e) {
 
-                            new ui.Modal(null).error(e.name + ':' + e.message);
+                            new ui.Modal(null, curObj._locale).error(e.name + ':' + e.message);
                         }
                     }
                 )
@@ -923,7 +923,7 @@
 
                 } catch (e) {
 
-                    new ui.Modal(null).error(e.name + ':' + e.message);
+                    new ui.Modal(null, curObj._locale).error(e.name + ':' + e.message);
                 }
             })
             .send();

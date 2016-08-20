@@ -7,13 +7,20 @@
          * @memberOf ui
          * @namespace ui.Modal
          * @param {string|number|null} id
+         * @param {string|null} locale
          * @constructor
          */
-        ui.Modal = function(id) {
+        ui.Modal = function(id, locale) {
 
-            /**
-             * @type {ui.FFButton}
-             */
+            this._title = null;
+            this._titleSmall = null;
+            this._icon = null;
+            this._content = null;
+            this._size = null;
+            this._skin = null;
+            this._locale = ui.api.empty(locale, ui.Config.lbl[ui.Config.locale]);
+            this._lbl = ui.api.existProperty(ui.Config.lbl, this._locale, ui.Config.lbl[ui.Config.locale]);
+
             this._buttons = new ui.FFButton();
             this._id = ui.api.empty(id, uniqueId);
             uniqueId++;
@@ -21,36 +28,6 @@
 
         /** @protected */
         ui.Modal.prototype = {
-
-            /**
-             * @type {string|null}
-             */
-            _title: null,
-
-            /**
-             * @type {string|null}
-             */
-            _titleSmall: null,
-
-            /**
-             * @type {string|null}
-             */
-            _icon: null,
-
-            /**
-             * @type {string|null}
-             */
-            _content: null,
-
-            /**
-             * @type {string|null}
-             */
-            _size: null,
-
-            /**
-             * @type {string|null}
-             */
-            _skin: null,
 
             /**
              * @returns {string|number}
@@ -122,7 +99,7 @@
                     .addChildAfter(
                         new ui.FFButton()
                             .addClass(ui.CSS.modal.close)
-                            .setOnClick("new ui.Modal()._removeModal(this);")
+                            .setOnClick("new ui.Modal(null, null)._removeModal(this);")
                             .addButton(null, null, '&times;', null, null, null)
                             .getElement()
                     );
@@ -211,15 +188,14 @@
 
                 this.removeModal(null);
 
-                var alertConfig = ui.Config.modal.ru.alert;
-                this._title = alertConfig.title;
-                this._icon  = alertConfig.icon;
+                this._title = this._lbl.message;
+                this._icon  = 'envelope';
                 this._skin = ui.CSS.skinClass.default.primary;
                 this._content = message;
 
                 this._buttons
                     .setOnClick("new ui.Modal()._removeModal(this);")
-                    .addButton(null, null, alertConfig.btnYes, 'default', false, null);
+                    .addButton(null, null, this._lbl.btn_close, 'default', false, null);
 
                 this.appendHTML('body');
                 return this;
@@ -236,17 +212,16 @@
 
                 this.removeModal(null);
 
-                var confirmConfig = ui.Config.modal.ru.confirm;
-                this._title = confirmConfig.title;
-                this._icon  = confirmConfig.icon;
+                this._title = this._lbl.question;
+                this._icon  = 'question-sign';
                 this._skin = ui.CSS.skinClass.default.primary;
                 this._content = message;
 
                 this._buttons
                     .setOnClick("new ui.Modal()._removeModal(this);" + callbackYes)
-                    .addButton(null, null, confirmConfig.btnYes, 'default', false, null)
+                    .addButton(null, null, this._lbl.btn_yes, 'default', false, null)
                     .setOnClick("new ui.Modal()._removeModal(this);" + callbackNo)
-                    .addButton(null, null, confirmConfig.btnNo, 'default', false, null);
+                    .addButton(null, null, this._lbl.btn_no, 'default', false, null);
 
                 this.appendHTML('body');
                 return this;
@@ -260,15 +235,14 @@
 
                 this.removeModal(null);
 
-                var errorConfig = ui.Config.modal.ru.error;
-                this._title = errorConfig.title;
-                this._icon  = errorConfig.icon;
+                this._title = this._lbl.error;
+                this._icon  = 'ban-circle';
                 this._skin = ui.CSS.skinClass.default.danger;
                 this._content = message;
 
                 this._buttons
                     .setOnClick("new ui.Modal()._removeModal(this);")
-                    .addButton(null, null, errorConfig.btnYes, 'default', false, null);
+                    .addButton(null, null, this._lbl.btn_yes, 'default', false, null);
 
                 this.appendHTML('body');
                 return this;

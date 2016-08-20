@@ -516,8 +516,8 @@
         this._urlDel =  null;
         this._urlActionForm = null;
         this._readOnly = false;
-        this._locale = locale;
-        this._lbl = ui.api.existProperty(ui.Config.lbl, locale, ui.Config.lbl[ui.Config.locale]);
+        this._locale = ui.api.empty(locale, ui.Config.lbl[ui.Config.locale]);
+        this._lbl = ui.api.existProperty(ui.Config.lbl, this._locale, ui.Config.lbl[ui.Config.locale]);
     };
 
     ui.Form.prototype = Object.create(ui.HtmlFields.prototype);
@@ -1106,18 +1106,20 @@
 
         if (data.error.length === 0) {
 
+            var curObj = this;
+
             new ui.Ajax()
                 .setUrl(listParams._urlActionForm)
                 .setParams(data['data'])
                 .addParam('action', (listParams._idRecord > 0) ? 'save' : 'edit')
                 .addCallbackFunction(function (e) {
 
-                    e == 0 ? new ui.Modal(null).error('Сохранение невозможно!') : new ui.Modal(null).alert('Данные успешно сохранены!');
+                    e == 0 ? new ui.Modal(null, curObj._locale).error('Сохранение невозможно!') : new ui.Modal(null, curObj._locale).alert('Данные успешно сохранены!');
                 })
                 .send();
         } else {
 
-            new ui.Modal(null).error('Заполните обязательные поля и повторите!');
+            new ui.Modal(null, this._locale).error('Заполните обязательные поля и повторите!');
         }
 
         return true;
@@ -1136,6 +1138,7 @@
 
             var obj = {};
             obj[listParams.fieldRecordForm] = listParams._idRecord;
+            var curObj = this;
 
             new ui.Ajax()
                 .setUrl(listParams._urlDel)
@@ -1143,7 +1146,7 @@
                 .addParam('action', 'remove')
                 .addCallbackFunction(function (e) {
 
-                    e == 0 ? new ui.Modal(null).error('Удаление невозможно!') : ui.api.reload(null);
+                    e == 0 ? new ui.Modal(null, curObj._locale).error('Удаление невозможно!') : ui.api.reload(null);
                 })
                 .send();
         }

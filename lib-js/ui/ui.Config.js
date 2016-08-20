@@ -56,29 +56,6 @@
             defaultMethodAjax: 'POST',
 
             skinProgress: 'success',
-            modal: {
-                ru: {
-                    error: {
-                        icon: 'ban-circle',
-                        title: 'Ошибка!',
-                        btnYes: 'Закрыть'
-                    },
-                    alert: {
-                        icon: 'envelope',
-                        title: 'Сообщение!',
-                        btnYes: 'Закрыть'
-                    },
-                    confirm: {
-                        icon: 'question-sign',
-                        title: 'Внимание!',
-                        btnYes: 'Да',
-                        btnNo: 'Нее'
-                    },
-                    progress: {
-                        btnCancel: 'Отмена'
-                    }
-                }
-            },
 
             noimg: 'images/no-image.png',
             locale: 'ru',
@@ -96,8 +73,10 @@
                     btn_cancel: 'Отмена',
                     btn_yes: 'Да',
                     btn_no: 'Нет',
+                    btn_ok: 'Ок',
                     error: 'Ошибка',
                     message: 'Сообщение',
+                    question: 'Вопрос',
                     noimg: 'Картинка не найдена',
                     required: 'Обязательное поле'
                 },
@@ -113,8 +92,10 @@
                     btn_cancel: 'Cancel',
                     btn_yes: 'Yes',
                     btn_no: 'No',
+                    btn_ok: 'Ok',
                     error: 'Error',
                     message: 'Message',
+                    question: 'Question',
                     noimg: 'Picture not found',
                     required: 'Required field'
                 }
