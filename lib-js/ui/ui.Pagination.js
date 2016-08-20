@@ -35,7 +35,7 @@
         _type: ui.CSS.pagination.type.default,
         _position: ui.CSS.alignClass.block.right,
         _link: null,
-        _callback: null,
+        _callback: '',
         _countPages: null,
         _ajaxUrl: false,
 
@@ -135,7 +135,7 @@
             }
 
             var href = null;
-            var onclick = this._callback + '(this, ' + page + '); new ui.Pagination("' + this._id + '")._rebuild(' + page + ');';
+            var onclick = this._callback + '(this, ' + page + '); new ui.Pagination("' + this._id + '")._rebuild(' + page + ', ' + this._countPages + ');';
 
             if (this._ajaxUrl == false) {
 
@@ -246,15 +246,21 @@
          */
         _buildBlock: function() {
 
-            return new ui.Element('div', true)
-                .addClassElement(ui.CSS.alignClass.block.clear)
-                .setIdElement(this._id, null)
-                .setAttrElement(DATA_JSON_PAGINATION, JSON.stringify(this))
-                .addChildAfter(this._buildPagination())
-                .getElement();
+            var pagination = new ui.Element('div', true);
+
+            if (this._countPages > 1) {
+
+                pagination
+                    .addClassElement(ui.CSS.alignClass.block.clear)
+                    .setIdElement(this._id, null)
+                    .setAttrElement(DATA_JSON_PAGINATION, JSON.stringify(this))
+                    .addChildAfter(this._buildPagination());
+            }
+
+            return pagination.getElement();
         },
 
-        _rebuild: function(page) {
+        _rebuild: function(page, countPages) {
 
             var pag = document.body.querySelector('#' + this._id);
             var str = pag.getAttribute(DATA_JSON_PAGINATION);
@@ -266,6 +272,7 @@
             }
 
             this._currentPage = page;
+            this._countPages = countPages;
 
             pag.parentNode.insertBefore(this._buildBlock(), pag);
             pag.remove();

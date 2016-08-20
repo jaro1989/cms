@@ -104,7 +104,7 @@
                     btn_clear: 'Очистить',
                     btn_back: 'Назад',
                     btn_add: 'Добавить',
-                    btn_trash: 'Карзина',
+                    btn_trash: 'Корзина',
                     btn_search: 'Найти',
                     btn_close: 'Закрыть',
                     btn_cancel: 'Отмена',

@@ -29,15 +29,22 @@
         ui.Form.apply(this, ['search-' + idList, locale]);
 
         this._fieldRecord = ui.api.empty(record, 'id');
-
         //Buttons
         this._btnRightBottomList = [];
         this._btnLeftBottomList = [];
         this._btnLeftTopList = [];
         this._btnRightTopList = [];
+        this._btnLeftTopTable = [];
+        this._btnRightTopTable = [];
 
         this._hideBtnList = {
-            _btnBack:   false
+            _btnBack:   false,
+            _btnAdd:    false,
+            _btnClear:  false,
+            _btnRemove: false,
+            _btnSearch: false,
+            _btnReload: false,
+            _btnTrash:  false
         };
         //List
         this._settingsList = {
@@ -62,13 +69,14 @@
         this._hideColumnNumber = false;
         this._hideColumnCheckbox = false;
 
-        this._btnRemove = false;
         this._rowNum = 1;
         this._maxRow = 50;
         this._currentPage = 1;
+        this._countPages = 2;
         //Link
         this._urlAction = null;
         this._urlAddAndEdit = null;
+        this._urlTrash = null;
         this._urlBack = document.referrer;
         //Actions
         this._actions = {
@@ -108,7 +116,7 @@
      * @private
      * returns {voild}
      */
-    ui.List.prototype._addDefaultLeftBtn = function() {
+    ui.List.prototype._btnDefault = function() {
 
         if (this._hideBtnList._btnBack === false && this._urlBack != '' && this._urlBack !== window.location.href) {
 
@@ -124,24 +132,20 @@
             );
         }
 
-        this._btnLeftTopList.push(
-            {
-                type:     'button',
-                name:     '_reloadPage',
-                leftIcon: 'repeat',
-                active: false,
-                onclick:  "ui.api.reload();"
-            }
-        );
-    };
+        if (this._hideBtnList._btnReload === false) {
 
-    /**
-     * @private
-     * returns {voild}
-     */
-    ui.List.prototype._addDefaultRightBtn = function() {
+            this._btnLeftTopList.push(
+                {
+                    type: 'button',
+                    name: '_reloadPage',
+                    leftIcon: 'repeat',
+                    active: false,
+                    onclick: "ui.api.reload();"
+                }
+            );
+        }
 
-        if (this._urlAddAndEdit !== null) {
+        if (this._urlAddAndEdit !== null && this._hideBtnList._btnAdd === false) {
 
             this._btnRightTopList.push(
                 {
@@ -151,14 +155,74 @@
                     skin:     'primary',
                     caption:  this._lbl.btn_add,
                     active: true,
-                    onclick:  "window.location.href = '" + this._urlAddAndEdit + "'"
+                    onclick:  "ui.api.reload('" + this._urlAddAndEdit + "');"
+                }
+            );
+        }
+
+        if (this._urlTrash !== null && this._hideBtnList._btnTrash === false) {
+
+            this._btnRightTopList.push(
+                {
+                    type:     'button',
+                    name:     '_add',
+                    leftIcon: 'trash',
+                    caption:  this._lbl.btn_trash,
+                    active: false,
+                    onclick:  "ui.api.reload('" + this._urlTrash + "');"
+                }
+            );
+        }
+
+        if (this._hideBtnList._btnSearch === false) {
+
+            this._btnRightTopTable.push(
+                {
+                    type: 'button',
+                    name: '_btnSave',
+                    leftIcon: 'search',
+                    skin: null,
+                    active: false,
+                    caption: this._lbl.btn_search,
+                    onclick: "new ui.List('" + this._fieldRecord + "', '" + this._idList + "', null)._search('" + this._idForm + "');"
+                }
+            );
+        }
+
+        if (this._hideBtnList._btnClear === false) {
+
+            this._btnRightTopTable.push(
+                {
+                    type: 'button',
+                    name: '_btnClear',
+                    leftIcon: 'refresh',
+                    skin: null,
+                    caption: this._lbl.btn_clear,
+                    active: false,
+                    onclick: "new ui.Form('" + this._idForm + "', null)._reset();"
+                }
+            );
+        }
+
+        if (this._hideColumnCheckbox === false && this._hideBtnList._btnRemove == false && this._fieldRecord !== null) {
+
+            this._btnRightTopTable.push(
+                {
+                    type:     'button',
+                    name:     ui.Config.LIST_BTN_REMOVE,
+                    leftIcon: 'remove',
+                    skin:     'danger',
+                    active: true,
+                    caption:  this._lbl.btn_remove,
+                    onclick:  "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._remove();",
+                    disabled: true
                 }
             );
         }
     };
 
     /**
-     * @param {number} position 1 - 'top/left'| 2 - top/right | 3 - bottom/left | 4 - bottom/right
+     * @param {number} position 1 - 'top/left'| 2 - top/right | 3 - bottom/left | 4 - bottom/right | 5 - top table/left | 6 - top table/right
      * @param {string|null} typeBtn {'button'|'submit'}
      * @param {string|null} name
      * @param {string} icon
@@ -170,7 +234,14 @@
      */
     ui.List.prototype.addButton = function(position, typeBtn, name, icon, caption, onclick, skin, active) {
 
-        var obj = {1: '_btnLeftTopList', 2: '_btnRightTopList', 3: '_btnLeftBottomList', 4: '_btnRightBottomList'};
+        var obj = {
+            1: '_btnLeftTopList',
+            2: '_btnRightTopList',
+            3: '_btnLeftBottomList',
+            4: '_btnRightBottomList',
+            5: '_btnRightTopTable',
+            6: '_btnLeftTopTable'
+        };
 
         if (ui.api.existProperty(obj, position, false)) {
 
@@ -196,18 +267,27 @@
      */
     ui.List.prototype._buildTable = function() {
 
-        var table = new ui.Element('table')
-            .addClassElement(ui.CSS.tableClass.table)
-            .addClassElement(ui.CSS.tableClass.responsive)
-            .addClassElement(ui.CSS.tableClass.hover)
-            .addClassElement(ui.CSS.tableClass.striped)
-            .addClassElement(this._typeTable);
+        var blockTable = new ui.Element('div');
 
-        table.addChildAfter(this._buildBlock(BLOCK_HEAD));
-        table.addChildAfter(this._buildBlock(BLOCK_BODY));
-        table.addChildAfter(this._buildBlock(BLOCK_FOOT));
+        if (this._btnLeftTopTable.length > 0 || this._btnRightTopTable.length > 0) {
 
-        return table.getElement();
+            blockTable.addChildAfter(this._buildRowButtons(this._btnLeftTopTable, this._btnRightTopTable).getElement());
+        }
+
+        blockTable.addChildAfter(
+            new ui.Element('table')
+                .addClassElement(ui.CSS.tableClass.table)
+                .addClassElement(ui.CSS.tableClass.responsive)
+                .addClassElement(ui.CSS.tableClass.hover)
+                .addClassElement(ui.CSS.tableClass.striped)
+                .addClassElement(this._typeTable)
+                .addChildAfter(this._buildBlock(BLOCK_HEAD))
+                .addChildAfter(this._buildBlock(BLOCK_BODY))
+                .addChildAfter(this._buildBlock(BLOCK_FOOT))
+                .getElement()
+        );
+
+        return blockTable.getElement();
     };
 
     /**
@@ -221,7 +301,7 @@
         var type = ui.api.existProperty(this._column, fieldName, false);
 
         if (type) {
-
+            //Тип значения
         }
 
         return content;
@@ -353,66 +433,6 @@
                 );
             }
         }
-    };
-
-    ui.List.prototype._remove = function() {
-
-        var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
-
-        var delObj = {};
-        var rowObj = [];
-
-        for (var i in checkboxRecord) {
-
-            if (typeof checkboxRecord[i] == 'object') {
-
-                if (checkboxRecord[i].checked === true) {
-
-                    rowObj.push(checkboxRecord[i]);
-                    var value = checkboxRecord[i].getAttribute(DATA_RECORD_ID);
-                    var name = checkboxRecord[i].getAttribute('name');
-                    ui.api.buildObject(delObj, name, value, 0);
-                }
-            }
-        }
-
-        var str = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE).getAttribute(DATA_JSON_TABLE);
-        var obj = JSON.parse(str);
-
-        for (var property in obj) {
-
-            this[property] = obj[property];
-        }
-
-        var curObj = this;
-
-        new ui.Ajax()
-            .setUrl(this._urlAction)
-            .setParams(delObj)
-            .addParam('action', this._actions.remove)
-            .addParam('page', this._currentPage)
-            .addParam('max', this._maxRow)
-            .addCallbackFunction(function (e) {
-
-                var obj = JSON.parse(e);
-
-                if (obj.hasOwnProperty('data')) {
-
-                    curObj._replaceRows(obj.data);
-                    new ui.SortTable(null).updateSort('#' + curObj._idList);
-
-                } else {
-
-                    for (var i in rowObj) {
-
-                        if (typeof rowObj[i] == 'object') {
-
-                            ui.api.findParent(rowObj[i], 'tr').remove();
-                        }
-                    }
-                }
-            })
-            .send();
     };
 
     ui.List.prototype._replaceRows = function(data) {
@@ -608,6 +628,7 @@
             _urlAddAndEdit:  this._urlAddAndEdit,
             _urlAction: this._urlAction,
             _currentPage: this._currentPage,
+            _countPages: this._countPages,
             _actions: {
                 search: this._actions.search,
                 pagination: this._actions.pagination,
@@ -660,11 +681,10 @@
             new ui.Element('div')
                 .addClassElement(ui.CSS.panelClass.panelBody)
                 .addChildAfter(this._blockHidden())
-                .addChildAfter(this._blockButtons())
                 .addChildAfter(this._buildTable())
                 .addChildAfter(
                     new ui.Pagination(this._actions.pagination + '-' + this._idList)
-                        .setCountPages(20)
+                        .setCountPages(this._countPages)
                         .setCallbackFunction(onclick)
                         .setSkin(this._skin)
                         .setAjax()
@@ -674,54 +694,6 @@
         );
 
         return panel.getElement();
-    };
-
-    ui.List.prototype._blockButtons = function() {
-
-        var objLeft = [];
-        var objRigth = [];
-
-        objRigth.push(
-            {
-                type: 'button',
-                name: '_btnSave',
-                leftIcon: 'search',
-                skin: null,
-                active: false,
-                caption: this._lbl.btn_search,
-                onclick: "new ui.List('" + this._fieldRecord + "', '" + this._idList + "', null)._search('" + this._idForm + "');"
-            }
-        );
-
-        objRigth.push(
-            {
-                type:     'button',
-                name:     '_btnClear',
-                leftIcon: 'refresh',
-                skin:     null,
-                caption:  this._lbl.btn_clear,
-                active: false,
-                onclick:  "new ui.Form('" + this._idForm + "', null)._reset();"
-            }
-        );
-
-        if (this._hideColumnCheckbox === false && this._btnRemove == false && this._fieldRecord !== null) {
-
-            objRigth.push(
-                {
-                    type:     'button',
-                    name:     ui.Config.LIST_BTN_REMOVE,
-                    leftIcon: 'trash',
-                    skin:     'danger',
-                    active: true,
-                    caption:  this._lbl.btn_remove,
-                    onclick:  "new ui.List('" + this._fieldRecord + "', '" + this._idList + "')._remove();",
-                    disabled: true
-                }
-            );
-        }
-
-        return this._buildRowButtons(objLeft, objRigth).getElement();
     };
 
     /**
@@ -752,35 +724,37 @@
 
         var dataBlock = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE);
         var str = dataBlock.getAttribute(DATA_JSON_TABLE);
-        var obj = JSON.parse(str);
+        var listParams = JSON.parse(str);
 
-        for (var property in obj) {
+        for (var property in listParams) {
 
-            this[property] = obj[property];
+            this[property] = listParams[property];
         }
 
-        obj._currentPage = page;
-        dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(obj));
+        listParams._currentPage = page;
+        dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(listParams));
 
         var curObj = this;
 
         new ui.Ajax()
             .setUrl(this._urlAction ? this._urlAction : window.location.href)
-            .addParam('action', obj._actions.pagination)
+            .addParam('action', listParams._actions.pagination)
             .addParam('page', page)
-            .addCallbackFunction(function (e) {
+            .addCallbackFunction(
+                function (e) {
 
-                try {
+                    try {
 
-                    var obj = typeof e == 'object' ? e : JSON.parse(e);
-                    curObj._replaceRows(obj);
-                    new ui.SortTable(null).updateSort('#' + curObj._idList);
+                        curObj._replaceRows(typeof e == 'object' ? e : JSON.parse(e));
 
-                } catch (e) {
+                        new ui.SortTable(null).updateSort('#' + curObj._idList);
 
-                    new ui.Modal(null).error(e.name + ':' + e.message);
+                    } catch (e) {
+
+                        new ui.Modal(null).error(e.name + ':' + e.message);
+                    }
                 }
-            })
+            )
             .send();
     };
 
@@ -789,15 +763,12 @@
         var data = new ui.FormData(idForm).getData();
         var dataBlock = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE);
         var str = dataBlock.getAttribute(DATA_JSON_TABLE);
-        var obj = JSON.parse(str);
+        var listParams = JSON.parse(str);
 
-        for (var property in obj) {
+        for (var property in listParams) {
 
-            this[property] = obj[property];
+            this[property] = listParams[property];
         }
-
-        obj._currentPage = 1;
-        dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(obj));
 
         var curObj = this;
 
@@ -806,25 +777,98 @@
             new ui.Ajax()
                 .setUrl(this._urlAction ? this._urlAction : window.location.href)
                 .setParams(data['data'])
-                .addParam('action', obj._actions.search)
-                .addCallbackFunction(function (e) {
+                .addParam('action', listParams._actions.search)
+                .addCallbackFunction(
+                    function (e) {
 
-                    try {
+                        try {
 
-                        var obj = typeof e == 'object' ? e : JSON.parse(e);
-                        curObj._replaceRows(obj);
-                        new ui.SortTable(null).updateSort('#' + curObj._idList);
-                        new ui.Pagination(curObj._actions.pagination + '-' + curObj._idList)._rebuild(1);
+                            var response = typeof e == 'object' ? e : JSON.parse(e);
 
-                    } catch (e) {
+                            listParams._currentPage = 1;
+                            listParams._countPages = ui.api.existProperty(response, 'countPages', 1);
+                            dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(listParams));
 
-                        new ui.Modal(null).error(e.name + ':' + e.message);
+                            curObj._replaceRows(ui.api.existProperty(response, 'data', response));
+
+                            new ui.SortTable(null).updateSort('#' + curObj._idList);
+
+                            new ui.Pagination(curObj._actions.pagination + '-' + curObj._idList)
+                                ._rebuild(listParams._currentPage, listParams._countPages);
+
+                        } catch (e) {
+
+                            new ui.Modal(null).error(e.name + ':' + e.message);
+                        }
                     }
-                })
+                )
                 .send();
         }
 
         return true
+    };
+
+    ui.List.prototype._remove = function() {
+
+        var checkboxRecord = document.body.querySelectorAll('#' + this._idList + ' input[' + DATA_ACTION + '="' + CHOOSE_RECORD_ID + '"]');
+
+        var delObj = {};
+        var rowObj = [];
+
+        for (var i in checkboxRecord) {
+
+            if (typeof checkboxRecord[i] == 'object') {
+
+                if (checkboxRecord[i].checked === true) {
+
+                    rowObj.push(checkboxRecord[i]);
+                    var value = checkboxRecord[i].getAttribute(DATA_RECORD_ID);
+                    var name = checkboxRecord[i].getAttribute('name');
+                    ui.api.buildObject(delObj, name, value, 0);
+                }
+            }
+        }
+
+        var dataBlock = document.body.querySelector('#' + this._idList + ' #' + DATA_JSON_TABLE);
+        var str = dataBlock.getAttribute(DATA_JSON_TABLE);
+        var listParams = JSON.parse(str);
+
+        for (var property in listParams) {
+
+            this[property] = listParams[property];
+        }
+
+        var curObj = this;
+
+        new ui.Ajax()
+            .setUrl(this._urlAction)
+            .setParams(delObj)
+            .addParam('action', this._actions.remove)
+            .addParam('page', this._currentPage)
+            .addParam('max', this._maxRow)
+            .addCallbackFunction(function (e) {
+
+                try {
+
+                    var response = JSON.parse(e);
+
+                    curObj._replaceRows(ui.api.existProperty(response, 'data', response));
+
+                    new ui.SortTable(null).updateSort('#' + curObj._idList);
+
+                    listParams._currentPage = 1;
+                    listParams._countPages = ui.api.existProperty(response, 'countPages', 1);
+                    dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(listParams));
+
+                    new ui.Pagination(curObj._actions.pagination + '-' + curObj._idList)
+                        ._rebuild(listParams._currentPage, listParams._countPages);
+
+                } catch (e) {
+
+                    new ui.Modal(null).error(e.name + ':' + e.message);
+                }
+            })
+            .send();
     };
 
     /**
@@ -837,8 +881,7 @@
         var page = new ui.Page('page-' + this._idList)
             .setTitle(this._titleList, this._titleListSmall, null);
 
-        this._addDefaultLeftBtn();
-        this._addDefaultRightBtn();
+        this._btnDefault();
 
         if (this._btnLeftTopList.length > 0 || this._btnRightTopList.length > 0) {
 
@@ -933,6 +976,15 @@
      */
     ui.List.prototype.setLinkAddEndEdit = function(link) {
         this._urlAddAndEdit = link;
+        return this;
+    };
+
+    /**
+     * @param {string} link
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setLinkTrash = function(link) {
+        this._urlTrash = link;
         return this;
     };
 
@@ -1081,7 +1133,7 @@
      */
     ui.List.prototype.hideBtnRemove = function(hide) {
 
-        this._btnRemove = ui.api.empty(hide, true);
+        this._hideBtnList = ui.api.empty(hide, true);
         return this;
     };
 
@@ -1092,6 +1144,66 @@
     ui.List.prototype.hideBtnBack = function(hide) {
 
         this._hideBtnList._btnBack = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
+     * @param {boolean} hide
+     * @returns {ui.List}
+     */
+    ui.List.prototype.hideBtnSearch = function(hide) {
+
+        this._hideBtnList._btnSearch = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
+     * @param {boolean} hide
+     * @returns {ui.List}
+     */
+    ui.List.prototype.hideBtnClear = function(hide) {
+
+        this._hideBtnList._btnClear = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
+     * @param {boolean} hide
+     * @returns {ui.List}
+     */
+    ui.List.prototype.hideBtnAdd = function(hide) {
+
+        this._hideBtnList._btnAdd = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
+     * @param {boolean} hide
+     * @returns {ui.List}
+     */
+    ui.List.prototype.hideBtnReload = function(hide) {
+
+        this._hideBtnList._btnReload = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
+     * @param {boolean} hide
+     * @returns {ui.List}
+     */
+    ui.List.prototype.hideBtnRemove = function(hide) {
+
+        this._hideBtnList._btnRemove = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
+     * @param {boolean} hide
+     * @returns {ui.List}
+     */
+    ui.List.prototype.hideBtnTrash = function(hide) {
+
+        this._hideBtnList._btnTrash = ui.api.empty(hide, true);
         return this;
     };
 
@@ -1112,6 +1224,26 @@
     ui.List.prototype.hideColumnCheckbox = function(hide) {
 
         this._hideColumnCheckbox = ui.api.empty(hide, true);
+        return this;
+    };
+
+    /**
+     * @param {number} page
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setCurrentPage = function(page) {
+
+        this._currentPage = page;
+        return this;
+    };
+
+    /**
+     * @param {number} count
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setCountPages = function(count) {
+
+        this._countPages = count;
         return this;
     };
 

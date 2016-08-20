@@ -39,6 +39,7 @@ for (var i =0; i <500; i++) {
         .addTextareaField('description_kr5', 'Краткое описание2', false, 50)
 
         .setLinkAddEndEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
+        .setLinkTrash('http://symfony.cms/lib-js/ui/example/index.html?page=form')
         .setAction('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setTitle('List user', 'description user')
 

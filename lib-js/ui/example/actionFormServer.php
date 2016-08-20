@@ -39,7 +39,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'remove') {
 
     echo json_encode(
         [
-            'data'     => $data
+            'data'     => $data,
+            'countPages' => rand(1, 50)
         ]
     );
 }
@@ -62,7 +63,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'search') {
         ];
     }
 
-    echo json_encode($data);
+    echo json_encode(['data' => $data, 'countPages' => rand(1, 50)]);
 }
 
 
