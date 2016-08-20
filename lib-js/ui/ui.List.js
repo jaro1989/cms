@@ -102,6 +102,8 @@
             text: function(params) {
 
                 return new ui.Element('div')
+                    .addStyleElement('maxHeight', params.height)
+                    .addStyleElement('overflow', 'auto')
                     .addClassElement('sort-content')
                     .setContentElement(params.value)
                     .toHTML()
@@ -123,6 +125,7 @@
             image: function(params) {
 
                 return new ui.Element('div')
+                    .addStyleElement('maxHeight', params.height)
                     .addChildAfter(
                         new ui.Element('a')
                             .addClassElement('thumbnail')
@@ -130,6 +133,7 @@
                             .addChildAfter(
                                 new ui.Element('img')
                                     .addClassElement('sort-content')
+                                    .addStyleElement('maxHeight', params.height)
                                     .setAttrElement('alt', params.alt)
                                     .setUrlElement(ui.api.empty(params.value, params.hrefNoImg))
                                     .getElement()
@@ -142,6 +146,8 @@
             code: function(params) {
 
                 return new ui.Element('code')
+                    .addStyleElement('maxHeight', params.height)
+                    .addStyleElement('overflow', 'auto')
                     .addClassElement('sort-content')
                     .setContentElement(ui.api.escapeHtml(params.value))
                     .toHTML()
@@ -150,11 +156,15 @@
             html: function(params) {
 
                 return new ui.Element('div')
+                    .addStyleElement('maxHeight', params.height)
+                    .addStyleElement('overflow', 'auto')
                     .addClassElement('sort-content')
                     .setContentElement(ui.api.escapeHtml(params.value))
                     .toHTML()
             }
         };
+
+        this._maxHeightRow = '150px';
     };
 
     ui.List.prototype = Object.create(ui.Form.prototype);
@@ -167,6 +177,22 @@
     ui.List.prototype.newLineSearchFields = function() {
 
         ui.Form.prototype.newLineParent.apply(this, arguments);
+        return this;
+    };
+
+    /**
+     *
+     * @param {string|number|null} height
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setMaxHeightRow = function(height) {
+
+        if (typeof height === 'number') {
+
+            height += 'px';
+        }
+
+        this._maxHeightRow = ui.api.empty(height, null);
         return this;
     };
 
@@ -373,7 +399,8 @@
                 value: content,
                 href: this._urlAddAndEdit,
                 alt: this._lbl.noimg,
-                hrefNoImg: this.urlNoImg
+                hrefNoImg: this.urlNoImg,
+                height: this._maxHeightRow
             };
 
             content = this._columnType[type].call(this, params);
@@ -611,6 +638,7 @@
     ui.List.prototype._buildRows = function(params, blockName, rowNum) {
 
         var row = new ui.Element('tr');
+
         var cellName = blockName == BLOCK_HEAD ? 'th' : 'td';
 
         this._columnNumber(row, blockName, cellName, rowNum);
