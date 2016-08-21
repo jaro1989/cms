@@ -15,6 +15,7 @@
          */
         this._progress = new ui.Progress(null);
         this._progressLine = null;
+
     };
 
     /** @protected */

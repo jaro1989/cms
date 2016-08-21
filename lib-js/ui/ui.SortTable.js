@@ -1,4 +1,3 @@
-
 (function(ui) {
 
     var SORT_ASC  = 'ASC';
@@ -49,7 +48,7 @@
          * @param {string} classContent
          * @returns {ui.SortTable.setClassContent}
          */
-        setClassContent(classContent) {
+        setClassContent: function(classContent) {
             this._classContent = classContent;
             return this;
         },
@@ -202,4 +201,5 @@
             return(b[0]-a[0]);
         }
     }
+
 } (window.ui || {}));
