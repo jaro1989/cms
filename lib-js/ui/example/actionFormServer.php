@@ -25,7 +25,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'remove') {
             'name2' => generatePassword() . ' -' . $i,
             'name3' => generatePassword() . ' -' . $i . ' - ' . $page,
             'name4' => generatePassword() . ' -' . $i,
-            'name5' => '/web/apple-touch-icon.png',
+            'name5' => 'images/sf-icon.png',
             'name6' => generatePassword() . ' -' . $i . ' - ' . $page
         ];
     }
