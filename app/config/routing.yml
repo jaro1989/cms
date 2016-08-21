@@ -1,3 +1,8 @@
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
+#app:
+#    resource: "@AppBundle/Controller/"
+#    type:     annotation
+admin:
+    path: /
+    defaults:  { _controller: AdminBundle:Main:index }
+#    requirements:
+#        page: '\d+'
