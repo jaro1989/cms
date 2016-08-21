@@ -1,3 +1,0 @@
-admin:
-    resource: "@AdminHome/Resources/config/routing.yml"
-    prefix:   /admin/{_locale}
