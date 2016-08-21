@@ -1,4 +1,5 @@
 (function(ui) {
+    'use strict';
 
     /**
      * @memberOf ui

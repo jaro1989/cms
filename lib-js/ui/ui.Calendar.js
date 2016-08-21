@@ -1,5 +1,6 @@
 
     (function(ui) {
+        'use strict';
 
         var MIN_YEAR = 1000;
         var MAX_YEAR = 3000;

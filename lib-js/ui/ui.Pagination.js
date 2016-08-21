@@ -1,5 +1,6 @@
 
 (function(ui) {
+    'use strict';
 
     var uniqueId = new Date().getTime();
     var DATA_JSON_PAGINATION = 'data-json-pagination';

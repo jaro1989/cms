@@ -6,6 +6,7 @@
     window.ui = ui;
 
     (function(ui) {
+        'use strict';
 
         /**
          * @memberOf ui
@@ -107,6 +108,7 @@
     } (window.ui || {}));
 
     (function(ui) {
+        'use strict';
 
         /**
          * Edit string date from "2000-1-1 00:00:00" to "2000-01-01 00:00:00" or
@@ -347,6 +349,7 @@
 
 
     (function(ui) {
+        'use strict';
 
         /**
          * @memberOf ui
@@ -679,6 +682,7 @@
     } (window.ui || {}));
 
 (function(ui) {
+    'use strict';
 
     /**
      * @memberOf ui
@@ -1069,6 +1073,8 @@
 } (window.ui || {}));
 
     (function(ui) {
+        'use strict';
+
         /**
          * @type {[]}
          */
@@ -1864,6 +1870,7 @@
 
 
     (function(ui) {
+        'use strict';
 
         var MIN_YEAR = 1000;
         var MAX_YEAR = 3000;
@@ -2475,6 +2482,7 @@
 
 
     (function(ui) {
+        'use strict';
 
         /**
          * @memberOf ui
@@ -2882,6 +2890,7 @@
     } (window.ui || {}));
 
 (function(ui) {
+    'use strict';
 
     /**
      * @memberOf ui
@@ -3275,6 +3284,7 @@
 } (window.ui || {}));
 
 (function(ui) {
+    'use strict';
 
     /**
      * @memberOf ui
@@ -3425,6 +3435,7 @@
 } (window.ui || {}));
 
     (function(ui) {
+        'use strict';
 
         /**
          * @memberOf ui
@@ -3784,6 +3795,7 @@
     } (window.ui || {}));
 
 (function(ui) {
+    'use strict';
 
     var TYPE_SIMPLE = 'simple';
     var TYPE_INLINE = 'inline';
@@ -4290,6 +4302,7 @@
 } (window.ui || {}));
 
 (function(ui) {
+    'use strict';
 
     /**
      * @memberOf ui
@@ -4753,6 +4766,7 @@
 } (window.ui || {}));
     
     (function(ui) {
+        'use strict';
     
         /**
          * @memberOf ui
@@ -5160,6 +5174,7 @@
     } (window.ui || {}));
     
     (function(ui) {
+        'use strict';
     
         /**
          * @memberOf ui
@@ -5616,6 +5631,7 @@
     } (window.ui || {}));
 
 (function(ui) {
+    'use strict';
 
     /**
      * @memberOf ui
@@ -6122,6 +6138,7 @@
 } (window.ui || {}));
 
 (function(ui) {
+    'use strict';
 
     var counter = new Date().getTime();
     var inputClassUser = 'date-user';
@@ -6577,6 +6594,7 @@
 } (window.ui || {}));
 
     (function(ui) {
+        'use strict';
 
         var uniqueId = new Date().getTime();
 
@@ -6884,6 +6902,7 @@
     } (window.ui || {}));
 
 (function(ui) {
+    'use strict';
 
     var uniqueId = new Date().getTime();
 
@@ -7040,6 +7059,7 @@
     }
 } (window.ui || {}));
 (function(ui) {
+    'use strict';
 
     /**
      * @memberOf ui
@@ -7253,6 +7273,7 @@
     }
 } (window.ui || {}));
 (function(ui) {
+    'use strict';
 
     /**
      * @memberOf ui
@@ -7432,6 +7453,7 @@
     };
 } (window.ui || {}));
 (function(ui) {
+    'use strict';
 
     var _TYPE_TEXT      = '_ffText';
     var _TYPE_PASS      = '_ffPassword';
@@ -9040,6 +9062,7 @@
 } (window.ui || {}));
 
     (function(ui) {
+        'use strict';
 
         var uniqueId = new Date().getTime();
 
@@ -9228,6 +9251,7 @@
     } (window.ui || {}));
 
 (function(ui) {
+    'use strict';
 
     var uniqueId = new Date().getTime();
     var DATA_JSON_PAGINATION = 'data-json-pagination';
@@ -9708,6 +9732,7 @@
     }
 } (window.ui || {}));
 (function(ui) {
+    'use strict';
 
     var SORT_ASC  = 'ASC';
     var SORT_DESC = 'DESC';
@@ -9913,6 +9938,7 @@
 
 } (window.ui || {}));
 (function(ui) {
+    'use strict';
     
     var uniqueId = new Date().getTime();
 

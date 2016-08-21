@@ -1,4 +1,5 @@
 (function(ui) {
+    'use strict';
 
     var SORT_ASC  = 'ASC';
     var SORT_DESC = 'DESC';

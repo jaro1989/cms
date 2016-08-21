@@ -1,5 +1,6 @@
 
 (function(ui) {
+    'use strict';
 
     var TYPE_SIMPLE = 'simple';
     var TYPE_INLINE = 'inline';

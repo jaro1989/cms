@@ -1,4 +1,5 @@
 (function(ui) {
+    'use strict';
 
     var _TYPE_TEXT      = '_ffText';
     var _TYPE_PASS      = '_ffPassword';

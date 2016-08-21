@@ -1,5 +1,7 @@
 
     (function(ui) {
+        'use strict';
+
         /**
          * @type {[]}
          */

@@ -1,5 +1,6 @@
 
 (function(ui) {
+    'use strict';
 
     var counter = new Date().getTime();
     var inputClassUser = 'date-user';

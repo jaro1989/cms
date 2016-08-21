@@ -6,6 +6,7 @@
     window.ui = ui;
 
     (function(ui) {
+        'use strict';
 
         /**
          * @memberOf ui

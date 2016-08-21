@@ -1,5 +1,6 @@
 
     (function(ui) {
+        'use strict';
 
         /**
          * Edit string date from "2000-1-1 00:00:00" to "2000-01-01 00:00:00" or

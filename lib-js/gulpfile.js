@@ -38,15 +38,6 @@
         './ui/ui.List.js'
     ];
 
-    //gulp.task('scripts', function() {
-    //    return gulp.src(src_files)
-    //        .pipe(concat('html-ui.js'))
-    //        .pipe(gulp.dest('./app/js'))
-    //        .pipe(uglify())
-    //        .pipe(rename('html-ui.min.js'))
-    //        .pipe(gulp.dest('./app/js'));
-    //});
-
     gulp.task('scripts', function() {
         return gulp.src(src_files)
             .pipe(concat('ui.Html.js'))
