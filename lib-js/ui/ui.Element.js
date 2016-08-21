@@ -787,7 +787,7 @@
              */
             appendHTML: function(selector) {
 
-                new ui.$(selector).append(this.element);
+                new ui.dom(selector).append(this.element);
                 return this;
             }
         };

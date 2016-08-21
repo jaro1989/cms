@@ -462,7 +462,7 @@
          */
         appendHTML: function(selector) {
 
-            new ui.$(selector).append(this.getElement());
+            new ui.dom(selector).append(this.getElement());
             return this;
         },
 
@@ -474,7 +474,7 @@
          */
         beforeHTML: function(selector) {
 
-            new ui.$(selector).before(this.getElement());
+            new ui.dom(selector).before(this.getElement());
             return this;
         }
     }

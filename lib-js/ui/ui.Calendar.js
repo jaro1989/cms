@@ -601,7 +601,7 @@
              */
             appendHTML: function(selector) {
 
-                new ui.$(selector).append(this._buildParentBlock());
+                new ui.dom(selector).append(this._buildParentBlock());
                 return this;
             }
         };

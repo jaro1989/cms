@@ -143,7 +143,7 @@
          * @public
          */
         appendHTML: function(selector) {
-            new ui.$(selector).append(this.getElement());
+            new ui.dom(selector).append(this.getElement());
             return this;
         }
     };

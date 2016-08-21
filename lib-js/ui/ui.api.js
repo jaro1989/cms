@@ -3,32 +3,41 @@
 
     /**
      * @memberOf ui
-     * @namespace ui.$
+     * @namespace ui.dom
      * @constructor
      */
-    ui.$ = function (selector) {
+    ui.dom = function (selector) {
 
-        this.elements  = document.querySelector(selector);
+        this.elements  = document.querySelectorAll(selector);
     };
 
     /** @protected */
-    ui.$.prototype = {
+    ui.dom.prototype = {
 
         /**
-         * @returns {ui.$}
+         * @returns {ui.dom}
          */
         before: function(contentElement) {
 
-            this.elements.insertBefore(contentElement, this.elements.firstChild);
+            for (var i = 0; i < this.elements.length; i++) {
+
+                this.elements[i].insertBefore(contentElement, this.elements[i].firstChild);
+            }
+
             return this;
         },
 
         /**
-         * @returns {ui.$}
+         * @returns {ui.dom}
          */
         append: function(contentElement) {
 
-            this.elements.appendChild(contentElement);
+
+            for (var i = 0; i < this.elements.length; i++) {
+
+                this.elements[i].appendChild(contentElement);
+            }
+
             return this;
         }
     };
@@ -140,11 +149,11 @@
 
                 for (var i = 0, count = arrSelector.length; i < count; i++) {
 
-                    new ui.$('#' + arrSelector[i]).on(event, fun, useCapture);
+                    new ui.dom('#' + arrSelector[i]).on(event, fun, useCapture);
                 }
             } else {
 
-                new ui.$('#' + arrSelector).on(event, fun, useCapture);
+                new ui.dom('#' + arrSelector).on(event, fun, useCapture);
             }
         },
 
