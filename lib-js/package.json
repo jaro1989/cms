@@ -1,19 +1,19 @@
 {
-  "name": "lib-js",
+  "name": "uiHtml",
   "version": "1.0.0",
   "description": "''",
-  "main": "index.js",
+  "main": "ui.Config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kiselyou/lib-js.git"
+    "url": "https://github.com/kiselyou/cms.git"
   },
   "author": "V.A.Kiseliou",
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/kiselyou/lib-js/issues"
+    "url": "https://github.com/kiselyou/cms/issues"
   },
   "devDependencies": {
     "gulp": "~3.9.1",
@@ -22,5 +22,8 @@
     "gulp-uglify": "~1.5.3",
     "gulp-livereload": "~3.8.1",
     "browser-sync": "~2.12.8"
-  }
+  },
+  "keywords": [
+    "key-uiHtml"
+  ]
 }
