@@ -369,15 +369,19 @@
         }
 
         blockTable.addChildAfter(
-            new ui.Element('table')
-                .addClassElement(ui.CSS.tableClass.table)
+            new ui.Element('div')
                 .addClassElement(ui.CSS.tableClass.responsive)
-                .addClassElement(ui.CSS.tableClass.hover)
-                .addClassElement(ui.CSS.tableClass.striped)
-                .addClassElement(this._typeTable)
-                .addChildAfter(this._buildBlock(BLOCK_HEAD))
-                .addChildAfter(this._buildBlock(BLOCK_BODY))
-                .addChildAfter(this._buildBlock(BLOCK_FOOT))
+                .addChildAfter(
+                    new ui.Element('table')
+                        .addClassElement(ui.CSS.tableClass.table)
+                        .addClassElement(ui.CSS.tableClass.hover)
+                        .addClassElement(ui.CSS.tableClass.striped)
+                        .addClassElement(this._typeTable)
+                        .addChildAfter(this._buildBlock(BLOCK_HEAD))
+                        .addChildAfter(this._buildBlock(BLOCK_BODY))
+                        .addChildAfter(this._buildBlock(BLOCK_FOOT))
+                        .getElement()
+                )
                 .getElement()
         );
 
