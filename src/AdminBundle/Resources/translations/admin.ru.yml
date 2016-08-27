@@ -1,0 +1,9 @@
+# FIELDS
+_USERNAME: 'Имя пользователя'
+_PASSWORD: 'Пароль'
+
+# Buttons
+_LOGIN: 'Вход'
+
+# TITLE
+_AUTHORIZATION: 'Авторизация'

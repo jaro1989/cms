@@ -2,9 +2,7 @@
 
 {% block body %}
 
-    <div  id="page-login-html" class="form-signin">
-
-    </div>
+    <div  id="page-login-html" class="form-signin"></div>
 
 {% endblock %}
 
@@ -15,27 +13,31 @@
     {{ parent() }}
 
     <script>
+
+        var lbl = {
+            _authorization: '{{ '_AUTHORIZATION'|trans({}, 'admin') }}',
+            _username:      '{{ '_USERNAME'|trans({}, 'admin') }}',
+            _password:      '{{ '_PASSWORD'|trans({}, 'admin') }}',
+            _login:         '{{ '_LOGIN'|trans({}, 'admin') }}'
+        };
+
         var error = '{% if error %} {{ error.messageKey|trans(error.messageData, 'security') }} {% endif %}';
+
         var APPEND_ELEMENT = '#page-login-html';
 
-        new ui.Form('form-login', 'ru')
+        new ui.Form('form-login', '{{ app.request.locale }}')
                 .setUrlActionForm('{{ path('_security_login') }}')
                 .setSkin('default')
-                .setParentBlock('Авторизация', null, {_username: '{{ username }}'})
-
+                .setParentBlock(lbl._authorization, null, {_username: '{{ username }}'})
                 .newLineParent()
-                .addTextField('_username', 'Имя пользователя', true)
-
+                .addTextField('_username', lbl._username, true)
                 .newLineParent()
-                .addPasswordField('_password', 'Пароль', true)
-
+                .addPasswordField('_password', lbl._password, true)
                 .hideBtnReload(true)
                 .hideBtnBack(true)
                 .hideBtnSave(true)
                 .hideBtnClear(true)
-
-                .addButton(4, 'submit', 'log_in', 'log-in', 'Вход', null, 'default')
-
+                .addButton(4, 'submit', '_login', 'log-in', lbl._login, null, 'default')
                 .appendHTML(APPEND_ELEMENT);
 
         new ui.Error()

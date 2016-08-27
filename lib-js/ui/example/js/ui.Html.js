@@ -82,7 +82,7 @@
                     noimg: 'Картинка не найдена',
                     required: 'Обязательное поле'
                 },
-                eu: {
+                en: {
                     btn_save: 'Save',
                     btn_remove: 'Delete',
                     btn_clear: 'Clear',

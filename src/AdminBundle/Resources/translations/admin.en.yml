@@ -1,0 +1,9 @@
+# FIELDS
+_USERNAME: 'Username'
+_PASSWORD: 'Password'
+
+# Buttons
+_LOGIN: 'Log-in'
+
+# TITLE
+_AUTHORIZATION: 'Authorization'
