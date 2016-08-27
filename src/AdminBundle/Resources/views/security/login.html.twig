@@ -6,8 +6,6 @@
 
 {% endblock %}
 
-
-
 {% block javascripts %}
 
     {{ parent() }}
@@ -21,13 +19,12 @@
             _login:         '{{ '_LOGIN'|trans({}, 'admin') }}'
         };
 
-        var error = '{% if error %} {{ error.messageKey|trans(error.messageData, 'security') }} {% endif %}';
+        var errorMessage = '{% if error %} {{ error.messageKey|trans(error.messageData, 'security') }} {% endif %}';
 
         var APPEND_ELEMENT = '#page-login-html';
 
         new ui.Form('form-login', '{{ app.request.locale }}')
                 .setUrlActionForm('{{ path('_security_login') }}')
-                .setSkin('default')
                 .setParentBlock(lbl._authorization, null, {_username: '{{ username }}'})
                 .newLineParent()
                 .addTextField('_username', lbl._username, true)
@@ -37,11 +34,11 @@
                 .hideBtnBack(true)
                 .hideBtnSave(true)
                 .hideBtnClear(true)
-                .addButton(4, 'submit', '_login', 'log-in', lbl._login, null, 'default')
+                .addButton(4, 'submit', '_login', 'log-in', lbl._login)
                 .appendHTML(APPEND_ELEMENT);
 
         new ui.Error()
-                .addError(null, error)
+                .addError(null, errorMessage)
                 .appendHTML('.row-fields');
 
     </script>

@@ -1,9 +1,14 @@
 # FIELDS
 _USERNAME: 'Имя пользователя'
 _PASSWORD: 'Пароль'
+_EMAIL: 'E-mail'
+_CONFIRM_PASSWORD: 'Подтвердите пароль'
+_ACTIVE: 'Активный'
 
 # Buttons
 _LOGIN: 'Вход'
 
 # TITLE
 _AUTHORIZATION: 'Авторизация'
+_CREATE_USER: 'Создать пользователя'
+_LIST_USER: 'Список пользователей'

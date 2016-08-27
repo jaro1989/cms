@@ -509,7 +509,7 @@
         this._fieldRecordForm =   '';
         this._titleForm =      null;
         this._titleFormSmall = null;
-        this._skinPanel = 'primary';
+        this._skinPanel = 'default';
         this._paddingPanels = 'xs';
         this._paddingChildrenPanel = 'sm';
         this._method = ui.Config.defaultMethodForm;
@@ -553,9 +553,9 @@
                     type:     'button',
                     name:     '_list',
                     leftIcon: 'list',
-                    skin:     'primary',
+                    skin:     'default',
                     caption:  this._lbl.btn_list,
-                    active: true,
+                    active: false,
                     onclick:  "ui.api.reload('" + this._urlList + "');"
                 }
             );
@@ -595,8 +595,8 @@
                     type: 'button',
                     name: '_btnSave',
                     leftIcon: 'save',
-                    skin: 'primary',
-                    active: true,
+                    skin: 'default',
+                    active: false,
                     caption: this._lbl.btn_save,
                     onclick: "new ui.Form('" + this._idForm + "', '" + this._locale + "')._save();"
                 }
@@ -610,9 +610,9 @@
                     type:     'button',
                     name:     '_btnClear',
                     leftIcon: 'refresh',
-                    skin:     'primary',
+                    skin:     'default',
                     caption:  this._lbl.btn_clear,
-                    active: true,
+                    active: false,
                     onclick:  "new ui.Form('" + this._idForm + "', '" + this._locale + "')._reset();"
                 }
             );

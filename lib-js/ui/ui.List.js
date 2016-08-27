@@ -246,9 +246,9 @@
                     type:     'button',
                     name:     '_add',
                     leftIcon: 'new-window',
-                    skin:     'primary',
+                    skin:     'default',
                     caption:  this._lbl.btn_add,
-                    active: true,
+                    active: false,
                     onclick:  "ui.api.reload('" + this._urlAddAndEdit + "');"
                 }
             );
@@ -764,7 +764,7 @@
 
         var panel = new ui.Element('div')
             .addClassElement(ui.CSS.panelClass.panel)
-            .addClassElement(ui.api.existProperty(ui.CSS.skinClass.panel, this._skin, ui.CSS.skinClass.panel.primary));
+            .addClassElement(ui.api.existProperty(ui.CSS.skinClass.panel, this._skin, ui.CSS.skinClass.panel.default));
 
         panel.addChildBefore(
             new ui.Element('div')

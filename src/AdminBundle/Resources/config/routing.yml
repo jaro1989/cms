@@ -3,6 +3,26 @@ _admin:
     path: /
     defaults:  { _controller: AdminBundle:Main:index }
 
+_user_create:
+    path: /create/user
+    defaults:  { _controller: AdminBundle:User:create }
+
+_user_list:
+    path: /list/user
+    defaults:  { _controller: AdminBundle:User:list }
+
+_user_trash:
+    path: /list/trash
+    defaults:  { _controller: AdminBundle:User:trash }
+
+_user_delete:
+    path: /delete/user
+    defaults:  { _controller: AdminBundle:User:delete }
+
+_user_save:
+    path: /save/user
+    defaults:  { _controller: AdminBundle:User:save }
+
 _security_login:
     path: /login
     defaults:  { _controller: AdminBundle:Security:login }

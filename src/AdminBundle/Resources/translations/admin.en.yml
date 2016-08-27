@@ -1,9 +1,14 @@
 # FIELDS
 _USERNAME: 'Username'
 _PASSWORD: 'Password'
+_EMAIL: 'E-mail'
+_CONFIRM_PASSWORD: 'Confirm password'
+_ACTIVE: 'Active'
 
 # Buttons
 _LOGIN: 'Log-in'
 
 # TITLE
 _AUTHORIZATION: 'Authorization'
+_CREATE_USER: 'Create user'
+_LIST_USER: 'List users'
