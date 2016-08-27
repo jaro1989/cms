@@ -143,6 +143,17 @@
              */
             checkboxInlineClass: 'checkbox-inline',
 
+            alert: {
+                alert: 'alert',
+                link: 'alert-link',
+                skin: {
+                    warning: 'alert-warning',
+                    info: 'alert-info',
+                    success: 'alert-success',
+                    danger: 'alert-danger'
+                }
+            },
+
             /**
              * @public
              * @type { {btnClass: *, btnGroupClass: *, btnGroup: { group: *, toolbar: *, vertical: *, justified: * } } }

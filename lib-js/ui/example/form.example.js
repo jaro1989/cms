@@ -18,6 +18,9 @@ console.time('test');
         );
     }
 
+    new ui.Error()
+        .addError('asdasd!', 'asdasdasda d das asd ssads adas as s', 'asdasd')
+        .appendHTML(APPEND_ELEMENT);
 
     new ui.Form('form-user', null)
         .setTitle('Title form', 'mini title form')
@@ -144,6 +147,8 @@ console.time('test');
             4
         )
         .addReadOnlyField(null, null, null)
+
+        .addButton(4, 'submit', 'log_in', 'log-in', 'Вход', 'alert(222)')
 
         .appendHTML(APPEND_ELEMENT);
 

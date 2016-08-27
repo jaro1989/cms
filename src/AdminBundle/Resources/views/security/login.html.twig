@@ -1,0 +1,49 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+
+    <div  id="page-login-html" class="form-signin">
+        <div class="alert alert-warning alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>Warning!</strong> <span>Better check yourself, you're not looking too good.</span>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script>
+        var error = '{% if error %} {{ error.messageKey|trans(error.messageData, 'security') }} {% endif %}';
+        var APPEND_ELEMENT = '#page-login-html';
+
+        new ui.Form('form-login', 'ru')
+                .setUrlActionForm('{{ path('_security_login') }}')
+                .setSkin('default')
+                .setParentBlock(
+                        'Авторизация',
+                        null,
+                        {_username: '{{ username }}'}
+                )
+
+                .newLineParent()
+                .addTextField('_username', 'Имя пользователя', true)
+
+                .newLineParent()
+                .addPasswordField('_password', 'Пароль', true)
+
+                .hideBtnReload(true)
+                .hideBtnBack(true)
+                .hideBtnSave(true)
+                .hideBtnClear(true)
+
+                .addButton(4, 'submit', 'log_in', 'log-in', 'Вход', null, 'default')
+
+                .appendHTML(APPEND_ELEMENT);
+    </script>
+
+{% endblock %}

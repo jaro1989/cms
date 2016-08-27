@@ -651,6 +651,8 @@
 
         if (ui.api.existProperty(obj, position, false)) {
 
+            var sendForm = typeBtn == 'submit' ? 'new ui.Form("' + this._idForm + '", "' + this._locale + '").sendForm(); ' : '';
+
             this[obj[position]].push(
                 {
                     type: ui.api.empty(typeBtn, null),
@@ -658,13 +660,28 @@
                     leftIcon: ui.api.empty(icon, null),
                     caption: ui.api.empty(caption, null),
                     skin: ui.api.empty(skin, null),
-                    onclick: ui.api.empty(onclick, null),
+                    onclick: sendForm + ui.api.empty(onclick, null),
                     active: active
                 }
             );
         }
 
         return this;
+    };
+
+    /**
+     * Send form data to server
+     */
+    ui.Form.prototype.sendForm = function() {
+
+        var data = new ui.FormData(this._idForm, this._locale).getData();
+
+        if (data.error.length === 0) {
+
+            document.getElementById(this._idForm).submit();
+        }
+
+        return false;
     };
 
     /**

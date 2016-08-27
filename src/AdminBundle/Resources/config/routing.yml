@@ -1,0 +1,7 @@
+_admin:
+    path: /
+    defaults:  { _controller: AdminBundle:Main:index }
+
+_security_login:
+    path: /login
+    defaults:  { _controller: AdminBundle:Security:login }

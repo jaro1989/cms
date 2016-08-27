@@ -17,6 +17,7 @@ for (var i =0; i <10; i++) {
 }
 
 new ui.List('id', 'list-user', null)
+    .setSkin('default')
     .setSkinBlockSearch('default')
     .setTitleSearch('search', 'search')
     .setParentBlock(
