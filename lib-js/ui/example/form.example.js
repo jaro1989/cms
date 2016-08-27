@@ -19,7 +19,7 @@ console.time('test');
     }
 
     new ui.Error()
-        .addError('asdasd!', 'asdasdasda d das asd ssads adas as s', 'asdasd')
+        .addError('asdasd!', 'asdasdasda d das asd ssads adas as s', '/sasa/asdasd')
         .appendHTML(APPEND_ELEMENT);
 
     new ui.Form('form-user', null)

@@ -21,13 +21,66 @@
      */
     ui.Error.prototype.addError = function(title, content, link) {
 
-        this.error.push(
-            {
-                title: ui.api.empty(title, null),
-                content: ui.api.empty(content, null),
-                link: ui.api.empty(link, null)
-            }
-        );
+        this._addParams('danger', title, content, link);
+        return this;
+    };
+
+    /**
+     * @param {string|null} title
+     * @param {string|null} content
+     * @param {string|null} link
+     * @returns {ui.Error}
+     */
+    ui.Error.prototype.addInfo = function(title, content, link) {
+
+        this._addParams('info', title, content, link);
+        return this;
+    };
+
+    /**
+     * @param {string|null} title
+     * @param {string|null} content
+     * @param {string|null} link
+     * @returns {ui.Error}
+     */
+    ui.Error.prototype.addSuccess = function(title, content, link) {
+
+        this._addParams('success', title, content, link);
+        return this;
+    };
+
+    /**
+     * @param {string|null} title
+     * @param {string|null} content
+     * @param {string|null} link
+     * @returns {ui.Error}
+     */
+    ui.Error.prototype.addWarning = function(title, content, link) {
+
+        this._addParams('warning', title, content, link);
+        return this;
+    };
+
+    /**
+     * @param {string|null} skin
+     * @param {string|null} title
+     * @param {string|null} content
+     * @param {string|null} link
+     * @returns {ui.Error}
+     */
+    ui.Error.prototype._addParams = function(skin, title, content, link) {
+
+        if (ui.api.empty(content, null)) {
+
+            this.error.push(
+                {
+                    skin: ui.CSS.alert.skin[skin],
+                    title: ui.api.empty(title, null),
+                    content: content,
+                    link: ui.api.empty(link, null)
+                }
+            );
+        }
 
         return this;
     };
@@ -40,11 +93,11 @@
     ui.Error.prototype._buildBlockError = function(data) {
 
         var error =  new ui.Element('div')
-            .addClassElement('alert')
-            .addClassElement('alert-warning')
+            .addClassElement(ui.CSS.alert.alert)
+            .addClassElement(data.skin)
             .addChildAfter(
                 new ui.Element('button')
-                    .addClassElement('close')
+                    .addClassElement(ui.CSS.btnClose)
                     .setContentElement('&times;')
                     .setOnClick('this.parentNode.remove()')
                     .getElement()
@@ -68,7 +121,7 @@
                 .addChildAfter(
                     new ui.Element(tag)
                         .setUrlElement(data.link)
-                        .addClassElement(data.link ? 'alert-link' : null)
+                        .addClassElement(data.link ? ui.CSS.alert.link : null)
                         .setContentElement(data.content)
                         .getElement()
                 );

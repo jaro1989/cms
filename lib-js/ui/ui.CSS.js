@@ -326,6 +326,8 @@
                 }
             },
 
+            btnClose: 'close',
+
             progress: {
                 striped: 'progress-striped',
                 progress: 'progress',

@@ -3,10 +3,7 @@
 {% block body %}
 
     <div  id="page-login-html" class="form-signin">
-        <div class="alert alert-warning alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <strong>Warning!</strong> <span>Better check yourself, you're not looking too good.</span>
-        </div>
+
     </div>
 
 {% endblock %}
@@ -24,11 +21,7 @@
         new ui.Form('form-login', 'ru')
                 .setUrlActionForm('{{ path('_security_login') }}')
                 .setSkin('default')
-                .setParentBlock(
-                        'Авторизация',
-                        null,
-                        {_username: '{{ username }}'}
-                )
+                .setParentBlock('Авторизация', null, {_username: '{{ username }}'})
 
                 .newLineParent()
                 .addTextField('_username', 'Имя пользователя', true)
@@ -44,6 +37,11 @@
                 .addButton(4, 'submit', 'log_in', 'log-in', 'Вход', null, 'default')
 
                 .appendHTML(APPEND_ELEMENT);
+
+        new ui.Error()
+                .addError(null, error)
+                .appendHTML('.row-fields');
+
     </script>
 
 {% endblock %}
