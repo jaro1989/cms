@@ -135,7 +135,6 @@ class UserController extends Controller
             $em->flush();
 
             $res['record'] = $user->getId();
-            //return $response->setData([$data->get('action'), $data->get('id'), $data->get('username'), $data->get('email'), $data->get('isActive'), $data->get('password')]);
         }
 
         return $response->setData($res);
