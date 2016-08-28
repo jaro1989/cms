@@ -9,7 +9,7 @@
      */
     ui.dom = function (selector) {
 
-        this.elements  = document.querySelectorAll(selector);
+        this.elements  = document.body.querySelectorAll(selector);
     };
 
     /** @protected */
@@ -37,6 +37,20 @@
             for (var i = 0; i < this.elements.length; i++) {
 
                 this.elements[i].appendChild(contentElement);
+            }
+
+            return this;
+        },
+
+        /**
+         * @returns {ui.dom}
+         */
+        remove: function() {
+
+
+            for (var i = 0; i < this.elements.length; i++) {
+
+                this.elements[i].remove();
             }
 
             return this;

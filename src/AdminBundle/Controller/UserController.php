@@ -4,6 +4,7 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 //use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -89,6 +90,11 @@ class UserController extends Controller
         $response = new JsonResponse();
         $data = $request->request;
 
+        $res = [
+            'record' => null,
+            'error' => null
+        ];
+
         if ($data->get('action') == 'save') {
 
             $user = new User();
@@ -99,20 +105,37 @@ class UserController extends Controller
                 ->setIsActive($data->get('isActive'))
                 ->setPassword($data->get('password'));
 
-            $em->persist($user);
-            $em->flush();
+            try {
 
-            $res = [
-                'record' => $user->getId(),
-                'error' => null
-            ];
+                $em->persist($user);
+                $em->flush();
+
+                $res['record'] = $user->getId();
+
+            } catch (\Exception $e) {
+
+                $res['error'] = $e->getMessage();
+            }
         }
 
-        if ($request->request->get('action') == 'edit') {
+        if ($data->get('action') == 'edit') {
 
-            return $response->setData(array(
-                'data' => $request->request->get('action')
-            ));
+            $user = $em->getRepository('AdminBundle:User')
+                ->find($data->get('id'));
+
+            if ($user) {
+
+                $user
+                    ->setUsername($data->get('username'))
+                    ->setEmail($data->get('email'))
+                    ->setIsActive($data->get('isActive'))
+                    ->setPassword($data->get('password'));
+            }
+
+            $em->flush();
+
+            $res['record'] = $user->getId();
+            //return $response->setData([$data->get('action'), $data->get('id'), $data->get('username'), $data->get('email'), $data->get('isActive'), $data->get('password')]);
         }
 
         return $response->setData($res);

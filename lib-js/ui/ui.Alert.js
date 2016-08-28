@@ -6,10 +6,12 @@
     /**
      * @memberOf ui
      * @namespace ui.Alert
+     * @param {string} id
      * @constructor
      */
-    ui.Alert = function () {
+    ui.Alert = function (id) {
 
+        this._alertBlockId = ui.api.empty(id, 'alert-block-html');
         this.error = [];
     };
 
@@ -138,7 +140,7 @@
     ui.Alert.prototype._buildParentBlock = function() {
 
         var alert =  new ui.Element('div')
-            .addClassElement('errors');
+            .addClassElement(this._alertBlockId);
 
         for (var key in this.error) {
 
@@ -181,6 +183,8 @@
      * @public
      */
     ui.Alert.prototype.appendHTML = function(selector, before) {
+
+        new ui.dom('.' + this._alertBlockId).remove();
 
         if (this.error.length > 0) {
 

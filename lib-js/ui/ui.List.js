@@ -34,6 +34,8 @@
         this._btnLeftTopTable = [];
         this._btnRightTopTable = [];
 
+        this._separatorLink = '/';
+
         this._hideBtnList = {
             _btnBack:   false,
             _btnAdd:    false,
@@ -112,11 +114,13 @@
 
             link: function(params) {
 
+                var paramsLink = params.record != null ? params.separator + params.record : '';
+
                 return new ui.Element('div')
                     .addChildAfter(
                         new ui.Element('a')
                             .addClassElement('sort-content')
-                            .setUrlElement(params.href)
+                            .setUrlElement(params.href + paramsLink)
                             .setContentElement(params.value)
                             .getElement()
                     )
@@ -203,6 +207,15 @@
      */
     ui.List.prototype.setMaxRow = function(max) {
         this._maxRow = max;
+        return this;
+    };
+
+    /**
+     * @param {string} separator
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setSeparatorParamLink = function(separator) {
+        this._separatorLink = separator;
         return this;
     };
 
@@ -391,21 +404,24 @@
     /**
      * @param {*} content
      * @param {number} fieldName
+     * @param {number|string|null} record
      * @returns {*}
      * @private
      */
-    ui.List.prototype._getColumnType = function(content, fieldName) {
+    ui.List.prototype._getColumnType = function(content, fieldName, record) {
 
         var type = ui.api.existProperty(this._column, fieldName, false);
 
         if (type in this._columnType) {
 
             var params = {
+                record: record,
                 value: content,
                 href: this._urlAddAndEdit,
                 alt: this._lbl.noimg,
                 hrefNoImg: this.urlNoImg,
-                height: this._maxHeightRow
+                height: this._maxHeightRow,
+                separator: this._separatorLink
             };
 
             content = this._columnType[type].call(this, params);
@@ -424,10 +440,9 @@
     ui.List.prototype._contentCell = function(params, blockName, fieldName) {
 
         var content = ui.api.existProperty(params, 'content', params);
-
         if (blockName == BLOCK_BODY) {
 
-            return this._getColumnType(content, fieldName);
+            return this._getColumnType(content, fieldName, null);
         }
 
         return content;
@@ -527,6 +542,7 @@
                             new ui.FFCheckbox('simple')
                                 .setAttr(DATA_RECORD_ID, reordID)
                                 .setAttr(DATA_ACTION, CHOOSE_RECORD_ID)
+                                .setDefaultValues('on', 'off')
                                 .addCheckbox(reordID, this._fieldRecordList + '[' + rowNum + ']', null, onclick)
                                 .getElement()
                         )
@@ -657,9 +673,11 @@
 
                 if (params.hasOwnProperty(fieldName)) {
 
+                    var record = ui.api.existProperty(params, this._fieldRecordList, null);
+
                     row.addChildAfter(
                         new ui.Element(cellName)
-                            .setContentElement(this._getColumnType(params[fieldName], fieldName))
+                            .setContentElement(this._getColumnType(params[fieldName], fieldName, record))
                             .getElement()
                     );
                 }

@@ -46,7 +46,10 @@
             .pipe(uglify())
             // Scrips min js to ui/example/js/...min.js
             .pipe(rename('ui.Html.min.js'))
-            .pipe(gulp.dest('./ui/example/js'));
+            .pipe(gulp.dest('./ui/example/js'))
+
+            .pipe(rename('ui.Html.min.js'))
+            .pipe(gulp.dest('./../web/admin/js'));
     });
 
     gulp.task('watch', function() {

@@ -76,8 +76,8 @@
                     btn_yes: 'Да',
                     btn_no: 'Нет',
                     btn_ok: 'Ок',
-                    error: 'Ошибка',
-                    success: 'Успешно',
+                    error: 'Ошибка!',
+                    success: 'Успешно!',
                     message: 'Сообщение',
                     question: 'Вопрос',
                     noimg: 'Картинка не найдена',
@@ -100,8 +100,8 @@
                     btn_yes: 'Yes',
                     btn_no: 'No',
                     btn_ok: 'Ok',
-                    error: 'Error',
-                    success: 'Success',
+                    error: 'Error!',
+                    success: 'Success!',
                     message: 'Message',
                     question: 'Question',
                     noimg: 'Picture not found',
@@ -712,7 +712,7 @@
      */
     ui.dom = function (selector) {
 
-        this.elements  = document.querySelectorAll(selector);
+        this.elements  = document.body.querySelectorAll(selector);
     };
 
     /** @protected */
@@ -740,6 +740,20 @@
             for (var i = 0; i < this.elements.length; i++) {
 
                 this.elements[i].appendChild(contentElement);
+            }
+
+            return this;
+        },
+
+        /**
+         * @returns {ui.dom}
+         */
+        remove: function() {
+
+
+            for (var i = 0; i < this.elements.length; i++) {
+
+                this.elements[i].remove();
             }
 
             return this;
@@ -1897,10 +1911,12 @@
     /**
      * @memberOf ui
      * @namespace ui.Alert
+     * @param {string} id
      * @constructor
      */
-    ui.Alert = function () {
+    ui.Alert = function (id) {
 
+        this._alertBlockId = ui.api.empty(id, 'alert-block-html');
         this.error = [];
     };
 
@@ -2029,7 +2045,7 @@
     ui.Alert.prototype._buildParentBlock = function() {
 
         var alert =  new ui.Element('div')
-            .addClassElement('errors');
+            .addClassElement(this._alertBlockId);
 
         for (var key in this.error) {
 
@@ -2072,6 +2088,8 @@
      * @public
      */
     ui.Alert.prototype.appendHTML = function(selector, before) {
+
+        new ui.dom('.' + this._alertBlockId).remove();
 
         if (this.error.length > 0) {
 
@@ -8199,6 +8217,7 @@
         this._readOnly = false;
         this._locale = ui.api.empty(locale, ui.Config.lbl[ui.Config.locale]);
         this._lbl = ui.api.existProperty(ui.Config.lbl, this._locale, ui.Config.lbl[ui.Config.locale]);
+        this._alertBlockId = 'alert-' + this._idForm;
     };
 
     ui.Form.prototype = Object.create(ui.HtmlFields.prototype);
@@ -8822,7 +8841,7 @@
         var listParams = JSON.parse(str);
 
         var data = new ui.FormData(this._idForm, this._locale).getData();
-        var lbl = ui.Config.lbl[this._locale];
+        var lbl = ui.api.existProperty(ui.Config.lbl, this._locale, ui.Config.locale);
 
         if (data.error.length === 0) {
 
@@ -8831,10 +8850,10 @@
             new ui.Ajax()
                 .setUrl(listParams._urlActionForm)
                 .setParams(data['data'])
+                .addParam(listParams._fieldRecordForm, listParams._idRecord)
                 .addParam('action', (listParams._idRecord > 0) ? 'edit' : 'save')
                 .addCallbackFunction(function (e) {
                     try {
-
                         var response = JSON.parse(e);
 
                         if (response.record > 0) {
@@ -8842,20 +8861,20 @@
                             listParams = response.record;
                             dataBlock.setAttribute(DATA_JSON_FORM_PR, JSON.stringify(listParams));
 
-                            new ui.Alert()
+                            new ui.Alert(curObj._alertBlockId)
                                 .addSuccess(lbl.success, lbl.successSave, null)
                                 .appendHTML('#' + curObj._idForm, true);
 
                         } else if ('error' in response) {
 
-                            new ui.Alert()
+                            new ui.Alert(curObj._alertBlockId)
                                 .addError(lbl.error, response.error, null)
                                 .appendHTML('#' + curObj._idForm, true);
                         }
 
                     } catch (e) {
 
-                        new ui.Alert()
+                        new ui.Alert(curObj._alertBlockId)
                             .addError(lbl.error, lbl.errorAjaxResponse, null)
                             .appendHTML('#' + curObj._idForm, true);
 
@@ -8864,7 +8883,7 @@
                 .send();
         } else {
 
-            new ui.Alert()
+            new ui.Alert(this._alertBlockId)
                 .addError(lbl.error, lbl.requiredAlert, null)
                 .appendHTML('#' + this._idForm, true);
         }
@@ -9030,6 +9049,7 @@
     ui.Form.prototype._reset = function() {
 
         document.getElementById(this._idForm).reset();
+        new ui.dom('.' + this._alertBlockId).remove();
 
         var elements = new ui.FormData(this._idForm, this._locale).getFormElements();
 
@@ -10238,6 +10258,8 @@
         this._btnLeftTopTable = [];
         this._btnRightTopTable = [];
 
+        this._separatorLink = '/';
+
         this._hideBtnList = {
             _btnBack:   false,
             _btnAdd:    false,
@@ -10316,11 +10338,13 @@
 
             link: function(params) {
 
+                var paramsLink = params.record != null ? params.separator + params.record : '';
+
                 return new ui.Element('div')
                     .addChildAfter(
                         new ui.Element('a')
                             .addClassElement('sort-content')
-                            .setUrlElement(params.href)
+                            .setUrlElement(params.href + paramsLink)
                             .setContentElement(params.value)
                             .getElement()
                     )
@@ -10407,6 +10431,15 @@
      */
     ui.List.prototype.setMaxRow = function(max) {
         this._maxRow = max;
+        return this;
+    };
+
+    /**
+     * @param {string} separator
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setSeparatorParamLink = function(separator) {
+        this._separatorLink = separator;
         return this;
     };
 
@@ -10595,21 +10628,24 @@
     /**
      * @param {*} content
      * @param {number} fieldName
+     * @param {number|string|null} record
      * @returns {*}
      * @private
      */
-    ui.List.prototype._getColumnType = function(content, fieldName) {
+    ui.List.prototype._getColumnType = function(content, fieldName, record) {
 
         var type = ui.api.existProperty(this._column, fieldName, false);
 
         if (type in this._columnType) {
 
             var params = {
+                record: record,
                 value: content,
                 href: this._urlAddAndEdit,
                 alt: this._lbl.noimg,
                 hrefNoImg: this.urlNoImg,
-                height: this._maxHeightRow
+                height: this._maxHeightRow,
+                separator: this._separatorLink
             };
 
             content = this._columnType[type].call(this, params);
@@ -10628,10 +10664,9 @@
     ui.List.prototype._contentCell = function(params, blockName, fieldName) {
 
         var content = ui.api.existProperty(params, 'content', params);
-
         if (blockName == BLOCK_BODY) {
 
-            return this._getColumnType(content, fieldName);
+            return this._getColumnType(content, fieldName, null);
         }
 
         return content;
@@ -10731,6 +10766,7 @@
                             new ui.FFCheckbox('simple')
                                 .setAttr(DATA_RECORD_ID, reordID)
                                 .setAttr(DATA_ACTION, CHOOSE_RECORD_ID)
+                                .setDefaultValues('on', 'off')
                                 .addCheckbox(reordID, this._fieldRecordList + '[' + rowNum + ']', null, onclick)
                                 .getElement()
                         )
@@ -10861,9 +10897,11 @@
 
                 if (params.hasOwnProperty(fieldName)) {
 
+                    var record = ui.api.existProperty(params, this._fieldRecordList, null);
+
                     row.addChildAfter(
                         new ui.Element(cellName)
-                            .setContentElement(this._getColumnType(params[fieldName], fieldName))
+                            .setContentElement(this._getColumnType(params[fieldName], fieldName, record))
                             .getElement()
                     );
                 }
