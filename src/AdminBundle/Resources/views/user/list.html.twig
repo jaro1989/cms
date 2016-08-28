@@ -2,6 +2,9 @@
 
 {% block content %}
     <div id="page-html"></div>
+
+
+
 {% endblock %}
 
 
@@ -25,6 +28,8 @@
             trash: '{{ path('_user_trash') }}',
             del:   '{{ path('_user_delete') }}'
         };
+
+        var data = {{data|json_encode|raw}};
 
 
         // ID элемента для вставки полей
@@ -50,10 +55,10 @@
             .addCellHead(lbl._email, 1, 1, true, 5, null)
             .addCellHead(lbl._active, 1, 1, true, 2, null)
 
-//            .addColumn('name2', 'number')
-//            .addColumn('name3', 'link')
-//            .addColumn('name4', 'text')
-//            .addColumn('name5', 'image')
+            .addRowsBody(data)
+            .addColumn('username', 'number')
+            .addColumn('email', 'link')
+            .addColumn('isActive', 'text')
 
             .appendHTML(APPEND_ELEMENT);
     </script>

@@ -1,0 +1,66 @@
+{% extends 'admin/body.html.twig' %}
+
+{% block content %}
+    <div id="page-html"></div>
+
+
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script>
+        var locale = '{{ app.request.locale }}';
+
+        var lbl = {
+            _pagename:  '{{ '_LIST_USER'|trans({}, 'admin') }}',
+            _username:  '{{ '_USERNAME'|trans({}, 'admin') }}',
+            _active:    '{{ '_ACTIVE'|trans({}, 'admin') }}',
+            _email:     '{{ '_EMAIL'|trans({}, 'admin') }}'
+        };
+
+        var path = {
+            add: '{{ path('_user_create') }}',
+            del: '{{ path('_user_delete') }}'
+        };
+
+        var data = {{data|json_encode|raw}};
+
+
+        // ID элемента для вставки полей
+        var APPEND_ELEMENT = '#page-html';
+
+        new ui.List('id', 'list-user-trash', locale)
+
+                .setLinkAddEndEdit(path.add)
+                .setAction(path.del)
+                .setTitle(lbl._pagename, null)
+
+                .setTypeTable('bordered')
+                .hideBtnClear(true)
+                .hideBtnSearch(true)
+                .hideBtnAdd(true)
+                .hideBtnReload(true)
+
+                .setMaxRow(25)
+                .setCountPages(1)
+                .setCurrentPage(1)
+
+                .newRowHead()
+                .addCellHead(lbl._username, 1, 1, true, 5, null)
+                .addCellHead(lbl._email, 1, 1, true, 5, null)
+                .addCellHead(lbl._active, 1, 1, true, 2, null)
+
+                .addRowsBody(data)
+                .addColumn('username', 'number')
+                .addColumn('email', 'link')
+                .addColumn('isActive', 'text')
+
+                .appendHTML(APPEND_ELEMENT);
+    </script>
+
+{% endblock %}
