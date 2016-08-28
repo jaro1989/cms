@@ -1161,12 +1161,13 @@
                 .addParam(listParams._fieldRecordForm, listParams._idRecord)
                 .addParam('action', (listParams._idRecord > 0) ? 'edit' : 'save')
                 .addCallbackFunction(function (e) {
+                    console.log(e);
                     try {
                         var response = JSON.parse(e);
 
                         if (response.record > 0) {
 
-                            listParams = response.record;
+                            listParams._idRecord = response.record;
                             dataBlock.setAttribute(DATA_JSON_FORM_PR, JSON.stringify(listParams));
 
                             new ui.Alert(curObj._alertBlockId)

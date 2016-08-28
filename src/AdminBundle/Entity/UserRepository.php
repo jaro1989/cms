@@ -10,4 +10,50 @@ namespace AdminBundle\Entity;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findOneUser($record)
+    {
+        return $this->getEntityManager()
+            ->createQuery("
+                SELECT u.id,
+                       u.username,
+                       u.email,
+                       u.isActive
+                  FROM AdminBundle:User u
+                 WHERE u.id = :id
+            ")
+            ->setParameter('id', $record)
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+    }
+
+    public function findUniqueUser($username, $email, $record)
+    {
+        return $this->getEntityManager()
+            ->createQuery("
+                SELECT 1
+                  FROM AdminBundle:User u
+                 WHERE u.username = :username
+                   AND u.email = :email
+                   AND u.id != :id
+            ")
+            ->setParameter('username', $username)
+            ->setParameter('email', $email)
+            ->setParameter('id', $record)
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+    }
+
+    public function findListUser()
+    {
+        return $this->getEntityManager()
+            ->createQuery("
+                SELECT u.id,
+                       u.username,
+                       u.email,
+                       u.isActive
+                  FROM AdminBundle:User u
+            ")
+            ->getResult();
+    }
 }

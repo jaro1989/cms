@@ -11,24 +11,16 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
 {
+    protected $repository = 'AdminBundle:User';
+
     public function createAction(Request $request, $record)
     {
-        $em = $this->getDoctrine()
-            ->getManager();
-
-        $query = $em->createQuery("
-            SELECT u.id,
-                   u.username,
-                   u.email,
-                   u.isActive
-              FROM AdminBundle:User u
-             WHERE u.id = :id
-        ")->setParameter('id', $record);
+        $em = $this->getDoctrine()->getManager();
 
         return $this->render(
             'AdminBundle:user:create.html.twig',
             [
-                'data' => $query->setMaxResults(1)->getOneOrNullResult()
+                'data' => $em->getRepository($this->repository)->findOneUser($record)
             ]
         );
     }
@@ -37,18 +29,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $query = $em->createQuery("
-            SELECT u.id,
-                   u.username,
-                   u.email,
-                   u.isActive
-              FROM AdminBundle:User u
-        ");
-
         return $this->render(
             'AdminBundle:user:list.html.twig',
             [
-                'data' => $query->getResult()
+                'data' => $em->getRepository($this->repository)->findListUser()
             ]
         );
     }
@@ -57,18 +41,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $query = $em->createQuery("
-            SELECT u.id,
-                   u.username,
-                   u.email,
-                   u.isActive
-              FROM AdminBundle:User u
-        ");
-
         return $this->render(
             'AdminBundle:user:trash.html.twig',
             [
-                'data' => $query->getResult()
+                'data' => $em->getRepository($this->repository)->findListUser()
             ]
         );
     }
@@ -90,14 +66,17 @@ class UserController extends Controller
         $response = new JsonResponse();
         $data = $request->request;
 
-        $res = [
-            'record' => null,
-            'error' => null
-        ];
+        $res = [];
 
-        if ($data->get('action') == 'save') {
+        $unique = $em->getRepository($this->repository)->findUniqueUser($data->get('username'), $data->get('email'), $data->get('id'));
 
-            $user = new User();
+        if (empty($unique)) {
+
+            $user = $em->getRepository('AdminBundle:User')
+                ->find($data->get('id'));
+
+
+            !$user ? $user = new User() : null;
 
             $user
                 ->setUsername($data->get('username'))
@@ -116,25 +95,9 @@ class UserController extends Controller
 
                 $res['error'] = $e->getMessage();
             }
-        }
+        } else {
 
-        if ($data->get('action') == 'edit') {
-
-            $user = $em->getRepository('AdminBundle:User')
-                ->find($data->get('id'));
-
-            if ($user) {
-
-                $user
-                    ->setUsername($data->get('username'))
-                    ->setEmail($data->get('email'))
-                    ->setIsActive($data->get('isActive'))
-                    ->setPassword($data->get('password'));
-            }
-
-            $em->flush();
-
-            $res['record'] = $user->getId();
+            $res['error'] = 'В системе пользователь с такими данными уже существует';
         }
 
         return $response->setData($res);
