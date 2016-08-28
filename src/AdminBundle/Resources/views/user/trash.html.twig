@@ -29,7 +29,7 @@
         };
 
         var data = {{data|json_encode|raw}};
-
+        console.log(data);
 
         // ID элемента для вставки полей
         var APPEND_ELEMENT = '#page-html';
@@ -56,7 +56,7 @@
                 .addCellHead(lbl._active, 1, 1, true, 2, null)
 
                 .addRowsBody(data)
-                .addColumn('username', 'number')
+                .addColumn('username', 'link')
                 .addColumn('email', 'link')
                 .addColumn('isActive', 'text')
 

@@ -16,7 +16,7 @@
         './ui/ui.CSS.js',
         './ui/ui.api.js',
         './ui/ui.Element.js',
-        './ui/ui.Error.js',
+        './ui/ui.Alert.js',
         './ui/ui.Calendar.js',
         './ui/ui.FFText.js',
         './ui/ui.FFReadOnly.js',

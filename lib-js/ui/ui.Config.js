@@ -77,10 +77,14 @@
                     btn_no: 'Нет',
                     btn_ok: 'Ок',
                     error: 'Ошибка',
+                    success: 'Успешно',
                     message: 'Сообщение',
                     question: 'Вопрос',
                     noimg: 'Картинка не найдена',
-                    required: 'Обязательное поле'
+                    required: 'Обязательное поле',
+                    requiredAlert: 'Заполните обязательные поля и повторите!',
+                    errorAjaxResponse: 'Не получен ответ от сервера',
+                    successSave: 'Данные успешно сохранены'
                 },
                 en: {
                     btn_save: 'Save',
@@ -97,10 +101,14 @@
                     btn_no: 'No',
                     btn_ok: 'Ok',
                     error: 'Error',
+                    success: 'Success',
                     message: 'Message',
                     question: 'Question',
                     noimg: 'Picture not found',
-                    required: 'Required field'
+                    required: 'Required field',
+                    requiredAlert: 'Fill in the required fields and try again!',
+                    errorAjaxResponse: 'No response from the server',
+                    successSave: 'Data saved successfully'
                 }
             }
         };

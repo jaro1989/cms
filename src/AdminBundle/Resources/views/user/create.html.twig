@@ -1,7 +1,9 @@
 {% extends 'admin/body.html.twig' %}
 
 {% block content %}
+
     <div id="page-html"></div>
+
 {% endblock %}
 
 
@@ -28,6 +30,7 @@
             save: '{{ path('_user_save') }}'
         };
 
+        var data = {{data|json_encode|raw}};
 
         // ID элемента для вставки полей
         var APPEND_ELEMENT = '#page-html';
@@ -39,16 +42,7 @@
             .setUrlActionForm(path.save)
             .setWidthCaption(6)
 
-            .setParentBlock(
-                'Информация о пользователе',
-                'id',
-                {
-                    id: 1,
-                    username: 'Киселев',
-                    is_active: 1,
-                    email: '1xvx1@mail.ru'
-                }
-            )
+            .setParentBlock('Информация о пользователе', 'id', data)
 
             .newLineParent()
             .addTextField('username', lbl._username, true)
@@ -61,7 +55,7 @@
             .addReadOnlyField(null, null, null)
 
             .newLineParent()
-            .addRadioField('is_active', lbl._active, ['Нет', 'Да'], true, 4)
+            .addRadioField('isActive', lbl._active, ['Нет', 'Да'], true, 6)
             .addReadOnlyField(null, null, null)
             .addReadOnlyField(null, null, null)
             .appendHTML(APPEND_ELEMENT);

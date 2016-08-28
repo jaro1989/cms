@@ -18,7 +18,7 @@ console.time('test');
         );
     }
 
-    new ui.Error()
+    new ui.Alert()
         .addError('asdasd!', 'asdasdasda d das asd ssads adas as s', '/sasa/asdasd')
         .appendHTML(APPEND_ELEMENT);
 

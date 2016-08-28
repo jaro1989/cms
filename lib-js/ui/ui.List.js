@@ -849,7 +849,7 @@
             .addParam('page', page)
             .addCallbackFunction(
                 function (e) {
-
+                    console.log(e);
                     try {
 
                         curObj._replaceRows(typeof e == 'object' ? e : JSON.parse(e));
@@ -887,7 +887,7 @@
                 .addParam('action', listParams._actions.search)
                 .addCallbackFunction(
                     function (e) {
-
+                        console.log(e);
                         try {
 
                             var response = typeof e == 'object' ? e : JSON.parse(e);
@@ -954,7 +954,7 @@
             .addParam('page', this._currentPage)
             .addParam('max', this._maxRow)
             .addCallbackFunction(function (e) {
-
+                console.log(e);
                 try {
 
                     var response = JSON.parse(e);

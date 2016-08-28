@@ -5,10 +5,10 @@
 
     /**
      * @memberOf ui
-     * @namespace ui.Error
+     * @namespace ui.Alert
      * @constructor
      */
-    ui.Error = function () {
+    ui.Alert = function () {
 
         this.error = [];
     };
@@ -17,9 +17,9 @@
      * @param {string|null} title
      * @param {string|null} content
      * @param {string|null} link
-     * @returns {ui.Error}
+     * @returns {ui.Alert}
      */
-    ui.Error.prototype.addError = function(title, content, link) {
+    ui.Alert.prototype.addError = function(title, content, link) {
 
         this._addParams('danger', title, content, link);
         return this;
@@ -29,9 +29,9 @@
      * @param {string|null} title
      * @param {string|null} content
      * @param {string|null} link
-     * @returns {ui.Error}
+     * @returns {ui.Alert}
      */
-    ui.Error.prototype.addInfo = function(title, content, link) {
+    ui.Alert.prototype.addInfo = function(title, content, link) {
 
         this._addParams('info', title, content, link);
         return this;
@@ -41,9 +41,9 @@
      * @param {string|null} title
      * @param {string|null} content
      * @param {string|null} link
-     * @returns {ui.Error}
+     * @returns {ui.Alert}
      */
-    ui.Error.prototype.addSuccess = function(title, content, link) {
+    ui.Alert.prototype.addSuccess = function(title, content, link) {
 
         this._addParams('success', title, content, link);
         return this;
@@ -53,9 +53,9 @@
      * @param {string|null} title
      * @param {string|null} content
      * @param {string|null} link
-     * @returns {ui.Error}
+     * @returns {ui.Alert}
      */
-    ui.Error.prototype.addWarning = function(title, content, link) {
+    ui.Alert.prototype.addWarning = function(title, content, link) {
 
         this._addParams('warning', title, content, link);
         return this;
@@ -66,9 +66,9 @@
      * @param {string|null} title
      * @param {string|null} content
      * @param {string|null} link
-     * @returns {ui.Error}
+     * @returns {ui.Alert}
      */
-    ui.Error.prototype._addParams = function(skin, title, content, link) {
+    ui.Alert.prototype._addParams = function(skin, title, content, link) {
 
         if (ui.api.empty(content, null)) {
 
@@ -90,9 +90,9 @@
      * @returns {*|Element}
      * @private
      */
-    ui.Error.prototype._buildBlockError = function(data) {
+    ui.Alert.prototype._buildBlockAlert = function(data) {
 
-        var error =  new ui.Element('div')
+        var Alert =  new ui.Element('div')
             .addClassElement(ui.CSS.alert.alert)
             .addClassElement(data.skin)
             .addChildAfter(
@@ -105,7 +105,7 @@
 
         if (data.title) {
 
-            error
+            Alert
                 .addChildAfter(
                     new ui.Element('strong')
                         .setContentElement(data.title + ' ')
@@ -117,7 +117,7 @@
 
             var tag = data.link ? 'a' : 'span';
 
-            error
+            Alert
                 .addChildAfter(
                     new ui.Element(tag)
                         .setUrlElement(data.link)
@@ -127,7 +127,7 @@
                 );
         }
 
-        return error.getElement();
+        return Alert.getElement();
     };
 
     /**
@@ -135,17 +135,17 @@
      * @returns {*|Element}
      * @private
      */
-    ui.Error.prototype._buildParentBlock = function() {
+    ui.Alert.prototype._buildParentBlock = function() {
 
-        var error =  new ui.Element('div')
+        var alert =  new ui.Element('div')
             .addClassElement('errors');
 
         for (var key in this.error) {
 
-            error.addChildBefore(this._buildBlockError(this.error[key]));
+            alert.addChildBefore(this._buildBlockAlert(this.error[key]));
         }
 
-        return error.getElement();
+        return alert.getElement();
     };
 
     /**
@@ -153,7 +153,7 @@
      * @returns {*|Element}
      * @public
      */
-    ui.Error.prototype.getElement = function() {
+    ui.Alert.prototype.getElement = function() {
 
         return this._buildParentBlock();
     };
@@ -163,7 +163,7 @@
      * @returns {string}
      * @public
      */
-    ui.Error.prototype.toHTML = function() {
+    ui.Alert.prototype.toHTML = function() {
 
         if (this.error.length > 0) {
 
@@ -176,14 +176,22 @@
     /**
      * Add element in document
      * @param {string} selector
-     * @returns {ui.Error}
+     * @param {boolean} before
+     * @returns {ui.Alert}
      * @public
      */
-    ui.Error.prototype.appendHTML = function(selector) {
+    ui.Alert.prototype.appendHTML = function(selector, before) {
 
         if (this.error.length > 0) {
 
-            new ui.dom(selector).append(this.getElement());
+            if (before) {
+
+                new ui.dom(selector).before(this.getElement());
+
+            } else {
+
+                new ui.dom(selector).append(this.getElement());
+            }
         }
 
         return this;

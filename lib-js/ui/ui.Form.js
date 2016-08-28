@@ -1148,6 +1148,7 @@
         var listParams = JSON.parse(str);
 
         var data = new ui.FormData(this._idForm, this._locale).getData();
+        var lbl = ui.Config.lbl[this._locale];
 
         if (data.error.length === 0) {
 
@@ -1156,15 +1157,42 @@
             new ui.Ajax()
                 .setUrl(listParams._urlActionForm)
                 .setParams(data['data'])
-                .addParam('action', (listParams._idRecord > 0) ? 'save' : 'edit')
+                .addParam('action', (listParams._idRecord > 0) ? 'edit' : 'save')
                 .addCallbackFunction(function (e) {
+                    try {
 
-                    e == 0 ? new ui.Modal(null, curObj._locale).error('Сохранение невозможно!') : new ui.Modal(null, curObj._locale).alert('Данные успешно сохранены!');
+                        var response = JSON.parse(e);
+
+                        if (response.record > 0) {
+
+                            listParams = response.record;
+                            dataBlock.setAttribute(DATA_JSON_FORM_PR, JSON.stringify(listParams));
+
+                            new ui.Alert()
+                                .addSuccess(lbl.success, lbl.successSave, null)
+                                .appendHTML('#' + curObj._idForm, true);
+
+                        } else if ('error' in response) {
+
+                            new ui.Alert()
+                                .addError(lbl.error, response.error, null)
+                                .appendHTML('#' + curObj._idForm, true);
+                        }
+
+                    } catch (e) {
+
+                        new ui.Alert()
+                            .addError(lbl.error, lbl.errorAjaxResponse, null)
+                            .appendHTML('#' + curObj._idForm, true);
+
+                    }
                 })
                 .send();
         } else {
 
-            new ui.Modal(null, this._locale).error('Заполните обязательные поля и повторите!');
+            new ui.Alert()
+                .addError(lbl.error, lbl.requiredAlert, null)
+                .appendHTML('#' + this._idForm, true);
         }
 
         return true;
@@ -1191,7 +1219,7 @@
                 .addParam('action', listParams._actions.removeParent)
                 .addCallbackFunction(
                     function (e) {
-
+                        console.log(e);
                         e == 0 ? new ui.Modal(null, curObj._locale).error('Удаление невозможно!') : ui.api.reload(null);
                     }
                 )

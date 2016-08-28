@@ -4,8 +4,8 @@ _admin:
     defaults:  { _controller: AdminBundle:Main:index }
 
 _user_create:
-    path: /create/user
-    defaults:  { _controller: AdminBundle:User:create }
+    path: /create/user/{record}
+    defaults:  { _controller: AdminBundle:User:create, record: 0 }
 
 _user_list:
     path: /list/user
