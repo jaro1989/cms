@@ -10,7 +10,11 @@ namespace AdminBundle\Entity;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
-
+    /**
+     * @param int $record
+     * @return array|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findOneUser($record)
     {
         return $this->getEntityManager()
@@ -27,24 +31,32 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findUniqueUser($username, $email, $record)
+    /**
+     * @param string $username
+     * @param int $record
+     * @return array|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findUniqueUser($username, $record)
     {
         return $this->getEntityManager()
             ->createQuery("
                 SELECT 1
                   FROM AdminBundle:User u
                  WHERE u.username = :username
-                   AND u.email = :email
                    AND u.id != :id
             ")
             ->setParameter('username', $username)
-            ->setParameter('email', $email)
             ->setParameter('id', $record)
             ->setMaxResults(1)
             ->getOneOrNullResult();
     }
 
-    public function findListUser()
+    /**
+     * @param int $deleted
+     * @return array
+     */
+    public function findListUser($deleted = 0)
     {
         return $this->getEntityManager()
             ->createQuery("
@@ -53,7 +65,9 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                        u.email,
                        u.isActive
                   FROM AdminBundle:User u
+                 WHERE u.deleted = :deleted
             ")
+            ->setParameter('deleted', $deleted)
             ->getResult();
     }
 }

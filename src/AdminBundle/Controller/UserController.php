@@ -13,6 +13,11 @@ class UserController extends Controller
 {
     protected $repository = 'AdminBundle:User';
 
+    /**
+     * @param Request $request
+     * @param int $record
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function createAction(Request $request, $record)
     {
         $em = $this->getDoctrine()->getManager();
@@ -25,6 +30,10 @@ class UserController extends Controller
         );
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function listAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -37,6 +46,10 @@ class UserController extends Controller
         );
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function trashAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -44,11 +57,16 @@ class UserController extends Controller
         return $this->render(
             'AdminBundle:user:trash.html.twig',
             [
-                'data' => $em->getRepository($this->repository)->findListUser()
+                'data' => $em->getRepository($this->repository)->findListUser(1)
             ]
         );
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public function deleteAction(Request $request)
     {
         $response = new JsonResponse();
@@ -60,6 +78,11 @@ class UserController extends Controller
         var_dump('delete');
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public function saveAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -68,13 +91,12 @@ class UserController extends Controller
 
         $res = [];
 
-        $unique = $em->getRepository($this->repository)->findUniqueUser($data->get('username'), $data->get('email'), $data->get('id'));
+        $unique = $em->getRepository($this->repository)->findUniqueUser($data->get('username'), $data->get('id'));
 
         if (empty($unique)) {
 
             $user = $em->getRepository('AdminBundle:User')
                 ->find($data->get('id'));
-
 
             !$user ? $user = new User() : null;
 
@@ -97,7 +119,7 @@ class UserController extends Controller
             }
         } else {
 
-            $res['error'] = 'В системе пользователь с такими данными уже существует';
+            $res['error'] = 'Имя пользователя: "' . $data->get('username') . '" существует!';
         }
 
         return $response->setData($res);

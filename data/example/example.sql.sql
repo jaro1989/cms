@@ -1,0 +1,4 @@
+
+ALTER TABLE app_user DROP INDEX UNIQ_88BDF3E9F85E0677;
+
+ALTER TABLE app_user ADD CONSTRAINT UNIQ_username_email UNIQUE (username,email)

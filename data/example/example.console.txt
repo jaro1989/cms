@@ -1,0 +1,15 @@
+
+# CREATE DB
+php bin/console doctrine:database:create
+
+# generates entity
+php bin/console doctrine:generate:entities AppBundle/Entity/Product
+
+# generates entities in bundle the AppBundle
+php bin/console doctrine:generate:entities AppBundle
+
+# generates all entities of bundles in the Acme namespace
+$ php bin/console doctrine:generate:entities Acme
+
+# Creating the Database Tables/Schema
+php bin/console doctrine:schema:update --force

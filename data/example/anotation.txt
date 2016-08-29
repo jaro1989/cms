@@ -1,0 +1,5 @@
+
+@ORM\Table(name="app_user",uniqueConstraints={
+     @ORM\UniqueConstraint(name="unique_app_user", columns={"username", "email"})})
+
+@ORM\Column(type="string", length=25, unique=true)
