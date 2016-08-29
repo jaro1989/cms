@@ -84,7 +84,9 @@
                     required: 'Обязательное поле',
                     requiredAlert: 'Заполните обязательные поля и повторите!',
                     errorAjaxResponse: 'Не получен ответ от сервера',
-                    successSave: 'Данные успешно сохранены'
+                    successSave: 'Данные успешно сохранены',
+                    removingError: 'Удаление невозможно',
+                    removingSuccess: 'Данные успешно удалены'
                 },
                 en: {
                     btn_save: 'Save',
@@ -108,7 +110,9 @@
                     required: 'Required field',
                     requiredAlert: 'Fill in the required fields and try again!',
                     errorAjaxResponse: 'No response from the server',
-                    successSave: 'Data saved successfully'
+                    successSave: 'Data saved successfully',
+                    removingError: 'Deleting can not be',
+                    removingSuccess: 'Data successfully removed'
                 }
             }
         };

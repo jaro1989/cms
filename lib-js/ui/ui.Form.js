@@ -526,6 +526,7 @@
         this._locale = ui.api.empty(locale, ui.Config.lbl[ui.Config.locale]);
         this._lbl = ui.api.existProperty(ui.Config.lbl, this._locale, ui.Config.lbl[ui.Config.locale]);
         this._alertBlockId = 'alert-' + this._idForm;
+        this._debug = false;
     };
 
     ui.Form.prototype = Object.create(ui.HtmlFields.prototype);
@@ -538,6 +539,15 @@
      */
     ui.Form.prototype.setSkin = function(skin) {
         this._skinPanel = skin;
+        return this;
+    };
+
+    /**
+     * @param {boolean} debug
+     * @returns {ui.Form}
+     */
+    ui.Form.prototype.setDebug = function(debug) {
+        this._debug = ui.api.empty(debug, true);
         return this;
     };
 
@@ -696,6 +706,7 @@
             _urlDel: this._urlDel,
             _fieldRecordForm: this._fieldRecordForm,
             _idRecord: ui.api.existProperty(this._parentValues, this._fieldRecordForm, null),
+            _debug: this._debug,
             _actions: {
                 removeParent: this._actions.removeParent
             }
@@ -721,6 +732,7 @@
             _fieldRecordForm: data['record_field'],
             _idRecord:    data['record'],
             _idForm: this._idForm,
+            _debug: this._debug,
             _actions: {
                 removeChildren: this._actions.removeChildren
             }
@@ -1154,6 +1166,7 @@
         if (data.error.length === 0) {
 
             var curObj = this;
+            listParams._debug ? console.log(listParams, data) : null;
 
             new ui.Ajax()
                 .setUrl(listParams._urlActionForm)
@@ -1161,7 +1174,9 @@
                 .addParam(listParams._fieldRecordForm, listParams._idRecord)
                 .addParam('action', (listParams._idRecord > 0) ? 'edit' : 'save')
                 .addCallbackFunction(function (e) {
-                    console.log(e);
+
+                    listParams._debug ? console.log(e) : null;
+
                     try {
                         var response = JSON.parse(e);
 
@@ -1211,18 +1226,31 @@
 
         if (listParams._idRecord != '' &&  listParams._urlDel != '' && listParams._fieldRecordForm != '') {
 
-            var obj = {};
-            obj[listParams._fieldRecordForm] = listParams._idRecord;
+            var lbl = ui.api.existProperty(ui.Config.lbl, this._locale, ui.Config.locale);
+            var record = {record: listParams._idRecord};
             var curObj = this;
+
+            listParams._debug ? console.log(listParams, record) : null;
 
             new ui.Ajax()
                 .setUrl(listParams._urlDel)
-                .setParams(obj)
+                .setParams(record)
                 .addParam('action', listParams._actions.removeParent)
                 .addCallbackFunction(
                     function (e) {
-                        console.log(e);
-                        e == 0 ? new ui.Modal(null, curObj._locale).error('Удаление невозможно!') : ui.api.reload(null);
+
+                        listParams._debug ? console.log(e) : null;
+
+                        if (e == 0) {
+
+                            new ui.Alert(curObj._alertBlockId)
+                                .addError(lbl.error, lbl.removingError, null)
+                                .appendHTML('#' + curObj._idForm, true);
+
+                        } else {
+
+                            //ui.api.reload(null);
+                        }
                     }
                 )
                 .send();
@@ -1251,6 +1279,7 @@
             var data = {};
             data[listParams._fieldRecordForm] = listParams._idRecord;
             data['object'] = listParams._objectName;
+            listParams._debug ? console.log(listParams, data) : null;
 
             new ui.Ajax()
                 .setUrl(listParamsParent._urlDel)
@@ -1258,7 +1287,7 @@
                 .addParam('action', listParams._actions.removeChildren)
                 .addCallbackFunction(function (e) {
 
-                    console.log(e);
+                    listParams._debug ? console.log(e) : null;
                 })
                 .send();
         } catch (e) {
