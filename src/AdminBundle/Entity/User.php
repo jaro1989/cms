@@ -55,6 +55,12 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $updated_at;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Role")
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="id", nullable=false)
+     */
+    private $role_id;
+
     public function __construct()
     {
         $this->isActive = true;
@@ -299,5 +305,29 @@ class User implements AdvancedUserInterface, \Serializable
     public function preUpdate()
     {
         $this->updated_at = new \DateTime();
+    }
+
+    /**
+     * Set roleId
+     *
+     * @param \AdminBundle\Entity\Role $roleId
+     *
+     * @return User
+     */
+    public function setRoleId(\AdminBundle\Entity\Role $roleId)
+    {
+        $this->role_id = $roleId;
+
+        return $this;
+    }
+
+    /**
+     * Get roleId
+     *
+     * @return \AdminBundle\Entity\Role
+     */
+    public function getRoleId()
+    {
+        return $this->role_id;
     }
 }

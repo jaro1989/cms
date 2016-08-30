@@ -106,7 +106,8 @@ class UserController extends Controller
                 ->setUsername($data->get('username'))
                 ->setEmail($data->get('email'))
                 ->setIsActive($data->get('isActive'))
-                ->setPassword($data->get('password'));
+                ->setPassword($data->get('password'))
+                ->setRoleId($data->get('role_id'));
 
             try {
 

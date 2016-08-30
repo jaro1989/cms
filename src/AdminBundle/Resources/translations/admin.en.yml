@@ -4,6 +4,7 @@ _PASSWORD: 'Password'
 _EMAIL: 'E-mail'
 _CONFIRM_PASSWORD: 'Confirm password'
 _ACTIVE: 'Active'
+_ROLE: 'Role'
 
 # Buttons
 _LOGIN: 'Log-in'

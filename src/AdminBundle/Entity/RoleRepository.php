@@ -15,7 +15,7 @@ class RoleRepository extends \Doctrine\ORM\EntityRepository
      */
     public function findNamesRole()
     {
-        return $this->getEntityManager()
+        $arr =  $this->getEntityManager()
             ->createQuery("
                 SELECT r.id,
                        r.name
@@ -24,5 +24,17 @@ class RoleRepository extends \Doctrine\ORM\EntityRepository
             ")
             ->setParameter('deleted', 0)
             ->getResult();
+
+        $result = [];
+
+        if (!empty($arr)) {
+
+            foreach ($arr as $val) {
+
+                $result[$val['id']] = $val['name'];
+            }
+        }
+
+        return $result;
     }
 }

@@ -4,6 +4,7 @@ _PASSWORD: 'Пароль'
 _EMAIL: 'E-mail'
 _CONFIRM_PASSWORD: 'Подтвердите пароль'
 _ACTIVE: 'Активный'
+_ROLE: 'Роль'
 
 # Buttons
 _LOGIN: 'Вход'
