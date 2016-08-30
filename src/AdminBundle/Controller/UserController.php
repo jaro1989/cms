@@ -3,6 +3,7 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\User;
+use AdminBundle\Entity\Role;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +26,8 @@ class UserController extends Controller
         return $this->render(
             'AdminBundle:user:create.html.twig',
             [
-                'data' => $em->getRepository($this->repository)->findOneUser($record)
+                'data' => $em->getRepository($this->repository)->findOneUser($record),
+                'roles' => $em->getRepository('AdminBundle:Role')->findNamesRole()
             ]
         );
     }

@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 /**
  * @ORM\Entity(repositoryClass="AdminBundle\Entity\UserRepository")
  * @ORM\Table(name="app_user")
+ * @ORM\HasLifecycleCallbacks
  */
 class User implements AdvancedUserInterface, \Serializable
 {
@@ -38,9 +39,9 @@ class User implements AdvancedUserInterface, \Serializable
     private $isActive;
 
     /**
-     * @ORM\Column(name="deleted", type="boolean")
+     * @ORM\Column(name="deleted", type="boolean", options={"default":0})
      */
-    private $deleted;
+    private $deleted = 0;
 
     /**
      * @var \DateTime
@@ -218,7 +219,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return User
      */
-    public function setDeleted($deleted)
+    public function setDeleted($deleted = 0)
     {
         $this->deleted = $deleted;
 
@@ -289,10 +290,10 @@ class User implements AdvancedUserInterface, \Serializable
     public function prePersist()
     {
         $this->created_at = new \DateTime();
-        $this->updated_at = new \DateTime();
     }
 
     /**
+     * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
     public function preUpdate()

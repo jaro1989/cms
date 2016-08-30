@@ -21,7 +21,8 @@
             _username:  '{{ '_USERNAME'|trans({}, 'admin') }}',
             _password:  '{{ '_PASSWORD'|trans({}, 'admin') }}',
             _active:    '{{ '_ACTIVE'|trans({}, 'admin') }}',
-            _email:     '{{ '_EMAIL'|trans({}, 'admin') }}'
+            _email:     '{{ '_EMAIL'|trans({}, 'admin') }}',
+            _role:      '{{ '_ROLE'|trans({}, 'admin') }}'
         };
 
         var path = {
@@ -31,6 +32,7 @@
         };
 
         var data = {{data|json_encode|raw}};
+        var roles = {{roles|json_encode|raw}};
 
         // ID элемента для вставки полей
         var APPEND_ELEMENT = '#page-html';
@@ -55,6 +57,7 @@
             .addReadOnlyField(null, null, null)
 
             .newLineParent()
+            .addSelectField('role', lbl._role, roles, true)
             .addRadioField('isActive', lbl._active, ['Нет', 'Да'], true, 6)
             .addReadOnlyField(null, null, null)
             .addReadOnlyField(null, null, null)
