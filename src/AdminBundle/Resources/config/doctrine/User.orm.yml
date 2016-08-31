@@ -1,0 +1,38 @@
+AdminBundle\Entity\User:
+    repositoryClass: AdminBundle\Entity\UserRepository
+    type: entity
+    table: app_user
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        username:
+            type: string
+            length: 25
+            unique: true
+        password:
+            type: string
+            length: 64
+        email:
+            type: string
+            length: 60
+        isActive:
+            type: boolean
+            name: is_active
+        deleted:
+            type: boolean
+            options:
+                default: 0
+        created_at:
+            type: datetime
+            nullable: false
+        updated_at:
+            type: datetime
+            nullable: false
+    manyToOne:
+        role:
+            targetEntity: Role
+            joinColumn:
+                name: role_id
+                referencedColumnName: id

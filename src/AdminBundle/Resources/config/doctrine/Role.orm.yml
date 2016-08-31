@@ -1,0 +1,27 @@
+AdminBundle\Entity\Role:
+    repositoryClass: AdminBundle\Entity\RoleRepository
+    type: entity
+    table: app_role
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        role:
+            type: string
+            length: 50
+            unique: true
+        name:
+            type: string
+            length: 50
+            unique: true
+        deleted:
+            type: boolean
+            options:
+                default: 0
+        created_at:
+            type: datetime
+            nullable: false
+        updated_at:
+            type: datetime
+            nullable: false

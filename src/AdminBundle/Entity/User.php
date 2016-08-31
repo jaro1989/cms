@@ -1,68 +1,62 @@
 <?php
 namespace AdminBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="AdminBundle\Entity\UserRepository")
- * @ORM\Table(name="app_user")
- * @ORM\HasLifecycleCallbacks
+ *
  */
 class User implements AdvancedUserInterface, \Serializable
 {
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @var string
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=64)
+     * @var string
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @var string
      */
     private $email;
 
     /**
-     * @ORM\Column(name="is_active", type="boolean")
+     * @var bool
      */
     private $isActive;
 
     /**
-     * @ORM\Column(name="deleted", type="boolean", options={"default":0})
+     * @var int
      */
     private $deleted = 0;
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $created_at;
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
     private $updated_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Role")
-     * @ORM\JoinColumn(name="role_id", referencedColumnName="id", nullable=false)
+     * @var int
      */
-    private $role_id;
+    private $role;
 
     public function __construct()
     {
+        $this->role = new ArrayCollection();
         $this->isActive = true;
     }
 
@@ -110,7 +104,6 @@ class User implements AdvancedUserInterface, \Serializable
     {
     }
 
-    /** @see \Serializable::serialize() */
     public function serialize()
     {
         return serialize(array(
@@ -121,7 +114,6 @@ class User implements AdvancedUserInterface, \Serializable
         ));
     }
 
-    /** @see \Serializable::unserialize() */
     public function unserialize($serialized)
     {
         list (
@@ -290,44 +282,37 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->updated_at;
     }
 
-    /**
-     * @ORM\PrePersist()
-     */
     public function prePersist()
     {
         $this->created_at = new \DateTime();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
     public function preUpdate()
     {
         $this->updated_at = new \DateTime();
     }
 
     /**
-     * Set roleId
+     * Set role
      *
-     * @param \AdminBundle\Entity\Role $roleId
+     * @param \AdminBundle\Entity\Role $role
      *
      * @return User
      */
-    public function setRoleId(\AdminBundle\Entity\Role $roleId)
+    public function setRole(\AdminBundle\Entity\Role $role = null)
     {
-        $this->role_id = $roleId;
+        $this->role = $role;
 
         return $this;
     }
 
     /**
-     * Get roleId
+     * Get role
      *
      * @return \AdminBundle\Entity\Role
      */
-    public function getRoleId()
+    public function getRole()
     {
-        return $this->role_id;
+        return $this->role;
     }
 }

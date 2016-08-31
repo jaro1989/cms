@@ -2,50 +2,39 @@
 namespace AdminBundle\Entity;
 
 use Symfony\Component\Security\Core\Role\RoleInterface;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AdminBundle\Entity\RoleRepository")
- * @ORM\Table(name="app_role")
- * @ORM\HasLifecycleCallbacks
+ *
  */
 class Role implements RoleInterface
 {
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     *
      * @var integer $id
      */
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
      * @var string $role
      */
     protected $role;
 
     /**
-     * @ORM\Column(type="string", length=50)
      * @var string $name
      */
     protected $name;
 
     /**
-     * @ORM\Column(name="deleted", type="boolean", options={"default":0})
+     * @var int
      */
     private $deleted = 0;
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $created_at;
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
     private $updated_at;
 
@@ -90,7 +79,6 @@ class Role implements RoleInterface
     }
 
     /**
-     * @ORM\PrePersist()
      */
     public function prePersist()
     {
@@ -98,8 +86,6 @@ class Role implements RoleInterface
     }
 
     /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
      */
     public function preUpdate()
     {

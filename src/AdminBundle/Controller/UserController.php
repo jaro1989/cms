@@ -90,39 +90,50 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $response = new JsonResponse();
         $data = $request->request;
-
         $res = [];
+//        $unique = $em->getRepository($this->repository)->findUniqueUser($data->get('username'), $data->get('id'));
 
-        $unique = $em->getRepository($this->repository)->findUniqueUser($data->get('username'), $data->get('id'));
+        $user = $em->getRepository('AdminBundle:User')
+            ->find($data->get('id'));
 
-        if (empty($unique)) {
+        !$user ? $user = new User() : null;
 
-            $user = $em->getRepository('AdminBundle:User')
-                ->find($data->get('id'));
+        $role = $em->getRepository('AdminBundle:Role')
+            ->find($data->get('role_id'));
 
-            !$user ? $user = new User() : null;
+        $user
+            ->setUsername($data->get('username'))
+            ->setEmail($data->get('email'))
+            ->setIsActive($data->get('isActive'))
+            ->setPassword($data->get('password'))
+            ->setRole($role);
 
-            $user
-                ->setUsername($data->get('username'))
-                ->setEmail($data->get('email'))
-                ->setIsActive($data->get('isActive'))
-                ->setPassword($data->get('password'))
-                ->setRoleId($data->get('role_id'));
+        $validator = $this->get('validator');
+        $errors = $validator->validate($user);
 
-            try {
+        if ($errors->count() > 0) {
 
-                $em->persist($user);
-                $em->flush();
+            $error = '';
 
-                $res['record'] = $user->getId();
+            for ($i = 0; $i < $errors->count(); $i++) {
 
-            } catch (\Exception $e) {
-
-                $res['error'] = $e->getMessage();
+                $property = $errors->get($i)->getPropertyPath();
+                $error .= $property . ': ' . $errors->get($i)->getMessage() . "\n";
             }
-        } else {
 
-            $res['error'] = 'Имя пользователя: "' . $data->get('username') . '" существует!';
+            return $response->setData(['error' => $error]);
+        }
+
+        try {
+
+            $em->persist($user);
+            $em->flush();
+
+            $res['record'] = $user->getId();
+
+        } catch (\Exception $e) {
+
+            $res['error'] = $e->getMessage();
         }
 
         return $response->setData($res);
