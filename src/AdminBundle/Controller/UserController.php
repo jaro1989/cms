@@ -91,7 +91,9 @@ class UserController extends Controller
         $response = new JsonResponse();
         $data = $request->request;
         $res = [];
-//        $unique = $em->getRepository($this->repository)->findUniqueUser($data->get('username'), $data->get('id'));
+
+//        $unique = $em->getRepository($this->repository)
+//            ->findUniqueUser($data->get('username'), $data->get('id'));
 
         $user = $em->getRepository('AdminBundle:User')
             ->find($data->get('id'));

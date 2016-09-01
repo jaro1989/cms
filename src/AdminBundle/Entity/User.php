@@ -282,11 +282,17 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->updated_at;
     }
 
+    /**
+     * lifecycleCallbacks
+     */
     public function prePersist()
     {
         $this->created_at = new \DateTime();
     }
 
+    /**
+     * lifecycleCallbacks
+     */
     public function preUpdate()
     {
         $this->updated_at = new \DateTime();

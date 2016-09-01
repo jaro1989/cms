@@ -1,4 +1,6 @@
 AdminBundle\Entity\User:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username
     properties:
         username:
             - NotBlank: ~

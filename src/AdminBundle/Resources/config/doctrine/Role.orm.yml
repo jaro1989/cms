@@ -25,3 +25,6 @@ AdminBundle\Entity\Role:
         updated_at:
             type: datetime
             nullable: false
+    lifecycleCallbacks:
+        prePersist: [prePersist, preUpdate]
+        preUpdate: [preUpdate]

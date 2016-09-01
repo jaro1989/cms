@@ -79,6 +79,7 @@ class Role implements RoleInterface
     }
 
     /**
+     * lifecycleCallbacks
      */
     public function prePersist()
     {
@@ -86,6 +87,7 @@ class Role implements RoleInterface
     }
 
     /**
+     * lifecycleCallbacks
      */
     public function preUpdate()
     {

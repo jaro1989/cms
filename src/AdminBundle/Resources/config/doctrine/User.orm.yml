@@ -36,3 +36,6 @@ AdminBundle\Entity\User:
             joinColumn:
                 name: role_id
                 referencedColumnName: id
+    lifecycleCallbacks:
+        prePersist: [prePersist, preUpdate]
+        preUpdate: [preUpdate]
