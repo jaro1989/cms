@@ -1,8 +1,12 @@
 app:
     resource: '@AdminBundle/Resources/config/routing.yml'
-    prefix:   /{_locale}/admin
+    prefix:   /admin/{_locale}
     requirements:
         _locale: '%app.locales%'
+
+_security_login:
+    path: /login
+    defaults:  { _controller: AdminBundle:Security:login }
 
 _logout:
     path: /logout

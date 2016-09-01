@@ -92,9 +92,6 @@ class UserController extends Controller
         $data = $request->request;
         $res = [];
 
-//        $unique = $em->getRepository($this->repository)
-//            ->findUniqueUser($data->get('username'), $data->get('id'));
-
         $user = $em->getRepository('AdminBundle:User')
             ->find($data->get('id'));
 
@@ -103,12 +100,17 @@ class UserController extends Controller
         $role = $em->getRepository('AdminBundle:Role')
             ->find($data->get('role_id'));
 
+        $encoder = $this->container->get('security.password_encoder');
+
         $user
             ->setUsername($data->get('username'))
             ->setEmail($data->get('email'))
             ->setIsActive($data->get('isActive'))
+//            ->setPassword($encoder->encodePassword($user, $data->get('password')))
             ->setPassword($data->get('password'))
+            ->setConfirmPassword($data->get('confirmPassword'))
             ->setRole($role);
+
 
         $validator = $this->get('validator');
         $errors = $validator->validate($user);

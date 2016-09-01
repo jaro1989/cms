@@ -27,6 +27,11 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var string
      */
+    private $confirmPassword;
+
+    /**
+     * @var string
+     */
     private $email;
 
     /**
@@ -95,6 +100,11 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->password;
     }
 
+    public function getConfirmPassword()
+    {
+        return $this->confirmPassword;
+    }
+
     public function getRoles()
     {
         return array('ROLE_ADMIN');
@@ -158,6 +168,20 @@ class User implements AdvancedUserInterface, \Serializable
     public function setPassword($password)
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Set confirm password
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setConfirmPassword($password)
+    {
+        $this->confirmPassword = $password;
 
         return $this;
     }
@@ -320,5 +344,15 @@ class User implements AdvancedUserInterface, \Serializable
     public function getRole()
     {
         return $this->role;
+    }
+
+    public function isPasswordLegal()
+    {
+        return $this->username !== $this->password;
+    }
+
+    public function isPasswordConfirm()
+    {
+        return $this->password === $this->confirmPassword;
     }
 }

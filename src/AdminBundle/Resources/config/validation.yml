@@ -1,6 +1,11 @@
 AdminBundle\Entity\User:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username
+    getters:
+        passwordLegal:
+            - 'IsTrue': { message: 'The password cannot match your first name.' }
+        passwordConfirm:
+            - 'IsTrue': { message: 'Passwords are not the same.' }
     properties:
         username:
             - NotBlank: ~

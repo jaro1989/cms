@@ -26,8 +26,8 @@
         };
 
         var path = {
-            list:   '{{ path('_user_list') }}',
-            del:    '{{ path('_user_delete') }}',
+            list: '{{ path('_user_list') }}',
+            del:  '{{ path('_user_delete') }}',
             save: '{{ path('_user_save') }}'
         };
 
@@ -42,24 +42,21 @@
             .setUrtDel(path.del)
             .setUrtList(path.list)
             .setUrlActionForm(path.save)
-            .setWidthCaption(6)
+            .setWidthCaption(4)
 
             .setParentBlock('Информация о пользователе', 'id', data)
 
             .newLineParent()
             .addTextField('username', lbl._username, true)
             .addTextField('email', lbl._email)
-            .addReadOnlyField(null, null, null)
 
             .newLineParent()
             .addPasswordField('password', lbl._password, true)
-            .addPasswordField('confirm', lbl._confirm, true)
-            .addReadOnlyField(null, null, null)
+            .addPasswordField('confirmPassword', lbl._confirm, true)
 
             .newLineParent()
             .addSelectField('role_id', lbl._role, roles, true)
-            .addRadioField('isActive', lbl._active, ['Нет', 'Да'], true, 6)
-            .addReadOnlyField(null, null, null)
+            .addRadioField('isActive', lbl._active, ['Нет', 'Да'], true, 3)
             .setDebug(true)
 
             .appendHTML(APPEND_ELEMENT);

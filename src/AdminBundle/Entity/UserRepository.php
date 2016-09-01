@@ -32,27 +32,6 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param string $username
-     * @param int $record
-     * @return array|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function findUniqueUser($username, $record)
-    {
-        return $this->getEntityManager()
-            ->createQuery("
-                SELECT 1
-                  FROM AdminBundle:User u
-                 WHERE u.username = :username
-                   AND u.id != :id
-            ")
-            ->setParameter('username', $username)
-            ->setParameter('id', $record)
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
-    }
-
-    /**
      * @param int $deleted
      * @return array
      */

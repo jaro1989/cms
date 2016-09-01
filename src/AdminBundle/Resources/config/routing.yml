@@ -22,7 +22,3 @@ _user_delete:
 _user_save:
     path: /save/user
     defaults:  { _controller: AdminBundle:User:save }
-
-_security_login:
-    path: /login
-    defaults:  { _controller: AdminBundle:Security:login }
