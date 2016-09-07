@@ -25,7 +25,7 @@
         _method: ui.Config.defaultMethodAjax,
         _async: true,
 
-        _skinProgress: 'warning',
+        _skinProgress: 'info',
 
         /**
          * @param {string} skin {'success' | 'info' | 'warning' | 'danger'}

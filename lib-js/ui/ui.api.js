@@ -9,7 +9,7 @@
      */
     ui.dom = function (selector) {
 
-        this.elements  = document.body.querySelectorAll(selector);
+        this.elements  = document.querySelectorAll(selector);
     };
 
     /** @protected */

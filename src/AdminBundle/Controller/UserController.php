@@ -107,6 +107,7 @@ class UserController extends Controller
             ->setEmail($data->get('email'))
             ->setIsActive($data->get('isActive'))
 //            ->setPassword($encoder->encodePassword($user, $data->get('password')))
+//            ->setConfirmPassword($encoder->encodePassword($user, $data->get('confirmPassword')))
             ->setPassword($data->get('password'))
             ->setConfirmPassword($data->get('confirmPassword'))
             ->setRole($role);

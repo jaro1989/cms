@@ -30,6 +30,9 @@ AdminBundle\Entity\User:
         updated_at:
             type: datetime
             nullable: false
+        salt:
+            type: string
+            length: 40
     manyToOne:
         role:
             targetEntity: Role

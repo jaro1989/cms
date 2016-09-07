@@ -52,12 +52,12 @@
 
             return new ui.Element('div')
                 .addStyleElement('display', 'block')
-                .addStyleElement('paddingTop', '50px')
+                //.addStyleElement('paddingTop', '50px')
                 .addClassElement(ui.CSS.modal.modal)
                 .setIdElement(this._id, null)
                 .addChildAfter(
                     new ui.Element('div')
-                        .addStyleElement('height', '5px')
+                        .addStyleElement('height', '3px')
                         .addClassElement(ui.CSS.progress.progress)
                         .addClassElement(ui.CSS.progress.striped)
                         .addClassElement(ui.CSS.progress.active)
@@ -65,11 +65,10 @@
                             new ui.Element('div')
                                 .addClassElement(ui.CSS.progress.bar)
                                 .addClassElement(this._skin)
-                                .addStyleElement('width', '1%')
+                                .addStyleElement('width', '100%')
                                 .getElement()
                         )
                         .getElement()
-
                 )
                 .getElement();
         },
@@ -105,6 +104,7 @@
             var progress = document.getElementById(ui.api.empty(idProgress, this._id));
 
             if (progress) {
+
                 progress.remove();
             }
 

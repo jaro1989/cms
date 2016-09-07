@@ -55,6 +55,11 @@ class User implements AdvancedUserInterface, \Serializable
     private $updated_at;
 
     /**
+     * @var string
+     */
+    private $salt;
+
+    /**
      * @var int
      */
     private $role;
@@ -63,6 +68,7 @@ class User implements AdvancedUserInterface, \Serializable
     {
         $this->role = new ArrayCollection();
         $this->isActive = true;
+        $this->salt = md5(uniqid(null, true));
     }
 
     public function isAccountNonExpired()
@@ -92,7 +98,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     public function getSalt()
     {
-        return null;
+        return $this->salt;
     }
 
     public function getPassword()
@@ -120,7 +126,8 @@ class User implements AdvancedUserInterface, \Serializable
             $this->id,
             $this->username,
             $this->password,
-            $this->isActive
+            $this->isActive,
+            $this->salt,
         ));
     }
 
@@ -130,7 +137,8 @@ class User implements AdvancedUserInterface, \Serializable
             $this->id,
             $this->username,
             $this->password,
-            $this->isActive
+            $this->isActive,
+            $this->salt,
             ) = unserialize($serialized);
     }
 
@@ -348,11 +356,25 @@ class User implements AdvancedUserInterface, \Serializable
 
     public function isPasswordLegal()
     {
-        return $this->username !== $this->password;
+        return $this->username != $this->password;
     }
 
     public function isPasswordConfirm()
     {
-        return $this->password === $this->confirmPassword;
+        return $this->password == $this->confirmPassword;
+    }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     *
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
     }
 }

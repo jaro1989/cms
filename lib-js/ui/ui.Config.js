@@ -56,7 +56,7 @@
             defaultMethodForm: 'POST',
             defaultMethodAjax: 'POST',
 
-            skinProgress: 'success',
+            skinProgress: 'info',
 
             noimg: 'images/no-image.png',
             locale: 'ru',
