@@ -9,9 +9,7 @@ security:
                 class: AdminBundle:User
                 property: username
     encoders:
-        AdminBundle\Entity\User:
-            algorithm: bcrypt
-            cost:      15
+        AdminBundle\Entity\User: sha512
 
     firewalls:
         dev:

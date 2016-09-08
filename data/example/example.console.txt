@@ -13,3 +13,6 @@ $ php bin/console doctrine:generate:entities Acme
 
 # Creating the Database Tables/Schema
 php bin/console doctrine:schema:update --force
+
+# Clear cache
+php bin/console cache:clear -e prod

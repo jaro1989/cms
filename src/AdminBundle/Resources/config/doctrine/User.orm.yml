@@ -13,7 +13,7 @@ AdminBundle\Entity\User:
             unique: true
         password:
             type: string
-            length: 64
+            length: 255
         email:
             type: string
             length: 60
@@ -30,9 +30,6 @@ AdminBundle\Entity\User:
         updated_at:
             type: datetime
             nullable: false
-        salt:
-            type: string
-            length: 40
     manyToOne:
         role:
             targetEntity: Role

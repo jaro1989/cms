@@ -5,7 +5,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
- *
+ * Class User
+ * @package AdminBundle\Entity
  */
 class User implements AdvancedUserInterface, \Serializable
 {
@@ -28,6 +29,11 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      */
     private $confirmPassword;
+
+    /**
+     * @var string
+     */
+    private $originPassword;
 
     /**
      * @var string
@@ -55,96 +61,115 @@ class User implements AdvancedUserInterface, \Serializable
     private $updated_at;
 
     /**
-     * @var string
-     */
-    private $salt;
-
-    /**
      * @var int
      */
     private $role;
 
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
         $this->role = new ArrayCollection();
         $this->isActive = true;
-        $this->salt = md5(uniqid(null, true));
     }
 
+    /**
+     * @return bool
+     */
     public function isAccountNonExpired()
     {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function isAccountNonLocked()
     {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function isCredentialsNonExpired()
     {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function isEnabled()
     {
         return $this->isActive;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername()
     {
         return $this->username;
     }
 
+    /**
+     * @return null
+     */
     public function getSalt()
     {
-        return $this->salt;
+        return null;
     }
 
+    /**
+     * @return string
+     */
     public function getPassword()
     {
         return $this->password;
     }
 
-    public function getConfirmPassword()
-    {
-        return $this->confirmPassword;
-    }
-
+    /**
+     * @return array
+     */
     public function getRoles()
     {
-        return array('ROLE_ADMIN');
+        return ['ROLE_ADMIN'];
     }
 
     public function eraseCredentials()
     {
     }
 
+    /**
+     * @return string
+     */
     public function serialize()
     {
         return serialize(array(
             $this->id,
             $this->username,
             $this->password,
-            $this->isActive,
-            $this->salt,
+            $this->isActive
         ));
     }
 
+    /**
+     * @param string $serialized
+     */
     public function unserialize($serialized)
     {
         list (
             $this->id,
             $this->username,
             $this->password,
-            $this->isActive,
-            $this->salt,
+            $this->isActive
             ) = unserialize($serialized);
     }
 
     /**
      * Get id
-     *
      * @return integer
      */
     public function getId()
@@ -154,63 +179,61 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * Set username
-     *
      * @param string $username
-     *
      * @return User
      */
     public function setUsername($username)
     {
         $this->username = $username;
-
         return $this;
     }
 
     /**
      * Set password
-     *
      * @param string $password
-     *
      * @return User
      */
     public function setPassword($password)
     {
         $this->password = $password;
-
         return $this;
     }
 
     /**
      * Set confirm password
-     *
      * @param string $password
-     *
      * @return User
      */
     public function setConfirmPassword($password)
     {
         $this->confirmPassword = $password;
+        return $this;
+    }
 
+    /**
+     * Set origin password
+     * @param string $password
+     * @return User
+     */
+    public function setOriginPassword($password)
+    {
+        $this->originPassword = $password;
         return $this;
     }
 
     /**
      * Set email
-     *
      * @param string $email
-     *
      * @return User
      */
     public function setEmail($email)
     {
         $this->email = $email;
-
         return $this;
     }
 
     /**
      * Get email
-     *
      * @return string
      */
     public function getEmail()
@@ -220,21 +243,17 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * Set isActive
-     *
      * @param boolean $isActive
-     *
      * @return User
      */
     public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
-
         return $this;
     }
 
     /**
      * Get isActive
-     *
      * @return boolean
      */
     public function getIsActive()
@@ -244,21 +263,17 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * Set deleted
-     *
-     * @param boolean $deleted
-     *
+     * @param int $deleted
      * @return User
      */
     public function setDeleted($deleted = 0)
     {
         $this->deleted = $deleted;
-
         return $this;
     }
 
     /**
      * Get deleted
-     *
      * @return boolean
      */
     public function getDeleted()
@@ -268,21 +283,17 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * Set createdAt
-     *
      * @param \DateTime $createdAt
-     *
      * @return User
      */
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-
         return $this;
     }
 
     /**
      * Get createdAt
-     *
      * @return \DateTime
      */
     public function getCreatedAt()
@@ -292,21 +303,17 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * Set updatedAt
-     *
      * @param \DateTime $updatedAt
-     *
      * @return User
      */
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
-
         return $this;
     }
 
     /**
      * Get updatedAt
-     *
      * @return \DateTime
      */
     public function getUpdatedAt()
@@ -332,21 +339,17 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * Set role
-     *
      * @param \AdminBundle\Entity\Role $role
-     *
      * @return User
      */
     public function setRole(\AdminBundle\Entity\Role $role = null)
     {
         $this->role = $role;
-
         return $this;
     }
 
     /**
      * Get role
-     *
      * @return \AdminBundle\Entity\Role
      */
     public function getRole()
@@ -354,27 +357,19 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->role;
     }
 
+    /**
+     * @return bool
+     */
     public function isPasswordLegal()
     {
-        return $this->username != $this->password;
-    }
-
-    public function isPasswordConfirm()
-    {
-        return $this->password == $this->confirmPassword;
+        return $this->username != $this->originPassword;
     }
 
     /**
-     * Set salt
-     *
-     * @param string $salt
-     *
-     * @return User
+     * @return bool
      */
-    public function setSalt($salt)
+    public function isPasswordConfirm()
     {
-        $this->salt = $salt;
-
-        return $this;
+        return $this->originPassword == $this->confirmPassword;
     }
 }

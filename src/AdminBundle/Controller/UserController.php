@@ -100,20 +100,19 @@ class UserController extends Controller
         $role = $em->getRepository('AdminBundle:Role')
             ->find($data->get('role_id'));
 
-        $encoder = $this->container->get('security.password_encoder');
+        $encoder = $this->get('security.password_encoder');
 
         $user
             ->setUsername($data->get('username'))
             ->setEmail($data->get('email'))
             ->setIsActive($data->get('isActive'))
-//            ->setPassword($encoder->encodePassword($user, $data->get('password')))
-//            ->setConfirmPassword($encoder->encodePassword($user, $data->get('confirmPassword')))
-            ->setPassword($data->get('password'))
+            ->setPassword($encoder->encodePassword($user, $data->get('password')))
+            ->setOriginPassword($data->get('password'))
             ->setConfirmPassword($data->get('confirmPassword'))
             ->setRole($role);
 
-
         $validator = $this->get('validator');
+
         $errors = $validator->validate($user);
 
         if ($errors->count() > 0) {
