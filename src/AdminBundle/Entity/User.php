@@ -1,8 +1,8 @@
 <?php
 namespace AdminBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class User
@@ -63,15 +63,75 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var int
      */
-    private $role;
+    private $roles;
 
     /**
      * User constructor.
      */
     public function __construct()
     {
-        $this->role = new ArrayCollection();
+        $this->roles = new ArrayCollection();
         $this->isActive = true;
+    }
+
+    /**
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize(
+            [
+                $this->id,
+                $this->username,
+                $this->password,
+                $this->isActive
+            ]
+        );
+    }
+
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->isActive
+            ) = unserialize($serialized);
+    }
+
+    /**
+     * lifecycleCallbacks
+     */
+    public function prePersist()
+    {
+        $this->created_at = new \DateTime();
+    }
+
+    /**
+     * lifecycleCallbacks
+     */
+    public function preUpdate()
+    {
+        $this->updated_at = new \DateTime();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPasswordLegal()
+    {
+        return $this->username != $this->originPassword;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPasswordConfirm()
+    {
+        return $this->originPassword == $this->confirmPassword;
     }
 
     /**
@@ -135,37 +195,12 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function getRoles()
     {
-        return ['ROLE_ADMIN'];
+//        return ['ROLE_ADMIN'];
+        return $this->roles->toArray();
     }
 
     public function eraseCredentials()
     {
-    }
-
-    /**
-     * @return string
-     */
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->isActive
-        ));
-    }
-
-    /**
-     * @param string $serialized
-     */
-    public function unserialize($serialized)
-    {
-        list (
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->isActive
-            ) = unserialize($serialized);
     }
 
     /**
@@ -322,54 +357,26 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * lifecycleCallbacks
-     */
-    public function prePersist()
-    {
-        $this->created_at = new \DateTime();
-    }
-
-    /**
-     * lifecycleCallbacks
-     */
-    public function preUpdate()
-    {
-        $this->updated_at = new \DateTime();
-    }
-
-    /**
-     * Set role
+     * Add role
+     *
      * @param \AdminBundle\Entity\Role $role
+     *
      * @return User
      */
-    public function setRole(\AdminBundle\Entity\Role $role = null)
+    public function addRole(\AdminBundle\Entity\Role $role)
     {
-        $this->role = $role;
+        $this->roles[] = $role;
+
         return $this;
     }
 
     /**
-     * Get role
-     * @return \AdminBundle\Entity\Role
+     * Remove role
+     *
+     * @param \AdminBundle\Entity\Role $role
      */
-    public function getRole()
+    public function removeRole(\AdminBundle\Entity\Role $role)
     {
-        return $this->role;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPasswordLegal()
-    {
-        return $this->username != $this->originPassword;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPasswordConfirm()
-    {
-        return $this->originPassword == $this->confirmPassword;
+        $this->roles->removeElement($role);
     }
 }

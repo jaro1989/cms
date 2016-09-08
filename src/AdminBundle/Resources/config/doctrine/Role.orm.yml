@@ -25,6 +25,10 @@ AdminBundle\Entity\Role:
         updated_at:
             type: datetime
             nullable: false
+    manyToMany:
+        users:
+            targetEntity: User
+            mappedBy: roles
     lifecycleCallbacks:
         prePersist: [prePersist, preUpdate]
         preUpdate: [preUpdate]

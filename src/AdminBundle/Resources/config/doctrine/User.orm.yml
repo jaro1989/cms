@@ -30,12 +30,10 @@ AdminBundle\Entity\User:
         updated_at:
             type: datetime
             nullable: false
-    manyToOne:
-        role:
+    manyToMany:
+        roles:
             targetEntity: Role
-            joinColumn:
-                name: role_id
-                referencedColumnName: id
+            inversedBy: users
     lifecycleCallbacks:
         prePersist: [prePersist, preUpdate]
         preUpdate: [preUpdate]

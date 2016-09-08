@@ -23,6 +23,8 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+        var_dump($this->getUser()->getRoles()[0]->getRole());
+
         return $this->render(
             'AdminBundle:user:create.html.twig',
             [
@@ -109,7 +111,7 @@ class UserController extends Controller
             ->setPassword($encoder->encodePassword($user, $data->get('password')))
             ->setOriginPassword($data->get('password'))
             ->setConfirmPassword($data->get('confirmPassword'))
-            ->setRole($role);
+            ->addRole($role);
 
         $validator = $this->get('validator');
 

@@ -54,9 +54,16 @@
             .addPasswordField('password', lbl._password, true)
             .addPasswordField('confirmPassword', lbl._confirm, true)
 
+                .addChildrenBlock('Роли пользователя', 'Role', 'id', [{id: 2}])
+
+                .newLineChildren()
+                .addSelectField('id', lbl._role, roles, true)
+                .addReadOnlyField(null, null, null)
+
             .newLineParent()
-            .addSelectField('role_id', lbl._role, roles, true)
             .addRadioField('isActive', lbl._active, ['Нет', 'Да'], true, 3)
+            .addReadOnlyField(null, null, null)
+
             .setDebug(true)
 
             .appendHTML(APPEND_ELEMENT);

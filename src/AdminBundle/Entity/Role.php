@@ -3,9 +3,6 @@ namespace AdminBundle\Entity;
 
 use Symfony\Component\Security\Core\Role\RoleInterface;
 
-/**
- *
- */
 class Role implements RoleInterface
 {
     /**
@@ -22,6 +19,11 @@ class Role implements RoleInterface
      * @var string $name
      */
     protected $name;
+
+    /**
+     * @var string $users
+     */
+    protected $users;
 
     /**
      * @var int
@@ -178,5 +180,39 @@ class Role implements RoleInterface
     public function getUpdatedAt()
     {
         return $this->updated_at;
+    }
+
+    /**
+     * Add user
+     *
+     * @param \AdminBundle\Entity\User $user
+     *
+     * @return Role
+     */
+    public function addUser(\AdminBundle\Entity\User $user)
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove user
+     *
+     * @param \AdminBundle\Entity\User $user
+     */
+    public function removeUser(\AdminBundle\Entity\User $user)
+    {
+        $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }

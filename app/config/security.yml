@@ -36,3 +36,9 @@ security:
         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
 #        - { path: ^/admin, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    role_hierarchy:
+        ROLE_USER:        [IS_AUTHENTICATED_ANONYMOUSLY]
+        ROLE_AUTHOR:      [ROLE_USER]
+        ROLE_MODERATOR:   [ROLE_AUTHOR]
+        ROLE_ADMIN:       [ROLE_MODERATOR]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN]
