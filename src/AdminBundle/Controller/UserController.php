@@ -22,14 +22,12 @@ class UserController extends Controller
     public function createAction(Request $request, $record)
     {
         $em = $this->getDoctrine()->getManager();
-
-        var_dump($this->getUser()->getRoles()[0]->getRole());
-
+var_dump($em->getRepository($this->repository)->findListUser(1));
         return $this->render(
             'AdminBundle:user:create.html.twig',
             [
-                'data' => $em->getRepository($this->repository)->findOneUser($record),
-                'roles' => $em->getRepository('AdminBundle:Role')->findNamesRole()
+                'user_data'  => $em->getRepository($this->repository)->findOneUser($record),
+                'list_roles'  => $em->getRepository('AdminBundle:Role')->findNamesRole()
             ]
         );
     }
@@ -38,14 +36,17 @@ class UserController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request, $page = 1)
     {
         $em = $this->getDoctrine()->getManager();
+        $listUsers = $em->getRepository($this->repository)->findListUser($page);
 
         return $this->render(
             'AdminBundle:user:list.html.twig',
             [
-                'data' => $em->getRepository($this->repository)->findListUser()
+                'data'  => $listUsers['list'],
+                'count_page' => $listUsers['count_page'],
+                'current_page' => $page
             ]
         );
     }
@@ -57,11 +58,14 @@ class UserController extends Controller
     public function trashAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $listUsers = $em->getRepository($this->repository)->findListUser($page, 1);
 
         return $this->render(
             'AdminBundle:user:trash.html.twig',
             [
-                'data' => $em->getRepository($this->repository)->findListUser(1)
+                'data'  => $listUsers['list'],
+                'count_page' => $listUsers['count_page'],
+                'current_page' => $page
             ]
         );
     }
@@ -74,12 +78,27 @@ class UserController extends Controller
     public function deleteAction(Request $request)
     {
         $response = new JsonResponse();
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->request->get('data'), true);
 
-        return $response->setData(array(
-            'data' => 123
-        ));
+        if (!empty($data['id']) && $data['action'] == 'remove') {
 
-        var_dump('delete');
+            foreach ($data['id'] as $record) {
+
+                $user = $em->getRepository('AdminBundle:User')->find($record);
+                $em->remove($user);
+                $em->flush();
+            }
+        }
+
+        $listUsers = $em->getRepository($this->repository)->findListUser($data['page']);
+
+        return $response->setData(
+            [
+                'data'  => $listUsers['list'],
+                'countPages' => $listUsers['count_page']
+            ]
+        );
     }
 
     /**
@@ -89,32 +108,31 @@ class UserController extends Controller
      */
     public function saveAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
         $response = new JsonResponse();
-        $data = $request->request;
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->request->get('data'), true);
         $res = [];
 
-        $user = $em->getRepository('AdminBundle:User')
-            ->find($data->get('id'));
-
+        $user = $em->getRepository('AdminBundle:User')->find($data['id']);
         !$user ? $user = new User() : null;
-
-        $role = $em->getRepository('AdminBundle:Role')
-            ->find($data->get('role_id'));
 
         $encoder = $this->get('security.password_encoder');
 
         $user
-            ->setUsername($data->get('username'))
-            ->setEmail($data->get('email'))
-            ->setIsActive($data->get('isActive'))
-            ->setPassword($encoder->encodePassword($user, $data->get('password')))
-            ->setOriginPassword($data->get('password'))
-            ->setConfirmPassword($data->get('confirmPassword'))
-            ->addRole($role);
+            ->setUsername($data['username'])
+            ->setEmail($data['email'])
+            ->setIsActive($data['isActive']);
 
+        if (!empty($data['password'])) {
+
+            $user
+                ->setPassword($encoder->encodePassword($user, $data['password']))
+                ->setOriginPassword($data['password'])
+                ->setConfirmPassword($data['confirmPassword']);
+        }
+
+        $user->addRole($em->getRepository('AdminBundle:Role')->find($data['role_id']));
         $validator = $this->get('validator');
-
         $errors = $validator->validate($user);
 
         if ($errors->count() > 0) {
@@ -122,7 +140,6 @@ class UserController extends Controller
             $error = '';
 
             for ($i = 0; $i < $errors->count(); $i++) {
-
                 $property = $errors->get($i)->getPropertyPath();
                 $error .= $property . ': ' . $errors->get($i)->getMessage() . "\n";
             }
@@ -131,14 +148,10 @@ class UserController extends Controller
         }
 
         try {
-
             $em->persist($user);
             $em->flush();
-
             $res['record'] = $user->getId();
-
         } catch (\Exception $e) {
-
             $res['error'] = $e->getMessage();
         }
 

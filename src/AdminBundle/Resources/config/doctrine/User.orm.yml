@@ -33,7 +33,14 @@ AdminBundle\Entity\User:
     manyToMany:
         roles:
             targetEntity: Role
-            inversedBy: users
+            joinTable:
+                name: app_user_role
+                joinColumns:
+                    user_id:
+                      referencedColumnName: id
+                inverseJoinColumns:
+                    role_id:
+                      referencedColumnName: id
     lifecycleCallbacks:
         prePersist: [prePersist, preUpdate]
         preUpdate: [preUpdate]

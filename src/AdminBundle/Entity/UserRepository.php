@@ -2,6 +2,8 @@
 
 namespace AdminBundle\Entity;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 /**
  * UserRepository
  *
@@ -22,8 +24,9 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                 SELECT u.id,
                        u.username,
                        u.email,
-                       u.isActive
-                  FROM AdminBundle:User u
+                       u.isActive,
+                       r.id AS role_id
+                  FROM AdminBundle:User u LEFT JOIN u.roles r
                  WHERE u.id = :id
             ")
             ->setParameter('id', $record)
@@ -35,9 +38,9 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
      * @param int $deleted
      * @return array
      */
-    public function findListUser($deleted = 0)
+    public function findListUser($page = 1, $deleted = 0, $max = 50)
     {
-        return $this->getEntityManager()
+        $query = $this->getEntityManager()
             ->createQuery("
                 SELECT u.id,
                        u.username,
@@ -47,6 +50,16 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                  WHERE u.deleted = :deleted
             ")
             ->setParameter('deleted', $deleted)
-            ->getResult();
+            ->setFirstResult($page < 1 ? 1: $page - 1)
+            ->setMaxResults($max);
+
+        $paginator = new Paginator($query);
+
+        $paginator->setUseOutputWalkers(false);
+
+        return [
+            'count_page' => ceil($paginator->count() / $max),
+            'list'  => $query->getResult()
+        ];
     }
 }

@@ -30,6 +30,8 @@
         };
 
         var data = {{data|json_encode|raw}};
+        var count_page = {{count_page}};
+        var current_page = {{current_page}};
 
 
         // ID элемента для вставки полей
@@ -59,6 +61,9 @@
             .addColumn('username', 'link')
             .addColumn('email', 'link')
             .addColumn('isActive', 'text')
+
+            .setCountPages(count_page)
+            .setCurrentPage(current_page)
 
             .appendHTML(APPEND_ELEMENT);
     </script>

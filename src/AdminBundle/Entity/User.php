@@ -195,7 +195,6 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function getRoles()
     {
-//        return ['ROLE_ADMIN'];
         return $this->roles->toArray();
     }
 
@@ -365,9 +364,22 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function addRole(\AdminBundle\Entity\Role $role)
     {
-        $this->roles[] = $role;
+        $this->roles = [$role];
 
         return $this;
+    }
+
+    public function hasRole(\AdminBundle\Entity\Role $role)
+    {
+        foreach ($this->getRoles() as $oldRole) {
+
+            if ($oldRole->getId() === $role->getId()) {
+
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

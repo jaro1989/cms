@@ -31,8 +31,8 @@
             save: '{{ path('_user_save') }}'
         };
 
-        var data = {{data|json_encode|raw}};
-        var roles = {{roles|json_encode|raw}};
+        var user_data  = {{user_data|json_encode|raw}};
+        var list_roles = {{list_roles|json_encode|raw}};
 
         // ID элемента для вставки полей
         var APPEND_ELEMENT = '#page-html';
@@ -44,25 +44,19 @@
             .setUrlActionForm(path.save)
             .setWidthCaption(4)
 
-            .setParentBlock('Информация о пользователе', 'id', data)
+            .setParentBlock('Информация о пользователе', 'id', user_data)
 
             .newLineParent()
             .addTextField('username', lbl._username, true)
             .addTextField('email', lbl._email)
 
             .newLineParent()
-            .addPasswordField('password', lbl._password, true)
-            .addPasswordField('confirmPassword', lbl._confirm, true)
-
-                .addChildrenBlock('Роли пользователя', 'Role', 'id', [{id: 2}])
-
-                .newLineChildren()
-                .addSelectField('id', lbl._role, roles, true)
-                .addReadOnlyField(null, null, null)
+            .addPasswordField('password', lbl._password, user_data ? false : true)
+            .addPasswordField('confirmPassword', lbl._confirm, user_data ? false : true)
 
             .newLineParent()
+            .addSelectField('role_id', lbl._role, list_roles, true)
             .addRadioField('isActive', lbl._active, ['Нет', 'Да'], true, 3)
-            .addReadOnlyField(null, null, null)
 
             .setDebug(true)
 
