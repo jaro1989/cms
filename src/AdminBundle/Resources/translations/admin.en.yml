@@ -6,6 +6,8 @@ _EMAIL: 'E-mail'
 _CONFIRM_PASSWORD: 'Confirm password'
 _ACTIVE: 'Active'
 _ROLE: 'Role'
+_CREATED_AT: 'Date of creation'
+_UPDATED_AT: 'Date of renovation'
 
 # Buttons
 _LOGIN: 'Log-in'

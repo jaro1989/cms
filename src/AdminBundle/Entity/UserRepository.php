@@ -27,6 +27,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                        u.email,
                        u.isActive,
                        u.deleted,
+                       u.created_at,
                        r.id AS role_id
                   FROM AdminBundle:User u LEFT JOIN u.roles r
                  WHERE u.id = :id
@@ -49,7 +50,8 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                 SELECT u.id,
                        u.username,
                        u.email,
-                       u.isActive
+                       u.isActive,
+                       u.created_at
                   FROM AdminBundle:User u
                  WHERE u.deleted = :deleted
                        {$this->getWhere($search)}

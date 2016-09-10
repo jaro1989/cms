@@ -17,13 +17,14 @@
 
         var lbl = {
             _deleted:    '{{ '_DELETED'|trans({}, 'admin') }}',
-            _pagename:  '{{ '_CREATE_USER'|trans({}, 'admin') }}',
-            _confirm:   '{{ '_CONFIRM_PASSWORD'|trans({}, 'admin') }}',
-            _username:  '{{ '_USERNAME'|trans({}, 'admin') }}',
-            _password:  '{{ '_PASSWORD'|trans({}, 'admin') }}',
-            _active:    '{{ '_ACTIVE'|trans({}, 'admin') }}',
-            _email:     '{{ '_EMAIL'|trans({}, 'admin') }}',
-            _role:      '{{ '_ROLE'|trans({}, 'admin') }}'
+            _pagename:   '{{ '_CREATE_USER'|trans({}, 'admin') }}',
+            _confirm:    '{{ '_CONFIRM_PASSWORD'|trans({}, 'admin') }}',
+            _username:   '{{ '_USERNAME'|trans({}, 'admin') }}',
+            _password:   '{{ '_PASSWORD'|trans({}, 'admin') }}',
+            _active:     '{{ '_ACTIVE'|trans({}, 'admin') }}',
+            _email:      '{{ '_EMAIL'|trans({}, 'admin') }}',
+            _role:       '{{ '_ROLE'|trans({}, 'admin') }}',
+            _created_at: '{{ '_CREATED_AT'|trans({}, 'admin') }}'
         };
 
         var path = {
@@ -56,11 +57,11 @@
 
             .newLineParent()
             .addSelectField(null, 'role_id', lbl._role, list_roles, true)
-            .addReadOnlyField(null, null, null, null)
+            .addReadOnlyField(null, 'created_at', lbl._created_at, null)
 
             .newLineParent()
-            .addRadioField(0, 'isActive', lbl._active, ['Нет', 'Да'], false, 3)
-            .addRadioField(0, 'deleted', lbl._deleted, ['Нет', 'Да'], false, 3)
+            .addRadioField(0, 'isActive', lbl._active, ['Нет', 'Да'], false, 12)
+            .addRadioField(0, 'deleted', lbl._deleted, ['Нет', 'Да'], false, 12)
 
             .setDebug(true)
 

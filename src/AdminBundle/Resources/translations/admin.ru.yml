@@ -6,6 +6,8 @@ _EMAIL: 'E-mail'
 _CONFIRM_PASSWORD: 'Подтвердите пароль'
 _ACTIVE: 'Активный'
 _ROLE: 'Роль'
+_CREATED_AT: 'Дата создания'
+_UPDATED_AT: 'Дата обновления'
 
 # Buttons
 _LOGIN: 'Вход'

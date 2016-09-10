@@ -46,9 +46,9 @@ class User implements AdvancedUserInterface, \Serializable
     private $isActive;
 
     /**
-     * @var int
+     * @var bool
      */
-    private $deleted = 0;
+    private $deleted;
 
     /**
      * @var \DateTime
@@ -72,6 +72,7 @@ class User implements AdvancedUserInterface, \Serializable
     {
         $this->roles = new ArrayCollection();
         $this->isActive = true;
+        $this->deleted  = false;
     }
 
     /**
@@ -297,10 +298,10 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * Set deleted
-     * @param int $deleted
+     * @param boolean $deleted
      * @return User
      */
-    public function setDeleted($deleted = 1)
+    public function setDeleted($deleted = true)
     {
         $this->deleted = $deleted;
         return $this;

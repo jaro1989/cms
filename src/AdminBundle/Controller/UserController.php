@@ -114,6 +114,7 @@ class UserController extends Controller
 
                 $user = $em->getRepository('AdminBundle:User')->find($record);
                 $user->setDeleted();
+                $user->setIsActive(false);
                 $em->flush();
             }
         }

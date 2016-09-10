@@ -17,10 +17,11 @@
         var locale = '{{ app.request.locale }}';
 
         var lbl = {
-            _pagename:  '{{ '_LIST_USER'|trans({}, 'admin') }}',
-            _username:  '{{ '_USERNAME'|trans({}, 'admin') }}',
-            _active:    '{{ '_ACTIVE'|trans({}, 'admin') }}',
-            _email:     '{{ '_EMAIL'|trans({}, 'admin') }}'
+            _pagename:   '{{ '_LIST_USER'|trans({}, 'admin') }}',
+            _username:   '{{ '_USERNAME'|trans({}, 'admin') }}',
+            _active:     '{{ '_ACTIVE'|trans({}, 'admin') }}',
+            _email:      '{{ '_EMAIL'|trans({}, 'admin') }}',
+            _created_at: '{{ '_CREATED_AT'|trans({}, 'admin') }}'
         };
 
         var path = {
@@ -44,6 +45,8 @@
             .newLineSearchFields()
             .addTextField(null, 'username', lbl._username, false)
             .addTextField(null, 'email', lbl._email, false)
+            .addRadioField(0, 'isActive', lbl._active, {'': 'Все', 0: 'Нет', 1: 'Да'}, false, 12)
+            .addReadOnlyField(null, null, null, null)
 
             .setLinkAddEndEdit(path.create)
             .setLinkTrash(path.list_trash)
@@ -54,11 +57,13 @@
             .setTypeTable('bordered')
 
             .newRowHead()
+            .addCellHead(lbl._created_at, 1, 1, true, 5, null)
             .addCellHead(lbl._username, 1, 1, true, 5, null)
             .addCellHead(lbl._email, 1, 1, true, 5, null)
             .addCellHead(lbl._active, 1, 1, true, 2, null)
 
             .addRowsBody(data)
+            .addColumn('created_at', 'text')
             .addColumn('username', 'link')
             .addColumn('email', 'link')
             .addColumn('isActive', 'text')

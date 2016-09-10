@@ -56,7 +56,6 @@
             row:   0,
             cell:  0
         };
-        //this._columnType = {};
         this._column = {};
         this._parentRecords = [];
         //Page

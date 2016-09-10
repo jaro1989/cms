@@ -17,11 +17,12 @@
         var locale = '{{ app.request.locale }}';
 
         var lbl = {
-            _basket:    '{{ '_BASKET'|trans({}, 'admin') }}',
-            _pagename:  '{{ '_LIST_USER'|trans({}, 'admin') }}',
-            _username:  '{{ '_USERNAME'|trans({}, 'admin') }}',
-            _active:    '{{ '_ACTIVE'|trans({}, 'admin') }}',
-            _email:     '{{ '_EMAIL'|trans({}, 'admin') }}'
+            _basket:     '{{ '_BASKET'|trans({}, 'admin') }}',
+            _pagename:   '{{ '_LIST_USER'|trans({}, 'admin') }}',
+            _username:   '{{ '_USERNAME'|trans({}, 'admin') }}',
+            _active:     '{{ '_ACTIVE'|trans({}, 'admin') }}',
+            _email:      '{{ '_EMAIL'|trans({}, 'admin') }}',
+            _created_at: '{{ '_CREATED_AT'|trans({}, 'admin') }}'
         };
 
         var path = {
@@ -33,7 +34,7 @@
         var data = {{data|json_encode|raw}};
         var count_page = {{count_page}};
         var current_page = {{current_page}};
-
+        console.log(data);
         // ID элемента для вставки полей
         var APPEND_ELEMENT = '#page-html';
 
@@ -44,6 +45,8 @@
                 .newLineSearchFields()
                 .addTextField(null, 'username', lbl._username, false)
                 .addTextField(null, 'email', lbl._email, false)
+                .addReadOnlyField(null, null, null, null)
+                .addReadOnlyField(null, null, null, null)
 
                 .setLinkAddEndEdit(path.create)
                 .setDataAjaxPagination('pagination', path.switch_list)
@@ -55,11 +58,13 @@
                 .hideBtnTrash(true)
 
                 .newRowHead()
+                .addCellHead(lbl._created_at, 1, 1, true, 5, null)
                 .addCellHead(lbl._username, 1, 1, true, 5, null)
                 .addCellHead(lbl._email, 1, 1, true, 5, null)
                 .addCellHead(lbl._active, 1, 1, true, 2, null)
 
                 .addRowsBody(data)
+                .addColumn('created_at', 'text')
                 .addColumn('username', 'link')
                 .addColumn('email', 'link')
                 .addColumn('isActive', 'text')
