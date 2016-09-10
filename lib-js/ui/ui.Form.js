@@ -60,7 +60,7 @@
         _ffReadonly: function(value, name, params) {
 
             var dataList = ui.api.existProperty(params, 'list', false);
-            var dataValue = ui.api.setValue(value, name);
+            var dataValue = ui.api.setValue(value, name, params.defValue);
 
             if (dataList !== false) {
 
@@ -97,7 +97,7 @@
         _ffText: function(value, name, params) {
 
             var caption = ui.api.existProperty(params, 'caption', null);
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return new ui.FFText(value, params['setname'], caption)
                 .setRequired(ui.api.existProperty(params, 'required', false))
@@ -114,7 +114,7 @@
         _ffPassword: function(value, name, params) {
 
             var caption = ui.api.existProperty(params, 'caption', null);
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return new ui.FFPassword(value, params['setname'], caption)
                 .setRequired(ui.api.existProperty(params, 'required', false))
@@ -131,7 +131,7 @@
         _ffTextarea: function(value, name, params) {
 
             var caption = ui.api.existProperty(params, 'caption', null);
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return new ui.FFTextarea(value, params['setname'], caption)
                 .setRequired(ui.api.existProperty(params, 'required', false))
@@ -150,7 +150,7 @@
         _ffDate: function(value, name, params) {
 
             var caption = ui.api.existProperty(params, 'caption', null);
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return new ui.FFDate(value, params['setname'], caption)
                 .setRequired(ui.api.existProperty(params, 'required', false))
@@ -168,7 +168,7 @@
 
             var caption = ui.api.existProperty(params, 'caption', null);
             var dataList = ui.api.existProperty(params, 'list', {});
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return  new ui.FFSelect(value, params['setname'], caption)
                 .setRequired(ui.api.existProperty(params, 'required', false))
@@ -186,7 +186,7 @@
         _ffCheckbox: function(value, name, params) {
 
             var caption = ui.api.existProperty(params, 'caption', null);
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return new ui.FFCheckbox()
                 .addCheckbox(value, params['setname'], caption, null)
@@ -206,7 +206,7 @@
 
             var caption = ui.api.existProperty(params, 'caption', null);
             var dataList = ui.api.existProperty(params, 'list', {});
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return  new ui.FFRadio(value, params['setname'], dataList)
                 .setRequired(ui.api.existProperty(params, 'required', false))
@@ -261,22 +261,23 @@
             }
 
             blockFields[name] = params;
-
             return true;
         },
 
         /**
+         * @param {string} defValue
          * @param {string|null} name
          * @param {string|number|null} caption
          * @param {string|number|null} height
          * @returns {ui.HtmlFields}
          */
-        addReadOnlyField: function(name, caption, height) {
+        addReadOnlyField: function(defValue, name, caption, height) {
 
             var params = {
-                type: _TYPE_READ_ONLY,
-                caption: caption,
-                height: height
+                defValue: defValue,
+                type:     _TYPE_READ_ONLY,
+                caption:  caption,
+                height:   height
             };
 
             this._setParametersFields(params, name);
@@ -285,16 +286,18 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number} caption
          * @param {boolean} required
          * @returns {ui.HtmlFields}
          */
-        addTextField: function(name, caption, required) {
+        addTextField: function(defValue, name, caption, required) {
 
             var params = {
-                type: _TYPE_TEXT,
-                caption: caption,
+                defValue: defValue,
+                type:     _TYPE_TEXT,
+                caption:  caption,
                 required: ui.api.empty(required, false)
             };
 
@@ -304,14 +307,16 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number} caption
          * @param {boolean} required
          * @returns {ui.HtmlFields}
          */
-        addPasswordField: function(name, caption, required) {
+        addPasswordField: function(defValue, name, caption, required) {
 
             var params = {
+                defValue: defValue,
                 type:     _TYPE_PASS,
                 caption:  caption,
                 required: ui.api.empty(required, false)
@@ -323,15 +328,17 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number} caption
          * @param {boolean} required
          * @param {string|number|null} height
          * @returns {ui.HtmlFields}
          */
-        addTextareaField: function(name, caption, required, height) {
+        addTextareaField: function(defValue, name, caption, required, height) {
 
             var params = {
+                defValue: defValue,
                 type:     _TYPE_TEXTAREA,
                 caption:  caption,
                 required: ui.api.empty(required, false),
@@ -344,14 +351,16 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number} caption
          * @param {boolean} required
          * @returns {ui.HtmlFields}
          */
-        addDateField: function(name, caption, required) {
+        addDateField: function(defValue, name, caption, required) {
 
             var params = {
+                defValue: defValue,
                 type:     _TYPE_DATE,
                 caption:  caption,
                 required: ui.api.empty(required, false)
@@ -363,15 +372,17 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number} caption
          * @param {{}|[]} data
          * @param {boolean} required
          * @returns {ui.HtmlFields}
          */
-        addSelectField: function(name, caption, data, required) {
+        addSelectField: function(defValue, name, caption, data, required) {
 
             var params = {
+                defValue: defValue,
                 type:     _TYPE_SELECT,
                 caption:  caption,
                 required: ui.api.empty(required, false),
@@ -384,14 +395,16 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number} caption
          * @param {boolean} required
          * @returns {ui.HtmlFields}
          */
-        addCheckboxField: function(name, caption, required) {
+        addCheckboxField: function(defValue, name, caption, required) {
 
             var params = {
+                defValue: defValue,
                 type:     _TYPE_CHECKBOX,
                 caption:  caption,
                 required: ui.api.empty(required, false)
@@ -403,6 +416,7 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number|null} caption
          * @param {{}|[]} data
@@ -410,9 +424,10 @@
          * @param {number|null} width
          * @returns {ui.HtmlFields}
          */
-        addRadioField: function(name, caption, data, required, width) {
+        addRadioField: function(defValue, name, caption, data, required, width) {
 
             var params = {
+                defValue: defValue,
                 type:     _TYPE_RADIO,
                 caption:  caption,
                 required: ui.api.empty(required, false),
@@ -519,8 +534,8 @@
         this._urlActionForm = null;
         this._urlList = null;
         this._actions = {
-            removeParent: 'removeParent',
-            removeChildren: 'removeChildren'
+            removeParent: 'remove',
+            removeChildren: 'remove'
         };
         this._readOnly = false;
         this._locale = ui.api.empty(locale, ui.Config.lbl[ui.Config.locale]);
@@ -1227,7 +1242,7 @@
         if (listParams._idRecord != '' &&  listParams._urlDel != '' && listParams._fieldRecordForm != '') {
 
             var lbl = ui.api.existProperty(ui.Config.lbl, this._locale, ui.Config.locale);
-            var record = {record: listParams._idRecord};
+            var record = {id: [listParams._idRecord], action: listParams._actions.removeParent};
             var curObj = this;
 
             listParams._debug ? console.log(listParams, record) : null;
@@ -1235,21 +1250,31 @@
             new ui.Ajax()
                 .setUrl(listParams._urlDel)
                 .setParams(record)
-                .addParam('action', listParams._actions.removeParent)
                 .addCallbackFunction(
                     function (e) {
 
                         listParams._debug ? console.log(e) : null;
 
-                        if (e == 0) {
+                        try {
+
+                            var res = JSON.parse(e);
+
+                            if (typeof res == 'object' && ui.api.existProperty(res, 'error', null)) {
+
+                                new ui.Alert(curObj._alertBlockId)
+                                    .addError(lbl.error, res.error, null)
+                                    .appendHTML('#' + curObj._idForm, true);
+
+                            } else {
+
+                                ui.api.reload(null);
+                            }
+
+                        } catch (e) {
 
                             new ui.Alert(curObj._alertBlockId)
                                 .addError(lbl.error, lbl.removingError, null)
                                 .appendHTML('#' + curObj._idForm, true);
-
-                        } else {
-
-                            //ui.api.reload(null);
                         }
                     }
                 )

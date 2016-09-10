@@ -16,6 +16,7 @@
         var locale = '{{ app.request.locale }}';
 
         var lbl = {
+            _deleted:    '{{ '_DELETED'|trans({}, 'admin') }}',
             _pagename:  '{{ '_CREATE_USER'|trans({}, 'admin') }}',
             _confirm:   '{{ '_CONFIRM_PASSWORD'|trans({}, 'admin') }}',
             _username:  '{{ '_USERNAME'|trans({}, 'admin') }}',
@@ -27,7 +28,7 @@
 
         var path = {
             list: '{{ path('_user_list') }}',
-            del:  '{{ path('_user_delete') }}',
+            remove:  '{{ path('_user_remove') }}',
             save: '{{ path('_user_save') }}'
         };
 
@@ -39,24 +40,27 @@
 
         new ui.Form('form-user', locale)
             .setTitle(lbl._pagename, null)
-            .setUrtDel(path.del)
+            .setUrtDel(path.remove)
             .setUrtList(path.list)
             .setUrlActionForm(path.save)
-            .setWidthCaption(4)
 
             .setParentBlock('Информация о пользователе', 'id', user_data)
 
             .newLineParent()
-            .addTextField('username', lbl._username, true)
-            .addTextField('email', lbl._email)
+            .addTextField(null, 'username', lbl._username, true)
+            .addTextField(null, 'email', lbl._email)
 
             .newLineParent()
-            .addPasswordField('password', lbl._password, user_data ? false : true)
-            .addPasswordField('confirmPassword', lbl._confirm, user_data ? false : true)
+            .addPasswordField(null, 'password', lbl._password, user_data ? false : true)
+            .addPasswordField(null, 'confirmPassword', lbl._confirm, user_data ? false : true)
 
             .newLineParent()
-            .addSelectField('role_id', lbl._role, list_roles, true)
-            .addRadioField('isActive', lbl._active, ['Нет', 'Да'], true, 3)
+            .addSelectField(null, 'role_id', lbl._role, list_roles, true)
+            .addReadOnlyField(null, null, null, null)
+
+            .newLineParent()
+            .addRadioField(0, 'isActive', lbl._active, ['Нет', 'Да'], false, 3)
+            .addRadioField(0, 'deleted', lbl._deleted, ['Нет', 'Да'], false, 3)
 
             .setDebug(true)
 

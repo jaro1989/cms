@@ -300,7 +300,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @param int $deleted
      * @return User
      */
-    public function setDeleted($deleted = 0)
+    public function setDeleted($deleted = 1)
     {
         $this->deleted = $deleted;
         return $this;

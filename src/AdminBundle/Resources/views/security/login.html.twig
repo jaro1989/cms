@@ -26,10 +26,13 @@
         new ui.Form('form-login', '{{ app.request.locale }}')
                 .setUrlActionForm('{{ path('_security_login') }}')
                 .setParentBlock(lbl._authorization, null, {_username: '{{ username }}'})
+
                 .newLineParent()
-                .addTextField('_username', lbl._username, true)
+                .addTextField(null, '_username', lbl._username, true)
+
                 .newLineParent()
-                .addPasswordField('_password', lbl._password, true)
+                .addPasswordField(null, '_password', lbl._password, true)
+
                 .hideBtnReload(true)
                 .hideBtnBack(true)
                 .hideBtnSave(true)

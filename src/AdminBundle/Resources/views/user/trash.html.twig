@@ -24,8 +24,8 @@
         };
 
         var path = {
-            add: '{{ path('_user_create') }}',
-            del: '{{ path('_user_delete') }}'
+            create: '{{ path('_user_create') }}',
+            remove: '{{ path('_user_remove') }}'
         };
 
         var data = {{data|json_encode|raw}};
@@ -36,8 +36,8 @@
 
         new ui.List('id', 'list-user-trash', locale)
 
-                .setLinkAddEndEdit(path.add)
-                .setAction(path.del)
+                .setLinkAddEndEdit(path.create)
+                .setAction(path.remove)
                 .setTitle(lbl._pagename, null)
 
                 .setTypeTable('bordered')

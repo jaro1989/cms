@@ -7,7 +7,6 @@ use AdminBundle\Entity\Role;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-//use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
@@ -22,12 +21,26 @@ class UserController extends Controller
     public function createAction(Request $request, $record)
     {
         $em = $this->getDoctrine()->getManager();
-var_dump($em->getRepository($this->repository)->findListUser(1));
+
+        $currentUser = $this->getUser();
+        $listRoles = [];
+
+        if ($currentUser->getId() == $record) {
+
+            foreach ($currentUser->getRoles() as $role) {
+
+                $listRoles[$role->getId()] = $role->getName();
+            }
+        } else {
+
+            $listRoles = $em->getRepository('AdminBundle:Role')->findListRoles();
+        }
+
         return $this->render(
             'AdminBundle:user:create.html.twig',
             [
-                'user_data'  => $em->getRepository($this->repository)->findOneUser($record),
-                'list_roles'  => $em->getRepository('AdminBundle:Role')->findNamesRole()
+                'user_data'   => $em->getRepository($this->repository)->findOneUser($record),
+                'list_roles'  => $listRoles
             ]
         );
     }
@@ -36,32 +49,13 @@ var_dump($em->getRepository($this->repository)->findListUser(1));
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction(Request $request, $page = 1)
+    public function listAction(Request $request, $type = 'list', $page = 1)
     {
         $em = $this->getDoctrine()->getManager();
-        $listUsers = $em->getRepository($this->repository)->findListUser($page);
+        $listUsers = $em->getRepository($this->repository)->findListUser($page, $type == 'list' ? 0 : 1);
 
         return $this->render(
-            'AdminBundle:user:list.html.twig',
-            [
-                'data'  => $listUsers['list'],
-                'count_page' => $listUsers['count_page'],
-                'current_page' => $page
-            ]
-        );
-    }
-
-    /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function trashAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $listUsers = $em->getRepository($this->repository)->findListUser($page, 1);
-
-        return $this->render(
-            'AdminBundle:user:trash.html.twig',
+            'AdminBundle:user:' . $type . '.html.twig',
             [
                 'data'  => $listUsers['list'],
                 'count_page' => $listUsers['count_page'],
@@ -75,7 +69,7 @@ var_dump($em->getRepository($this->repository)->findListUser(1));
      * @return JsonResponse
      * @throws \Exception
      */
-    public function deleteAction(Request $request)
+    public function trashAction(Request $request)
     {
         $response = new JsonResponse();
         $em = $this->getDoctrine()->getManager();
@@ -86,7 +80,7 @@ var_dump($em->getRepository($this->repository)->findListUser(1));
             foreach ($data['id'] as $record) {
 
                 $user = $em->getRepository('AdminBundle:User')->find($record);
-                $em->remove($user);
+                $user->setDeleted();
                 $em->flush();
             }
         }
@@ -106,24 +100,59 @@ var_dump($em->getRepository($this->repository)->findListUser(1));
      * @return JsonResponse
      * @throws \Exception
      */
+    public function removeAction(Request $request)
+    {
+        $response = new JsonResponse();
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->request->get('data'), true);
+
+        if (!empty($data['id']) && $data['action'] == 'remove') {
+
+            foreach ($data['id'] as $record) {
+
+                $user = $em->getRepository('AdminBundle:User')->find($record);
+                $em->remove($user);
+                $em->flush();
+            }
+        }
+
+        $res = ['error' => null];
+
+        if (isset($data['page'])) {
+
+            $listUsers = $em->getRepository($this->repository)->findListUser($data['page'], 1);
+            $res['data'] = $listUsers['list'];
+            $res['countPages'] = $listUsers['count_page'];
+        }
+
+        return $response->setData($res);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public function saveAction(Request $request)
     {
         $response = new JsonResponse();
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->request->get('data'), true);
+        $record = empty($data['id']) ? 0 : $data['id'];
         $res = [];
 
-        $user = $em->getRepository('AdminBundle:User')->find($data['id']);
-        !$user ? $user = new User() : null;
-
-        $encoder = $this->get('security.password_encoder');
+        $user = $em->getRepository('AdminBundle:User')->find($record);
+        $user ? $user : $user = new User();
 
         $user
             ->setUsername($data['username'])
             ->setEmail($data['email'])
-            ->setIsActive($data['isActive']);
+            ->setIsActive($data['isActive'])
+            ->setDeleted($data['deleted']);
 
         if (!empty($data['password'])) {
+
+            $encoder = $this->get('security.password_encoder');
 
             $user
                 ->setPassword($encoder->encodePassword($user, $data['password']))
@@ -131,7 +160,8 @@ var_dump($em->getRepository($this->repository)->findListUser(1));
                 ->setConfirmPassword($data['confirmPassword']);
         }
 
-        $user->addRole($em->getRepository('AdminBundle:Role')->find($data['role_id']));
+        $user->addRole($em->getRepository('AdminBundle:Role')
+            ->find($data['role_id']));
         $validator = $this->get('validator');
         $errors = $validator->validate($user);
 
@@ -140,6 +170,7 @@ var_dump($em->getRepository($this->repository)->findListUser(1));
             $error = '';
 
             for ($i = 0; $i < $errors->count(); $i++) {
+
                 $property = $errors->get($i)->getPropertyPath();
                 $error .= $property . ': ' . $errors->get($i)->getMessage() . "\n";
             }
@@ -148,10 +179,13 @@ var_dump($em->getRepository($this->repository)->findListUser(1));
         }
 
         try {
+
             $em->persist($user);
             $em->flush();
             $res['record'] = $user->getId();
+
         } catch (\Exception $e) {
+
             $res['error'] = $e->getMessage();
         }
 

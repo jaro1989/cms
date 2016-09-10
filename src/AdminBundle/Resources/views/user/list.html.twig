@@ -24,24 +24,23 @@
         };
 
         var path = {
-            add:   '{{ path('_user_create') }}',
-            trash: '{{ path('_user_trash') }}',
-            del:   '{{ path('_user_delete') }}'
+            create:   '{{ path('_user_create') }}',
+            list_trash: '{{ path('_user_list_trash') }}',
+            to_trash:   '{{ path('_user_to_trash') }}'
         };
 
         var data = {{data|json_encode|raw}};
         var count_page = {{count_page}};
         var current_page = {{current_page}};
 
-
         // ID элемента для вставки полей
         var APPEND_ELEMENT = '#page-html';
 
         new ui.List('id', 'list-user', locale)
 
-            .setLinkAddEndEdit(path.add)
-            .setLinkTrash(path.trash)
-            .setAction(path.del)
+            .setLinkAddEndEdit(path.create)
+            .setLinkTrash(path.list_trash)
+            .setAction(path.to_trash)
             .setTitle(lbl._pagename, null)
 
             .setTypeTable('bordered')

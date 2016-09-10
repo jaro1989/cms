@@ -1,4 +1,5 @@
 # FIELDS
+_DELETED: 'Deleted'
 _USERNAME: 'Username'
 _PASSWORD: 'Password'
 _EMAIL: 'E-mail'

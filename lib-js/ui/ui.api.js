@@ -200,7 +200,7 @@
          */
         empty: function(value, defaultValue) {
 
-            return (value != undefined && value !== null) ? value : defaultValue;
+            return (value !== undefined && value !== null) ? value : defaultValue;
         },
 
         trim: function(str, character_mask) {
@@ -302,24 +302,21 @@
          * Set value field
          * @param {string|number} nameValue
          * @param {string} nameField
+         * @param {string|number|boolean} defValue
          * @returns {string|number}
          * @public
          */
-        setValue: function(nameValue, nameField) {
+        setValue: function(nameValue, nameField, defValue) {
+
+            defValue = ui.api.empty(defValue, '');
 
             if (typeof nameValue === 'object' && nameValue !== null) {
 
-                if (nameValue.hasOwnProperty(nameField)) {
-
-                    return nameValue[nameField];
-                }
-
-                return '';
+                return nameField in nameValue ? nameValue[nameField] : defValue;
             }
 
-            nameValue = typeof nameValue == 'boolean' ? Number(nameValue) : nameValue;
-
-            return ui.api.empty(nameValue, '');
+            nameValue = (typeof nameValue == 'boolean') ? Number(nameValue) : nameValue;
+            return ui.api.empty(nameValue, defValue);
         },
 
         /**

@@ -8,16 +8,21 @@
          * @param {string|null} value
          * @param {string|null} name
          * @param {string|null} caption
+         * @param {boolean} [hideEmpty]
          * @constructor
          */
-        ui.FFSelect = function (value, name, caption) {
+        ui.FFSelect = function (value, name, caption, hideEmpty) {
     
             this._value   = ui.api.empty(value, null);
             this._name    = ui.api.empty(name, null);
             this._caption = ui.api.empty(caption, null);
-            this._items   = {};
+
+            this._showEmptyItem = ui.api.empty(hideEmpty, true);
+            this._emptyValue = null;
+            this._emptyText  = '-- не выбрано --';
+            this._items      = {};
         };
-    
+
         /** @protected */
         ui.FFSelect.prototype = {
     
@@ -94,7 +99,18 @@
             _required: false,
 
             /**
-             *
+             * @param {string|boolean|number} value
+             * @param {string} text
+             * @returns {ui.FFSelect}
+             */
+            setDataEmptyItem: function(value, text) {
+
+                this._emptyValue = value;
+                this._emptyText = text;
+                return this;
+            },
+
+            /**
              * Set data list
              * @param {[]|{}} data [ 'valu-1', 'valu-2', 'valu-3', ... ]
              * @returns {ui.FFSelect}
@@ -268,6 +284,11 @@
                 return label.getElement();
             },
 
+            _buildEmptyItem: function() {
+
+                return this._buildItem(this._emptyValue, this._emptyText);
+            },
+
             /**
              * Build html option
              * @param {string|number} value
@@ -281,7 +302,7 @@
                     .setValueElement(value, null)
                     .setContentElement(text);
 
-                if (ui.api.setValue(this._value, this._name) == value) {
+                if (ui.api.setValue(this._value, this._name, null) == value) {
 
                     option.setSelectedElement(true);
                 }
@@ -302,6 +323,11 @@
                     .addClassElement(ui.CSS.formControlClass)
                     .setDisabledElement(this._disabled)
                     .setRequiredElement(this._required);
+
+                if (this._showEmptyItem) {
+
+                    setect.addChildAfter(this._buildEmptyItem());
+                }
 
                 for(var value in this._items) {
 

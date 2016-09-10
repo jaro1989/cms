@@ -319,20 +319,15 @@
              */
             setValueElement: function(nameValue, nameField) {
 
-                var value = ui.api.setValue(nameValue, nameField);
+                var value = ui.api.setValue(nameValue, nameField, null);
 
                 if (ui.api.inArray(['input', 'select', 'option', 'button'], this.tag_name) != -1) {
 
-                    if (value != '') {
+                    this.element.setAttribute('value', value);
 
-                        this.element.setAttribute('value', value);
-                    }
                 } else if (ui.api.inArray(['textarea'], this.tag_name) != -1) {
 
-                    if (value != '') {
-
-                        this.element.innerHTML = value;
-                    }
+                    this.element.innerHTML = value;
                 }
 
                 return this;

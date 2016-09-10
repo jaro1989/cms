@@ -103,22 +103,6 @@
          */
         _parseParams: function() {
 
-            //var i = 0;
-            //var delimiter = '';
-            //var str = '';
-            //
-            //for (var key in this._params) {
-            //
-            //    if (i == 1) {
-            //
-            //        delimiter = '&';
-            //    }
-            //
-            //    str += (delimiter + key + '=' + encodeURIComponent(this._params[key]));
-            //    i++;
-            //}
-            //
-            //return str;
             return 'data=' + JSON.stringify(this._params);
         },
 

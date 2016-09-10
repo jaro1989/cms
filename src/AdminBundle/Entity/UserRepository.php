@@ -25,6 +25,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                        u.username,
                        u.email,
                        u.isActive,
+                       u.deleted,
                        r.id AS role_id
                   FROM AdminBundle:User u LEFT JOIN u.roles r
                  WHERE u.id = :id

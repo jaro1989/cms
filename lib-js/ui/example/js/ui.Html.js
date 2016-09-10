@@ -907,7 +907,7 @@
          */
         empty: function(value, defaultValue) {
 
-            return (value != undefined && value !== null) ? value : defaultValue;
+            return (value !== undefined && value !== null) ? value : defaultValue;
         },
 
         trim: function(str, character_mask) {
@@ -1009,24 +1009,21 @@
          * Set value field
          * @param {string|number} nameValue
          * @param {string} nameField
+         * @param {string|number|boolean} defValue
          * @returns {string|number}
          * @public
          */
-        setValue: function(nameValue, nameField) {
+        setValue: function(nameValue, nameField, defValue) {
+
+            defValue = ui.api.empty(defValue, '');
 
             if (typeof nameValue === 'object' && nameValue !== null) {
 
-                if (nameValue.hasOwnProperty(nameField)) {
-
-                    return nameValue[nameField];
-                }
-
-                return '';
+                return nameField in nameValue ? nameValue[nameField] : defValue;
             }
 
-            nameValue = typeof nameValue == 'boolean' ? Number(nameValue) : nameValue;
-
-            return ui.api.empty(nameValue, '');
+            nameValue = (typeof nameValue == 'boolean') ? Number(nameValue) : nameValue;
+            return ui.api.empty(nameValue, defValue);
         },
 
         /**
@@ -1431,20 +1428,15 @@
              */
             setValueElement: function(nameValue, nameField) {
 
-                var value = ui.api.setValue(nameValue, nameField);
+                var value = ui.api.setValue(nameValue, nameField, null);
 
                 if (ui.api.inArray(['input', 'select', 'option', 'button'], this.tag_name) != -1) {
 
-                    if (value != '') {
+                    this.element.setAttribute('value', value);
 
-                        this.element.setAttribute('value', value);
-                    }
                 } else if (ui.api.inArray(['textarea'], this.tag_name) != -1) {
 
-                    if (value != '') {
-
-                        this.element.innerHTML = value;
-                    }
+                    this.element.innerHTML = value;
                 }
 
                 return this;
@@ -5424,16 +5416,21 @@
          * @param {string|null} value
          * @param {string|null} name
          * @param {string|null} caption
+         * @param {boolean} [hideEmpty]
          * @constructor
          */
-        ui.FFSelect = function (value, name, caption) {
+        ui.FFSelect = function (value, name, caption, hideEmpty) {
     
             this._value   = ui.api.empty(value, null);
             this._name    = ui.api.empty(name, null);
             this._caption = ui.api.empty(caption, null);
-            this._items   = {};
+
+            this._showEmptyItem = ui.api.empty(hideEmpty, true);
+            this._emptyValue = null;
+            this._emptyText  = '-- не выбрано --';
+            this._items      = {};
         };
-    
+
         /** @protected */
         ui.FFSelect.prototype = {
     
@@ -5510,7 +5507,18 @@
             _required: false,
 
             /**
-             *
+             * @param {string|boolean|number} value
+             * @param {string} text
+             * @returns {ui.FFSelect}
+             */
+            setDataEmptyItem: function(value, text) {
+
+                this._emptyValue = value;
+                this._emptyText = text;
+                return this;
+            },
+
+            /**
              * Set data list
              * @param {[]|{}} data [ 'valu-1', 'valu-2', 'valu-3', ... ]
              * @returns {ui.FFSelect}
@@ -5684,6 +5692,11 @@
                 return label.getElement();
             },
 
+            _buildEmptyItem: function() {
+
+                return this._buildItem(this._emptyValue, this._emptyText);
+            },
+
             /**
              * Build html option
              * @param {string|number} value
@@ -5697,7 +5710,7 @@
                     .setValueElement(value, null)
                     .setContentElement(text);
 
-                if (ui.api.setValue(this._value, this._name) == value) {
+                if (ui.api.setValue(this._value, this._name, null) == value) {
 
                     option.setSelectedElement(true);
                 }
@@ -5718,6 +5731,11 @@
                     .addClassElement(ui.CSS.formControlClass)
                     .setDisabledElement(this._disabled)
                     .setRequiredElement(this._required);
+
+                if (this._showEmptyItem) {
+
+                    setect.addChildAfter(this._buildEmptyItem());
+                }
 
                 for(var value in this._items) {
 
@@ -7405,22 +7423,6 @@
          */
         _parseParams: function() {
 
-            //var i = 0;
-            //var delimiter = '';
-            //var str = '';
-            //
-            //for (var key in this._params) {
-            //
-            //    if (i == 1) {
-            //
-            //        delimiter = '&';
-            //    }
-            //
-            //    str += (delimiter + key + '=' + encodeURIComponent(this._params[key]));
-            //    i++;
-            //}
-            //
-            //return str;
             return 'data=' + JSON.stringify(this._params);
         },
 
@@ -7757,7 +7759,7 @@
         _ffReadonly: function(value, name, params) {
 
             var dataList = ui.api.existProperty(params, 'list', false);
-            var dataValue = ui.api.setValue(value, name);
+            var dataValue = ui.api.setValue(value, name, params.defValue);
 
             if (dataList !== false) {
 
@@ -7794,7 +7796,7 @@
         _ffText: function(value, name, params) {
 
             var caption = ui.api.existProperty(params, 'caption', null);
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return new ui.FFText(value, params['setname'], caption)
                 .setRequired(ui.api.existProperty(params, 'required', false))
@@ -7811,7 +7813,7 @@
         _ffPassword: function(value, name, params) {
 
             var caption = ui.api.existProperty(params, 'caption', null);
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return new ui.FFPassword(value, params['setname'], caption)
                 .setRequired(ui.api.existProperty(params, 'required', false))
@@ -7828,7 +7830,7 @@
         _ffTextarea: function(value, name, params) {
 
             var caption = ui.api.existProperty(params, 'caption', null);
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return new ui.FFTextarea(value, params['setname'], caption)
                 .setRequired(ui.api.existProperty(params, 'required', false))
@@ -7847,7 +7849,7 @@
         _ffDate: function(value, name, params) {
 
             var caption = ui.api.existProperty(params, 'caption', null);
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return new ui.FFDate(value, params['setname'], caption)
                 .setRequired(ui.api.existProperty(params, 'required', false))
@@ -7865,7 +7867,7 @@
 
             var caption = ui.api.existProperty(params, 'caption', null);
             var dataList = ui.api.existProperty(params, 'list', {});
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return  new ui.FFSelect(value, params['setname'], caption)
                 .setRequired(ui.api.existProperty(params, 'required', false))
@@ -7883,7 +7885,7 @@
         _ffCheckbox: function(value, name, params) {
 
             var caption = ui.api.existProperty(params, 'caption', null);
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return new ui.FFCheckbox()
                 .addCheckbox(value, params['setname'], caption, null)
@@ -7903,7 +7905,7 @@
 
             var caption = ui.api.existProperty(params, 'caption', null);
             var dataList = ui.api.existProperty(params, 'list', {});
-            value = ui.api.setValue(value, name);
+            value = ui.api.setValue(value, name, params.defValue);
 
             return  new ui.FFRadio(value, params['setname'], dataList)
                 .setRequired(ui.api.existProperty(params, 'required', false))
@@ -7958,22 +7960,23 @@
             }
 
             blockFields[name] = params;
-
             return true;
         },
 
         /**
+         * @param {string} defValue
          * @param {string|null} name
          * @param {string|number|null} caption
          * @param {string|number|null} height
          * @returns {ui.HtmlFields}
          */
-        addReadOnlyField: function(name, caption, height) {
+        addReadOnlyField: function(defValue, name, caption, height) {
 
             var params = {
-                type: _TYPE_READ_ONLY,
-                caption: caption,
-                height: height
+                defValue: defValue,
+                type:     _TYPE_READ_ONLY,
+                caption:  caption,
+                height:   height
             };
 
             this._setParametersFields(params, name);
@@ -7982,16 +7985,18 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number} caption
          * @param {boolean} required
          * @returns {ui.HtmlFields}
          */
-        addTextField: function(name, caption, required) {
+        addTextField: function(defValue, name, caption, required) {
 
             var params = {
-                type: _TYPE_TEXT,
-                caption: caption,
+                defValue: defValue,
+                type:     _TYPE_TEXT,
+                caption:  caption,
                 required: ui.api.empty(required, false)
             };
 
@@ -8001,14 +8006,16 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number} caption
          * @param {boolean} required
          * @returns {ui.HtmlFields}
          */
-        addPasswordField: function(name, caption, required) {
+        addPasswordField: function(defValue, name, caption, required) {
 
             var params = {
+                defValue: defValue,
                 type:     _TYPE_PASS,
                 caption:  caption,
                 required: ui.api.empty(required, false)
@@ -8020,15 +8027,17 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number} caption
          * @param {boolean} required
          * @param {string|number|null} height
          * @returns {ui.HtmlFields}
          */
-        addTextareaField: function(name, caption, required, height) {
+        addTextareaField: function(defValue, name, caption, required, height) {
 
             var params = {
+                defValue: defValue,
                 type:     _TYPE_TEXTAREA,
                 caption:  caption,
                 required: ui.api.empty(required, false),
@@ -8041,14 +8050,16 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number} caption
          * @param {boolean} required
          * @returns {ui.HtmlFields}
          */
-        addDateField: function(name, caption, required) {
+        addDateField: function(defValue, name, caption, required) {
 
             var params = {
+                defValue: defValue,
                 type:     _TYPE_DATE,
                 caption:  caption,
                 required: ui.api.empty(required, false)
@@ -8060,15 +8071,17 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number} caption
          * @param {{}|[]} data
          * @param {boolean} required
          * @returns {ui.HtmlFields}
          */
-        addSelectField: function(name, caption, data, required) {
+        addSelectField: function(defValue, name, caption, data, required) {
 
             var params = {
+                defValue: defValue,
                 type:     _TYPE_SELECT,
                 caption:  caption,
                 required: ui.api.empty(required, false),
@@ -8081,14 +8094,16 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number} caption
          * @param {boolean} required
          * @returns {ui.HtmlFields}
          */
-        addCheckboxField: function(name, caption, required) {
+        addCheckboxField: function(defValue, name, caption, required) {
 
             var params = {
+                defValue: defValue,
                 type:     _TYPE_CHECKBOX,
                 caption:  caption,
                 required: ui.api.empty(required, false)
@@ -8100,6 +8115,7 @@
         },
 
         /**
+         * @param {string} defValue
          * @param {string} name
          * @param {string|number|null} caption
          * @param {{}|[]} data
@@ -8107,9 +8123,10 @@
          * @param {number|null} width
          * @returns {ui.HtmlFields}
          */
-        addRadioField: function(name, caption, data, required, width) {
+        addRadioField: function(defValue, name, caption, data, required, width) {
 
             var params = {
+                defValue: defValue,
                 type:     _TYPE_RADIO,
                 caption:  caption,
                 required: ui.api.empty(required, false),
@@ -8216,8 +8233,8 @@
         this._urlActionForm = null;
         this._urlList = null;
         this._actions = {
-            removeParent: 'removeParent',
-            removeChildren: 'removeChildren'
+            removeParent: 'remove',
+            removeChildren: 'remove'
         };
         this._readOnly = false;
         this._locale = ui.api.empty(locale, ui.Config.lbl[ui.Config.locale]);
@@ -8924,7 +8941,7 @@
         if (listParams._idRecord != '' &&  listParams._urlDel != '' && listParams._fieldRecordForm != '') {
 
             var lbl = ui.api.existProperty(ui.Config.lbl, this._locale, ui.Config.locale);
-            var record = {record: listParams._idRecord};
+            var record = {id: [listParams._idRecord], action: listParams._actions.removeParent};
             var curObj = this;
 
             listParams._debug ? console.log(listParams, record) : null;
@@ -8932,21 +8949,31 @@
             new ui.Ajax()
                 .setUrl(listParams._urlDel)
                 .setParams(record)
-                .addParam('action', listParams._actions.removeParent)
                 .addCallbackFunction(
                     function (e) {
 
                         listParams._debug ? console.log(e) : null;
 
-                        if (e == 0) {
+                        try {
+
+                            var res = JSON.parse(e);
+
+                            if (typeof res == 'object' && ui.api.existProperty(res, 'error', null)) {
+
+                                new ui.Alert(curObj._alertBlockId)
+                                    .addError(lbl.error, res.error, null)
+                                    .appendHTML('#' + curObj._idForm, true);
+
+                            } else {
+
+                                ui.api.reload(null);
+                            }
+
+                        } catch (e) {
 
                             new ui.Alert(curObj._alertBlockId)
                                 .addError(lbl.error, lbl.removingError, null)
                                 .appendHTML('#' + curObj._idForm, true);
-
-                        } else {
-
-                            //ui.api.reload(null);
                         }
                     }
                 )

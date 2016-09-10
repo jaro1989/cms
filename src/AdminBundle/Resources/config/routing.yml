@@ -8,16 +8,24 @@ _user_create:
     defaults:  { _controller: AdminBundle:User:create, record: 0 }
 
 _user_list:
-    path: /list/user
-    defaults:  { _controller: AdminBundle:User:list }
+    path: /list/user/{page}
+    defaults:  { _controller: AdminBundle:User:list, type: list, page: 1 }
+    requirements:
+        page: '\d+'
 
-_user_trash:
-    path: /list/trash
+_user_list_trash:
+    path: /list/user/trash/{page}
+    defaults:  { _controller: AdminBundle:User:list, type: trash, page: 1 }
+    requirements:
+        page: '\d+'
+
+_user_to_trash:
+    path: /trash/user
     defaults:  { _controller: AdminBundle:User:trash }
 
-_user_delete:
-    path: /delete/user
-    defaults:  { _controller: AdminBundle:User:delete }
+_user_remove:
+    path: /remove/user
+    defaults:  { _controller: AdminBundle:User:remove }
 
 _user_save:
     path: /save/user

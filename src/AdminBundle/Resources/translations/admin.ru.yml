@@ -1,4 +1,5 @@
 # FIELDS
+_DELETED: 'Удаленный'
 _USERNAME: 'Имя пользователя'
 _PASSWORD: 'Пароль'
 _EMAIL: 'E-mail'

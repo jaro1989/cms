@@ -13,7 +13,7 @@ class RoleRepository extends \Doctrine\ORM\EntityRepository
     /**
      * @return array
      */
-    public function findNamesRole()
+    public function findListRoles()
     {
         $arr =  $this->getEntityManager()
             ->createQuery("
