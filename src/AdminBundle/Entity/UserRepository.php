@@ -12,6 +12,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+    private $_max = 3;
     /**
      * @param int $record
      * @return array|null
@@ -36,14 +37,13 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @param int $page
+     * @param array $search
      * @param int $deleted
      * @return array
      */
-    public function findListUser($page = 1, $deleted = 0, $max = 3)
+    public function findListUser($page = 1, $search = [], $deleted = 0)
     {
-        $page = $page > $max ? $max : $page;
-        $page = $max * ($page < 1 ? 0: $page - 1);
-
         $query = $this->getEntityManager()
             ->createQuery("
                 SELECT u.id,
@@ -52,18 +52,68 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                        u.isActive
                   FROM AdminBundle:User u
                  WHERE u.deleted = :deleted
+                       {$this->getWhere($search)}
             ")
             ->setParameter('deleted', $deleted)
-            ->setFirstResult($page)
-            ->setMaxResults($max);
+            ->setFirstResult($this->getPage($page))
+            ->setMaxResults($this->_max);
+
+        $this->getParameter($query, $search);
 
         $paginator = new Paginator($query);
 
         $paginator->setUseOutputWalkers(false);
 
         return [
-            'count_page' => ceil($paginator->count() / $max),
+            'count_page' => ceil($paginator->count() / $this->_max),
             'list'  => $query->getResult()
         ];
+    }
+
+    /**
+     * @param $search
+     * @return string
+     */
+    private function getWhere($search)
+    {
+        $where = '';
+
+        if (!empty($search)) {
+
+            foreach ($search as $field => $value) {
+
+                if (!empty($value)) {
+
+                    $where .= ' AND u.' . $field . ' LIKE :' . $field . ' ';
+                }
+            }
+        }
+
+        return trim($where);
+    }
+
+    /**
+     * @param new Query $em
+     * @param $search
+     * @return void
+     */
+    private function getParameter($query, $search)
+    {
+        if (!empty($search)) {
+
+            foreach ($search as $field => $value) {
+
+                if (!empty($value)) {
+
+                    $query->setParameter($field, $value . '%');
+                }
+            }
+        }
+    }
+
+    private function getPage($page) {
+
+        $page = $page > $this->_max ? $this->_max : $page;
+        return $this->_max * ($page < 1 ? 0: $page - 1);
     }
 }

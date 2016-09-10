@@ -54,7 +54,7 @@ class UserController extends Controller
     public function listAction(Request $request, $type = 'list', $page = 1)
     {
         $em = $this->getDoctrine()->getManager();
-        $listUsers = $em->getRepository($this->repository)->findListUser($page, $type == 'list' ? 0 : 1);
+        $listUsers = $em->getRepository($this->repository)->findListUser($page, [], $type == 'list' ? 0 : 1);
 
         return $this->render(
             'AdminBundle:user:' . $type . '.html.twig',
@@ -78,21 +78,23 @@ class UserController extends Controller
         $response = new JsonResponse();
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->request->get('data'), true);
+        $search = [];
+        # $data['action'] - search|pagination
+        if (isset($data['search'])) {
 
-        if ($data['action'] == 'pagination') {
-
-            $listUsers = $em->getRepository($this->repository)->findListUser($data['page'], $type == 'list' ? 0 : 1);
-
-            return $response->setData(
-                [
-                    'data' => $listUsers['list'],
-                    'countPages' => $listUsers['count_page']
-                ]
-            );
-        } else if ($data['action'] == 'search') {
-
-            return $response->setData([$data, $type]);
+            $search = $data['search'];
         }
+
+        $page = isset($data['page']) ? $data['page'] : 1;
+        $listUsers = $em->getRepository($this->repository)->findListUser($page, $search, $type == 'list' ? 0 : 1);
+
+
+        return $response->setData(
+            [
+                'data' => $listUsers['list'],
+                'count_page' => $listUsers['count_page']
+            ]
+        );
     }
 
     /**
@@ -121,7 +123,7 @@ class UserController extends Controller
         return $response->setData(
             [
                 'data'  => $listUsers['list'],
-                'countPages' => $listUsers['count_page']
+                'count_page' => $listUsers['count_page']
             ]
         );
     }
@@ -151,9 +153,9 @@ class UserController extends Controller
 
         if (isset($data['page'])) {
 
-            $listUsers = $em->getRepository($this->repository)->findListUser($data['page'], 1);
+            $listUsers = $em->getRepository($this->repository)->findListUser($data['page'], [], 1);
             $res['data'] = $listUsers['list'];
-            $res['countPages'] = $listUsers['count_page'];
+            $res['count_page'] = $listUsers['count_page'];
         }
 
         return $response->setData($res);

@@ -756,6 +756,8 @@
     ui.List.prototype._blockHidden = function() {
 
         var obj = {
+            _locale:  this._locale,
+            _idForm:  this._idForm,
             _column:  this._column,
             _maxRow:  this._maxRow,
             _urlAddAndEdit:  this._urlAddAndEdit,
@@ -865,13 +867,15 @@
 
         listParams._currentPage = page;
         dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(listParams));
+        var data = new ui.FormData(listParams._idForm, this._locale).getData();
 
         var curObj = this;
-        console.log(listParams);
+
         new ui.Ajax()
             .setUrl(this._dataAjaxPagination.url)
-            .addParam('action', this._dataAjaxPagination.action)
+            .addParam('search', data.data)
             .addParam('page', listParams._currentPage)
+            .addParam('action', this._dataAjaxPagination.action)
             .addCallbackFunction(
                 function (e) {
                     console.log(e);
@@ -904,22 +908,22 @@
         }
 
         var curObj = this;
-
         if (data.error.length === 0) {
 
             new ui.Ajax()
                 .setUrl(listParams._dataAjaxSearch.url)
-                .setParams(data['data'])
+                .addParam('page', 1)
+                .addParam('search', data.data)
                 .addParam('action', listParams._dataAjaxSearch.action)
                 .addCallbackFunction(
                     function (e) {
                         console.log(e);
                         try {
 
-                            var response = typeof e == 'object' ? e : JSON.parse(e);
+                            var response = JSON.parse(e);
 
                             listParams._currentPage = 1;
-                            listParams._countPages = ui.api.existProperty(response, 'countPages', 1);
+                            listParams._countPages = ui.api.existProperty(response, 'count_page', 1);
                             dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(listParams));
 
                             curObj._replaceRows(ui.api.existProperty(response, 'data', response));
@@ -990,7 +994,7 @@
                     new ui.SortTable(null).updateSort('#' + curObj._idList);
 
                     listParams._currentPage = 1;
-                    listParams._countPages = ui.api.existProperty(response, 'countPages', 1);
+                    listParams._countPages = ui.api.existProperty(response, 'count_page', 1);
                     dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(listParams));
 
                     new ui.Pagination(curObj._dataAjaxPagination.action + '-' + curObj._idList)

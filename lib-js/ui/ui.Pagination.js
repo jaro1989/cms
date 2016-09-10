@@ -253,18 +253,20 @@
 
             var pagination = new ui.Element('div', true);
 
-            if (this._countPages > 1) {
-
-                pagination
-                    .addClassElement(ui.CSS.alignClass.block.clear)
-                    .setIdElement(this._id, null)
-                    .setAttrElement(DATA_JSON_PAGINATION, JSON.stringify(this))
-                    .addChildAfter(this._buildPagination());
-            }
+            pagination
+                .addClassElement(ui.CSS.alignClass.block.clear)
+                .setIdElement(this._id, null)
+                .setAttrElement(DATA_JSON_PAGINATION, JSON.stringify(this))
+                .addChildAfter(this._buildPagination());
 
             return pagination.getElement();
         },
 
+        /**
+         * @param page
+         * @param countPages
+         * @private
+         */
         _rebuild: function(page, countPages) {
 
             var pag = document.body.querySelector('#' + this._id);
