@@ -52,30 +52,30 @@ console.time('test');
         )
 
         .newLineParent()
-        .addTextField('surname', 'Фамилия', true)
-        .addReadOnlyField(null, null, null)
+        .addTextField(null, 'surname', 'Фамилия', true)
+        .addReadOnlyField(null, null, null, null)
 
         .newLineParent()
-        .addTextField('name', 'Имя', true)
-        .addTextField('middlename', 'Отчество', false)
+        .addTextField(null, 'name', 'Имя', true)
+        .addTextField(null, 'middlename', 'Отчество', false)
 
         .newLineParent()
-        .addTextareaField('description_kr', 'Краткое описание', true, 200)
-        .addTextareaField('description_pl', 'Полное описание', false, 100)
+        .addTextareaField(null, 'description_kr', 'Краткое описание', true, 200)
+        .addTextareaField(null, 'description_pl', 'Полное описание', false, 100)
 
         .newLineParent()
-        .addTextField('email', 'E-mail', true)
-        .addReadOnlyField(null, null, null)
+        .addTextField(null, 'email', 'E-mail', true)
+        .addReadOnlyField(null, null, null, null)
 
             .addChildrenBlock('Title-images', 'Images', 'id', test_data)
 
             .newLineChildren()
-            .addTextField('alt', 'Альтернативный текст', true)
-            .addTextField('title', 'Заголовок', true)
+            .addTextField(null, 'alt', 'Альтернативный текст', true)
+            .addTextField(null, 'title', 'Заголовок', true)
 
             .newLineChildren()
-            .addTextareaField('description', 'Описание', true, null)
-            .addTextField('url', 'URL', true)
+            .addTextareaField(null, 'description', 'Описание', true, null)
+            .addTextField(null, 'url', 'URL', true)
 
 
 
@@ -100,25 +100,27 @@ console.time('test');
             )
 
             .newLineChildren()
-            .addTextField('email', 'Альтернативный текст', true)
-            .addReadOnlyField(null, null, null)
+            .addTextField(null, 'email', 'Альтернативный текст', true)
+            .addReadOnlyField(null, null, null, null)
 
         .newLineParent()
-        .addPasswordField('password', 'Пароль', true)
-        .addPasswordField('password_repeat', 'Повторите пароль', true)
+        .addPasswordField(null, 'password', 'Пароль', true)
+        .addPasswordField(null, 'password_repeat', 'Повторите пароль', true)
 
         .newLineParent()
-        .addCheckboxField('send_pass', 'Отправить пароль на почту', true)
-        .addReadOnlyField(null, null, null)
+        .addCheckboxField(null, 'send_pass', 'Отправить пароль на почту', true)
+        .addReadOnlyField(null, null, null, null)
 
         .newLineParent()
         .addSelectField(
+            null,
             'format_date',
             'Пользовательский формат даты',
             {1: 'DD.MM.YYYY', 2: 'DD/MM/YYYY', 3: 'YYYY.MM.DD', 4: 'YYYY-MM-DD', 5: 'YYYY/MM/DD'},
             true
         )
         .addSelectField(
+            null,
             'test_select',
             'Тестовый список',
             ['DD.MM.YYYY', 'DD/MM/YYYY', 'YYYY.MM.DD', 'YYYY-MM-DD', 'YYYY/MM/DD'],
@@ -127,26 +129,28 @@ console.time('test');
 
         .newLineParent()
         .addSelectField(
+            null,
             'test_select_2',
             'Тестовый список - 2',
             ['DD.MM.YYYY', 'DD/MM/YYYY', 'YYYY.MM.DD', 'YYYY-MM-DD', 'YYYY/MM/DD'],
             false
         )
-        .addReadOnlyField(null, null, null)
+        .addReadOnlyField(null, null, null, null)
 
         .newLineParent()
-        .addDateField('period_n', 'Период надало', true)
-        .addDateField('period_k', 'Период конец', true)
+        .addDateField(null, 'period_n', 'Период надало', true)
+        .addDateField(null, 'period_k', 'Период конец', true)
 
         .newLineParent()
         .addRadioField(
+            null,
             'type',
             'Radio',
             ['Тип-1', 'Тип-2', 'Тип-3', 'Тип-4', 'Тип-1', 'Тип-2'],
             true,
             4
         )
-        .addReadOnlyField(null, null, null)
+        .addReadOnlyField(null, null, null, null)
 
         .addButton(4, 'submit', 'log_in', 'log-in', 'Вход', 'alert(222)')
 

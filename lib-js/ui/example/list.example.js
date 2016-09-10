@@ -30,17 +30,16 @@ for (var i =0; i <500; i++) {
             }
         )
         .newLineSearchFields()
-        .addTextField('description_kr1', 'Краткое описание1', false)
-        .addTextField('description_kr2', 'Краткое описание2', false)
-        .addTextField('description_kr3', 'Краткое описание3', false)
-        .addTextField('description_kr6', 'Краткое описание3', false)
+        .addTextField(null, 'description_kr1', 'Краткое описание1', false)
+        .addTextField(null, 'description_kr2', 'Краткое описание2', false)
+        .addTextField(null, 'description_kr3', 'Краткое описание3', false)
+        .addTextField(null, 'description_kr6', 'Краткое описание3', false)
         .newLineSearchFields()
-        .addTextareaField('description_kr4', 'Краткое описание1', false, 50)
-        .addTextareaField('description_kr5', 'Краткое описание2', false, 50)
+        .addTextareaField(null, 'description_kr4', 'Краткое описание1', false, 50)
+        .addTextareaField(null, 'description_kr5', 'Краткое описание2', false, 50)
 
         .setLinkAddEndEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
         .setLinkTrash('http://symfony.cms/lib-js/ui/example/index.html?page=form')
-        .setAction('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
         .setTitle('List user', 'description user')
 
         .setTypeTable('bordered')

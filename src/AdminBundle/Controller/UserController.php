@@ -47,6 +47,8 @@ class UserController extends Controller
 
     /**
      * @param Request $request
+     * @param string $type 'list'|'trash'
+     * @param int $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAction(Request $request, $type = 'list', $page = 1)
@@ -62,6 +64,35 @@ class UserController extends Controller
                 'current_page' => $page
             ]
         );
+    }
+
+    /**
+     * @param Request $request
+     * @param string $type 'list'|'trash'
+     * @param int $page
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function switchListAction(Request $request, $type = 'list')
+    {
+        $response = new JsonResponse();
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->request->get('data'), true);
+
+        if ($data['action'] == 'pagination') {
+
+            $listUsers = $em->getRepository($this->repository)->findListUser($data['page'], $type == 'list' ? 0 : 1);
+
+            return $response->setData(
+                [
+                    'data' => $listUsers['list'],
+                    'countPages' => $listUsers['count_page']
+                ]
+            );
+        } else if ($data['action'] == 'search') {
+
+            return $response->setData([$data, $type]);
+        }
     }
 
     /**

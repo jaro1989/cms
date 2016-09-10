@@ -39,8 +39,11 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
      * @param int $deleted
      * @return array
      */
-    public function findListUser($page = 1, $deleted = 0, $max = 50)
+    public function findListUser($page = 1, $deleted = 0, $max = 3)
     {
+        $page = $page > $max ? $max : $page;
+        $page = $max * ($page < 1 ? 0: $page - 1);
+
         $query = $this->getEntityManager()
             ->createQuery("
                 SELECT u.id,
@@ -51,7 +54,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                  WHERE u.deleted = :deleted
             ")
             ->setParameter('deleted', $deleted)
-            ->setFirstResult($page < 1 ? 1: $page - 1)
+            ->setFirstResult($page)
             ->setMaxResults($max);
 
         $paginator = new Paginator($query);

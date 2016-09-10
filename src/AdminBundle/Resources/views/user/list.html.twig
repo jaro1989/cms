@@ -24,9 +24,10 @@
         };
 
         var path = {
-            create:   '{{ path('_user_create') }}',
-            list_trash: '{{ path('_user_list_trash') }}',
-            to_trash:   '{{ path('_user_to_trash') }}'
+            create:      '{{ path('_user_create') }}',
+            list_trash:  '{{ path('_user_list_trash') }}',
+            to_trash:    '{{ path('_user_to_trash') }}',
+            switch_list: '{{ path('_user_switch_list', {'type': 'list'}) }}'
         };
 
         var data = {{data|json_encode|raw}};
@@ -37,19 +38,20 @@
         var APPEND_ELEMENT = '#page-html';
 
         new ui.List('id', 'list-user', locale)
+            .setTitle(lbl._pagename, null)
+
+            .setTitleSearch(null, 'поиск существующих пользователей')
+            .newLineSearchFields()
+            .addTextField(null, 'username', lbl._username, false)
+            .addTextField(null, 'email', lbl._email, false)
 
             .setLinkAddEndEdit(path.create)
             .setLinkTrash(path.list_trash)
-            .setAction(path.to_trash)
-            .setTitle(lbl._pagename, null)
+            .setDataAjaxPagination('pagination', path.switch_list)
+            .setDataAjaxSearch('search', path.switch_list)
+            .setDataAjaxRemove('remove', path.to_trash)
 
             .setTypeTable('bordered')
-            .hideBtnClear(true)
-            .hideBtnSearch(true)
-
-            .setMaxRow(25)
-            .setCountPages(1)
-            .setCurrentPage(1)
 
             .newRowHead()
             .addCellHead(lbl._username, 1, 1, true, 5, null)

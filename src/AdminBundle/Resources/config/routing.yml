@@ -19,6 +19,12 @@ _user_list_trash:
     requirements:
         page: '\d+'
 
+_user_switch_list:
+    path: /list/user/switch/{type}
+    defaults:  { _controller: AdminBundle:User:switchList, type: list}
+    requirements:
+        page: '\d+'
+
 _user_to_trash:
     path: /trash/user
     defaults:  { _controller: AdminBundle:User:trash }

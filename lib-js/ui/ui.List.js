@@ -73,16 +73,26 @@
         this._currentPage = 1;
         this._countPages = 1;
         //Link
-        this._urlAction = null;
-        this._urlAddAndEdit = null;
-        this._urlTrash = null;
-        this._urlBack = document.referrer;
-        //Actions
-        this._actions = {
-            search: 'search',
-            pagination: 'pagination',
-            remove: 'remove'
+        //this._urlAction = null;
+
+        this._dataAjaxPagination = {
+            action: 'pagination',
+            url: window.location.href
         };
+
+        this._dataAjaxSearch = {
+            action: 'search',
+            url: window.location.href
+        };
+
+        this._dataAjaxRemove = {
+            action: 'remove',
+            url: window.location.href
+        };
+
+        this._urlAddAndEdit = null;
+        this._urlTrash = window.location.href;
+        this._urlBack = document.referrer;
 
         this.urlNoImg = ui.Config.noimg;
 
@@ -280,7 +290,7 @@
                 }
             );
         }
-
+        console.log(this._hideBtnList._btnSearch);
         if (this._hideBtnList._btnSearch === false) {
 
             this._btnRightTopTable.push(
@@ -749,14 +759,11 @@
             _column:  this._column,
             _maxRow:  this._maxRow,
             _urlAddAndEdit:  this._urlAddAndEdit,
-            _urlAction: this._urlAction,
+            _dataAjaxPagination: this._dataAjaxPagination,
+            _dataAjaxSearch: this._dataAjaxSearch,
+            _dataAjaxRemove: this._dataAjaxRemove,
             _currentPage: this._currentPage,
             _countPages: this._countPages,
-            _actions: {
-                search: this._actions.search,
-                pagination: this._actions.pagination,
-                remove: this._actions.remove
-            },
             _fieldRecordList: this._fieldRecordList,
             _hideColumnCheckbox: this._hideColumnCheckbox,
             _hideColumnNumber:   this._hideColumnNumber
@@ -806,7 +813,7 @@
                 .addChildAfter(this._blockHidden())
                 .addChildAfter(this._buildTable())
                 .addChildAfter(
-                    new ui.Pagination(this._actions.pagination + '-' + this._idList)
+                    new ui.Pagination(this._dataAjaxPagination.action + '-' + this._idList)
                         .setCountPages(this._countPages)
                         .setCurrentPage(this._currentPage)
                         .setCallbackFunction(onclick)
@@ -860,18 +867,19 @@
         dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(listParams));
 
         var curObj = this;
-
+        console.log(listParams);
         new ui.Ajax()
-            .setUrl(this._urlAction ? this._urlAction : window.location.href)
-            .addParam('action', listParams._actions.pagination)
-            .addParam('page', page)
+            .setUrl(this._dataAjaxPagination.url)
+            .addParam('action', this._dataAjaxPagination.action)
+            .addParam('page', listParams._currentPage)
             .addCallbackFunction(
                 function (e) {
                     console.log(e);
                     try {
 
-                        curObj._replaceRows(typeof e == 'object' ? e : JSON.parse(e));
+                        var res = JSON.parse(e);
 
+                        curObj._replaceRows(res.data);
                         new ui.SortTable(null).updateSort('#' + curObj._idList);
 
                     } catch (e) {
@@ -900,9 +908,9 @@
         if (data.error.length === 0) {
 
             new ui.Ajax()
-                .setUrl(this._urlAction ? this._urlAction : window.location.href)
+                .setUrl(listParams._dataAjaxSearch.url)
                 .setParams(data['data'])
-                .addParam('action', listParams._actions.search)
+                .addParam('action', listParams._dataAjaxSearch.action)
                 .addCallbackFunction(
                     function (e) {
                         console.log(e);
@@ -918,7 +926,7 @@
 
                             new ui.SortTable(null).updateSort('#' + curObj._idList);
 
-                            new ui.Pagination(curObj._actions.pagination + '-' + curObj._idList)
+                            new ui.Pagination(curObj._dataAjaxPagination.action + '-' + curObj._idList)
                                 ._rebuild(listParams._currentPage, listParams._countPages);
 
                         } catch (e) {
@@ -966,11 +974,11 @@
         var curObj = this;
 
         new ui.Ajax()
-            .setUrl(this._urlAction)
+            .setUrl(listParams._dataAjaxRemove.url)
             .setParams(delObj)
-            .addParam('action', this._actions.remove)
-            .addParam('page', this._currentPage)
-            .addParam('max', this._maxRow)
+            .addParam('action', listParams._dataAjaxRemove.action)
+            .addParam('page', listParams._currentPage)
+            .addParam('max', listParams._maxRow)
             .addCallbackFunction(function (e) {
                 console.log(e);
                 try {
@@ -985,7 +993,7 @@
                     listParams._countPages = ui.api.existProperty(response, 'countPages', 1);
                     dataBlock.setAttribute(DATA_JSON_TABLE, JSON.stringify(listParams));
 
-                    new ui.Pagination(curObj._actions.pagination + '-' + curObj._idList)
+                    new ui.Pagination(curObj._dataAjaxPagination.action + '-' + curObj._idList)
                         ._rebuild(listParams._currentPage, listParams._countPages);
 
                 } catch (e) {
@@ -1114,11 +1122,35 @@
     };
 
     /**
-     * @param {string} link
+     * @param {string} action
+     * @param {string} url
      * @returns {ui.List}
      */
-    ui.List.prototype.setAction = function(link) {
-        this._urlAction = link;
+    ui.List.prototype.setDataAjaxPagination = function(action, url) {
+        this._dataAjaxPagination.url = url;
+        this._dataAjaxPagination.action = action;
+        return this;
+    };
+
+    /**
+     * @param {string} action
+     * @param {string} url
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setDataAjaxSearch = function(action, url) {
+        this._dataAjaxSearch.url = url;
+        this._dataAjaxSearch.action = action;
+        return this;
+    };
+
+    /**
+     * @param {string} action
+     * @param {string} url
+     * @returns {ui.List}
+     */
+    ui.List.prototype.setDataAjaxRemove = function(action, url) {
+        this._dataAjaxRemove.url = url;
+        this._dataAjaxRemove.action = action;
         return this;
     };
 
