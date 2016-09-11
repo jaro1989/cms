@@ -1130,6 +1130,32 @@
                     element.style.visibility = 'hidden';
                 }
             }
+        },
+
+        setLimitNumber: function(value, min, max) {
+
+            value = Number(value);
+
+            if (value < min) {
+                value = 0;
+            }
+
+            if (value > max) {
+                value = max;
+            }
+
+            return value;
+        },
+
+        setPrefixZeroNumber: function(value) {
+
+            value = Number(value);
+
+            if (value >= 0 && value < 10) {
+                value = '0' + value;
+            }
+
+            return value;
         }
     };
 
@@ -1506,10 +1532,11 @@
              * Set content in element
              * @param {string} caption
              * @param {boolean} required
+             * @param {string|null} [separator]
              * @returns {ui.Element}
              * @public
              */
-            setCaptionElement: function(caption, required) {
+            setCaptionElement: function(caption, required, separator) {
 
                 this.element.innerHTML = caption;
 
@@ -1520,7 +1547,7 @@
 
                 if (ui.api.empty(caption, false)) {
 
-                    this.element.innerHTML += ui.Config.label.separator + ' ';
+                    this.element.innerHTML += ui.api.empty(separator, ui.Config.label.separator) + ' ';
                 }
 
                 if (required) {
@@ -2199,9 +2226,6 @@
         /** @protected */
         ui.Calendar.prototype = {
 
-            //_x: null,
-            //_y: null,
-
             _formatUser: ui.Config.formatDateUser,
             _formatSave: ui.Config.formatDateSave,
 
@@ -2217,7 +2241,10 @@
                     prev:    'Предыдущий месяц',
                     next:    'Следующий месяц',
                     days:    ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СУБ', 'ВС'],
-                    month:   ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+                    month:   ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                    hh: 'Час',
+                    mi: 'Мин',
+                    ss: 'Сек'
                 },
                 eu: {
                     choice:  'Selected day',
@@ -2225,7 +2252,10 @@
                     prev:    'Previous month',
                     next:    'Next month',
                     days:    ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                    month:   ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+                    month:   ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    hh: 'Hour',
+                    mi: 'Min',
+                    ss: 'Sec'
                 }
             },
             _skinSwitchMonth: 'link',
@@ -2284,28 +2314,6 @@
                 this._selectorSave = selector;
                 return this;
             },
-
-            ///**
-            // * Set position left
-            // * @param {number|null} x
-            // * @returns {ui.Calendar}
-            // * @public
-            // */
-            //setPositionLeft: function(x) {
-            //    this._x = ui.api.empty(x, null);
-            //    return this;
-            //},
-            //
-            ///**
-            // * Set position top
-            // * @param {number|null} y
-            // * @returns {ui.Calendar}
-            // * @public
-            // */
-            //setPositionTop: function(y) {
-            //    this._y = ui.api.empty(y, null);
-            //    return this;
-            //},
 
             /**
              * Get count day in month
@@ -2414,19 +2422,25 @@
                         new ui.Element('div')
                             .setWidthElement(12)
                             .addChildAfter(
-                                new ui.FFText(this._h, 'data-hh', 'Час')
+                                new ui.FFText(ui.api.setPrefixZeroNumber(this._h), 'data-hh', this._language[this._locale].hh)
+                                    .addEvent('onchange', 'new ui.Calendar()._setLimitTime(this, 0, 23);')
+                                    .setLabelSeparator('')
                                     .setWidthBlock(4)
                                     .setMaxLength(2)
                                     .getElement()
                             )
                             .addChildAfter(
-                                new ui.FFText(this._m, 'data-mm', 'Мин')
+                                new ui.FFText(ui.api.setPrefixZeroNumber(this._m), 'data-mm', this._language[this._locale].mi)
+                                    .addEvent('onchange', 'new ui.Calendar()._setLimitTime(this, 0, 59);')
+                                    .setLabelSeparator('')
                                     .setWidthBlock(4)
                                     .setMaxLength(2)
                                     .getElement()
                             )
                             .addChildAfter(
-                                new ui.FFText(this._s, 'data-ss','Cек')
+                                new ui.FFText(ui.api.setPrefixZeroNumber(this._s), 'data-ss', this._language[this._locale].ss)
+                                    .addEvent('onchange', 'new ui.Calendar()._setLimitTime(this, 0, 59);')
+                                    .setLabelSeparator('')
                                     .setWidthBlock(4)
                                     .setMaxLength(2)
                                     .getElement()
@@ -2434,6 +2448,11 @@
                             .getElement()
                     )
                     .toHTML();
+            },
+
+            _setLimitTime: function(e, min, max) {
+                e.value = ui.api.setPrefixZeroNumber(ui.api.setLimitNumber(e.value, min, max));
+                return true;
             },
 
             /**
@@ -2686,7 +2705,7 @@
                 parentElement
                     .addStyleElement('left', (x - (this._width / 2)) + 'px')
                     .addStyleElement('top', (y) + 'px')
-                    .addStyleElement('position', 'absolute')
+                    .addStyleElement('position', 'fixed')
                     .addStyleElement('z-index', 10000);
 
                 window.addEventListener('click', removeCalendar);
@@ -2771,7 +2790,7 @@
 
                 if (hh && mm && ss) {
 
-                    date = new Date(year, month, day, hh.value, mm.value, ss.value);
+                    date = new Date(year, month, day, Number(hh.value), Number(mm.value), Number(ss.value));
                 }
 
                 var setDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
@@ -2839,6 +2858,11 @@
             this._value   = ui.api.empty(value, null);
             this._name    = ui.api.empty(name, null);
             this._caption = ui.api.empty(caption, null);
+            /**
+             * @private
+             * @type {[]}
+             */
+            this._event = [];
         };
 
         /** @protected */
@@ -2918,9 +2942,34 @@
 
             /**
              * @private
-             * @type {number}
+             * @type {number|null}
              */
             _maxLength: null,
+
+            /**
+             * @private
+             * @type {string|null}
+             */
+            _labelSeparator: ui.Config.label.separator,
+
+            /**
+             * @param {string|null} name
+             * @param {string|null} event
+             * @returns {ui.FFText}
+             */
+            addEvent: function(name, event) {
+                this._event.push({eventName: name, event: event});
+                return this;
+            },
+
+            /**
+             * @param {string|null} separator
+             * @returns {ui.FFText}
+             */
+            setLabelSeparator: function(separator) {
+                this._labelSeparator = separator;
+                return this;
+            },
 
             /**
              * Set required field
@@ -3071,7 +3120,7 @@
                 var label =  new ui.Element('label')
                     .addClassElement(ui.CSS.controlLabelClass)
                     .setForLabelElement(this._id, this._name)
-                    .setCaptionElement(this._caption, this._required);
+                    .setCaptionElement(this._caption, this._required, this._labelSeparator);
 
                 if (typeof this._widthCaption === 'number') {
 
@@ -3090,7 +3139,7 @@
              */
             _buildField: function() {
 
-                return new ui.Element('input')
+                var field = new ui.Element('input')
                     .setTypeElement('text')
                     .setNameElement(this._name)
                     .setIdElement(this._id, this._name)
@@ -3098,8 +3147,14 @@
                     .addClassElement(ui.CSS.formControlClass)
                     .setDisabledElement(this._disabled)
                     .setRequiredElement(this._required)
-                    .setAttrElement('maxlength', this._maxLength)
-                    .getElement();
+                    .setAttrElement('maxlength', this._maxLength);
+
+                for (var i = 0; i < this._event.length; i++) {
+
+                    field.setAttrElement(this._event[i].eventName, this._event[i].event);
+                }
+
+                return field.getElement();
             },
 
             /**

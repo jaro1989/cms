@@ -68,9 +68,6 @@
         /** @protected */
         ui.Calendar.prototype = {
 
-            //_x: null,
-            //_y: null,
-
             _formatUser: ui.Config.formatDateUser,
             _formatSave: ui.Config.formatDateSave,
 
@@ -86,7 +83,10 @@
                     prev:    'Предыдущий месяц',
                     next:    'Следующий месяц',
                     days:    ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СУБ', 'ВС'],
-                    month:   ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+                    month:   ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                    hh: 'Час',
+                    mi: 'Мин',
+                    ss: 'Сек'
                 },
                 eu: {
                     choice:  'Selected day',
@@ -94,7 +94,10 @@
                     prev:    'Previous month',
                     next:    'Next month',
                     days:    ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                    month:   ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+                    month:   ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    hh: 'Hour',
+                    mi: 'Min',
+                    ss: 'Sec'
                 }
             },
             _skinSwitchMonth: 'link',
@@ -153,28 +156,6 @@
                 this._selectorSave = selector;
                 return this;
             },
-
-            ///**
-            // * Set position left
-            // * @param {number|null} x
-            // * @returns {ui.Calendar}
-            // * @public
-            // */
-            //setPositionLeft: function(x) {
-            //    this._x = ui.api.empty(x, null);
-            //    return this;
-            //},
-            //
-            ///**
-            // * Set position top
-            // * @param {number|null} y
-            // * @returns {ui.Calendar}
-            // * @public
-            // */
-            //setPositionTop: function(y) {
-            //    this._y = ui.api.empty(y, null);
-            //    return this;
-            //},
 
             /**
              * Get count day in month
@@ -283,19 +264,25 @@
                         new ui.Element('div')
                             .setWidthElement(12)
                             .addChildAfter(
-                                new ui.FFText(this._h, 'data-hh', 'Час')
+                                new ui.FFText(ui.api.setPrefixZeroNumber(this._h), 'data-hh', this._language[this._locale].hh)
+                                    .addEvent('onchange', 'new ui.Calendar()._setLimitTime(this, 0, 23);')
+                                    .setLabelSeparator('')
                                     .setWidthBlock(4)
                                     .setMaxLength(2)
                                     .getElement()
                             )
                             .addChildAfter(
-                                new ui.FFText(this._m, 'data-mm', 'Мин')
+                                new ui.FFText(ui.api.setPrefixZeroNumber(this._m), 'data-mm', this._language[this._locale].mi)
+                                    .addEvent('onchange', 'new ui.Calendar()._setLimitTime(this, 0, 59);')
+                                    .setLabelSeparator('')
                                     .setWidthBlock(4)
                                     .setMaxLength(2)
                                     .getElement()
                             )
                             .addChildAfter(
-                                new ui.FFText(this._s, 'data-ss','Cек')
+                                new ui.FFText(ui.api.setPrefixZeroNumber(this._s), 'data-ss', this._language[this._locale].ss)
+                                    .addEvent('onchange', 'new ui.Calendar()._setLimitTime(this, 0, 59);')
+                                    .setLabelSeparator('')
                                     .setWidthBlock(4)
                                     .setMaxLength(2)
                                     .getElement()
@@ -303,6 +290,11 @@
                             .getElement()
                     )
                     .toHTML();
+            },
+
+            _setLimitTime: function(e, min, max) {
+                e.value = ui.api.setPrefixZeroNumber(ui.api.setLimitNumber(e.value, min, max));
+                return true;
             },
 
             /**
@@ -555,7 +547,7 @@
                 parentElement
                     .addStyleElement('left', (x - (this._width / 2)) + 'px')
                     .addStyleElement('top', (y) + 'px')
-                    .addStyleElement('position', 'absolute')
+                    .addStyleElement('position', 'fixed')
                     .addStyleElement('z-index', 10000);
 
                 window.addEventListener('click', removeCalendar);
@@ -640,7 +632,7 @@
 
                 if (hh && mm && ss) {
 
-                    date = new Date(year, month, day, hh.value, mm.value, ss.value);
+                    date = new Date(year, month, day, Number(hh.value), Number(mm.value), Number(ss.value));
                 }
 
                 var setDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();

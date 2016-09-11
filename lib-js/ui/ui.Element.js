@@ -370,10 +370,11 @@
              * Set content in element
              * @param {string} caption
              * @param {boolean} required
+             * @param {string|null} [separator]
              * @returns {ui.Element}
              * @public
              */
-            setCaptionElement: function(caption, required) {
+            setCaptionElement: function(caption, required, separator) {
 
                 this.element.innerHTML = caption;
 
@@ -384,7 +385,7 @@
 
                 if (ui.api.empty(caption, false)) {
 
-                    this.element.innerHTML += ui.Config.label.separator + ' ';
+                    this.element.innerHTML += ui.api.empty(separator, ui.Config.label.separator) + ' ';
                 }
 
                 if (required) {

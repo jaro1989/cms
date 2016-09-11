@@ -15,6 +15,11 @@
             this._value   = ui.api.empty(value, null);
             this._name    = ui.api.empty(name, null);
             this._caption = ui.api.empty(caption, null);
+            /**
+             * @private
+             * @type {[]}
+             */
+            this._event = [];
         };
 
         /** @protected */
@@ -94,9 +99,34 @@
 
             /**
              * @private
-             * @type {number}
+             * @type {number|null}
              */
             _maxLength: null,
+
+            /**
+             * @private
+             * @type {string|null}
+             */
+            _labelSeparator: ui.Config.label.separator,
+
+            /**
+             * @param {string|null} name
+             * @param {string|null} event
+             * @returns {ui.FFText}
+             */
+            addEvent: function(name, event) {
+                this._event.push({eventName: name, event: event});
+                return this;
+            },
+
+            /**
+             * @param {string|null} separator
+             * @returns {ui.FFText}
+             */
+            setLabelSeparator: function(separator) {
+                this._labelSeparator = separator;
+                return this;
+            },
 
             /**
              * Set required field
@@ -247,7 +277,7 @@
                 var label =  new ui.Element('label')
                     .addClassElement(ui.CSS.controlLabelClass)
                     .setForLabelElement(this._id, this._name)
-                    .setCaptionElement(this._caption, this._required);
+                    .setCaptionElement(this._caption, this._required, this._labelSeparator);
 
                 if (typeof this._widthCaption === 'number') {
 
@@ -266,7 +296,7 @@
              */
             _buildField: function() {
 
-                return new ui.Element('input')
+                var field = new ui.Element('input')
                     .setTypeElement('text')
                     .setNameElement(this._name)
                     .setIdElement(this._id, this._name)
@@ -274,8 +304,14 @@
                     .addClassElement(ui.CSS.formControlClass)
                     .setDisabledElement(this._disabled)
                     .setRequiredElement(this._required)
-                    .setAttrElement('maxlength', this._maxLength)
-                    .getElement();
+                    .setAttrElement('maxlength', this._maxLength);
+
+                for (var i = 0; i < this._event.length; i++) {
+
+                    field.setAttrElement(this._event[i].eventName, this._event[i].event);
+                }
+
+                return field.getElement();
             },
 
             /**

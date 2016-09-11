@@ -423,6 +423,32 @@
                     element.style.visibility = 'hidden';
                 }
             }
+        },
+
+        setLimitNumber: function(value, min, max) {
+
+            value = Number(value);
+
+            if (value < min) {
+                value = 0;
+            }
+
+            if (value > max) {
+                value = max;
+            }
+
+            return value;
+        },
+
+        setPrefixZeroNumber: function(value) {
+
+            value = Number(value);
+
+            if (value >= 0 && value < 10) {
+                value = '0' + value;
+            }
+
+            return value;
         }
     };
 

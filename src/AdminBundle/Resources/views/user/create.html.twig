@@ -59,9 +59,9 @@
 
             .newLineParent()
             .addSelectField(null, 'role_id', lbl._role, list_roles, true)
-            .addDateTimeField(null, 'created_at', lbl._created_at, null)
+//            .addDateTimeField(null, 'created_at', lbl._created_at, null)
 //            .addDateField(null, 'created_at', lbl._created_at, null)
-//            .addReadOnlyField(null, 'created_at', lbl._created_at, null, 'datetime')
+            .addReadOnlyField(null, 'created_at', lbl._created_at, null, 'datetime')
 
             .newLineParent()
             .addRadioField(0, 'isActive', lbl._active, ['Нет', 'Да'], false, 12)
