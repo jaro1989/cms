@@ -36,3 +36,37 @@ _user_remove:
 _user_save:
     path: /save/user
     defaults:  { _controller: AdminBundle:User:save }
+
+_role_create:
+    path: /create/role/{record}
+    defaults:  { _controller: AdminBundle:Role:create, record: 0 }
+
+_role_list:
+    path: /list/role/{page}
+    defaults:  { _controller: AdminBundle:Role:list, type: list, page: 1 }
+    requirements:
+        page: '\d+'
+
+_role_list_trash:
+    path: /list/role/trash/{page}
+    defaults:  { _controller: AdminBundle:Role:list, type: trash, page: 1 }
+    requirements:
+        page: '\d+'
+
+_role_switch_list:
+    path: /list/role/switch/{type}
+    defaults:  { _controller: AdminBundle:Role:switchList, type: list}
+    requirements:
+        page: '\d+'
+
+_role_to_trash:
+    path: /trash/role
+    defaults:  { _controller: AdminBundle:Role:trash }
+
+_role_remove:
+    path: /remove/role
+    defaults:  { _controller: AdminBundle:Role:remove }
+
+_role_save:
+    path: /save/role
+    defaults:  { _controller: AdminBundle:Role:save }

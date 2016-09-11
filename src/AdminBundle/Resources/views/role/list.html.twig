@@ -1,0 +1,68 @@
+{% extends 'admin/body.html.twig' %}
+
+{% block content %}
+    <div id="page-html"></div>
+
+
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script>
+        var locale = '{{ app.request.locale }}';
+
+        var lbl = {
+            _pagename:   '{{ '_LIST_ROLE'|trans({}, 'admin') }}',
+            _name:       '{{ '_NAME_ROLE_TEXT'|trans({}, 'admin') }}',
+            _role:       '{{ '_NAME_ROLE_KEY'|trans({}, 'admin') }}',
+            _created_at: '{{ '_CREATED_AT'|trans({}, 'admin') }}'
+        };
+
+        var path = {
+            create:      '{{ path('_role_create') }}',
+            list_trash:  '{{ path('_role_list_trash') }}',
+            to_trash:    '{{ path('_role_to_trash') }}',
+            switch_list: '{{ path('_role_switch_list', {'type': 'list'}) }}'
+        };
+
+        var data = {{data|json_encode|raw}};
+        var count_page = {{count_page}};
+        var current_page = {{current_page}};
+
+        // ID элемента для вставки полей
+        var APPEND_ELEMENT = '#page-html';
+
+        new ui.List('id', 'list-role', locale)
+            .setTitle(lbl._pagename, null)
+
+            .setLinkAddEndEdit(path.create)
+            .setLinkTrash(path.list_trash)
+            .setDataAjaxPagination('pagination', path.switch_list)
+            .setDataAjaxRemove('remove', path.to_trash)
+
+            .setTypeTable('bordered')
+            .hideBtnClear(true)
+            .hideBtnSearch(true)
+
+            .newRowHead()
+            .addCellHead(lbl._created_at, 1, 1, true, 3, null)
+            .addCellHead(lbl._name, 1, 1, true, 4, null)
+            .addCellHead(lbl._role, 1, 1, true, 4, null)
+
+            .addRowsBody(data)
+            .addColumn('created_at', 'datetime')
+            .addColumn('name', 'link')
+            .addColumn('role', 'link')
+
+            .setCountPages(count_page)
+            .setCurrentPage(current_page)
+
+            .appendHTML(APPEND_ELEMENT);
+    </script>
+
+{% endblock %}

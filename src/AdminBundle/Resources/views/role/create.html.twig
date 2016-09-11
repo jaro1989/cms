@@ -1,0 +1,57 @@
+{% extends 'admin/body.html.twig' %}
+
+{% block content %}
+
+    <div id="page-html"></div>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script>
+        var locale = '{{ app.request.locale }}';
+
+        var lbl = {
+            _deleted:    '{{ '_DELETED'|trans({}, 'admin') }}',
+            _pagename:   '{{ '_CREATE_ROLE'|trans({}, 'admin') }}',
+            _name:       '{{ '_NAME_ROLE_TEXT'|trans({}, 'admin') }}',
+            _role:       '{{ '_NAME_ROLE_KEY'|trans({}, 'admin') }}'
+        };
+
+        var path = {
+            list:   '{{ path('_role_list') }}',
+            remove: '{{ path('_role_remove') }}',
+            save:   '{{ path('_role_save') }}'
+        };
+
+        var data  = {{data|json_encode|raw}};
+
+        // ID элемента для вставки полей
+        var APPEND_ELEMENT = '#page-html';
+
+        new ui.Form('form-user', locale)
+                .setTitle(lbl._pagename, null)
+                .setUrtDel(path.remove)
+                .setUrtList(path.list)
+                .setUrlActionForm(path.save)
+
+                .setFormReadOnly(false)
+
+                .setParentBlock('Роль', 'id', data)
+
+                .newLineParent()
+                .addTextField(null, 'role', lbl._role, true)
+                .addTextField(null, 'name', lbl._name)
+
+                .addRadioField(0, 'deleted', lbl._deleted, ['Нет', 'Да'], false, 12)
+
+                .setDebug(true)
+
+                .appendHTML(APPEND_ELEMENT);
+    </script>
+
+{% endblock %}

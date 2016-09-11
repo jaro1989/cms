@@ -37,4 +37,20 @@ class RoleRepository extends \Doctrine\ORM\EntityRepository
 
         return $result;
     }
+
+    public function findOneRole($record) {
+
+        return $this->getEntityManager()
+            ->createQuery("
+                SELECT r.id,
+                       r.role,
+                       r.name,
+                       r.created_at
+                  FROM AdminBundle:Role r
+                 WHERE r.id = :id
+            ")
+            ->setParameter('id', $record)
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+    }
 }
