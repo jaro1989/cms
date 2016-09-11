@@ -19,7 +19,9 @@
         var lbl = {
             _pagename:   '{{ '_LIST_USER'|trans({}, 'admin') }}',
             _username:   '{{ '_USERNAME'|trans({}, 'admin') }}',
+            _staus:      '{{ '_STAUS'|trans({}, 'admin') }}',
             _active:     '{{ '_ACTIVE'|trans({}, 'admin') }}',
+            _locked:     '{{ '_LOCKED'|trans({}, 'admin') }}',
             _email:      '{{ '_EMAIL'|trans({}, 'admin') }}',
             _created_at: '{{ '_CREATED_AT'|trans({}, 'admin') }}'
         };
@@ -45,7 +47,7 @@
             .newLineSearchFields()
             .addTextField(null, 'username', lbl._username, false)
             .addTextField(null, 'email', lbl._email, false)
-            .addRadioField(0, 'isActive', lbl._active, ['Нет', 'Да'], false, 12)
+//            .addRadioField(0, 'isActive', lbl._staus, [lbl._locked, lbl._active], false, 12)
             .addReadOnlyField(null, null, null, null)
 
             .setLinkAddEndEdit(path.create)
@@ -57,16 +59,16 @@
             .setTypeTable('bordered')
 
             .newRowHead()
-            .addCellHead(lbl._created_at, 1, 1, true, 5, null)
-            .addCellHead(lbl._username, 1, 1, true, 5, null)
-            .addCellHead(lbl._email, 1, 1, true, 5, null)
-            .addCellHead(lbl._active, 1, 1, true, 2, null)
+            .addCellHead(lbl._created_at, 1, 1, true, 3, null)
+            .addCellHead(lbl._username, 1, 1, true, 4, null)
+            .addCellHead(lbl._email, 1, 1, true, 4, null)
+            .addCellHead(lbl._staus, 1, 1, true, 1, null)
 
             .addRowsBody(data)
             .addColumn('created_at', 'datetime')
             .addColumn('username', 'link')
             .addColumn('email', 'link')
-            .addColumn('isActive', 'text')
+            .addColumn('isActive', 'ban')
 
             .setCountPages(count_page)
             .setCurrentPage(current_page)

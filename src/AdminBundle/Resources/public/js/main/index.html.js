@@ -43,7 +43,7 @@ new ui.List('id', 'list-user', null)
 
     .setLinkAddEndEdit('http://symfony.cms/lib-js/ui/example/index.html?page=form')
     .setLinkTrash('http://symfony.cms/lib-js/ui/example/index.html?page=form')
-    .setAction('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
+    //.setAction('http://symfony.cms/lib-js/ui/example/actionFormServer.php')
     .setTitle('List user', 'description user')
 
     .setTypeTable('bordered')

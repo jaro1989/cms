@@ -4,10 +4,12 @@ _USERNAME: 'Имя пользователя'
 _PASSWORD: 'Пароль'
 _EMAIL: 'E-mail'
 _CONFIRM_PASSWORD: 'Подтвердите пароль'
-_ACTIVE: 'Активный'
 _ROLE: 'Роль'
 _CREATED_AT: 'Дата создания'
 _UPDATED_AT: 'Дата обновления'
+_STAUS: 'Статус'
+_ACTIVE: 'Активный'
+_LOCKED: 'Заблокированный'
 
 # Buttons
 _LOGIN: 'Вход'

@@ -10772,7 +10772,7 @@
                     .addClassElement('sort-content')
                     .setPsitionElement('right')
                     .setContentElement(params.value)
-                    .toHTML()
+                    .toHTML();
             },
 
             text: function(params) {
@@ -10782,7 +10782,7 @@
                     .addStyleElement('overflow', 'auto')
                     .addClassElement('sort-content')
                     .setContentElement(params.value)
-                    .toHTML()
+                    .toHTML();
             },
 
             link: function(params) {
@@ -10797,7 +10797,7 @@
                             .setContentElement(params.value)
                             .getElement()
                     )
-                    .toHTML()
+                    .toHTML();
             },
 
             image: function(params) {
@@ -10818,7 +10818,7 @@
                             )
                             .getElement()
                     )
-                    .toHTML()
+                    .toHTML();
             },
 
             code: function(params) {
@@ -10828,7 +10828,7 @@
                     .addStyleElement('overflow', 'auto')
                     .addClassElement('sort-content')
                     .setContentElement(ui.api.escapeHtml(params.value))
-                    .toHTML()
+                    .toHTML();
             },
 
             html: function(params) {
@@ -10838,7 +10838,7 @@
                     .addStyleElement('overflow', 'auto')
                     .addClassElement('sort-content')
                     .setContentElement(ui.api.escapeHtml(params.value))
-                    .toHTML()
+                    .toHTML();
             },
 
             date: function(params) {
@@ -10848,7 +10848,7 @@
                 return new ui.Element('div')
                     .addClassElement('sort-content')
                     .setContentElement(new ui.FormatDate(valueDate, params.formatDateUser).getDate())
-                    .toHTML()
+                    .toHTML();
             },
 
             datetime: function(params) {
@@ -10858,7 +10858,37 @@
                 return new ui.Element('div')
                     .addClassElement('sort-content')
                     .setContentElement(new ui.FormatDate(valueDate, params.formatDateTimeUser).getDate())
-                    .toHTML()
+                    .toHTML();
+            },
+
+            ban: function(params) {
+
+                var content = new ui.Element('div')
+                    .addClassElement('sort-content')
+                    .addClassElement(ui.CSS.alignClass.text.center);
+
+                if (ui.api.getParseValue(params.value)) {
+
+                    content
+                        .addChildAfter(
+                            new ui.Element('span')
+                                .setSkinElement('text', 'success')
+                                .setIconElement('ok-circle')
+                                .getElement()
+                        );
+
+                } else {
+
+                    content
+                        .addChildAfter(
+                            new ui.Element('span')
+                                .setSkinElement('text', 'danger')
+                                .setIconElement('ban-circle')
+                                .getElement()
+                        );
+                }
+
+                return content.toHTML();
             }
         };
 

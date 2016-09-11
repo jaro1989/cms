@@ -105,3 +105,7 @@
         padding: 15px;
         margin: 0 auto;
     }
+
+    .glyphicon {
+        line-height: 1.4;
+    }

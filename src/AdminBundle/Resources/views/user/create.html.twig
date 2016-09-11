@@ -21,7 +21,9 @@
             _confirm:    '{{ '_CONFIRM_PASSWORD'|trans({}, 'admin') }}',
             _username:   '{{ '_USERNAME'|trans({}, 'admin') }}',
             _password:   '{{ '_PASSWORD'|trans({}, 'admin') }}',
+            _staus:      '{{ '_STAUS'|trans({}, 'admin') }}',
             _active:     '{{ '_ACTIVE'|trans({}, 'admin') }}',
+            _locked:     '{{ '_LOCKED'|trans({}, 'admin') }}',
             _email:      '{{ '_EMAIL'|trans({}, 'admin') }}',
             _role:       '{{ '_ROLE'|trans({}, 'admin') }}',
             _created_at: '{{ '_CREATED_AT'|trans({}, 'admin') }}'
@@ -64,7 +66,7 @@
             .addReadOnlyField(null, 'created_at', lbl._created_at, null, 'datetime')
 
             .newLineParent()
-            .addRadioField(0, 'isActive', lbl._active, ['Нет', 'Да'], false, 12)
+            .addRadioField(0, 'isActive', lbl._staus, [lbl._locked, lbl._active], false, 12)
             .addRadioField(0, 'deleted', lbl._deleted, ['Нет', 'Да'], false, 12)
 
             .setDebug(true)

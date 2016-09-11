@@ -4,10 +4,12 @@ _USERNAME: 'Username'
 _PASSWORD: 'Password'
 _EMAIL: 'E-mail'
 _CONFIRM_PASSWORD: 'Confirm password'
-_ACTIVE: 'Active'
 _ROLE: 'Role'
 _CREATED_AT: 'Date of creation'
 _UPDATED_AT: 'Date of renovation'
+_STAUS: 'Status'
+_ACTIVE: 'Active'
+_LOCKED: 'Locked'
 
 # Buttons
 _LOGIN: 'Log-in'
