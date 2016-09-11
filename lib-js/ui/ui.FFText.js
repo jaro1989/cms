@@ -93,6 +93,12 @@
             _required: false,
 
             /**
+             * @private
+             * @type {number}
+             */
+            _maxLength: null,
+
+            /**
              * Set required field
              * @returns {ui.FFText}
              */
@@ -223,6 +229,15 @@
             },
 
             /**
+             * @param {number} max
+             * @returns {ui.FFText}
+             */
+            setMaxLength: function(max) {
+                this._maxLength = max;
+                return this;
+            },
+
+            /**
              * Build html label
              * @returns {*|Element}
              * @private
@@ -259,6 +274,7 @@
                     .addClassElement(ui.CSS.formControlClass)
                     .setDisabledElement(this._disabled)
                     .setRequiredElement(this._required)
+                    .setAttrElement('maxlength', this._maxLength)
                     .getElement();
             },
 

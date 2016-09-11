@@ -5,10 +5,14 @@
     var _TYPE_PASS      = '_ffPassword';
     var _TYPE_TEXTAREA  = '_ffTextarea';
     var _TYPE_DATE      = '_ffDate';
+    var _TYPE_DATETIME  = '_ffDateTime';
     var _TYPE_SELECT    = '_ffSelect';
     var _TYPE_CHECKBOX  = '_ffCheckbox';
     var _TYPE_RADIO     = '_ffRadio';
     var _TYPE_READ_ONLY = '_ffReadonly';
+
+    var _TYPE_CONTENT_DATE = 'date';
+    var _TYPE_CONTENT_DATETIME = 'datetime';
 
     var _OBJECT_NAME  = 'object_name';
     var _PARENT_TITLE = 'parent_title';
@@ -44,8 +48,11 @@
         this.widthCaption = null;
         this.maxHeightFields = null;
         this.heightFields = null;
-        this.formatDate = ui.Config.formatDateUser;
         this.checkboxText = ui.Config.checkboxText;
+        this._formatDateUser = ui.Config.formatDateUser;
+        this._formatDateSave = ui.Config.formatDateSave;
+        this._formatDateTimeUser = ui.Config.formatDateTimeUser;
+        this._formatDateTimeSave = ui.Config.formatDateTimeSave;
     };
 
     /** @public */
@@ -67,9 +74,13 @@
                 value = ui.api.existProperty(dataList, dataValue, null);
             }
 
-            if (params.type === _TYPE_DATE) {
+            if (params.type === _TYPE_DATE || params.typeContent == _TYPE_CONTENT_DATE) {
 
-                value = new ui.FormatDate(dataValue, this.formatDate).getDate();
+                value = new ui.FormatDate(dataValue, this._formatDateUser).getDate();
+
+            } else if (params.type === _TYPE_DATETIME || params.typeContent == _TYPE_CONTENT_DATETIME) {
+
+                value = new ui.FormatDate(dataValue, this._formatDateTimeUser).getDate();
 
             } else if (params.type === _TYPE_CHECKBOX) {
 
@@ -155,6 +166,27 @@
             return new ui.FFDate(value, params['setname'], caption)
                 .setRequired(ui.api.existProperty(params, 'required', false))
                 .setWidthCaption(this.widthCaption)
+                .setDateFormatUser(this._formatDateUser)
+                .setDateFormatSave(this._formatDateSave)
+                .getElement();
+        },
+
+        /**
+         * @param {string|number|null} value
+         * @param {string|null} name
+         * @param {{}} params
+         * @returns {*|Element}
+         */
+        _ffDateTime: function(value, name, params) {
+
+            var caption = ui.api.existProperty(params, 'caption', null);
+            value = ui.api.setValue(value, name, params.defValue);
+
+            return new ui.FFDateTime(value, params['setname'], caption)
+                .setRequired(ui.api.existProperty(params, 'required', false))
+                .setWidthCaption(this.widthCaption)
+                .setDateFormatUser(this._formatDateTimeUser)
+                .setDateFormatSave(this._formatDateTimeSave)
                 .getElement();
         },
 
@@ -269,13 +301,15 @@
          * @param {string|null} name
          * @param {string|number|null} caption
          * @param {string|number|null} height
+         * @param {string|null} [type] - "date"|"datetime"|null
          * @returns {ui.HtmlFields}
          */
-        addReadOnlyField: function(defValue, name, caption, height) {
+        addReadOnlyField: function(defValue, name, caption, height, type) {
 
             var params = {
                 defValue: defValue,
                 type:     _TYPE_READ_ONLY,
+                typeContent: type,
                 caption:  caption,
                 height:   height
             };
@@ -362,6 +396,27 @@
             var params = {
                 defValue: defValue,
                 type:     _TYPE_DATE,
+                caption:  caption,
+                required: ui.api.empty(required, false)
+            };
+
+            this._setParametersFields(params, name);
+
+            return this;
+        },
+
+        /**
+         * @param {string} defValue
+         * @param {string} name
+         * @param {string|number} caption
+         * @param {boolean} required
+         * @returns {ui.HtmlFields}
+         */
+        addDateTimeField: function(defValue, name, caption, required) {
+
+            var params = {
+                defValue: defValue,
+                type:     _TYPE_DATETIME,
                 caption:  caption,
                 required: ui.api.empty(required, false)
             };
@@ -463,10 +518,64 @@
         /**
          *
          * @param {string} format
+         *                      'YYYY-MM-DD' | 'YYYY.MM.DD' | 'YYYY/MM/DD' |
+         *                      'DD-MM-YYYY' | 'DD.MM.YYYY' | 'DD/MM/YYYY' |
+         *                      'DD-MM-YY'   | 'DD.MM.YY'   | 'DD/MM/YY'   |
          * @returns {ui.HtmlFields}
+         * @public
          */
-        setFormatDate: function(format) {
-            this.formatDate = format;
+        setFormatDateUser: function(format) {
+            if (format.length == 8 ||  format.length == 10) {
+                this._formatDateUser = format;
+            }
+            return this;
+        },
+
+        /**
+         *
+         * @param {string} format
+         *                      'YYYY-MM-DD' | 'YYYY.MM.DD' | 'YYYY/MM/DD' |
+         *                      'DD-MM-YYYY' | 'DD.MM.YYYY' | 'DD/MM/YYYY' |
+         *                      'DD-MM-YY'   | 'DD.MM.YY'   | 'DD/MM/YY'   |
+         * @returns {ui.HtmlFields}
+         * @public
+         */
+        setFormatDateSave: function(format) {
+            if (format.length == 8 ||  format.length == 10) {
+                this._formatDateSave = format;
+            }
+            return this;
+        },
+
+        /**
+         *
+         * @param {string} format
+         *                      'YYYY-MM-DD HH:MI:SS' | 'YYYY.MM.DD HH:MI:SS' | 'YYYY/MM/DD HH:MI:SS' |
+         *                      'DD-MM-YYYY HH:MI:SS' | 'DD.MM.YYYY HH:MI:SS' | 'DD/MM/YYYY HH:MI:SS' |
+         *                      'DD-MM-YY HH:MI:SS'   | 'DD.MM.YY HH:MI:SS'   | 'DD/MM/YYYY HH:MI:SS' |
+         * @returns {ui.HtmlFields}
+         * @public
+         */
+        setFormatDateTimeUser: function(format) {
+            if (format.length == 17 || format.length == 19) {
+                this._formatDateTimeUser = format;
+            }
+            return this;
+        },
+
+        /**
+         *
+         * @param {string} format
+         *                       'YYYY-MM-DD HH:MI:SS' | 'YYYY.MM.DD HH:MI:SS' | 'YYYY/MM/DD HH:MI:SS' |
+         *                       'DD-MM-YYYY HH:MI:SS' | 'DD.MM.YYYY HH:MI:SS' | 'DD/MM/YYYY HH:MI:SS' |
+         *                       'DD-MM-YY HH:MI:SS'   | 'DD.MM.YY HH:MI:SS'   | 'DD/MM/YYYY HH:MI:SS' |
+         * @returns {ui.HtmlFields}
+         * @public
+         */
+        setFormatDateTimeSave: function(format) {
+            if (format.length == 17 || format.length == 19) {
+                this._formatDateTimeSave = format;
+            }
             return this;
         },
 

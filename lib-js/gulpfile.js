@@ -28,6 +28,7 @@
         './ui/ui.FFSelect.js',
         './ui/ui.FFButton.js',
         './ui/ui.FFDate.js',
+        './ui/ui.FFDateTime.js',
         './ui/ui.Modal.js',
         './ui/ui.Progress.js',
         './ui/ui.Ajax.js',

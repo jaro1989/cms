@@ -37,12 +37,15 @@
          * @namespace ui.Calendar
          * @constructor
          */
-        ui.Calendar = function(yyyy, mm, dd) {
+        ui.Calendar = function(yyyy, mm, dd, hh, mi, ss) {
 
             this._date = new Date();
             this._date.setFullYear(ui.api.empty(setYear(yyyy), this._date.getFullYear()));
             this._date.setMonth(ui.api.empty(mm, this._date.getMonth()));
             this._date.setDate(ui.api.empty(dd, 1));
+            this._date.setHours(ui.api.empty(hh, 0));
+            this._date.setMinutes(ui.api.empty(mi, 0));
+            this._date.setSeconds(ui.api.empty(ss, 0));
 
             this._year  = this._date.getFullYear();
             this._month = this._date.getMonth();
@@ -53,14 +56,20 @@
                 this._currentDay = this._currentDate.getDate();
             }
 
-            this._day = ui.api.empty(dd, this._date.getDate);
+            this._day = ui.api.empty(dd, this._date.getDate());
+
+            this._h = this._date.getHours();
+            this._m = this._date.getMinutes();
+            this._s = this._date.getSeconds();
+
+            this._time = false;
         };
 
         /** @protected */
         ui.Calendar.prototype = {
 
-            _x: null,
-            _y: null,
+            //_x: null,
+            //_y: null,
 
             _formatUser: ui.Config.formatDateUser,
             _formatSave: ui.Config.formatDateSave,
@@ -98,14 +107,39 @@
             _monthId: 'month-name-calendar',
 
             /**
+             * @returns {ui.Calendar}
+             */
+            setTime: function() {
+                this._time = true;
+                return this;
+            },
+
+            /**
+             * @param {string} format
+             * @returns {ui.Calendar}
+             */
+            setFormatUser: function(format) {
+                this._formatUser = format;
+                return this;
+            },
+
+            /**
+             * @param {string} format
+             * @returns {ui.Calendar}
+             */
+            setFormatSave: function(format) {
+                this._formatSave = format;
+                return this;
+            },
+
+            /**
              * Set date in element
              * @param {string|null} selector
              * @returns {ui.Calendar}
              * @public
              */
             addDateUserTo: function(selector) {
-
-                this._selectorUser = ui.api.empty(selector, null);
+                this._selectorUser = selector;
                 return this;
             },
 
@@ -116,34 +150,31 @@
              * @public
              */
             addDateSaveTo: function(selector) {
-
-                this._selectorSave = ui.api.empty(selector, null);
+                this._selectorSave = selector;
                 return this;
             },
 
-            /**
-             * Set position left
-             * @param {number|null} x
-             * @returns {ui.Calendar}
-             * @public
-             */
-            setPositionLeft: function(x) {
-
-                this._x = ui.api.empty(x, null);
-                return this;
-            },
-
-            /**
-             * Set position top
-             * @param {number|null} y
-             * @returns {ui.Calendar}
-             * @public
-             */
-            setPositionTop: function(y) {
-
-                this._y = ui.api.empty(y, null);
-                return this;
-            },
+            ///**
+            // * Set position left
+            // * @param {number|null} x
+            // * @returns {ui.Calendar}
+            // * @public
+            // */
+            //setPositionLeft: function(x) {
+            //    this._x = ui.api.empty(x, null);
+            //    return this;
+            //},
+            //
+            ///**
+            // * Set position top
+            // * @param {number|null} y
+            // * @returns {ui.Calendar}
+            // * @public
+            // */
+            //setPositionTop: function(y) {
+            //    this._y = ui.api.empty(y, null);
+            //    return this;
+            //},
 
             /**
              * Get count day in month
@@ -226,7 +257,7 @@
              * @returns {*|string}
              * @private
              */
-            _buildInput: function() {
+            _buildInputYear: function() {
 
                 return new ui.Element('div')
                     .addStyleElement('paddingLeft', '10px')
@@ -242,6 +273,35 @@
                             .getElement()
                     )
                     .addChildAfter(this._buildDataList())
+                    .toHTML();
+            },
+
+            _buildInputTime: function() {
+
+                return new ui.Element('div')
+                    .addChildAfter(
+                        new ui.Element('div')
+                            .setWidthElement(12)
+                            .addChildAfter(
+                                new ui.FFText(this._h, 'data-hh', 'Час')
+                                    .setWidthBlock(4)
+                                    .setMaxLength(2)
+                                    .getElement()
+                            )
+                            .addChildAfter(
+                                new ui.FFText(this._m, 'data-mm', 'Мин')
+                                    .setWidthBlock(4)
+                                    .setMaxLength(2)
+                                    .getElement()
+                            )
+                            .addChildAfter(
+                                new ui.FFText(this._s, 'data-ss','Cек')
+                                    .setWidthBlock(4)
+                                    .setMaxLength(2)
+                                    .getElement()
+                            )
+                            .getElement()
+                    )
                     .toHTML();
             },
 
@@ -295,7 +355,7 @@
              */
             _buildHead: function() {
 
-                return new ui.Element('table')
+                var table = new ui.Element('table')
                     .addRowBody(0)
 
                     // ICON PREVIOUS
@@ -303,7 +363,7 @@
                     .addAttrTable('td', 'width', '10px')
 
                     // INPUT YEAR
-                    .addCellBody(this._buildInput(), 1)
+                    .addCellBody(this._buildInputYear(), 1)
                     .addAttrTable('td', 'width', ((this._width - 2) / 2) + 'px')
 
                     // MONTH NAME
@@ -312,9 +372,17 @@
 
                     // ICON NEXT
                     .addCellBody(this._buildIcon('next', this._nextIcon), 3)
-                    .addAttrTable('td', 'width', '10px')
+                    .addAttrTable('td', 'width', '10px');
 
-                    .getElement();
+                if (this._time) {
+
+                    table
+                        .addRowBody(1)
+                        .addCellBody(this._buildInputTime(), 0)
+                        .addAttrTable('td', 'colspan', 4);
+                }
+
+                return table.getElement();
             },
 
             /**
@@ -468,26 +536,27 @@
                     .setAttrElement('data-day',  this._day)
                     .addChildAfter(this._buildPanel());
 
-                if (this._selectorUser !== null) {
+                if (this._selectorUser != null) {
 
                     parentElement.setAttrElement('data-selector-user',  this._selectorUser);
-                    parentElement.setAttrElement('date-format-user', this._formatUser)
+                    parentElement.setAttrElement('date-format-user', this._formatUser);
                 }
 
-                if (this._selectorSave !== null) {
+                if (this._selectorSave != null) {
 
                     parentElement.setAttrElement('data-selector-save',  this._selectorSave);
                     parentElement.setAttrElement('date-format-save', this._formatSave)
                 }
 
-                if (this._x !== null || this._y !== null) {
+                var position = document.querySelector(this._selectorUser).getBoundingClientRect();
+                var x = position.left + (this._width / 2);
+                var y = position.bottom;
 
-                    parentElement
-                        .addStyleElement('left', (Number(this._x) - (this._width / 2)) + 'px')
-                        .addStyleElement('top', (Number(this._y)) + 'px')
-                        .addStyleElement('position', 'absolute')
-                        .addStyleElement('z-index', 10000);
-                }
+                parentElement
+                    .addStyleElement('left', (x - (this._width / 2)) + 'px')
+                    .addStyleElement('top', (y) + 'px')
+                    .addStyleElement('position', 'absolute')
+                    .addStyleElement('z-index', 10000);
 
                 window.addEventListener('click', removeCalendar);
 
@@ -563,9 +632,21 @@
                 var month = parentElement.getAttribute('data-month');
                 var year  = parentElement.getAttribute('data-year');
                 var day   = element.getAttribute('data-day');
+                var hh   = parentElement.querySelector('#data-hh');
+                var mm   = parentElement.querySelector('#data-mm');
+                var ss   = parentElement.querySelector('#data-ss');
 
                 var date = new Date(year, month, day);
+
+                if (hh && mm && ss) {
+
+                    date = new Date(year, month, day, hh.value, mm.value, ss.value);
+                }
+
                 var setDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+                setDate += ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+
+
 
                 if (parentElement.hasAttribute('data-selector-user')) {
 

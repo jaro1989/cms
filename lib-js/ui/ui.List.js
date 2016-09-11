@@ -175,6 +175,26 @@
                     .addClassElement('sort-content')
                     .setContentElement(ui.api.escapeHtml(params.value))
                     .toHTML()
+            },
+
+            date: function(params) {
+
+                var valueDate = ui.api.getParseValue(params.value);
+
+                return new ui.Element('div')
+                    .addClassElement('sort-content')
+                    .setContentElement(new ui.FormatDate(valueDate, params.formatDateUser).getDate())
+                    .toHTML()
+            },
+
+            datetime: function(params) {
+
+                var valueDate = ui.api.getParseValue(params.value);
+
+                return new ui.Element('div')
+                    .addClassElement('sort-content')
+                    .setContentElement(new ui.FormatDate(valueDate, params.formatDateTimeUser).getDate())
+                    .toHTML()
             }
         };
 
@@ -430,7 +450,9 @@
                 alt: this._lbl.noimg,
                 hrefNoImg: this.urlNoImg,
                 height: this._maxHeightRow,
-                separator: this._separatorLink
+                separator: this._separatorLink,
+                formatDateUser: this._formatDateUser,
+                formatDateTimeUser: this._formatDateTimeUser
             };
 
             content = this._columnType[type].call(this, params);

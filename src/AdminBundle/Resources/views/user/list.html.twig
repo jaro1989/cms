@@ -45,7 +45,7 @@
             .newLineSearchFields()
             .addTextField(null, 'username', lbl._username, false)
             .addTextField(null, 'email', lbl._email, false)
-            .addRadioField(0, 'isActive', lbl._active, {'': 'Все', 0: 'Нет', 1: 'Да'}, false, 12)
+            .addRadioField(0, 'isActive', lbl._active, ['Нет', 'Да'], false, 12)
             .addReadOnlyField(null, null, null, null)
 
             .setLinkAddEndEdit(path.create)
@@ -63,7 +63,7 @@
             .addCellHead(lbl._active, 1, 1, true, 2, null)
 
             .addRowsBody(data)
-            .addColumn('created_at', 'text')
+            .addColumn('created_at', 'datetime')
             .addColumn('username', 'link')
             .addColumn('email', 'link')
             .addColumn('isActive', 'text')

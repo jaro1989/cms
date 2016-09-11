@@ -33,7 +33,7 @@
             save: '{{ path('_user_save') }}'
         };
 
-        var user_data  = {{user_data|json_encode|raw}};
+        var data  = {{data|json_encode|raw}};
         var list_roles = {{list_roles|json_encode|raw}};
 
         // ID элемента для вставки полей
@@ -45,19 +45,23 @@
             .setUrtList(path.list)
             .setUrlActionForm(path.save)
 
-            .setParentBlock('Информация о пользователе', 'id', user_data)
+            .setFormReadOnly(false)
+
+            .setParentBlock('Информация о пользователе', 'id', data)
 
             .newLineParent()
             .addTextField(null, 'username', lbl._username, true)
             .addTextField(null, 'email', lbl._email)
 
             .newLineParent()
-            .addPasswordField(null, 'password', lbl._password, user_data ? false : true)
-            .addPasswordField(null, 'confirmPassword', lbl._confirm, user_data ? false : true)
+            .addPasswordField(null, 'password', lbl._password, data ? false : true)
+            .addPasswordField(null, 'confirmPassword', lbl._confirm, data ? false : true)
 
             .newLineParent()
             .addSelectField(null, 'role_id', lbl._role, list_roles, true)
-            .addReadOnlyField(null, 'created_at', lbl._created_at, null)
+            .addDateTimeField(null, 'created_at', lbl._created_at, null)
+//            .addDateField(null, 'created_at', lbl._created_at, null)
+//            .addReadOnlyField(null, 'created_at', lbl._created_at, null, 'datetime')
 
             .newLineParent()
             .addRadioField(0, 'isActive', lbl._active, ['Нет', 'Да'], false, 12)

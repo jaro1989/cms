@@ -24,6 +24,7 @@
         this._id = ui.api.empty(this._name, idFieldUser + '-' + counter);
 
         this._valueForEvent = [];
+        this._time = false;
         counter++;
     };
 
@@ -307,18 +308,22 @@
          */
         _buildButtons: function() {
 
+            var FFDate = "new ui.FFDate()";
+            FFDate += ".setDateFormatUser('" + this._formatDateUser + "')";
+            FFDate += ".setDateFormatSave('" + this._formatDateSave + "')";
+
             return new ui.Element('div')
                 .addClassElement(ui.CSS.btn.btnGroup.group)
                 .setWidthElement(7)
                 .addChildAfter(
                     new ui.FFButton()
-                        .setOnClick('new ui.FFDate()._setCurrentDate(this);')
+                        .setOnClick(FFDate + '._setCurrentDate(this);')
                         .addButton(null, null, null, null, this._activeBtn, ui.Config.iconBtnDate.currentDate)
                         .setWidth('120px')
-                        .setOnClick("new ui.FFDate()._calendar(this, '" + this._id + "');")
+                        .setOnClick(FFDate + "._calendar(this, '" + this._id + "');")
                         .addButton(null, null, null, null, this._activeBtn, ui.Config.iconBtnDate.calendarDate)
                         .setWidth('120px')
-                        .setOnClick('new ui.FFDate()._clearDate(this);')
+                        .setOnClick(FFDate + '._clearDate(this);')
                         .addButton(null, null, null, null, this._activeBtn, ui.Config.iconBtnDate.removeDate)
                         .setWidth('120px')
                         .setPaddingBlock(null)
@@ -411,7 +416,6 @@
          */
         _calendar: function(e, selectorParentField) {
 
-            var position = e.getBoundingClientRect();
             var parentElement = ui.api.findParent(e, '.' + inputClassBlock);
             var findDate = parentElement.querySelector('#' + selectorParentField + ' > input[type=hidden]').value;
 
@@ -422,9 +426,9 @@
                 date = new Date(findDate);
             }
 
-            new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDate())
-                .setPositionLeft(position.left + ((position.right - position.left) / 2))
-                .setPositionTop(position.bottom)
+            new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds())
+                .setFormatUser(this._formatDateUser)
+                .setFormatSave(this._formatDateSave)
                 .addDateUserTo('#' + selectorParentField + ' > input[type=text]')
                 .addDateSaveTo('#' + selectorParentField + ' > input[type=hidden]')
                 .appendHTML('body');

@@ -54,6 +54,16 @@
             }
 
             return this;
+        },
+
+        getFirstElement: function() {
+
+            if (this.elements) {
+
+                return this.elements[0];
+            }
+
+            return null;
         }
     };
 
@@ -300,23 +310,40 @@
 
         /**
          * Set value field
-         * @param {string|number} nameValue
+         * @param {string|number} value
          * @param {string} nameField
          * @param {string|number|boolean} defValue
          * @returns {string|number}
          * @public
          */
-        setValue: function(nameValue, nameField, defValue) {
+        setValue: function(value, nameField, defValue) {
 
             defValue = ui.api.empty(defValue, '');
 
-            if (typeof nameValue === 'object' && nameValue !== null) {
+            if (typeof value === 'object' && value !== null) {
 
-                return nameField in nameValue ? nameValue[nameField] : defValue;
+                return nameField in value ? this.getParseValue(value[nameField]) : defValue;
             }
 
-            nameValue = (typeof nameValue == 'boolean') ? Number(nameValue) : nameValue;
-            return ui.api.empty(nameValue, defValue);
+            value = (typeof value == 'boolean') ? Number(value) : value;
+            return ui.api.empty(value, defValue);
+        },
+
+        /**
+         * @param value
+         * @returns {*}
+         */
+        getParseValue: function(value) {
+
+            if (typeof value === 'object') {
+
+                if ('date' in value) {
+
+                    return value.date;
+                }
+            }
+
+            return value;
         },
 
         /**

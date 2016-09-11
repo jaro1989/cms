@@ -84,9 +84,16 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 
             foreach ($search as $field => $value) {
 
-                if (!empty($value)) {
+                if ($value !== '') {
 
-                    $where .= ' AND u.' . $field . ' LIKE :' . $field . ' ';
+                    if (in_array($field, ['username', 'email'])) {
+
+                        $where .= ' AND u.' . $field . ' LIKE :' . $field . ' ';
+
+                    } else {
+
+                        $where .= ' AND u.' . $field . ' = :' . $field . ' ';
+                    }
                 }
             }
         }
@@ -105,9 +112,16 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 
             foreach ($search as $field => $value) {
 
-                if (!empty($value)) {
+                if ($value !== '') {
 
-                    $query->setParameter($field, $value . '%');
+                    if (in_array($field, ['username', 'email'])) {
+
+                        $query->setParameter($field, $value . '%');
+
+                    } else {
+
+                        $query->setParameter($field, $value);
+                    }
                 }
             }
         }

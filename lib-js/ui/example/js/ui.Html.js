@@ -761,6 +761,16 @@
             }
 
             return this;
+        },
+
+        getFirstElement: function() {
+
+            if (this.elements) {
+
+                return this.elements[0];
+            }
+
+            return null;
         }
     };
 
@@ -1007,23 +1017,40 @@
 
         /**
          * Set value field
-         * @param {string|number} nameValue
+         * @param {string|number} value
          * @param {string} nameField
          * @param {string|number|boolean} defValue
          * @returns {string|number}
          * @public
          */
-        setValue: function(nameValue, nameField, defValue) {
+        setValue: function(value, nameField, defValue) {
 
             defValue = ui.api.empty(defValue, '');
 
-            if (typeof nameValue === 'object' && nameValue !== null) {
+            if (typeof value === 'object' && value !== null) {
 
-                return nameField in nameValue ? nameValue[nameField] : defValue;
+                return nameField in value ? this.getParseValue(value[nameField]) : defValue;
             }
 
-            nameValue = (typeof nameValue == 'boolean') ? Number(nameValue) : nameValue;
-            return ui.api.empty(nameValue, defValue);
+            value = (typeof value == 'boolean') ? Number(value) : value;
+            return ui.api.empty(value, defValue);
+        },
+
+        /**
+         * @param value
+         * @returns {*}
+         */
+        getParseValue: function(value) {
+
+            if (typeof value === 'object') {
+
+                if ('date' in value) {
+
+                    return value.date;
+                }
+            }
+
+            return value;
         },
 
         /**
@@ -2141,12 +2168,15 @@
          * @namespace ui.Calendar
          * @constructor
          */
-        ui.Calendar = function(yyyy, mm, dd) {
+        ui.Calendar = function(yyyy, mm, dd, hh, mi, ss) {
 
             this._date = new Date();
             this._date.setFullYear(ui.api.empty(setYear(yyyy), this._date.getFullYear()));
             this._date.setMonth(ui.api.empty(mm, this._date.getMonth()));
             this._date.setDate(ui.api.empty(dd, 1));
+            this._date.setHours(ui.api.empty(hh, 0));
+            this._date.setMinutes(ui.api.empty(mi, 0));
+            this._date.setSeconds(ui.api.empty(ss, 0));
 
             this._year  = this._date.getFullYear();
             this._month = this._date.getMonth();
@@ -2157,14 +2187,20 @@
                 this._currentDay = this._currentDate.getDate();
             }
 
-            this._day = ui.api.empty(dd, this._date.getDate);
+            this._day = ui.api.empty(dd, this._date.getDate());
+
+            this._h = this._date.getHours();
+            this._m = this._date.getMinutes();
+            this._s = this._date.getSeconds();
+
+            this._time = false;
         };
 
         /** @protected */
         ui.Calendar.prototype = {
 
-            _x: null,
-            _y: null,
+            //_x: null,
+            //_y: null,
 
             _formatUser: ui.Config.formatDateUser,
             _formatSave: ui.Config.formatDateSave,
@@ -2202,14 +2238,39 @@
             _monthId: 'month-name-calendar',
 
             /**
+             * @returns {ui.Calendar}
+             */
+            setTime: function() {
+                this._time = true;
+                return this;
+            },
+
+            /**
+             * @param {string} format
+             * @returns {ui.Calendar}
+             */
+            setFormatUser: function(format) {
+                this._formatUser = format;
+                return this;
+            },
+
+            /**
+             * @param {string} format
+             * @returns {ui.Calendar}
+             */
+            setFormatSave: function(format) {
+                this._formatSave = format;
+                return this;
+            },
+
+            /**
              * Set date in element
              * @param {string|null} selector
              * @returns {ui.Calendar}
              * @public
              */
             addDateUserTo: function(selector) {
-
-                this._selectorUser = ui.api.empty(selector, null);
+                this._selectorUser = selector;
                 return this;
             },
 
@@ -2220,34 +2281,31 @@
              * @public
              */
             addDateSaveTo: function(selector) {
-
-                this._selectorSave = ui.api.empty(selector, null);
+                this._selectorSave = selector;
                 return this;
             },
 
-            /**
-             * Set position left
-             * @param {number|null} x
-             * @returns {ui.Calendar}
-             * @public
-             */
-            setPositionLeft: function(x) {
-
-                this._x = ui.api.empty(x, null);
-                return this;
-            },
-
-            /**
-             * Set position top
-             * @param {number|null} y
-             * @returns {ui.Calendar}
-             * @public
-             */
-            setPositionTop: function(y) {
-
-                this._y = ui.api.empty(y, null);
-                return this;
-            },
+            ///**
+            // * Set position left
+            // * @param {number|null} x
+            // * @returns {ui.Calendar}
+            // * @public
+            // */
+            //setPositionLeft: function(x) {
+            //    this._x = ui.api.empty(x, null);
+            //    return this;
+            //},
+            //
+            ///**
+            // * Set position top
+            // * @param {number|null} y
+            // * @returns {ui.Calendar}
+            // * @public
+            // */
+            //setPositionTop: function(y) {
+            //    this._y = ui.api.empty(y, null);
+            //    return this;
+            //},
 
             /**
              * Get count day in month
@@ -2330,7 +2388,7 @@
              * @returns {*|string}
              * @private
              */
-            _buildInput: function() {
+            _buildInputYear: function() {
 
                 return new ui.Element('div')
                     .addStyleElement('paddingLeft', '10px')
@@ -2346,6 +2404,35 @@
                             .getElement()
                     )
                     .addChildAfter(this._buildDataList())
+                    .toHTML();
+            },
+
+            _buildInputTime: function() {
+
+                return new ui.Element('div')
+                    .addChildAfter(
+                        new ui.Element('div')
+                            .setWidthElement(12)
+                            .addChildAfter(
+                                new ui.FFText(this._h, 'data-hh', 'Час')
+                                    .setWidthBlock(4)
+                                    .setMaxLength(2)
+                                    .getElement()
+                            )
+                            .addChildAfter(
+                                new ui.FFText(this._m, 'data-mm', 'Мин')
+                                    .setWidthBlock(4)
+                                    .setMaxLength(2)
+                                    .getElement()
+                            )
+                            .addChildAfter(
+                                new ui.FFText(this._s, 'data-ss','Cек')
+                                    .setWidthBlock(4)
+                                    .setMaxLength(2)
+                                    .getElement()
+                            )
+                            .getElement()
+                    )
                     .toHTML();
             },
 
@@ -2399,7 +2486,7 @@
              */
             _buildHead: function() {
 
-                return new ui.Element('table')
+                var table = new ui.Element('table')
                     .addRowBody(0)
 
                     // ICON PREVIOUS
@@ -2407,7 +2494,7 @@
                     .addAttrTable('td', 'width', '10px')
 
                     // INPUT YEAR
-                    .addCellBody(this._buildInput(), 1)
+                    .addCellBody(this._buildInputYear(), 1)
                     .addAttrTable('td', 'width', ((this._width - 2) / 2) + 'px')
 
                     // MONTH NAME
@@ -2416,9 +2503,17 @@
 
                     // ICON NEXT
                     .addCellBody(this._buildIcon('next', this._nextIcon), 3)
-                    .addAttrTable('td', 'width', '10px')
+                    .addAttrTable('td', 'width', '10px');
 
-                    .getElement();
+                if (this._time) {
+
+                    table
+                        .addRowBody(1)
+                        .addCellBody(this._buildInputTime(), 0)
+                        .addAttrTable('td', 'colspan', 4);
+                }
+
+                return table.getElement();
             },
 
             /**
@@ -2572,26 +2667,27 @@
                     .setAttrElement('data-day',  this._day)
                     .addChildAfter(this._buildPanel());
 
-                if (this._selectorUser !== null) {
+                if (this._selectorUser != null) {
 
                     parentElement.setAttrElement('data-selector-user',  this._selectorUser);
-                    parentElement.setAttrElement('date-format-user', this._formatUser)
+                    parentElement.setAttrElement('date-format-user', this._formatUser);
                 }
 
-                if (this._selectorSave !== null) {
+                if (this._selectorSave != null) {
 
                     parentElement.setAttrElement('data-selector-save',  this._selectorSave);
                     parentElement.setAttrElement('date-format-save', this._formatSave)
                 }
 
-                if (this._x !== null || this._y !== null) {
+                var position = document.querySelector(this._selectorUser).getBoundingClientRect();
+                var x = position.left + (this._width / 2);
+                var y = position.bottom;
 
-                    parentElement
-                        .addStyleElement('left', (Number(this._x) - (this._width / 2)) + 'px')
-                        .addStyleElement('top', (Number(this._y)) + 'px')
-                        .addStyleElement('position', 'absolute')
-                        .addStyleElement('z-index', 10000);
-                }
+                parentElement
+                    .addStyleElement('left', (x - (this._width / 2)) + 'px')
+                    .addStyleElement('top', (y) + 'px')
+                    .addStyleElement('position', 'absolute')
+                    .addStyleElement('z-index', 10000);
 
                 window.addEventListener('click', removeCalendar);
 
@@ -2667,9 +2763,21 @@
                 var month = parentElement.getAttribute('data-month');
                 var year  = parentElement.getAttribute('data-year');
                 var day   = element.getAttribute('data-day');
+                var hh   = parentElement.querySelector('#data-hh');
+                var mm   = parentElement.querySelector('#data-mm');
+                var ss   = parentElement.querySelector('#data-ss');
 
                 var date = new Date(year, month, day);
+
+                if (hh && mm && ss) {
+
+                    date = new Date(year, month, day, hh.value, mm.value, ss.value);
+                }
+
                 var setDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+                setDate += ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+
+
 
                 if (parentElement.hasAttribute('data-selector-user')) {
 
@@ -2809,6 +2917,12 @@
             _required: false,
 
             /**
+             * @private
+             * @type {number}
+             */
+            _maxLength: null,
+
+            /**
              * Set required field
              * @returns {ui.FFText}
              */
@@ -2939,6 +3053,15 @@
             },
 
             /**
+             * @param {number} max
+             * @returns {ui.FFText}
+             */
+            setMaxLength: function(max) {
+                this._maxLength = max;
+                return this;
+            },
+
+            /**
              * Build html label
              * @returns {*|Element}
              * @private
@@ -2975,6 +3098,7 @@
                     .addClassElement(ui.CSS.formControlClass)
                     .setDisabledElement(this._disabled)
                     .setRequiredElement(this._required)
+                    .setAttrElement('maxlength', this._maxLength)
                     .getElement();
             },
 
@@ -6422,6 +6546,7 @@
         this._id = ui.api.empty(this._name, idFieldUser + '-' + counter);
 
         this._valueForEvent = [];
+        this._time = false;
         counter++;
     };
 
@@ -6705,18 +6830,22 @@
          */
         _buildButtons: function() {
 
+            var FFDate = "new ui.FFDate()";
+            FFDate += ".setDateFormatUser('" + this._formatDateUser + "')";
+            FFDate += ".setDateFormatSave('" + this._formatDateSave + "')";
+
             return new ui.Element('div')
                 .addClassElement(ui.CSS.btn.btnGroup.group)
                 .setWidthElement(7)
                 .addChildAfter(
                     new ui.FFButton()
-                        .setOnClick('new ui.FFDate()._setCurrentDate(this);')
+                        .setOnClick(FFDate + '._setCurrentDate(this);')
                         .addButton(null, null, null, null, this._activeBtn, ui.Config.iconBtnDate.currentDate)
                         .setWidth('120px')
-                        .setOnClick("new ui.FFDate()._calendar(this, '" + this._id + "');")
+                        .setOnClick(FFDate + "._calendar(this, '" + this._id + "');")
                         .addButton(null, null, null, null, this._activeBtn, ui.Config.iconBtnDate.calendarDate)
                         .setWidth('120px')
-                        .setOnClick('new ui.FFDate()._clearDate(this);')
+                        .setOnClick(FFDate + '._clearDate(this);')
                         .addButton(null, null, null, null, this._activeBtn, ui.Config.iconBtnDate.removeDate)
                         .setWidth('120px')
                         .setPaddingBlock(null)
@@ -6809,7 +6938,6 @@
          */
         _calendar: function(e, selectorParentField) {
 
-            var position = e.getBoundingClientRect();
             var parentElement = ui.api.findParent(e, '.' + inputClassBlock);
             var findDate = parentElement.querySelector('#' + selectorParentField + ' > input[type=hidden]').value;
 
@@ -6820,9 +6948,9 @@
                 date = new Date(findDate);
             }
 
-            new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDate())
-                .setPositionLeft(position.left + ((position.right - position.left) / 2))
-                .setPositionTop(position.bottom)
+            new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds())
+                .setFormatUser(this._formatDateUser)
+                .setFormatSave(this._formatDateSave)
                 .addDateUserTo('#' + selectorParentField + ' > input[type=text]')
                 .addDateSaveTo('#' + selectorParentField + ' > input[type=hidden]')
                 .appendHTML('body');
@@ -6850,6 +6978,90 @@
             new ui.dom(selector).append(this.getElement());
             return this;
         }
+    };
+} (window.ui || {}));
+
+(function(ui) {
+    'use strict';
+    var inputClassBlock = 'block-field-date';
+    /**
+     * @memberOf ui
+     * @namespace ui.FFDateTime
+     * @param {string|null} value
+     * @param {string|null} name
+     * @param {string|null} caption
+     * @constructor
+     */
+    ui.FFDateTime = function (value, name, caption) {
+
+        ui.FFDate.apply(this, [value, name, caption]);
+
+        this._formatDateUser = ui.Config.formatDateTimeUser;
+        this._formatDateSave = ui.Config.formatDateTimeSave;
+        this._time = true;
+    };
+
+    ui.FFDateTime.prototype = Object.create(ui.FFDate.prototype);
+
+    ui.FFDateTime.prototype.constructor = ui.FFDateTime;
+
+    /**
+     *
+     * @returns {*|Element}
+     * @private
+     */
+    ui.FFDateTime.prototype._buildButtons = function() {
+
+        var FFDate = "new ui.FFDateTime()";
+        FFDate += ".setDateFormatUser('" + this._formatDateUser + "')";
+        FFDate += ".setDateFormatSave('" + this._formatDateSave + "')";
+
+        return new ui.Element('div')
+            .addClassElement(ui.CSS.btn.btnGroup.group)
+            .setWidthElement(7)
+            .addChildAfter(
+                new ui.FFButton()
+                    .setOnClick(FFDate + '._setCurrentDate(this);')
+                    .addButton(null, null, null, null, this._activeBtn, ui.Config.iconBtnDate.currentDate)
+                    .setWidth('120px')
+                    .setOnClick(FFDate + "._calendar(this, '" + this._id + "');")
+                    .addButton(null, null, null, null, this._activeBtn, ui.Config.iconBtnDate.calendarDate)
+                    .setWidth('120px')
+                    .setOnClick(FFDate + '._clearDate(this);')
+                    .addButton(null, null, null, null, this._activeBtn, ui.Config.iconBtnDate.removeDate)
+                    .setWidth('120px')
+                    .setPaddingBlock(null)
+                    .setGroup('justified')
+                    .setSize(this._size)
+                    .getElement()
+            )
+            .getElement();
+    };
+
+    /**
+     * @param {Element} e
+     * @param {string} selectorParentField <div id="selectorParentField"><input type="text"><input type="hidden"></div>
+     * @private
+     */
+    ui.FFDateTime.prototype._calendar = function(e, selectorParentField) {
+
+        var parentElement = ui.api.findParent(e, '.' + inputClassBlock);
+        var findDate = parentElement.querySelector('#' + selectorParentField + ' > input[type=hidden]').value;
+
+        var date = new Date();
+
+        if (findDate != '') {
+
+            date = new Date(findDate);
+        }
+
+        new ui.Calendar(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds())
+            .setFormatUser(this._formatDateUser)
+            .setFormatSave(this._formatDateSave)
+            .setTime(this._time)
+            .addDateUserTo('#' + selectorParentField + ' > input[type=text]')
+            .addDateSaveTo('#' + selectorParentField + ' > input[type=hidden]')
+            .appendHTML('body');
     };
 } (window.ui || {}));
 
@@ -7704,10 +7916,14 @@
     var _TYPE_PASS      = '_ffPassword';
     var _TYPE_TEXTAREA  = '_ffTextarea';
     var _TYPE_DATE      = '_ffDate';
+    var _TYPE_DATETIME  = '_ffDateTime';
     var _TYPE_SELECT    = '_ffSelect';
     var _TYPE_CHECKBOX  = '_ffCheckbox';
     var _TYPE_RADIO     = '_ffRadio';
     var _TYPE_READ_ONLY = '_ffReadonly';
+
+    var _TYPE_CONTENT_DATE = 'date';
+    var _TYPE_CONTENT_DATETIME = 'datetime';
 
     var _OBJECT_NAME  = 'object_name';
     var _PARENT_TITLE = 'parent_title';
@@ -7743,8 +7959,11 @@
         this.widthCaption = null;
         this.maxHeightFields = null;
         this.heightFields = null;
-        this.formatDate = ui.Config.formatDateUser;
         this.checkboxText = ui.Config.checkboxText;
+        this._formatDateUser = ui.Config.formatDateUser;
+        this._formatDateSave = ui.Config.formatDateSave;
+        this._formatDateTimeUser = ui.Config.formatDateTimeUser;
+        this._formatDateTimeSave = ui.Config.formatDateTimeSave;
     };
 
     /** @public */
@@ -7766,9 +7985,13 @@
                 value = ui.api.existProperty(dataList, dataValue, null);
             }
 
-            if (params.type === _TYPE_DATE) {
+            if (params.type === _TYPE_DATE || params.typeContent == _TYPE_CONTENT_DATE) {
 
-                value = new ui.FormatDate(dataValue, this.formatDate).getDate();
+                value = new ui.FormatDate(dataValue, this._formatDateUser).getDate();
+
+            } else if (params.type === _TYPE_DATETIME || params.typeContent == _TYPE_CONTENT_DATETIME) {
+
+                value = new ui.FormatDate(dataValue, this._formatDateTimeUser).getDate();
 
             } else if (params.type === _TYPE_CHECKBOX) {
 
@@ -7854,6 +8077,27 @@
             return new ui.FFDate(value, params['setname'], caption)
                 .setRequired(ui.api.existProperty(params, 'required', false))
                 .setWidthCaption(this.widthCaption)
+                .setDateFormatUser(this._formatDateUser)
+                .setDateFormatSave(this._formatDateSave)
+                .getElement();
+        },
+
+        /**
+         * @param {string|number|null} value
+         * @param {string|null} name
+         * @param {{}} params
+         * @returns {*|Element}
+         */
+        _ffDateTime: function(value, name, params) {
+
+            var caption = ui.api.existProperty(params, 'caption', null);
+            value = ui.api.setValue(value, name, params.defValue);
+
+            return new ui.FFDateTime(value, params['setname'], caption)
+                .setRequired(ui.api.existProperty(params, 'required', false))
+                .setWidthCaption(this.widthCaption)
+                .setDateFormatUser(this._formatDateTimeUser)
+                .setDateFormatSave(this._formatDateTimeSave)
                 .getElement();
         },
 
@@ -7968,13 +8212,15 @@
          * @param {string|null} name
          * @param {string|number|null} caption
          * @param {string|number|null} height
+         * @param {string|null} [type] - "date"|"datetime"|null
          * @returns {ui.HtmlFields}
          */
-        addReadOnlyField: function(defValue, name, caption, height) {
+        addReadOnlyField: function(defValue, name, caption, height, type) {
 
             var params = {
                 defValue: defValue,
                 type:     _TYPE_READ_ONLY,
+                typeContent: type,
                 caption:  caption,
                 height:   height
             };
@@ -8061,6 +8307,27 @@
             var params = {
                 defValue: defValue,
                 type:     _TYPE_DATE,
+                caption:  caption,
+                required: ui.api.empty(required, false)
+            };
+
+            this._setParametersFields(params, name);
+
+            return this;
+        },
+
+        /**
+         * @param {string} defValue
+         * @param {string} name
+         * @param {string|number} caption
+         * @param {boolean} required
+         * @returns {ui.HtmlFields}
+         */
+        addDateTimeField: function(defValue, name, caption, required) {
+
+            var params = {
+                defValue: defValue,
+                type:     _TYPE_DATETIME,
                 caption:  caption,
                 required: ui.api.empty(required, false)
             };
@@ -8162,10 +8429,64 @@
         /**
          *
          * @param {string} format
+         *                      'YYYY-MM-DD' | 'YYYY.MM.DD' | 'YYYY/MM/DD' |
+         *                      'DD-MM-YYYY' | 'DD.MM.YYYY' | 'DD/MM/YYYY' |
+         *                      'DD-MM-YY'   | 'DD.MM.YY'   | 'DD/MM/YY'   |
          * @returns {ui.HtmlFields}
+         * @public
          */
-        setFormatDate: function(format) {
-            this.formatDate = format;
+        setFormatDateUser: function(format) {
+            if (format.length == 8 ||  format.length == 10) {
+                this._formatDateUser = format;
+            }
+            return this;
+        },
+
+        /**
+         *
+         * @param {string} format
+         *                      'YYYY-MM-DD' | 'YYYY.MM.DD' | 'YYYY/MM/DD' |
+         *                      'DD-MM-YYYY' | 'DD.MM.YYYY' | 'DD/MM/YYYY' |
+         *                      'DD-MM-YY'   | 'DD.MM.YY'   | 'DD/MM/YY'   |
+         * @returns {ui.HtmlFields}
+         * @public
+         */
+        setFormatDateSave: function(format) {
+            if (format.length == 8 ||  format.length == 10) {
+                this._formatDateSave = format;
+            }
+            return this;
+        },
+
+        /**
+         *
+         * @param {string} format
+         *                      'YYYY-MM-DD HH:MI:SS' | 'YYYY.MM.DD HH:MI:SS' | 'YYYY/MM/DD HH:MI:SS' |
+         *                      'DD-MM-YYYY HH:MI:SS' | 'DD.MM.YYYY HH:MI:SS' | 'DD/MM/YYYY HH:MI:SS' |
+         *                      'DD-MM-YY HH:MI:SS'   | 'DD.MM.YY HH:MI:SS'   | 'DD/MM/YYYY HH:MI:SS' |
+         * @returns {ui.HtmlFields}
+         * @public
+         */
+        setFormatDateTimeUser: function(format) {
+            if (format.length == 17 || format.length == 19) {
+                this._formatDateTimeUser = format;
+            }
+            return this;
+        },
+
+        /**
+         *
+         * @param {string} format
+         *                       'YYYY-MM-DD HH:MI:SS' | 'YYYY.MM.DD HH:MI:SS' | 'YYYY/MM/DD HH:MI:SS' |
+         *                       'DD-MM-YYYY HH:MI:SS' | 'DD.MM.YYYY HH:MI:SS' | 'DD/MM/YYYY HH:MI:SS' |
+         *                       'DD-MM-YY HH:MI:SS'   | 'DD.MM.YY HH:MI:SS'   | 'DD/MM/YYYY HH:MI:SS' |
+         * @returns {ui.HtmlFields}
+         * @public
+         */
+        setFormatDateTimeSave: function(format) {
+            if (format.length == 17 || format.length == 19) {
+                this._formatDateTimeSave = format;
+            }
             return this;
         },
 
@@ -10344,7 +10665,6 @@
             row:   0,
             cell:  0
         };
-        //this._columnType = {};
         this._column = {};
         this._parentRecords = [];
         //Page
@@ -10463,6 +10783,26 @@
                     .addStyleElement('overflow', 'auto')
                     .addClassElement('sort-content')
                     .setContentElement(ui.api.escapeHtml(params.value))
+                    .toHTML()
+            },
+
+            date: function(params) {
+
+                var valueDate = ui.api.getParseValue(params.value);
+
+                return new ui.Element('div')
+                    .addClassElement('sort-content')
+                    .setContentElement(new ui.FormatDate(valueDate, params.formatDateUser).getDate())
+                    .toHTML()
+            },
+
+            datetime: function(params) {
+
+                var valueDate = ui.api.getParseValue(params.value);
+
+                return new ui.Element('div')
+                    .addClassElement('sort-content')
+                    .setContentElement(new ui.FormatDate(valueDate, params.formatDateTimeUser).getDate())
                     .toHTML()
             }
         };
@@ -10719,7 +11059,9 @@
                 alt: this._lbl.noimg,
                 hrefNoImg: this.urlNoImg,
                 height: this._maxHeightRow,
-                separator: this._separatorLink
+                separator: this._separatorLink,
+                formatDateUser: this._formatDateUser,
+                formatDateTimeUser: this._formatDateTimeUser
             };
 
             content = this._columnType[type].call(this, params);

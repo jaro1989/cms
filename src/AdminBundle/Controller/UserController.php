@@ -39,7 +39,7 @@ class UserController extends Controller
         return $this->render(
             'AdminBundle:user:create.html.twig',
             [
-                'user_data'   => $em->getRepository($this->repository)->findOneUser($record),
+                'data'   => $em->getRepository($this->repository)->findOneUser($record),
                 'list_roles'  => $listRoles
             ]
         );
