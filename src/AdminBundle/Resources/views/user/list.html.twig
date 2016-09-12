@@ -21,6 +21,7 @@
             _username:   '{{ '_USERNAME'|trans({}, 'admin') }}',
             _staus:      '{{ '_STAUS'|trans({}, 'admin') }}',
             _active:     '{{ '_ACTIVE'|trans({}, 'admin') }}',
+            _role:       '{{ '_ROLE'|trans({}, 'admin') }}',
             _locked:     '{{ '_LOCKED'|trans({}, 'admin') }}',
             _email:      '{{ '_EMAIL'|trans({}, 'admin') }}',
             _created_at: '{{ '_CREATED_AT'|trans({}, 'admin') }}'
@@ -59,14 +60,16 @@
             .setTypeTable('bordered')
 
             .newRowHead()
-            .addCellHead(lbl._created_at, 1, 1, true, 3, null)
+            .addCellHead(lbl._created_at, 1, 1, true, 2, null)
             .addCellHead(lbl._username, 1, 1, true, 4, null)
-            .addCellHead(lbl._email, 1, 1, true, 4, null)
+            .addCellHead(lbl._role, 1, 1, true, 2, null)
+            .addCellHead(lbl._email, 1, 1, true, 3, null)
             .addCellHead(lbl._staus, 1, 1, true, 1, null)
 
             .addRowsBody(data)
             .addColumn('created_at', 'datetime')
             .addColumn('username', 'link')
+            .addColumn('rolename', 'text')
             .addColumn('email', 'link')
             .addColumn('isActive', 'ban')
 

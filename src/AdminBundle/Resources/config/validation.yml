@@ -14,8 +14,21 @@ AdminBundle\Entity\User:
         password:
             - NotBlank: ~
             - Length:
-                min: 3
+                min: 5
         email:
             - NotBlank: ~
             - Length:
                 min: 3
+
+AdminBundle\Entity\Role:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: role
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                min: 3
+        role:
+            - NotBlank: ~
+            - Length:
+                min: 6

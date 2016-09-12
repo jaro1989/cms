@@ -51,8 +51,9 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                        u.username,
                        u.email,
                        u.isActive,
-                       u.created_at
-                  FROM AdminBundle:User u
+                       u.created_at,
+                       r.name AS rolename
+                  FROM AdminBundle:User u LEFT JOIN u.roles r
                  WHERE u.deleted = :deleted
                        {$this->getWhere($search)}
             ")
