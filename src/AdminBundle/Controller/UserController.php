@@ -33,7 +33,7 @@ class UserController extends Controller
             }
         } else {
 
-            $listRoles = $em->getRepository('AdminBundle:Role')->findListRoles();
+            $listRoles = $em->getRepository('AdminBundle:Role')->findListRolesName();
         }
 
         return $this->render(
@@ -87,7 +87,6 @@ class UserController extends Controller
 
         $page = isset($data['page']) ? $data['page'] : 1;
         $listUsers = $em->getRepository($this->repository)->findListUser($page, $search, $type == 'list' ? 0 : 1);
-
 
         return $response->setData(
             [

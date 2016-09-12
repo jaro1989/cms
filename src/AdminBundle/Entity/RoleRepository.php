@@ -2,6 +2,8 @@
 
 namespace AdminBundle\Entity;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 /**
  * RoleRepository
  *
@@ -10,10 +12,94 @@ namespace AdminBundle\Entity;
  */
 class RoleRepository extends \Doctrine\ORM\EntityRepository
 {
+    public $_max = 3;
+
+    public function findListRoles($page = 1, $search = [], $deleted = 0) {
+
+        $query = $this->getEntityManager()
+            ->createQuery("
+                SELECT r.id,
+                       r.name,
+                       r.role,
+                       r.created_at
+                  FROM AdminBundle:Role r
+                 WHERE r.deleted = :deleted
+                       {$this->getWhere($search)}
+            ")
+            ->setParameter('deleted', $deleted)
+            ->setFirstResult($this->getPage($page))
+            ->setMaxResults($this->_max);
+
+        $this->getParameter($query, $search);
+
+        $paginator = new Paginator($query);
+
+        $paginator->setUseOutputWalkers(false);
+
+        return [
+            'count_page' => ceil($paginator->count() / $this->_max),
+            'list'  => $query->getResult()
+        ];
+    }
+
+    /**
+     * @param $search
+     * @return string
+     */
+    private function getWhere($search)
+    {
+        $where = '';
+
+        if (!empty($search)) {
+
+            foreach ($search as $field => $value) {
+
+                if ($value !== '') {
+
+                    if (in_array($field, ['username', 'email'])) {
+
+                        $where .= ' AND u.' . $field . ' LIKE :' . $field . ' ';
+
+                    } else {
+
+                        $where .= ' AND u.' . $field . ' = :' . $field . ' ';
+                    }
+                }
+            }
+        }
+
+        return trim($where);
+    }
+
+    /**
+     * @param new Query $query
+     * @param $search
+     * @return void
+     */
+    private function getParameter($query, $search)
+    {
+        if (!empty($search)) {
+            foreach ($search as $field => $value) {
+                if ($value !== '') {
+                    if (in_array($field, ['name'])) {
+                        $query->setParameter($field, $value . '%');
+                    } else {
+                        $query->setParameter($field, $value);
+                    }
+                }
+            }
+        }
+    }
+
+    private function getPage($page) {
+        $page = $page > $this->_max ? $this->_max : $page;
+        return $this->_max * ($page < 1 ? 0: $page - 1);
+    }
+
     /**
      * @return array
      */
-    public function findListRoles()
+    public function findListRolesName($deleted = 0)
     {
         $arr =  $this->getEntityManager()
             ->createQuery("
@@ -22,7 +108,7 @@ class RoleRepository extends \Doctrine\ORM\EntityRepository
                   FROM AdminBundle:Role r
                  WHERE r.deleted = :deleted
             ")
-            ->setParameter('deleted', 0)
+            ->setParameter('deleted', $deleted)
             ->getResult();
 
         $result = [];
@@ -45,7 +131,8 @@ class RoleRepository extends \Doctrine\ORM\EntityRepository
                 SELECT r.id,
                        r.role,
                        r.name,
-                       r.created_at
+                       r.created_at,
+                       r.deleted
                   FROM AdminBundle:Role r
                  WHERE r.id = :id
             ")

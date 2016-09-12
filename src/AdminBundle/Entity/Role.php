@@ -41,6 +41,14 @@ class Role implements RoleInterface
     private $updated_at;
 
     /**
+     * Role constructor.
+     */
+    public function __construct()
+    {
+
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -62,14 +70,8 @@ class Role implements RoleInterface
     public function setName($value)
     {
         $this->name = $value;
-    }
 
-    /**
-     * Role constructor.
-     */
-    public function __construct()
-    {
-
+        return $this;
     }
 
     /**

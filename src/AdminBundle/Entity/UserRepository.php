@@ -102,7 +102,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param new Query $em
+     * @param new Query $query
      * @param $search
      * @return void
      */

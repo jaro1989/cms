@@ -7797,7 +7797,10 @@
     ui.FormData = function (idForm, locale) {
 
         this._idForm = idForm;
-        this._elements = document.getElementById(idForm).elements;
+
+        var elements = document.getElementById(idForm);
+
+        this._elements = elements ? elements.elements : null;
         this.data = {};
         this.errorField = [];
         this._locale = ui.api.empty(locale, ui.Config.lbl[ui.Config.locale]);

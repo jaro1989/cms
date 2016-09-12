@@ -39,7 +39,7 @@ class RoleController extends Controller
     public function listAction(Request $request, $type = 'list', $page = 1)
     {
         $em = $this->getDoctrine()->getManager();
-        $listRoles = $em->getRepository($this->repository)->findListRole($page, [], $type == 'list' ? 0 : 1);
+        $listRoles = $em->getRepository($this->repository)->findListRoles($page, [], $type == 'list' ? 0 : 1);
 
         return $this->render(
             'AdminBundle:role:' . $type . '.html.twig',
@@ -71,8 +71,7 @@ class RoleController extends Controller
         }
 
         $page = isset($data['page']) ? $data['page'] : 1;
-        $listUsers = $em->getRepository($this->repository)->findListUser($page, $search, $type == 'list' ? 0 : 1);
-
+        $listUsers = $em->getRepository($this->repository)->findListRoles($page, $search, $type == 'list' ? 0 : 1);
 
         return $response->setData(
             [
@@ -97,14 +96,13 @@ class RoleController extends Controller
 
             foreach ($data['id'] as $record) {
 
-                $user = $em->getRepository('AdminBundle:User')->find($record);
+                $user = $em->getRepository($this->repository)->find($record);
                 $user->setDeleted();
-                $user->setIsActive(false);
                 $em->flush();
             }
         }
 
-        $listUsers = $em->getRepository($this->repository)->findListUser($data['page']);
+        $listUsers = $em->getRepository($this->repository)->findListRoles($data['page']);
 
         return $response->setData(
             [
@@ -129,7 +127,7 @@ class RoleController extends Controller
 
             foreach ($data['id'] as $record) {
 
-                $user = $em->getRepository('AdminBundle:User')->find($record);
+                $user = $em->getRepository($this->repository)->find($record);
                 $em->remove($user);
                 $em->flush();
             }
@@ -139,7 +137,7 @@ class RoleController extends Controller
 
         if (isset($data['page'])) {
 
-            $listUsers = $em->getRepository($this->repository)->findListUser($data['page'], [], 1);
+            $listUsers = $em->getRepository($this->repository)->findListRoles($data['page'], [], 1);
             $res['data'] = $listUsers['list'];
             $res['count_page'] = $listUsers['count_page'];
         }
@@ -160,29 +158,16 @@ class RoleController extends Controller
         $record = empty($data['id']) ? 0 : $data['id'];
         $res = [];
 
-        $user = $em->getRepository('AdminBundle:User')->find($record);
-        $user ? $user : $user = new User();
+        $role = $em->getRepository($this->repository)->find($record);
+        $role ? $role : $role = new Role();
 
-        $user
-            ->setUsername($data['username'])
-            ->setEmail($data['email'])
-            ->setIsActive($data['isActive'])
+        $role
+            ->setName($data['name'])
+            ->setRole($data['role'])
             ->setDeleted($data['deleted']);
 
-        if (!empty($data['password'])) {
-
-            $encoder = $this->get('security.password_encoder');
-
-            $user
-                ->setPassword($encoder->encodePassword($user, $data['password']))
-                ->setOriginPassword($data['password'])
-                ->setConfirmPassword($data['confirmPassword']);
-        }
-
-        $user->addRole($em->getRepository('AdminBundle:Role')
-            ->find($data['role_id']));
         $validator = $this->get('validator');
-        $errors = $validator->validate($user);
+        $errors = $validator->validate($role);
 
         if ($errors->count() > 0) {
 
@@ -199,9 +184,9 @@ class RoleController extends Controller
 
         try {
 
-            $em->persist($user);
+            $em->persist($role);
             $em->flush();
-            $res['record'] = $user->getId();
+            $res['record'] = $role->getId();
 
         } catch (\Exception $e) {
 
