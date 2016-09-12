@@ -96,8 +96,8 @@ class RoleController extends Controller
 
             foreach ($data['id'] as $record) {
 
-                $user = $em->getRepository($this->repository)->find($record);
-                $user->setDeleted();
+                $role = $em->getRepository($this->repository)->find($record);
+                $role->setDeleted();
                 $em->flush();
             }
         }
@@ -127,8 +127,8 @@ class RoleController extends Controller
 
             foreach ($data['id'] as $record) {
 
-                $user = $em->getRepository($this->repository)->find($record);
-                $em->remove($user);
+                $role = $em->getRepository($this->repository)->find($record);
+                $em->remove($role);
                 $em->flush();
             }
         }

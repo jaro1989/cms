@@ -12,7 +12,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class RoleRepository extends \Doctrine\ORM\EntityRepository
 {
-    public $_max = 3;
+    public $_max = 25;
 
     public function findListRoles($page = 1, $search = [], $deleted = 0) {
 
@@ -21,7 +21,8 @@ class RoleRepository extends \Doctrine\ORM\EntityRepository
                 SELECT r.id,
                        r.name,
                        r.role,
-                       r.created_at
+                       r.created_at,
+                       r.updated_at
                   FROM AdminBundle:Role r
                  WHERE r.deleted = :deleted
                        {$this->getWhere($search)}

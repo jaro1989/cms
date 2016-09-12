@@ -26,9 +26,9 @@ class Role implements RoleInterface
     protected $users;
 
     /**
-     * @var int
+     * @var bool
      */
-    private $deleted = 0;
+    private $deleted;
 
     /**
      * @var \DateTime
@@ -119,7 +119,7 @@ class Role implements RoleInterface
      *
      * @return Role
      */
-    public function setDeleted($deleted)
+    public function setDeleted($deleted = true)
     {
         $this->deleted = $deleted;
 

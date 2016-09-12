@@ -12,7 +12,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
-    private $_max = 3;
+    private $_max = 25;
     /**
      * @param int $record
      * @return array|null

@@ -21,7 +21,8 @@
             _pagename:   '{{ '_LIST_ROLE'|trans({}, 'admin') }}',
             _name:       '{{ '_NAME_ROLE_TEXT'|trans({}, 'admin') }}',
             _role:       '{{ '_NAME_ROLE_KEY'|trans({}, 'admin') }}',
-            _created_at: '{{ '_CREATED_AT'|trans({}, 'admin') }}'
+            _created_at: '{{ '_CREATED_AT'|trans({}, 'admin') }}',
+            _updated_at: '{{ '_UPDATED_AT'|trans({}, 'admin') }}'
         };
 
         var path = {
@@ -29,13 +30,6 @@
             remove:      '{{ path('_role_remove') }}',
             switch_list: '{{ path('_role_switch_list', {'type': 'list'}) }}'
         };
-
-        {#var path = {#}
-            {#create:      '{{ path('_role_create') }}',#}
-            {#list_trash:  '{{ path('_role_list_trash') }}',#}
-            {#to_trash:    '{{ path('_role_to_trash') }}',#}
-            {#switch_list: '{{ path('_role_switch_list', {'type': 'list'}) }}'#}
-        {#};#}
 
         var data = {{data|json_encode|raw}};
         var count_page = {{count_page}};
@@ -58,12 +52,14 @@
                 .hideBtnTrash(true)
 
                 .newRowHead()
-                .addCellHead(lbl._created_at, 1, 1, true, 3, null)
+                .addCellHead(lbl._created_at, 1, 1, true, 2, null)
+                .addCellHead(lbl._updated_at, 1, 1, true, 2, null)
                 .addCellHead(lbl._name, 1, 1, true, 4, null)
                 .addCellHead(lbl._role, 1, 1, true, 4, null)
 
                 .addRowsBody(data)
                 .addColumn('created_at', 'datetime')
+                .addColumn('updated_at', 'datetime')
                 .addColumn('name', 'link')
                 .addColumn('role', 'link')
 
