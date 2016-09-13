@@ -41,6 +41,11 @@ class Role implements RoleInterface
     private $updated_at;
 
     /**
+     * @var int
+     */
+    private $parent;
+
+    /**
      * Role constructor.
      */
     public function __construct()
@@ -216,5 +221,29 @@ class Role implements RoleInterface
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \AdminBundle\Entity\Role $parent
+     *
+     * @return Role
+     */
+    public function setParent(\AdminBundle\Entity\Role $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \AdminBundle\Entity\Role
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 }

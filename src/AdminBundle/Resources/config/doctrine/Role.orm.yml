@@ -25,6 +25,12 @@ AdminBundle\Entity\Role:
         updated_at:
             type: datetime
             nullable: false
+    manyToOne:
+        parent:
+            targetEntity: Role
+            joinColumn:
+                name: role_id
+                referencedColumnName: id
     lifecycleCallbacks:
         prePersist: [prePersist, preUpdate]
         preUpdate: [preUpdate]

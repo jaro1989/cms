@@ -1,0 +1,4 @@
+services:
+    security.role_hierarchy:
+        class: AdminBundle\Service\RoleHierarchy
+        arguments: ['%security.role_hierarchy.roles%', '@doctrine.orm.default_entity_manager']
