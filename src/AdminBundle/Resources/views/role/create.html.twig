@@ -29,6 +29,7 @@
         };
 
         var data  = {{data|json_encode|raw}};
+        var list_roles = {{list_roles|json_encode|raw}};
 
         // ID элемента для вставки полей
         var APPEND_ELEMENT = '#page-html';
@@ -47,6 +48,11 @@
                 .addTextField(null, 'role', lbl._role, true)
                 .addTextField(null, 'name', lbl._name, true)
 
+                .newLineParent()
+                .addSelectField(null, 'parent_role', lbl._role, list_roles, true)
+                .addReadOnlyField(null, null, null, null)
+
+                .newLineParent()
                 .addRadioField(0, 'deleted', lbl._deleted, ['Нет', 'Да'], false, 12)
 
                 .setDebug(true)

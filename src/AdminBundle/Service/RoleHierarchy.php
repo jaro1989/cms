@@ -21,7 +21,14 @@ class RoleHierarchy extends \Symfony\Component\Security\Core\Role\RoleHierarchy
      */
     private function buildRolesTree()
     {
-        $roles = $this->em->createQuery('SELECT r FROM AdminBundle:Role r')->execute();
+        $roles = $this->em
+            ->createQuery("
+              SELECT r
+                FROM AdminBundle:Role r
+               WHERE r.deleted = :deleted
+            ")
+            ->setParameter('deleted', 0)
+            ->execute();
 
         foreach ($roles as $role) {
 

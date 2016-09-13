@@ -22,10 +22,13 @@ class RoleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+        $listRoles = $em->getRepository('AdminBundle:Role')->findListRolesName();
+
         return $this->render(
             'AdminBundle:role:create.html.twig',
             [
-                'data' => $em->getRepository($this->repository)->findOneRole($record)
+                'data' => $em->getRepository($this->repository)->findOneRole($record),
+                'list_roles'  => $listRoles
             ]
         );
     }
