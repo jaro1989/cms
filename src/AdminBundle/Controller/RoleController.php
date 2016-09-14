@@ -23,6 +23,8 @@ class RoleController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $listRoles = $em->getRepository('AdminBundle:Role')->findListRolesName();
+//
+//        var_dump($this->get('security.authorization_checker')->isGranted('ROLE_AUTHOR'));
 
         return $this->render(
             'AdminBundle:role:create.html.twig',

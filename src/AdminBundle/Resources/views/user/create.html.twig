@@ -11,22 +11,23 @@
 {% block javascripts %}
 
     {{ parent() }}
+    {% trans_default_domain 'admin' %}
 
     <script>
         var locale = '{{ app.request.locale }}';
 
         var lbl = {
-            _deleted:    '{{ '_DELETED'|trans({}, 'admin') }}',
-            _pagename:   '{{ '_CREATE_USER'|trans({}, 'admin') }}',
-            _confirm:    '{{ '_CONFIRM_PASSWORD'|trans({}, 'admin') }}',
-            _username:   '{{ '_USERNAME'|trans({}, 'admin') }}',
-            _password:   '{{ '_PASSWORD'|trans({}, 'admin') }}',
-            _staus:      '{{ '_STAUS'|trans({}, 'admin') }}',
-            _active:     '{{ '_ACTIVE'|trans({}, 'admin') }}',
-            _locked:     '{{ '_LOCKED'|trans({}, 'admin') }}',
-            _email:      '{{ '_EMAIL'|trans({}, 'admin') }}',
-            _role:       '{{ '_ROLE'|trans({}, 'admin') }}',
-            _created_at: '{{ '_CREATED_AT'|trans({}, 'admin') }}'
+            _deleted:    '{{ '_DELETED'|trans }}',
+            _pagename:   '{{ '_CREATE_USER'|trans }}',
+            _confirm:    '{{ '_CONFIRM_PASSWORD'|trans }}',
+            _username:   '{{ '_USERNAME'|trans }}',
+            _password:   '{{ '_PASSWORD'|trans }}',
+            _staus:      '{{ '_STAUS'|trans }}',
+            _active:     '{{ '_ACTIVE'|trans }}',
+            _locked:     '{{ '_LOCKED'|trans }}',
+            _email:      '{{ '_EMAIL'|trans }}',
+            _role:       '{{ '_ROLE'|trans }}',
+            _created_at: '{{ '_CREATED_AT'|trans }}'
         };
 
         var path = {

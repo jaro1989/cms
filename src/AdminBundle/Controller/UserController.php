@@ -25,7 +25,7 @@ class UserController extends Controller
         $currentUser = $this->getUser();
         $listRoles = [];
 
-        if ($currentUser->getId() == $record) {
+        if (method_exists($currentUser, 'getId') && $currentUser->getId() == $record) {
 
             foreach ($currentUser->getRoles() as $role) {
 

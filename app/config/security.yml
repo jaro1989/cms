@@ -4,12 +4,20 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        db_provider:
+        chain_provider:
+            chain:
+                providers: [in_memory, user_db]
+        in_memory:
+            memory:
+                users:
+                    superadmin: { password: 3lKE6EZYz8XrKhrsrFBpq7rdPWNkxkUugXnfV+v8Il1ZEDFe3wiZFH6DEYMDd9cyIYzC74DswFFqonNgbc4BPw==, roles: ['ROLE_SUPER_ADMIN'] }
+        user_db:
             entity:
                 class: AdminBundle:User
                 property: username
     encoders:
         AdminBundle\Entity\User: sha512
+        Symfony\Component\Security\Core\User\User: sha512
 
     firewalls:
         dev:
@@ -18,9 +26,11 @@ security:
 
         main:
             pattern:    ^/
-            provider: db_provider
+            provider: user_db
             anonymous: ~
-
+            http_basic:
+                realm: 'Secured Demo Area'
+                provider: in_memory
             form_login:
                 login_path: _security_login
                 check_path: _security_login

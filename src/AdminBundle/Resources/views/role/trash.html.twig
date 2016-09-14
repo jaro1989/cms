@@ -12,17 +12,18 @@
 {% block javascripts %}
 
     {{ parent() }}
+    {% trans_default_domain 'admin' %}
 
     <script>
         var locale = '{{ app.request.locale }}';
 
         var lbl = {
-            _basket:     '{{ '_BASKET'|trans({}, 'admin') }}',
-            _pagename:   '{{ '_LIST_ROLE'|trans({}, 'admin') }}',
-            _name:       '{{ '_NAME_ROLE_TEXT'|trans({}, 'admin') }}',
-            _role:       '{{ '_NAME_ROLE_KEY'|trans({}, 'admin') }}',
-            _created_at: '{{ '_CREATED_AT'|trans({}, 'admin') }}',
-            _updated_at: '{{ '_UPDATED_AT'|trans({}, 'admin') }}'
+            _basket:     '{{ '_BASKET'|trans }}',
+            _pagename:   '{{ '_LIST_ROLE'|trans }}',
+            _name:       '{{ '_NAME_ROLE_TEXT'|trans }}',
+            _role:       '{{ '_NAME_ROLE_KEY'|trans }}',
+            _created_at: '{{ '_CREATED_AT'|trans }}',
+            _updated_at: '{{ '_UPDATED_AT'|trans }}'
         };
 
         var path = {

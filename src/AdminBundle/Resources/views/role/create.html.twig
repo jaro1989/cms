@@ -11,15 +11,16 @@
 {% block javascripts %}
 
     {{ parent() }}
+    {% trans_default_domain 'admin' %}
 
     <script>
         var locale = '{{ app.request.locale }}';
 
         var lbl = {
-            _deleted:    '{{ '_DELETED'|trans({}, 'admin') }}',
-            _pagename:   '{{ '_CREATE_ROLE'|trans({}, 'admin') }}',
-            _name:       '{{ '_NAME_ROLE_TEXT'|trans({}, 'admin') }}',
-            _role:       '{{ '_NAME_ROLE_KEY'|trans({}, 'admin') }}'
+            _deleted:    '{{ '_DELETED'|trans }}',
+            _pagename:   '{{ '_CREATE_ROLE'|trans }}',
+            _name:       '{{ '_NAME_ROLE_TEXT'|trans }}',
+            _role:       '{{ '_NAME_ROLE_KEY'|trans }}'
         };
 
         var path = {

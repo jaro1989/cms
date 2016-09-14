@@ -12,19 +12,20 @@
 {% block javascripts %}
 
     {{ parent() }}
+    {% trans_default_domain 'admin' %}
 
     <script>
         var locale = '{{ app.request.locale }}';
 
         var lbl = {
-            _pagename:   '{{ '_LIST_USER'|trans({}, 'admin') }}',
-            _username:   '{{ '_USERNAME'|trans({}, 'admin') }}',
-            _staus:      '{{ '_STAUS'|trans({}, 'admin') }}',
-            _active:     '{{ '_ACTIVE'|trans({}, 'admin') }}',
-            _role:       '{{ '_ROLE'|trans({}, 'admin') }}',
-            _locked:     '{{ '_LOCKED'|trans({}, 'admin') }}',
-            _email:      '{{ '_EMAIL'|trans({}, 'admin') }}',
-            _created_at: '{{ '_CREATED_AT'|trans({}, 'admin') }}'
+            _pagename:   '{{ '_LIST_USER'|trans }}',
+            _username:   '{{ '_USERNAME'|trans }}',
+            _staus:      '{{ '_STAUS'|trans }}',
+            _active:     '{{ '_ACTIVE'|trans }}',
+            _role:       '{{ '_ROLE'|trans }}',
+            _locked:     '{{ '_LOCKED'|trans }}',
+            _email:      '{{ '_EMAIL'|trans }}',
+            _created_at: '{{ '_CREATED_AT'|trans }}'
         };
 
         var path = {
