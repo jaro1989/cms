@@ -26,10 +26,10 @@
         };
 
         var path = {
-            create:      '{{ path('_role_create') }}',
-            list_trash:  '{{ path('_role_list_trash') }}',
-            to_trash:    '{{ path('_role_to_trash') }}',
-            switch_list: '{{ path('_role_switch_list', {'type': 'list'}) }}'
+            create:      '{{ path('_admin_role_create') }}',
+            list_trash:  '{{ path('_admin_role_list_trash') }}',
+            to_trash:    '{{ path('_admin_role_to_trash') }}',
+            switch_list: '{{ path('_admin_role_switch_list', {'type': 'list'}) }}'
         };
 
         var data = {{data|json_encode|raw}};

@@ -1,0 +1,8 @@
+<ul class="nav nav-sidebar">
+
+    {% for rout, link in menu %}
+
+        <li class="{{ (rout == current_route) ? 'active' : ''}}"><a href="{{ link }}">{{ rout }}</a></li>
+
+    {% endfor %}
+</ul>

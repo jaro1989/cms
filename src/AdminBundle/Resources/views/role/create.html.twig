@@ -24,9 +24,9 @@
         };
 
         var path = {
-            list:   '{{ path('_role_list') }}',
-            remove: '{{ path('_role_remove') }}',
-            save:   '{{ path('_role_save') }}'
+            list:   '{{ path('_admin_role_list') }}',
+            remove: '{{ path('_admin_role_remove') }}',
+            save:   '{{ path('_admin_role_save') }}'
         };
 
         var data  = {{data|json_encode|raw}};

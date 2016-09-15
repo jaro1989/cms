@@ -31,9 +31,9 @@
         };
 
         var path = {
-            list: '{{ path('_user_list') }}',
-            remove:  '{{ path('_user_remove') }}',
-            save: '{{ path('_user_save') }}'
+            list:   '{{ path('_admin_user_list') }}',
+            remove: '{{ path('_admin_user_remove') }}',
+            save:   '{{ path('_admin_user_save') }}'
         };
 
         var data  = {{data|json_encode|raw}};

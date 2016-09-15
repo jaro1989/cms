@@ -27,9 +27,9 @@
         };
 
         var path = {
-            create:      '{{ path('_role_create') }}',
-            remove:      '{{ path('_role_remove') }}',
-            switch_list: '{{ path('_role_switch_list', {'type': 'list'}) }}'
+            create:      '{{ path('_admin_role_create') }}',
+            remove:      '{{ path('_admin_role_remove') }}',
+            switch_list: '{{ path('_admin_role_switch_list', {'type': 'list'}) }}'
         };
 
         var data = {{data|json_encode|raw}};

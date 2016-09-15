@@ -35,16 +35,10 @@
 <div class="container-fluid">
 
     <div class="row">
-
         {# Menu LEFT #}
-
         <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar">
-                <li><a href="{{ path('_user_create') }}">Создать пользователя</a></li>
-                <li><a href="{{ path('_user_list') }}">Список пользователей</a></li>
-                <li class="active"><a href="{{ path('_role_create') }}">Создать роль</a></li>
-                <li><a href="{{ path('_role_list') }}">Список ролей</a></li>
-            </ul>
+            {{ render(controller('AdminBundle:Menu:leftview')) }}
+
             {% block sidebar %}{% endblock %}
         </div>
 

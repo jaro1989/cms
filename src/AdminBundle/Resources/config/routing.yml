@@ -3,70 +3,82 @@ _admin:
     path: /
     defaults:  { _controller: AdminBundle:Main:index }
 
-_user_create:
+_menu_left_view:
+    path: /menu/wiew/left
+    defaults:  { _controller: AdminBundle:Menu:leftview }
+
+_menu_top_view:
+    path: /menu/wiew/top
+    defaults:  { _controller: AdminBundle:Menu:topview }
+
+_admin_role_save:
+    path: /save/role
+    defaults:  { _controller: AdminBundle:Role:save }
+
+_admin_user_create:
     path: /create/user/{record}
     defaults:  { _controller: AdminBundle:User:create, record: 0 }
 
-_user_list:
+_admin_user_list:
     path: /list/user/{page}
     defaults:  { _controller: AdminBundle:User:list, type: list, page: 1 }
     requirements:
         page: '\d+'
 
-_user_list_trash:
+_admin_user_list_trash:
     path: /list/user/trash/{page}
     defaults:  { _controller: AdminBundle:User:list, type: trash, page: 1 }
     requirements:
         page: '\d+'
 
-_user_switch_list:
+_admin_user_switch_list:
     path: /list/user/switch/{type}
     defaults:  { _controller: AdminBundle:User:switchList, type: list}
     requirements:
         page: '\d+'
 
-_user_to_trash:
+_admin_user_to_trash:
     path: /trash/user
     defaults:  { _controller: AdminBundle:User:trash }
 
-_user_remove:
+_admin_user_remove:
     path: /remove/user
     defaults:  { _controller: AdminBundle:User:remove }
 
-_user_save:
+_admin_user_save:
     path: /save/user
     defaults:  { _controller: AdminBundle:User:save }
 
-_role_create:
+_admin_role_create:
     path: /create/role/{record}
     defaults:  { _controller: AdminBundle:Role:create, record: 0 }
 
-_role_list:
+_admin_role_list:
     path: /list/role/{page}
     defaults:  { _controller: AdminBundle:Role:list, type: list, page: 1 }
     requirements:
         page: '\d+'
 
-_role_list_trash:
+_admin_role_list_trash:
     path: /list/role/trash/{page}
     defaults:  { _controller: AdminBundle:Role:list, type: trash, page: 1 }
     requirements:
         page: '\d+'
 
-_role_switch_list:
+_admin_role_switch_list:
     path: /list/role/switch/{type}
     defaults:  { _controller: AdminBundle:Role:switchList, type: list}
     requirements:
         page: '\d+'
 
-_role_to_trash:
+_admin_role_to_trash:
     path: /trash/role
     defaults:  { _controller: AdminBundle:Role:trash }
 
-_role_remove:
+_admin_role_remove:
     path: /remove/role
     defaults:  { _controller: AdminBundle:Role:remove }
 
-_role_save:
+_admin_role_save:
     path: /save/role
     defaults:  { _controller: AdminBundle:Role:save }

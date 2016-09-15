@@ -29,10 +29,10 @@
         };
 
         var path = {
-            create:      '{{ path('_user_create') }}',
-            list_trash:  '{{ path('_user_list_trash') }}',
-            to_trash:    '{{ path('_user_to_trash') }}',
-            switch_list: '{{ path('_user_switch_list', {'type': 'list'}) }}'
+            create:      '{{ path('_admin_user_create') }}',
+            list_trash:  '{{ path('_admin_user_list_trash') }}',
+            to_trash:    '{{ path('_admin_user_to_trash') }}',
+            switch_list: '{{ path('_admin_user_switch_list', {'type': 'list'}) }}'
         };
 
         var data = {{data|json_encode|raw}};
